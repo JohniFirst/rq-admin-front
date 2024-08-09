@@ -1,0 +1,18 @@
+.loginTitle {
+  font-size: 40px;
+  /* color: white; */
+  font-weight: bolder;
+  margin-bottom: 24px;
+}
+
+.formWp {
+  width: 500px;
+  padding: 24px;
+  border-radius: 8px;
+  position: absolute;
+  top: 50%;
+  left: 300px;
+  transform: translateY(-50%);
+  /* background-color: #DCD7E0; */
+  background-color: #93C572;
+}

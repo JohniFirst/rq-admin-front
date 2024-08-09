@@ -167,7 +167,7 @@ function CommonMenu() {
           />
         </aside>
 
-        <section className="w-full flex flex-col h-full col-auto">
+        <section className="w-full flex flex-col h-screen col-auto">
           <header className="flex justify-between items-center p-4">
             <div>left</div>
 
@@ -176,10 +176,8 @@ function CommonMenu() {
 
           <NavigationBar />
 
-          <main className="bg-gray-50 dark:bg-black grow p-3">
-            <div className="p-4 h-full overflow-y-auto rounded-md">
-              <Outlet />
-            </div>
+          <main className="bg-gray-50 dark:bg-black grow p-4 overflow-y-auto">
+            <Outlet />
           </main>
         </section>
       </div>

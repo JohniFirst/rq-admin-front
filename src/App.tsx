@@ -28,6 +28,9 @@ function App() {
       <ConfigProvider
         theme={{
           algorithm: isDark ? theme.darkAlgorithm : theme.defaultAlgorithm,
+          token: {
+            colorPrimary: "#FF4500"
+          }
         }}
       >
         <RouterProvider router={router} />

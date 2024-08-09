@@ -5,7 +5,7 @@ function useCustomNavigate() {
 
   return (path: string) => {
     if (path !== window.location.pathname) {
-      navigate(path);
+      navigate(path, { replace: true });
     }
   };
 }

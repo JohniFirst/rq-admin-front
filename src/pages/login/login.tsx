@@ -1,7 +1,9 @@
 // import React, { useState, useEffect } from "react";
-import { Form, Input, Button } from "antd";
+import { Form, Input, Button, Checkbox } from "antd";
 import { useNavigate } from "react-router-dom";
 // import JSEncrypt from "jsencrypt";
+import login from "./login.module.css";
+import VerificationCodeInput from "@/components/base/VerificationCodeInput";
 
 interface LoginFormValues {
   username: string;
@@ -26,34 +28,54 @@ const LoginForm = () => {
     // 这里可以添加登录逻辑，例如发送请求到后端
     // console.log("Encrypted Password:", encryptedPassword);
     console.log(values);
-    navigate('/dashboard');
+    navigate("/dashboard");
   };
 
   // const encryptPassword = async (password: string) => {};
 
   return (
-    <section>
-      <Form form={form} name="loginForm" onFinish={handleSubmit}>
-        <Form.Item
-          name="username"
-          rules={[{ required: true, message: "请输入您的用户名！" }]}
+    <section className="w-screen h-screen">
+      <section className={`bg-blue-400 ${login.formWp}`}>
+        <h2 className={login.loginTitle}>登 录</h2>
+        <Form
+          form={form}
+          name="loginForm"
+          onFinish={handleSubmit}
+          labelCol={{ span: 5 }}
+          wrapperCol={{ span: 19 }}
         >
-          <Input placeholder="用户名" />
-        </Form.Item>
-        <Form.Item
-          name="password"
-          rules={[{ required: true, message: "请输入您的密码！" }]}
-        >
-          <Input.Password placeholder="密码" />
-        </Form.Item>
-        <Form.Item shouldUpdate>
-          {() => (
+          <Form.Item
+            name="username"
+            label="用户名"
+            rules={[{ required: true, message: "请输入您的用户名！" }]}
+          >
+            <Input placeholder="用户名" />
+          </Form.Item>
+          <Form.Item
+            name="password"
+            label="密码"
+            rules={[{ required: true, message: "请输入您的密码！" }]}
+          >
+            <Input.Password placeholder="8-24位字母、数字组合" />
+          </Form.Item>
+
+          <VerificationCodeInput />
+
+          <Form.Item
+            name="remember"
+            valuePropName="checked"
+            wrapperCol={{ offset: 5 }}
+          >
+            <Checkbox>记住我</Checkbox>
+          </Form.Item>
+
+          <Form.Item wrapperCol={{ offset: 5 }}>
             <Button type="primary" htmlType="submit">
-              登录
+              登 录
             </Button>
-          )}
-        </Form.Item>
-      </Form>
+          </Form.Item>
+        </Form>
+      </section>
     </section>
   );
 };

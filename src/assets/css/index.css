@@ -13,6 +13,7 @@ body {
 :root {
   --background-color: #ffffff;
   --text-color: #000000;
+  --default-gap: 16px;
 }
 
 /* 暗色主题样式 */
@@ -34,4 +35,11 @@ body {
 ::-webkit-scrollbar-thumb {
   background: #d3d2d2;
   border-radius: 5px;
+}
+
+.container {
+  background-color: var(--background-color);
+  color: var(--text-color);
+  padding: 24px 16px;
+  border-radius: 8px;
 }

@@ -3,7 +3,7 @@ import { createBrowserRouter } from "react-router-dom";
 import type { RouteObject } from "react-router-dom";
 import type { Router } from "@remix-run/router";
 
-import LoginForm from "@/pages/login/login";
+import LoginForm from "@/pages/login/Login";
 import Layout from "@/layout/Layout";
 import Dashboard from "@/pages/dashboard/Dashboard";
 import Danmu from "@/pages/event/danmu/Danmu";
