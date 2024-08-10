@@ -60,7 +60,7 @@ function ChartOfOrderRelation() {
       tooltip: {
         trigger: "axis",
       },
-      color: ["#006400", "#FFD700"],
+      color: ["#FF4500", "#FF007F"],
       legend: {
         data: ["订单金额", "订单数"],
       },

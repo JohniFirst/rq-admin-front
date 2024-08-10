@@ -17,6 +17,7 @@ import { LabelLayout, UniversalTransition } from "echarts/features";
 // 引入 Canvas 渲染器，注意引入 CanvasRenderer 或者 SVGRenderer 是必须的一步
 import { CanvasRenderer } from "echarts/renderers";
 import type { EChartsOption } from "echarts";
+import { echartsColors } from "@/enums/echartsColors";
 
 // 注册必须的组件
 echarts.use([
@@ -56,12 +57,12 @@ function ChartOfCustomerIncomeProportion() {
       title: {
         text: "顾客收入占比",
       },
+      color: echartsColors,
       tooltip: {
         trigger: "item",
       },
       legend: {
-        orient: "vertical",
-        left: "left",
+        bottom: "bottom",
       },
       series: [
         {

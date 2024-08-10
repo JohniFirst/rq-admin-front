@@ -68,6 +68,7 @@ function ChartOfInStorePeople(): JSX.Element {
       title: {
         text: "客流量",
       },
+      color: ["#FF4500"],
       tooltip: {
         trigger: "item",
       },

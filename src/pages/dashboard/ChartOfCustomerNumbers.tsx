@@ -17,6 +17,7 @@ import { LabelLayout, UniversalTransition } from "echarts/features";
 // 引入 Canvas 渲染器，注意引入 CanvasRenderer 或者 SVGRenderer 是必须的一步
 import { CanvasRenderer } from "echarts/renderers";
 import type { EChartsOption } from "echarts";
+import { echartsColors } from "@/enums/echartsColors";
 
 // 注册必须的组件
 echarts.use([
@@ -57,6 +58,7 @@ function ChartOfCustomerNumbers() {
       title: {
         text: "不同周期顾客人数",
       },
+      color: echartsColors,
       xAxis: {
         type: "category",
         data: data.map((item) => item.period),
@@ -64,6 +66,9 @@ function ChartOfCustomerNumbers() {
       yAxis: {
         type: "value",
         name: "人数",
+      },
+      tooltip: {
+        trigger: "item",
       },
       series: [
         {

@@ -1,6 +1,6 @@
 import { useLoaderData } from "react-router-dom";
 import ChartOfInStorePeople from "./ChartOfInStorePeople";
-import dashboardStyles from "./dashboard.module.css";
+import dashboardStyles from "./css/dashboard.module.css";
 import ChartOfGuestSourcePie from "./ChartOfGuestSourcePie";
 import ChartOfOrderRelation from "./ChartOfOrderRelation";
 import ChartOfDiningAndEntryTimeRelation from "./ChartOfDiningAndEntryTimeRelation";
@@ -40,7 +40,7 @@ function Dashboard() {
         <ChartOfOrderRelation />
       </section>
 
-      <section className="container">
+      <section className="container mt-[16px]">
         <ChartOfDynamicSales />
       </section>
 
@@ -54,16 +54,18 @@ function Dashboard() {
         </section>
       </section>
 
-      <section className="container">
-        <ChartOfDishSales />
-      </section>
+      <section className={dashboardStyles.chartBottomWp}>
+        <section className="container">
+          <ChartOfDishSales />
+        </section>
 
-      <section className="container">
-        <ChartOfCustomerIncomeProportion />
-      </section>
+        <section className="container">
+          <ChartOfCustomerIncomeProportion />
+        </section>
 
-      <section className="container">
-        <ChartOfCustomerNumbers />
+        <section className="container">
+          <ChartOfCustomerNumbers />
+        </section>
       </section>
     </>
   );
