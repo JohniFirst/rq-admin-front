@@ -14,6 +14,7 @@ import { CanvasRenderer } from "echarts/renderers";
 import type { EChartsOption } from "echarts";
 
 import { echartsColors } from "@/enums/echartsColors";
+import { useInViewport } from "@/hooks/useInViewport";
 
 echarts.use([
   TitleComponent,
@@ -36,6 +37,8 @@ echarts.use([
  */
 function ChartOfDiningAndEntryTimeRelation() {
   const chartRef = useRef(null);
+
+  const [isInViewport] = useInViewport(chartRef);
 
   useEffect(() => {
     const myChart = echarts.init(chartRef.current);
@@ -102,7 +105,7 @@ function ChartOfDiningAndEntryTimeRelation() {
     return () => {
       myChart.dispose();
     };
-  }, []);
+  }, [isInViewport]);
 
   return <div ref={chartRef} style={{ width: "100%", height: "400px" }}></div>;
 }

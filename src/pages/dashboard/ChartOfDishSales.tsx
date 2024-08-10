@@ -1,40 +1,13 @@
-import { useEffect, useRef, useState } from "react";
-// 引入 echarts 核心模块，核心模块提供了 echarts 使用必须要的接口。
+import { useEffect, useRef } from "react";
 import * as echarts from "echarts/core";
-// 引入柱状图图表，图表后缀都为 Chart
+import { GridComponent, LegendComponent } from "echarts/components";
 import { BarChart } from "echarts/charts";
-// 引入标题，提示框，直角坐标系，数据集，内置数据转换器组件，组件后缀都为 Component
-import {
-  TitleComponent,
-  TooltipComponent,
-  GridComponent,
-  DatasetComponent,
-  TransformComponent,
-  LegendComponent
-} from "echarts/components";
-// 标签自动布局、全局过渡动画等特性
-import { LabelLayout, UniversalTransition } from "echarts/features";
-// 引入 Canvas 渲染器，注意引入 CanvasRenderer 或者 SVGRenderer 是必须的一步
 import { CanvasRenderer } from "echarts/renderers";
+
 import type { EChartsOption } from "echarts";
+import { echartsColors } from "@/enums/echartsColors";
 
-echarts.use([
-  TitleComponent,
-  TooltipComponent,
-  GridComponent,
-  DatasetComponent,
-  TransformComponent,
-  LegendComponent,
-  BarChart,
-  LabelLayout,
-  UniversalTransition,
-  CanvasRenderer
-]);
-
-interface DishSales {
-  dish: string;
-  sales: number;
-}
+echarts.use([GridComponent, LegendComponent, BarChart, CanvasRenderer]);
 
 /**
  * Renders a dynamic sorting bar chart for dish sales.
@@ -43,91 +16,81 @@ interface DishSales {
  */
 function ChartOfDishSales(): JSX.Element {
   const chartRef = useRef(null);
-  const [dishSalesData, setDishSalesData] = useState<DishSales[]>([
-    { dish: "宫保鸡丁", sales: 100 },
-    { dish: "鱼香肉丝", sales: 80 },
-    { dish: "麻婆豆腐", sales: 120 },
-    { dish: "回锅肉", sales: 90 },
-    { dish: "糖醋排骨", sales: 110 }
-  ]);
+
+  const data: number[] = [];
+  for (let i = 0; i < 5; ++i) {
+    data.push(Math.round(Math.random() * 200));
+  }
 
   useEffect(() => {
     // 基于准备好的 dom，初始化 echarts 实例
     const myChart = echarts.init(chartRef.current);
 
-    const run = () => {
-      const updatedData = dishSalesData.map((item) => {
-        if (Math.random() > 0.9) {
-          return {...item, sales: item.sales + Math.round(Math.random() * 500) };
-        } else {
-          return {...item, sales: item.sales + Math.round(Math.random() * 50) };
-        }
-      });
-
-      setDishSalesData(updatedData);
-
-      // 确保更新选项时图表存在
-      if (myChart) {
-        myChart.setOption({
-          series: [
-            {
-              type: "bar",
-              data: updatedData.sort((a, b) => b.sales - a.sales),
-              realtimeSort: true
-            }
-          ],
-          yAxis: {
-            type: "category",
-            data: updatedData.sort((a, b) => b.sales - a.sales).map(item => item.dish),
-            inverse: true
-          },
-          xAxis: {
-            type: "value",
-            max: Math.max(...updatedData.map(item => item.sales))
-          }
-        });
-      }
-    };
-
     // 初始配置选项
     const option: EChartsOption = {
       title: {
-        text: "菜品销售动态排序柱状图"
+        text: "菜品销售数据",
+      },
+      xAxis: {
+        max: "dataMax",
+      },
+      yAxis: {
+        type: "category",
+        data: ["宫保鸡丁", "鱼香肉丝", "麻婆豆腐", "回锅肉", "糖醋排骨"],
+        inverse: true,
+        animationDuration: 300,
+        animationDurationUpdate: 300,
+      },
+      color: echartsColors,
+      tooltip: {
+        trigger: "axis",
       },
       series: [
         {
-          type: "bar",
-          data: dishSalesData.sort((a, b) => b.sales - a.sales).map(item => item.sales),
           realtimeSort: true,
+          name: "销量/份",
+          type: "bar",
+          data: data,
           label: {
             show: true,
-            position: "right"
-          }
-        }
+            position: "right",
+            valueAnimation: true,
+          },
+        },
       ],
-      yAxis: {
-        type: "category",
-        data: dishSalesData.sort((a, b) => b.sales - a.sales).map(item => item.dish),
-        inverse: true
-      },
-      xAxis: {
-        type: "value",
-        max: Math.max(...dishSalesData.map(item => item.sales))
-      },
       legend: {
-        show: true
+        show: true,
       },
       animationDuration: 0,
-      animationDurationUpdate: 3000
+      animationDurationUpdate: 3000,
+      animationEasing: "linear",
+      animationEasingUpdate: "linear",
     };
 
     myChart.setOption(option);
+    function run() {
+      for (let i = 0; i < data.length; ++i) {
+        if (Math.random() > 0.9) {
+          data[i] += Math.round(Math.random() * 2000);
+        } else {
+          data[i] += Math.round(Math.random() * 200);
+        }
+      }
+      myChart.setOption({
+        series: [
+          {
+            type: "bar",
+            data,
+          },
+        ],
+      });
+    }
 
-    // 立即执行一次
     run();
 
-    // 定时执行
-    const interval = setInterval(run, 3000);
+    const interval = setInterval(() => {
+      run();
+    }, 3000);
 
     // 组件卸载时销毁图表和定时器
     return () => {

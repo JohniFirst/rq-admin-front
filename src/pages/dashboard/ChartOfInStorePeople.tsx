@@ -17,6 +17,7 @@ import { LabelLayout, UniversalTransition } from "echarts/features";
 // 引入 Canvas 渲染器，注意引入 CanvasRenderer 或者 SVGRenderer 是必须的一步
 import { CanvasRenderer } from "echarts/renderers";
 import type { EChartsOption } from "echarts";
+import { useInViewport } from "@/hooks/useInViewport";
 
 // 注册必须的组件
 echarts.use([
@@ -43,6 +44,8 @@ echarts.use([
  */
 function ChartOfInStorePeople(): JSX.Element {
   const chartRef = useRef(null);
+
+  const [isInViewport] = useInViewport(chartRef);
 
   useEffect(() => {
     // 基于准备好的 dom，初始化 echarts 实例
@@ -94,7 +97,7 @@ function ChartOfInStorePeople(): JSX.Element {
     return () => {
       myChart.dispose();
     };
-  }, []);
+  }, [isInViewport]);
 
   return <div ref={chartRef} style={{ width: "100%", height: "400px" }}></div>;
 }

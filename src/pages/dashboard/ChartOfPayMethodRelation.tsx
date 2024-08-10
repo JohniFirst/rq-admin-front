@@ -11,6 +11,7 @@ import { CanvasRenderer } from "echarts/renderers";
 import { Segmented } from "antd";
 import type { EChartsOption } from "echarts";
 import { echartsColors } from "@/enums/echartsColors";
+import { useInViewport } from "@/hooks/useInViewport";
 
 echarts.use([
   TitleComponent,
@@ -30,6 +31,8 @@ interface PayMethod {
 function ChartOfPayMethodRelation() {
   const chartRef = useRef(null);
   const [timeRange, setTimeRange] = useState("每天");
+
+  const [isInViewport] = useInViewport(chartRef);
 
   // 初始数据设置为每天的数据
   const [data, setData] = useState<PayMethod[]>([
@@ -116,13 +119,13 @@ function ChartOfPayMethodRelation() {
     return () => {
       myChart.dispose();
     };
-  }, [timeRange]);
+  }, [timeRange, isInViewport]);
 
   return (
     <div>
       <Segmented<string>
         className={"mb-[12px]"}
-        options={['每天', '每周', '每月', '每年']}
+        options={["每天", "每周", "每月", "每年"]}
         onChange={(value) => setTimeRange(value)}
       />
       <div ref={chartRef} style={{ width: "100%", height: "400px" }}></div>

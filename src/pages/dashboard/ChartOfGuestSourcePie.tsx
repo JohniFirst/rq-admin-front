@@ -17,6 +17,7 @@ import { LabelLayout, UniversalTransition } from "echarts/features";
 import { CanvasRenderer } from "echarts/renderers";
 import type { EChartsOption } from "echarts";
 import { echartsColors } from "@/enums/echartsColors";
+import { useInViewport } from "@/hooks/useInViewport";
 
 // 注册必须的组件
 echarts.use([
@@ -40,6 +41,8 @@ echarts.use([
  */
 function ChartOfGuestSourcePie() {
   const chartRef = useRef(null);
+
+  const [isInViewport] = useInViewport(chartRef);
 
   useEffect(() => {
     const myChart = echarts.init(chartRef.current);
@@ -85,7 +88,7 @@ function ChartOfGuestSourcePie() {
     return () => {
       myChart.dispose();
     };
-  }, []);
+  }, [isInViewport]);
 
   return <div ref={chartRef} style={{ width: "100%", height: "100%" }}></div>;
 }

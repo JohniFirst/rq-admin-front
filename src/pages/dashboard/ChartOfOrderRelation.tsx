@@ -12,6 +12,7 @@ import {
 import { LabelLayout, UniversalTransition } from "echarts/features";
 import { CanvasRenderer } from "echarts/renderers";
 import type { EChartsOption } from "echarts";
+import { useInViewport } from "@/hooks/useInViewport";
 
 echarts.use([
   TitleComponent,
@@ -34,6 +35,8 @@ echarts.use([
  */
 function ChartOfOrderRelation() {
   const chartRef = useRef(null);
+
+  const [isInViewport] = useInViewport(chartRef);
 
   useEffect(() => {
     const myChart = echarts.init(chartRef.current);
@@ -110,7 +113,7 @@ function ChartOfOrderRelation() {
     return () => {
       myChart.dispose();
     };
-  }, []);
+  }, [isInViewport]);
 
   return <div ref={chartRef} style={{ width: "100%", height: "500px" }}></div>;
 }
