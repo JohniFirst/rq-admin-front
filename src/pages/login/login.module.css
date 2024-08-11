@@ -1,3 +1,13 @@
+#video-background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: -1;
+}
+
 .loginTitle {
   font-size: 40px;
   /* color: white; */
@@ -13,6 +23,5 @@
   top: 50%;
   left: 300px;
   transform: translateY(-50%);
-  /* background-color: #DCD7E0; */
-  background-color: #93C572;
+  background-color: rgba(255, 255, 255, 0.7);
 }

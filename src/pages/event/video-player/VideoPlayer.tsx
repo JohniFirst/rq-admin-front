@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
-import "./video.css";
+import "./css/video.css";
 
 import type { MouseEvent, ChangeEvent } from "react";
+import VideoPlayProgress from "./VideoPlayProgress";
 
 function VideoPlayer() {
   const [duration, setDuration] = useState(0);
@@ -97,11 +98,7 @@ function VideoPlayer() {
 
   return (
     <div className="video-controls-wp" onDoubleClick={handleVideoFullScreen}>
-      <div className="video-wp">
-        <video id="video" width="960" height="540">
-          <source src="/demo.mp4" type="video/mp4" />
-        </video>
-      </div>
+      <video id="video" width="960" src="/demo.mp4" height="540"></video>
 
       <div onClick={handleVideoPlay} className="video-controls">
         {/* 播放/暂停按钮 */}
@@ -139,15 +136,9 @@ function VideoPlayer() {
           <div className="progress-wp">
             {/* 小的播放/暂停按钮 */}
             <div></div>
+
             {/* 播放进度条 */}
-            <input
-              className="video-play-progress"
-              type="range"
-              max={duration}
-              value={currentTime}
-              onClick={(event) => event.stopPropagation()}
-              onChange={handleVideoPlayProgress}
-            />
+            <VideoPlayProgress max={duration} value={currentTime} />
 
             {/* 播放时间展示 */}
             <p className="paly-time">

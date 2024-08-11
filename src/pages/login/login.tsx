@@ -4,6 +4,8 @@ import { useNavigate } from "react-router-dom";
 // import JSEncrypt from "jsencrypt";
 import login from "./login.module.css";
 import VerificationCodeInput from "@/components/base/VerificationCodeInput";
+// import { useCustomRoutes } from "@/routes";
+// import { dynamicRoutes } from "@/routes/dynamic-routes";
 
 interface LoginFormValues {
   username: string;
@@ -13,6 +15,7 @@ interface LoginFormValues {
 const LoginForm = () => {
   const [form] = Form.useForm();
   const navigate = useNavigate();
+  // const { routes, addRoutes } = useCustomRoutes();
 
   // useEffect(() => {
   //   // 登录成功后的处理逻辑
@@ -27,6 +30,8 @@ const LoginForm = () => {
     // const encryptedPassword = await encryptPassword(values.password);
     // 这里可以添加登录逻辑，例如发送请求到后端
     // console.log("Encrypted Password:", encryptedPassword);
+    // addRoutes(dynamicRoutes);
+
     console.log(values);
     navigate("/dashboard");
   };
@@ -34,8 +39,13 @@ const LoginForm = () => {
   // const encryptPassword = async (password: string) => {};
 
   return (
-    <section className="w-screen h-screen">
-      <section className={`bg-blue-400 ${login.formWp}`}>
+    <section className="w-screen h-screen overflow-hidden">
+      <video id="video-background" autoPlay loop muted>
+        <source src="/demo.mp4" type="video/mp4" />
+        Your browser does not support the video tag.
+      </video>
+
+      <section className={login.formWp}>
         <h2 className={login.loginTitle}>登 录</h2>
         <Form
           form={form}

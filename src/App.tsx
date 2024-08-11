@@ -1,17 +1,19 @@
 import { useState } from "react";
 import { RouterProvider } from "react-router-dom";
-import { router } from "@/routes/index";
 import { Provider } from "react-redux";
 import store from "@/store/store";
 import { ConfigProvider, theme } from "antd";
 import { port2 } from "@/utils/globalMessageChannel";
 import { forage } from "./utils/localforage";
 import { ForageEnums } from "./enums/localforage";
-
-console.log('router', router)
+import { useCustomRoutes } from "./routes";
+import { createBrowserRouter } from "react-router-dom";
 
 function App() {
   const [isDark, setIsDark] = useState(false);
+  const { routes } = useCustomRoutes();
+
+  const router = createBrowserRouter(routes);
 
   forage.getItem(ForageEnums.THEME).then((value) => {
     if (value === "dark") {
@@ -29,8 +31,8 @@ function App() {
         theme={{
           algorithm: isDark ? theme.darkAlgorithm : theme.defaultAlgorithm,
           token: {
-            colorPrimary: "#FF4500"
-          }
+            colorPrimary: "#FF4500",
+          },
         }}
       >
         <RouterProvider router={router} />

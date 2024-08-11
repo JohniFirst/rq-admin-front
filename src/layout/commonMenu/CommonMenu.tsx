@@ -20,6 +20,8 @@ import useCustomNavigate from "@/hooks/useCustomNavigate";
 
 import type { MenuProps } from "antd";
 import { useEffect, useState } from "react";
+import { useCustomRoutes } from "@/routes";
+import { dynamicRoutes } from "@/routes/dynamic-routes";
 export type MenuItem = Required<MenuProps>["items"][number];
 
 const items: MenuItem[] = [
@@ -56,6 +58,12 @@ const items: MenuItem[] = [
         key: "/event/table-frontend",
         label: "前端表格分页",
         title: "前端表格分页",
+        icon: <FieldStringOutlined />,
+      },
+      {
+        key: "/event/copy-to-clipboard",
+        label: "复制到剪切板",
+        title: "复制到剪切板",
         icon: <FieldStringOutlined />,
       },
     ],
@@ -114,10 +122,11 @@ function CommonMenu() {
     const openKeys: string[] = [];
 
     const findKeys = (items: MenuItem[]) => {
-      items.forEach((item) => {
+      items.forEach((item: MenuItem) => {
         if (item && Object.keys(item).includes("children")) {
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-ignore
-          const children = item["children"];
+          const children = item.children;
           if (
             Array.isArray(children) &&
             children.some((child: { key: string }) => child.key === currentPath)
@@ -150,6 +159,12 @@ function CommonMenu() {
     setOpenKeys(keys);
   };
 
+  const { addRoutes } = useCustomRoutes();
+
+  useEffect(() => {
+    addRoutes(dynamicRoutes);
+  }, []);
+
   return (
     <>
       <div className="grid grid-cols-[256px_1fr] w-full h-screen">
@@ -176,7 +191,7 @@ function CommonMenu() {
 
           <NavigationBar />
 
-          <main className="bg-gray-50 dark:bg-black grow p-4 overflow-y-auto">
+          <main className="bg-gray-50 dark:bg-black grow p-4 overflow-y-auto w-full">
             <Outlet />
           </main>
         </section>
