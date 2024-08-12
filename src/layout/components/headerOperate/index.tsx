@@ -1,10 +1,10 @@
 import { Space } from "antd";
-import FullScreen from "./FullScreen";
-import MessageNotification from "./MessageNotification";
-import UserDropdown from "./UserDropdown";
-import SystemSettings from "./SystemSettings";
-import SearchableMenu from "./SearchableMenu";
-import ThemeSwitcher from "./ThemeSwitcher";
+import FullScreen from "./full-screen";
+import MessageNotification from "./message-notification";
+import UserDropdown from "./user-dropdown";
+import SystemSettings from "./system-settings";
+import SearchableMenu from "./searchable-menu";
+import ThemeSwitcher from "./theme-switcher";
 
 function HeaderOperate() {
   return (

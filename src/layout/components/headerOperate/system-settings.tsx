@@ -1,6 +1,9 @@
 import React, { useState } from "react";
-import { Drawer, Button } from "antd";
+import { Drawer } from "antd";
 import { SettingOutlined } from "@ant-design/icons";
+import TopMenu from "@/assets/svgs/nav-type/top-menu.svg";
+import CommonMenu from "@/assets/svgs/nav-type/common-menu.svg";
+import DrawerMenu from "@/assets/svgs/nav-type/drawer-menu.svg";
 
 interface SystemSettingsProps {
   // 这里不需要定义任何接口，因为深色模式状态在组件内部管理
@@ -8,16 +11,9 @@ interface SystemSettingsProps {
 
 const SystemSettings: React.FC<SystemSettingsProps> = () => {
   const [isDrawerVisible, setIsDrawerVisible] = useState(false);
-  const [isDarkMode, setIsDarkMode] = useState(false);
 
   const toggleDrawer = () => {
     setIsDrawerVisible(!isDrawerVisible);
-  };
-
-  const toggleDarkMode = () => {
-    setIsDarkMode(!isDarkMode);
-    // 这里可以添加代码来切换深色模式
-    console.log("Dark mode toggled:", isDarkMode);
   };
 
   return (
@@ -31,10 +27,15 @@ const SystemSettings: React.FC<SystemSettingsProps> = () => {
         onClose={toggleDrawer}
         open={isDrawerVisible}
       >
-        <Button type="primary" onClick={toggleDarkMode}>
-          切换深色模式
-        </Button>
         {/* 添加更多设置项的逻辑 */}
+        <p>导航模式</p>
+        <div className="grid grid-cols-2 gap-4">
+          <img src={CommonMenu} alt="常规菜单" />
+
+          <img src={DrawerMenu} alt="可折叠的子菜单" />
+
+          <img src={TopMenu} alt="顶部导航菜单" />
+        </div>
       </Drawer>
     </>
   );
