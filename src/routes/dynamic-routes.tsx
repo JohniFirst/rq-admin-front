@@ -1,15 +1,17 @@
+// import { lazy } from "react";
 import type { RouteObject } from "react-router-dom";
 
 import Layout from "@/layout/Layout";
 import Dashboard from "@/pages/dashboard/Dashboard";
-import Danmu from "@/pages/event/danmu/Danmu";
-import VideoPlayer from "@/pages/event/video-player/Video-Player";
 import Table from "@/pages/event/table/Table";
 import TableFrontend from "@/pages/event/table-frontend/TableFrontend";
 import User from "@/pages/system/user/User";
 import Role from "@/pages/system/role/Role";
 import Menu from "@/pages/system/menu/Menu";
 import CopyToClipboard from "@/pages/event/clipboard/copy-to-clipboard";
+import Danmu from "@/pages/event-pro/danmu/Danmu";
+import VideoPlayer from "@/pages/event-pro/video-player/video-player";
+import PictureStitching from "@/pages/event-pro/picture-stitching/picture-stitching";
 
 export const dynamicRoutes: RouteObject[] = [
   {
@@ -30,14 +32,6 @@ export const dynamicRoutes: RouteObject[] = [
         path: "/event",
         children: [
           {
-            path: "danmu",
-            element: <Danmu />,
-          },
-          {
-            path: "video-player",
-            element: <VideoPlayer />,
-          },
-          {
             path: "table",
             element: <Table />,
           },
@@ -48,6 +42,26 @@ export const dynamicRoutes: RouteObject[] = [
           {
             path: "copy-to-clipboard",
             element: <CopyToClipboard />,
+          },
+        ],
+      },
+      {
+        path: "/event-pro",
+        children: [
+          {
+            path: "danmu",
+            element: <Danmu />,
+          },
+          {
+            path: "video-player",
+            element: <VideoPlayer />,
+          },
+          {
+            path: "picture-stitching",
+            element: <PictureStitching />,
+            // lazy: () => import("@/pages/event-pro/picture-stitching/picture-stitching").then((module) => ({
+            //   element: <module.default />,
+            // })),
           },
         ],
       },

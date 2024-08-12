@@ -1,0 +1,17 @@
+.img-tocopy:hover+.img-del-btn {
+  display: block;
+}
+
+.img-del-btn {
+  display: none;
+  font-size: 90px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translateX(-50%) translateY(-50%);
+}
+
+.img-del-btn:hover {
+  display: block;
+  color: var(--theme-color);
+}

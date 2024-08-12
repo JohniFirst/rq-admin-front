@@ -53,6 +53,7 @@ const LoginForm = () => {
           onFinish={handleSubmit}
           labelCol={{ span: 5 }}
           wrapperCol={{ span: 19 }}
+          initialValues={{ remember: true, username: 1, password: 2, verificationCode: 1 }}
         >
           <Form.Item
             name="username"

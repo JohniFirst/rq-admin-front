@@ -37,18 +37,6 @@ const items: MenuItem[] = [
     icon: <MehOutlined />,
     children: [
       {
-        key: "/event/danmu",
-        label: "弹幕",
-        title: "弹幕",
-        icon: <CodeOutlined />,
-      },
-      {
-        key: "/event/video-player",
-        label: "视频播放器",
-        title: "视频播放器",
-        icon: <VideoCameraOutlined />,
-      },
-      {
         key: "/event/table",
         label: "表格分页",
         title: "表格分页",
@@ -65,6 +53,31 @@ const items: MenuItem[] = [
         label: "复制到剪切板",
         title: "复制到剪切板",
         icon: <FieldStringOutlined />,
+      },
+    ],
+  },
+  {
+    key: "/event-pro",
+    label: "业务组件Pro",
+    icon: <MehOutlined />,
+    children: [
+      {
+        key: "/event-pro/danmu",
+        label: "弹幕",
+        title: "弹幕",
+        icon: <CodeOutlined />,
+      },
+      {
+        key: "/event-pro/video-player",
+        label: "视频播放器",
+        title: "视频播放器",
+        icon: <VideoCameraOutlined />,
+      },
+      {
+        key: "/event-pro/picture-stitching",
+        label: "图片拼接",
+        title: "图片拼接",
+        icon: <VideoCameraOutlined />,
       },
     ],
   },
