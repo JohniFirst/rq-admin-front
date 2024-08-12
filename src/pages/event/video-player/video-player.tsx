@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
+import VideoPlayProgress from "./video-play-progress";
 import "./css/video.css";
 
-import type { MouseEvent, ChangeEvent } from "react";
-import VideoPlayProgress from "./VideoPlayProgress";
+import type { MouseEvent } from "react";
 
 function VideoPlayer() {
   const [duration, setDuration] = useState(0);
@@ -90,10 +90,10 @@ function VideoPlayer() {
     console.log(event, "这里写全屏实现代码");
   };
 
-  function handleVideoPlayProgress(event: ChangeEvent<HTMLInputElement>): void {
+  function handleVideoPlayProgress(newVal: number): void {
     const video = document.querySelector("#video") as HTMLVideoElement;
 
-    video.currentTime = +event.target.value;
+    video.currentTime = +newVal;
   }
 
   return (
@@ -138,7 +138,7 @@ function VideoPlayer() {
             <div></div>
 
             {/* 播放进度条 */}
-            <VideoPlayProgress max={duration} value={currentTime} />
+            <VideoPlayProgress max={duration} value={currentTime} onChange={handleVideoPlayProgress}/>
 
             {/* 播放时间展示 */}
             <p className="paly-time">

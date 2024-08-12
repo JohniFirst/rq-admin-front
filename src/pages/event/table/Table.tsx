@@ -1,4 +1,4 @@
-import BaseTable from "@/components/base/BaseTable";
+import BaseTable from "@/components/base/base-table";
 import { Space, type TableProps, Tag } from "antd";
 
 interface DataType {

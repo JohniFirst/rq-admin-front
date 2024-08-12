@@ -3,13 +3,13 @@ import type { RouteObject } from "react-router-dom";
 import Layout from "@/layout/Layout";
 import Dashboard from "@/pages/dashboard/Dashboard";
 import Danmu from "@/pages/event/danmu/Danmu";
-import VideoPlayer from "@/pages/event/video-player/VideoPlayer";
+import VideoPlayer from "@/pages/event/video-player/Video-Player";
 import Table from "@/pages/event/table/Table";
 import TableFrontend from "@/pages/event/table-frontend/TableFrontend";
 import User from "@/pages/system/user/User";
 import Role from "@/pages/system/role/Role";
 import Menu from "@/pages/system/menu/Menu";
-import CopyToClipboard from "@/pages/event/clipboard/CopyToClipboard";
+import CopyToClipboard from "@/pages/event/clipboard/copy-to-clipboard";
 
 export const dynamicRoutes: RouteObject[] = [
   {

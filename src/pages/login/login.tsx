@@ -3,7 +3,7 @@ import { Form, Input, Button, Checkbox } from "antd";
 import { useNavigate } from "react-router-dom";
 // import JSEncrypt from "jsencrypt";
 import login from "./login.module.css";
-import VerificationCodeInput from "@/components/base/VerificationCodeInput";
+import VerificationCodeInput from "@/components/base/verification-code-input";
 // import { useCustomRoutes } from "@/routes";
 // import { dynamicRoutes } from "@/routes/dynamic-routes";
 

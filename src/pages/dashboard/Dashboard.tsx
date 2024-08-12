@@ -1,15 +1,15 @@
 import { useLoaderData } from "react-router-dom";
-import ChartOfInStorePeople from "./ChartOfInStorePeople";
+import ChartOfInStorePeople from "./chart-of-in-store-people";
 import dashboardStyles from "./css/dashboard.module.css";
-import ChartOfGuestSourcePie from "./ChartOfGuestSourcePie";
-import ChartOfOrderRelation from "./ChartOfOrderRelation";
-import ChartOfDiningAndEntryTimeRelation from "./ChartOfDiningAndEntryTimeRelation";
-import ChartOfPayMethodRelation from "./ChartOfPayMethodRelation";
-import NumberJumping from "@/components/NumberJumping";
-import ChartOfDishSales from "@/pages/dashboard/ChartOfDishSales.tsx";
-import ChartOfCustomerIncomeProportion from "@/pages/dashboard/ChartOfCustomerIncomeProportion.tsx";
-import ChartOfCustomerNumbers from "@/pages/dashboard/ChartOfCustomerNumbers.tsx";
-import ChartOfDynamicSales from "@/pages/dashboard/ChartOfDynamicSales.tsx";
+import ChartOfGuestSourcePie from "./chart-of-guest-source-pie";
+import ChartOfOrderRelation from "./chart-of-order-relation";
+import ChartOfDiningAndEntryTimeRelation from "./chart-of-dining-and-entry-time-relation";
+import ChartOfPayMethodRelation from "./chart-of-pay-method-relation";
+import NumberJumping from "@/components/number-jumping";
+import ChartOfDishSales from "@/pages/dashboard/chart-of-dish-sales.tsx";
+import ChartOfCustomerIncomeProportion from "@/pages/dashboard/chart-of-customer-income-proportion.tsx";
+import ChartOfCustomerNumbers from "@/pages/dashboard/chart-of-customer-numbers.tsx";
+import ChartOfDynamicSales from "@/pages/dashboard/chart-of-dynamic-sales.tsx";
 
 import {
   BankOutlined,
