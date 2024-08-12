@@ -1,16 +1,30 @@
 import { useEffect, useState } from "react";
 import VideoPlayProgress from "./video-play-progress";
+import play from "@/assets/svgs/video-player/play.svg";
+import pause from "@/assets/svgs/video-player/pause.svg";
+import VideoTimesSpeed from "./video-times-speed";
 import "./css/video.css";
 
 import type { MouseEvent } from "react";
 
 function VideoPlayer() {
+  // 视频播放/暂停
+  const [isPlay, setIsPlay] = useState(false);
+  // 视频总时长
   const [duration, setDuration] = useState(0);
+  // 当前播放时间
   const [currentTime, setCurrentTime] = useState(0);
+  // 显示控制层
+  const [isShowControls, setIsShowControls] = useState(false);
 
   useEffect(() => {
-    initControlsSize();
     videoPlayingTimer();
+
+    window.addEventListener("resize", initControlsSize);
+
+    return () => {
+      window.removeEventListener("resize", initControlsSize);
+    };
   }, []);
 
   /**
@@ -28,6 +42,8 @@ function VideoPlayer() {
     ) as HTMLDivElement;
     videoControls.style.width = `${videoWpWidth}px`;
     videoControls.style.height = `${videoWpHeight}px`;
+
+    setIsShowControls(true);
   };
 
   /**
@@ -38,12 +54,22 @@ function VideoPlayer() {
 
     video.oncanplay = () => {
       setDuration(video.duration);
+
+      initControlsSize();
     };
 
     video.addEventListener("timeupdate", (e: Event) => {
       const video = e.target as HTMLVideoElement;
 
       setCurrentTime(video.currentTime);
+    });
+
+    video.addEventListener("play", () => {
+      setIsPlay(true);
+    });
+
+    video.addEventListener("pause", () => {
+      setIsPlay(false);
     });
   };
 
@@ -96,56 +122,49 @@ function VideoPlayer() {
     video.currentTime = +newVal;
   }
 
+  const changeVideoTimesSpeed = (newValue: number): void => {
+    const video = document.querySelector("#video") as HTMLVideoElement;
+
+    video.playbackRate = newValue;
+  };
+
   return (
     <div className="video-controls-wp" onDoubleClick={handleVideoFullScreen}>
       <video id="video" width="960" src="/demo.mp4" height="540"></video>
 
-      <div onClick={handleVideoPlay} className="video-controls">
-        {/* 播放/暂停按钮 */}
-        <svg width="205" height="231" className="play-pause-btn">
-          <path
-            xmlns="http://www.w3.org/2000/svg"
-            id="play-icon"
-            d="M195 97.97L30 2.7C16.66 -4.99 0 4.63 0 20.02L1.52e-5 210.55C1.52e-5 225.95 16.66 235.57 30 227.87L195 132.61C208.33 124.91 208.33 105.67 195 97.97Z"
-            fill="#FFFFFF"
-            fillOpacity="1.000000"
-            fillRule="evenodd"
-          />
-          <g
-            xmlns="http://www.w3.org/2000/svg"
-            id="pause-icon"
-            clipPath="url(#clip10_1)"
-          >
-            <rect
-              width="205.000000"
-              height="231.000000"
-              fill="#FFFFFF"
-              fillOpacity="1.000000"
-            />
-            <rect
-              x="62.000000"
-              width="80.000000"
-              height="231.000000"
-              fill="#000000"
-              fillOpacity="1.000000"
-            />
-          </g>
-        </svg>
-
-        <div className="controls-bottom-wp">
-          <div className="progress-wp">
+      <div className="video-controls">
+        <div
+          className="controls-bottom-wp"
+          style={{ display: isShowControls ? "block" : "none" }}
+        >
+          <div className="controls-top-play-time-wp">
             {/* 小的播放/暂停按钮 */}
-            <div></div>
-
-            {/* 播放进度条 */}
-            <VideoPlayProgress max={duration} value={currentTime} onChange={handleVideoPlayProgress}/>
+            <img
+              onClick={handleVideoPlay}
+              style={{ cursor: "pointer" }}
+              src={isPlay ? pause : play}
+              width={50}
+              height={50}
+              alt="播放/暂停"
+            />
 
             {/* 播放时间展示 */}
             <p className="paly-time">
               {formatTime(currentTime)}/{formatTime(duration)}
             </p>
           </div>
-          <p>3132132513</p>
+
+          {/* 播放进度条 */}
+          <VideoPlayProgress
+            max={duration}
+            value={currentTime}
+            onChange={handleVideoPlayProgress}
+          />
+
+          {/* 底部操作栏 */}
+          <div className="controls-bottom-setting-wp">
+            <VideoTimesSpeed onChange={changeVideoTimesSpeed} />
+          </div>
         </div>
       </div>
     </div>

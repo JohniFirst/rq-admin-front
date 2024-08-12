@@ -1,34 +1,69 @@
-import React, { useState, useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from "react";
 
-interface VideoVolumeProps {
-  value: number;
+interface VideoPlayProgressProps {
   onChange: (newValue: number) => void;
 }
 
-const VideoVolume: React.FC<VideoVolumeProps> = ({ value, onChange }) => {
-  const volumeBarRef = useRef<HTMLDivElement>(null);
-  const volumeDragDotRef = useRef<HTMLDivElement>(null);
+function VideoPlayProgress({ onChange }: VideoPlayProgressProps) {
+  const progressDragDotRef = useRef<HTMLDivElement>(null);
+  const progressFinishedRef = useRef<HTMLDivElement>(null);
+  const progressWPRef = useRef<HTMLDivElement>(null);
 
   const [isDragging, setIsDragging] = useState(false);
-  const [dotY, setDotY] = useState(0);
+  const [dotX, setDotX] = useState(0);
 
-  const handleMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (e.target === volumeDragDotRef.current) {
-      setIsDragging(true);
-      setDotY(volumeDragDotRef.current.offsetTop);
+  const handleClick = (e: MouseEvent) => {
+    e.stopPropagation();
+    const target = e.target as HTMLDivElement;
+    if (target !== progressDragDotRef.current) {
+      const progressFinished = progressFinishedRef.current!;
+      const progressWP = progressWPRef.current!;
+      const totalWidth =
+        progressWP.clientWidth - progressDragDotRef.current!.clientWidth;
+
+      progressFinished.style.transition = "width 0.2s ease";
+      progressDragDotRef.current!.style.transition = "width 0.2s ease";
+
+      const newValue = (e.offsetX / totalWidth) * max;
+      progressDragDotRef.current!.style.left = `${
+        e.offsetX - progressDragDotRef.current!.offsetWidth / 2
+      }px`;
+      progressFinished.style.width = `${
+        e.offsetX + progressDragDotRef.current!.offsetWidth / 2
+      }px`;
+
+      onChange(newValue);
+
+      setTimeout(() => {
+        progressFinished.style.transition = "none";
+        progressDragDotRef.current!.style.transition = "none";
+      }, 200);
     }
   };
 
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+  const handleMouseDown = (e: MouseEvent) => {
+    if (e.target === progressDragDotRef.current) {
+      setIsDragging(true);
+      setDotX(progressDragDotRef.current!.offsetLeft);
+    }
+  };
+
+  const handleMouseMove = (e: MouseEvent) => {
     if (isDragging) {
-      const moveY = e.clientY - dotY;
-      const newDotY = dotY + moveY;
-      const totalHeight = volumeBarRef.current.clientHeight - volumeDragDotRef.current.offsetHeight;
+      const moveX = e.clientX - dotX;
+      const newDotX = dotX + moveX;
+      const totalWidth =
+        progressWPRef.current!.clientWidth -
+        progressDragDotRef.current!.clientWidth;
 
-      const clampedDotY = Math.max(0, Math.min(newDotY, totalHeight));
-      const newValue = (clampedDotY / totalHeight) * 100;
+      const clampedDotX = Math.max(0, Math.min(newDotX, totalWidth));
+      const newValue = (clampedDotX / totalWidth) * max;
 
-      volumeDragDotRef.current.style.top = `${clampedDotY}px`;
+      progressDragDotRef.current!.style.left = `${clampedDotX}px`;
+      progressFinishedRef.current!.style.width = `${
+        clampedDotX + progressDragDotRef.current!.offsetWidth / 2
+      }px`;
+
       onChange(newValue);
     }
   };
@@ -38,31 +73,43 @@ const VideoVolume: React.FC<VideoVolumeProps> = ({ value, onChange }) => {
   };
 
   useEffect(() => {
-    const volumeBar = volumeBarRef.current;
-    volumeBar.addEventListener('mousedown', handleMouseDown);
-    document.addEventListener('mousemove', handleMouseMove);
-    document.addEventListener('mouseup', handleMouseUp);
+    document.documentElement.addEventListener("mousedown", handleMouseDown);
+    document.documentElement.addEventListener("mousemove", handleMouseMove);
+    document.documentElement.addEventListener("mouseup", handleMouseUp);
 
     return () => {
-      volumeBar.removeEventListener('mousedown', handleMouseDown);
-      document.removeEventListener('mousemove', handleMouseMove);
-      document.removeEventListener('mouseup', handleMouseUp);
+      document.documentElement.removeEventListener(
+        "mousedown",
+        handleMouseDown
+      );
+      document.documentElement.removeEventListener(
+        "mousemove",
+        handleMouseMove
+      );
+      document.documentElement.removeEventListener("mouseup", handleMouseUp);
     };
   }, []);
 
   useEffect(() => {
-    const volumeBar = volumeBarRef.current;
-    const totalHeight = volumeBar.clientHeight - volumeDragDotRef.current.offsetHeight;
-    const dotY = (value / 100) * totalHeight;
+    const progressWP = progressWPRef.current!;
+    const totalWidth =
+      progressWP.clientWidth - progressDragDotRef.current!.clientWidth;
+    const dotX = (value / max) * totalWidth;
 
-    volumeDragDotRef.current.style.top = `${dotY}px`;
+    progressDragDotRef.current!.style.left = `${dotX}px`;
+    progressFinishedRef.current!.style.width = `${
+      dotX + progressDragDotRef.current!.offsetWidth / 2
+    }px`;
   }, [value]);
 
   return (
-    <div className="volume-bar" ref={volumeBarRef}>
-      <div className="volume-drag-dot" ref={volumeDragDotRef} />
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    <div ref={progressWPRef} id="progress-wp" onClick={handleClick}>
+      <div ref={progressFinishedRef} id="progress-finished"></div>
+      <div ref={progressDragDotRef} id="progress-drag-dot"></div>
     </div>
   );
-};
+}
 
-export default VideoVolume;
+export default VideoPlayProgress;

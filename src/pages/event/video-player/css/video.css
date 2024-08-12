@@ -3,12 +3,15 @@
 }
 
 .video-controls {
-  background-color: rgba(255, 120, 125, 0.1);
+  background-color: rgba(0, 0, 0, 0.3);
   position: absolute;
   top: 0;
   left: 0;
   color: #fff;
   font-size: 16px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
 }
 
 /* 视频播放/暂停按钮开始 */
@@ -16,18 +19,16 @@
   cursor: pointer;
   display: none;
 }
-/* 视频播放/暂停按钮结束 */
+
 .controls-bottom-wp {
-  position: relative;
-  bottom: 0;
-  left: 0;
+  padding: 0 24px 16px;
 }
 
-.progress-wp {
+.controls-top-play-time-wp {
   padding: 0 16px;
-  display: grid;
-  grid-template-columns: 50px 1fr 120px;
-  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
 }
 
 .paly-time {
@@ -48,6 +49,7 @@
   cursor: pointer;
   border: 2px solid transparent;
   border-radius: 4px;
+  margin: 12px 0;
 }
 
 #progress-finished {
@@ -65,4 +67,46 @@
   position: absolute;
   left: -0.5em;
   top: -0.15em;
+}
+
+.controls-bottom-setting-wp {
+  display: flex;
+  align-items: center;
+}
+
+.play-times-speed-btn {
+  cursor: pointer;
+  width: 50px;
+}
+
+.play-times-speed-select-wp {
+  display: none;
+  background-color: black;
+  font-size: 18px;
+  padding: 12px 0;
+  border-radius: 8px;
+  text-align: center;
+  position: absolute;
+  width: 80px;
+  bottom: 28px;
+  left: -47%;
+}
+
+.play-times-speed-select-wp li {
+  cursor: pointer;
+  height: 36px;
+  line-height: 2;
+  box-sizing: content-box;
+}
+
+.speed-acive {
+  background-color: var(--theme-color);
+}
+
+.play-times-speed-select-wp li:not(.speed-acive):hover {
+  color: var(--theme-color);
+}
+
+.play-times-speed-btn:hover + .play-times-speed-select-wp {
+  display: block;
 }

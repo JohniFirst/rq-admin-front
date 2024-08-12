@@ -6,6 +6,16 @@ interface VideoPlayProgressProps {
   onChange: (newValue: number) => void;
 }
 
+
+/**
+ * A video play progress bar component that allows users to drag and drop to change the video playback progress.
+ *
+ * @param {Object} props - The component props.
+ * @param {number} props.max - The maximum value of the progress bar.
+ * @param {number} props.value - The current value of the progress bar.
+ * @param {function} props.onChange - A callback function that is called when the progress bar value changes.
+ * @return {JSX.Element} The video play progress bar component.
+ */
 function VideoPlayProgress({ max, value, onChange }: VideoPlayProgressProps) {
   const progressDragDotRef = useRef<HTMLDivElement>(null);
   const progressFinishedRef = useRef<HTMLDivElement>(null);
@@ -15,6 +25,7 @@ function VideoPlayProgress({ max, value, onChange }: VideoPlayProgressProps) {
   const [dotX, setDotX] = useState(0);
 
   const handleClick = (e: MouseEvent) => {
+    e.stopPropagation();
     const target = e.target as HTMLDivElement;
     if (target !== progressDragDotRef.current) {
       const progressFinished = progressFinishedRef.current!;
@@ -74,14 +85,11 @@ function VideoPlayProgress({ max, value, onChange }: VideoPlayProgressProps) {
   };
 
   useEffect(() => {
-    const progressWP = progressWPRef.current!;
-    progressWP.addEventListener("click", handleClick);
     document.documentElement.addEventListener("mousedown", handleMouseDown);
     document.documentElement.addEventListener("mousemove", handleMouseMove);
     document.documentElement.addEventListener("mouseup", handleMouseUp);
 
     return () => {
-      progressWP.removeEventListener("click", handleClick);
       document.documentElement.removeEventListener(
         "mousedown",
         handleMouseDown
@@ -107,11 +115,9 @@ function VideoPlayProgress({ max, value, onChange }: VideoPlayProgressProps) {
   }, [value]);
 
   return (
-    <div
-      ref={progressWPRef}
-      id="progress-wp"
-      onClick={(event) => event.stopPropagation()}
-    >
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    <div ref={progressWPRef} id="progress-wp" onClick={handleClick}>
       <div ref={progressFinishedRef} id="progress-finished"></div>
       <div ref={progressDragDotRef} id="progress-drag-dot"></div>
     </div>
