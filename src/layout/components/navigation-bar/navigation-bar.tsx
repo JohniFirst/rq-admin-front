@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import { Dropdown, Modal, type MenuProps } from "antd";
 import {
   CloseOutlined,
@@ -8,8 +7,6 @@ import {
   PushpinOutlined,
 } from "@ant-design/icons";
 import { cloneDeep } from "lodash-es";
-import { forage } from "@/utils/localforage";
-import { ForageEnums } from "@/enums/localforage";
 import { useLocation } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { setNavItemAction } from "@/store/system-info";
@@ -54,7 +51,6 @@ const contextMenu: MenuProps["items"] = [
 
 function NavigationBar() {
   let currentClickTarget: NavItem;
-  // const [navItem, setNavItem] = useState<NavItem[]>([]);
   const location = useLocation();
   const navgation = useCustomNavigate();
   const navItem = useAppSelector((state) => state.systemInfo.navItem);
@@ -63,20 +59,6 @@ function NavigationBar() {
   const setNavItem = (navItem: NavItem[]) => {
     dispatch(setNavItemAction(navItem));
   };
-
-  useEffect(() => {
-    forage.getItem<string>(ForageEnums.NAVIGATION).then((value) => {
-      if (value) {
-        setNavItem(JSON.parse(value) as NavItem[]);
-      }
-    });
-  }, []);
-
-  useEffect(() => {
-    if (navItem.length) {
-      forage.setItem(ForageEnums.NAVIGATION, navItem);
-    }
-  }, [navItem]);
 
   /**
    * Handles the click event on the menu.

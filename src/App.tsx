@@ -1,43 +1,27 @@
-import { useState } from "react";
 import { RouterProvider } from "react-router-dom";
-import { Provider } from "react-redux";
-import store from "@/store/store";
 import { ConfigProvider, theme } from "antd";
-import { port2 } from "@/utils/global-message-channel";
-import { forage } from "./utils/localforage";
-import { ForageEnums } from "./enums/localforage";
 import { useCustomRoutes } from "./routes";
 import { createBrowserRouter } from "react-router-dom";
+import { useAppSelector } from "./store/hooks";
 
 function App() {
-  const [isDark, setIsDark] = useState(false);
+  const localTheme = useAppSelector((state) => state.systemInfo.theme);
   const { routes } = useCustomRoutes();
 
   const router = createBrowserRouter(routes);
 
-  forage.getItem(ForageEnums.THEME).then((value) => {
-    if (value === "dark") {
-      setIsDark(true);
-    }
-  });
-
-  port2.onmessage = () => {
-    setIsDark(!isDark);
-  };
-
   return (
-    <Provider store={store}>
-      <ConfigProvider
-        theme={{
-          algorithm: isDark ? theme.darkAlgorithm : theme.defaultAlgorithm,
-          token: {
-            colorPrimary: "#FF4500",
-          },
-        }}
-      >
-        <RouterProvider router={router} />
-      </ConfigProvider>
-    </Provider>
+    <ConfigProvider
+      theme={{
+        algorithm:
+          localTheme === "dark" ? theme.darkAlgorithm : theme.defaultAlgorithm,
+        token: {
+          colorPrimary: "#FF4500",
+        },
+      }}
+    >
+      <RouterProvider router={router} />
+    </ConfigProvider>
   );
 }
 
