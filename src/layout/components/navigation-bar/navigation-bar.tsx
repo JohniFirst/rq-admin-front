@@ -9,22 +9,9 @@ import {
 import { cloneDeep } from "lodash-es";
 import { useLocation } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
-import { setNavItemAction } from "@/store/system-info";
+import { setNavItemAction } from "@/store/slice/system-info.ts";
 import useCustomNavigate from "@/hooks/useCustomNavigate";
-
-export type NavItem = {
-  key: string;
-  label: string;
-  fixed: boolean;
-  active: boolean;
-};
-
-enum ContextMenuKey {
-  CLOSE_LEFT = "closeLeft",
-  CLOSE_RIGHT = "closeRight",
-  CLOSE_OTHERS = "closeOthers",
-  FIXED = "fixed",
-}
+import { ContextMenuKey } from "@/enums/system";
 
 const contextMenu: MenuProps["items"] = [
   {

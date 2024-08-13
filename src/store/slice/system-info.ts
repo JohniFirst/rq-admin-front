@@ -1,23 +1,7 @@
 import { createSlice, Slice, type PayloadAction } from "@reduxjs/toolkit";
-import type { RootState } from "./store";
-import { forage } from "@/utils/localforage";
-import { ForageEnums } from "@/enums/localforage";
-
-export type NavItem = {
-  key: string;
-  label: string;
-  fixed: boolean;
-  active: boolean;
-};
-
-type Theme = "light" | "dark";
-
-type SystemInfo = {
-  // 系统导航栏
-  navItem: NavItem[];
-  // 系统主题 浅色/深色
-  theme: Theme;
-};
+import type { RootState } from "../store.ts";
+import { forage } from "@/utils/localforage.ts";
+import { ForageEnums } from "@/enums/localforage.ts";
 
 // 定义一个异步函数来获取初始数据
 const fetchInitialData = async () => {

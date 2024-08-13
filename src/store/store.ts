@@ -1,9 +1,11 @@
-import { configureStore } from '@reduxjs/toolkit';
-import systemInfoSlice from './system-info';
+import { configureStore } from "@reduxjs/toolkit";
+import systemInfoSlice from "./slice/system-info.ts";
+import routerSlice from "./slice/router-slice.ts";
 
 const store = configureStore({
   reducer: {
-    systemInfo: systemInfoSlice
+    systemInfo: systemInfoSlice,
+    router: routerSlice,
   },
 });
 
@@ -12,4 +14,4 @@ export type RootState = ReturnType<typeof store.getState>;
 // 推断类型：{posts: PostsState, comments: CommentsState, users: UsersState}
 export type AppDispatch = typeof store.dispatch;
 
-export default store
+export default store;

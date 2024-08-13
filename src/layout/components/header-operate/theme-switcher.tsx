@@ -2,7 +2,7 @@ import type { FC } from "react";
 import { Switch } from "antd";
 import { SunOutlined, MoonOutlined } from "@ant-design/icons";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
-import { setTheme } from "@/store/system-info";
+import { setTheme } from "@/store/slice/system-info.ts";
 
 const ThemeSwitcher: FC = () => {
   const theme = useAppSelector((state) => state.systemInfo.theme);

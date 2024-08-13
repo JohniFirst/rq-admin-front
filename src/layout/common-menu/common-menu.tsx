@@ -15,7 +15,7 @@ import {
   VideoCameraOutlined,
 } from "@ant-design/icons";
 import { useAppDispatch } from "@/store/hooks";
-import { pushNavItemAction } from "@/store/system-info";
+import { pushNavItemAction } from "@/store/slice/system-info.ts";
 import useCustomNavigate from "@/hooks/useCustomNavigate";
 
 import type { MenuProps } from "antd";
