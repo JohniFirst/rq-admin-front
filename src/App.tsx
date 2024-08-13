@@ -6,6 +6,7 @@ import { useAppSelector } from "./store/hooks";
 
 function App() {
   const localTheme = useAppSelector((state) => state.systemInfo.theme);
+  console.log(localTheme);
   const { routes } = useCustomRoutes();
 
   const router = createBrowserRouter(routes);

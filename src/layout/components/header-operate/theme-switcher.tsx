@@ -11,8 +11,6 @@ const ThemeSwitcher: FC = () => {
   // 切换主题的函数
   const toggleTheme = () => {
     const newTheme = theme === "light" ? "dark" : "light";
-    // 更新html的类来改变主题
-    document.documentElement.className = newTheme;
     dispatch(setTheme(newTheme));
   };
 

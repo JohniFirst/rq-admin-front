@@ -25,6 +25,8 @@ const fetchInitialData = async () => {
   const navItem = JSON.parse(res) as NavItem[];
 
   const theme = await forage.getItem<Theme>(ForageEnums.THEME);
+  // 更新html的类来改变主题
+  document.documentElement.className = theme;
 
   return {
     navItem,
@@ -69,12 +71,14 @@ export const systemInfoSlice: Slice<SystemInfo> = createSlice({
      */
     setTheme: (state, action: PayloadAction<Theme>) => {
       state.theme = action.payload;
+      document.documentElement.className = state.theme;
       forage.setItem(ForageEnums.THEME, state.theme);
     },
   },
 });
 
-export const { setNavItemAction, pushNavItemAction, setTheme } = systemInfoSlice.actions;
+export const { setNavItemAction, pushNavItemAction, setTheme } =
+  systemInfoSlice.actions;
 
 // selectors 等其他代码可以使用导入的 `RootState` 类型
 export const navItem = (state: RootState) => state.systemInfo.navItem;
