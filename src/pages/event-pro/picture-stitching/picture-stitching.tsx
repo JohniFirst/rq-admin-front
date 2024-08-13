@@ -6,15 +6,15 @@ import "./css/picture-stitching.css";
 
 function PictureStitching() {
   const imgWrapper = useRef<HTMLDivElement>(null);
-  const copyResult = useRef<HTMLCanvasElement>(null);
   const [srcList, setSrcList] = useState<string[]>([]);
+  const [copyImgSrc, setCopyImgSrc] = useState<string>("");
 
   function handleUploadListChange(event: ChangeEvent<HTMLInputElement>): void {
     setSrcList([...srcList, URL.createObjectURL(event.target.files![0])]);
   }
 
   const copyImg = () => {
-    const canvas = copyResult.current!;
+    const canvas = document.createElement("canvas");
     const ctx = canvas.getContext("2d")!;
     const images = imgWrapper.current!.getElementsByTagName("img");
 
@@ -23,31 +23,23 @@ function PictureStitching() {
       return {
         width: img.naturalWidth,
         height: img.naturalHeight,
+        scaleFactor: 0,
       };
     });
 
     // Find the smallest width
     const smallestWidth = Math.min(...imageDimensions.map((dim) => dim.width));
 
-    // Mark the image with the smallest width
-    const smallestWidthIndex = imageDimensions.findIndex(
-      (dim) => dim.width === smallestWidth
-    );
-
-    // Calculate the scaling factor
-    const scaleFactor =
-      smallestWidth / Math.max(...imageDimensions.map((dim) => dim.width));
+    Array.from(images).forEach((img, index) => {
+      imageDimensions[index].scaleFactor = smallestWidth / img.naturalWidth;
+    });
 
     // Set the canvas width to the smallest width
     canvas.width = smallestWidth;
 
     // Calculate the total height of the scaled images
     const totalHeight = imageDimensions.reduce((acc, dim, index) => {
-      if (index === smallestWidthIndex) {
-        return acc + dim.height;
-      } else {
-        return acc + dim.height * scaleFactor;
-      }
+      return acc + dim.height * imageDimensions[index].scaleFactor;
     }, 0);
 
     // Set the canvas height to the total height
@@ -55,28 +47,24 @@ function PictureStitching() {
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     let offsetY = 0;
-    for (const img of images) {
-      const index = Array.from(images).indexOf(img);
-      if (index === smallestWidthIndex) {
-        ctx.drawImage(img, 0, offsetY, img.naturalWidth, img.naturalHeight);
-      } else {
-        const scaledWidth = img.naturalWidth * scaleFactor;
-        const scaledHeight = img.naturalHeight * scaleFactor;
-        ctx.drawImage(img, 0, offsetY, scaledWidth, scaledHeight);
-      }
-      offsetY +=
-        index === smallestWidthIndex
-          ? img.naturalHeight
-          : img.naturalHeight * scaleFactor;
+    for (let index = 0, l = images.length; index < l; index++) {
+      const scaleFactor = imageDimensions[index].scaleFactor;
+      const naturalHeight = images[index].naturalHeight;
+
+      const scaledWidth = images[index].naturalWidth * scaleFactor;
+      const scaledHeight = naturalHeight * scaleFactor;
+      ctx.drawImage(images[index], 0, offsetY, scaledWidth, scaledHeight);
+
+      offsetY += naturalHeight * scaleFactor;
     }
+
+    setCopyImgSrc(canvas.toDataURL("image/png"));
   };
 
   const downloadImg = () => {
-    const canvas = copyResult.current!;
-    const url = canvas.toDataURL("image/png");
     const link = document.createElement("a");
     link.download = "picture-stitching.png";
-    link.href = url;
+    link.href = copyImgSrc;
     link.click();
   };
 
@@ -119,7 +107,8 @@ function PictureStitching() {
 
           <Button onClick={downloadImg}>下载</Button>
         </Space>
-        <canvas ref={copyResult}></canvas>
+
+        <img src={copyImgSrc} alt="复制后的图片" />
       </Col>
     </Row>
   );
