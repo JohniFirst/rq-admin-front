@@ -3,7 +3,7 @@ import { RouterProvider } from "react-router-dom";
 import { Provider } from "react-redux";
 import store from "@/store/store";
 import { ConfigProvider, theme } from "antd";
-import { port2 } from "@/utils/globalMessageChannel";
+import { port2 } from "@/utils/global-message-channel";
 import { forage } from "./utils/localforage";
 import { ForageEnums } from "./enums/localforage";
 import { useCustomRoutes } from "./routes";

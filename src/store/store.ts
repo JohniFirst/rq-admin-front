@@ -1,10 +1,8 @@
 import { configureStore } from '@reduxjs/toolkit';
-import counterSlice from './counterSlice';
-import systemInfoSlice from './systemInfo';
+import systemInfoSlice from './system-info';
 
 const store = configureStore({
   reducer: {
-    counter: counterSlice,
     systemInfo: systemInfoSlice
   },
 });

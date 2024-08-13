@@ -12,7 +12,7 @@ import { forage } from "@/utils/localforage";
 import { ForageEnums } from "@/enums/localforage";
 import { useLocation } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
-import { setNavItemAction } from "@/store/systemInfo";
+import { setNavItemAction } from "@/store/system-info";
 import useCustomNavigate from "@/hooks/useCustomNavigate";
 
 export type NavItem = {

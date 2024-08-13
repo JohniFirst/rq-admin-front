@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Switch } from "antd";
 import { SunOutlined, MoonOutlined } from "@ant-design/icons";
-import { port1 } from "@/utils/globalMessageChannel";
+import { port1 } from "@/utils/global-message-channel";
 
 import { ForageEnums } from "@/enums/localforage";
 import { forage } from "@/utils/localforage";
