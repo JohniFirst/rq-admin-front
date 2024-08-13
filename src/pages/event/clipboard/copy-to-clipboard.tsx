@@ -32,7 +32,7 @@ function CopyToClipboard() {
       <p>
         Click the button below to copy the following text to your clipboard:
       </p>
-      <p style={{ margin: '24px 0', color: 'red' }}>
+      <p className="mx-[24px]" style={{color: 'red' }}>
         "This is the text you will copy!"
       </p>
       <CopyButton onClick={() => copyToClipboard("This is the text you will copy!")}>

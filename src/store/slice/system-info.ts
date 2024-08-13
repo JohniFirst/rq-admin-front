@@ -2,6 +2,7 @@ import { createSlice, Slice, type PayloadAction } from "@reduxjs/toolkit";
 import type { RootState } from "../store.ts";
 import { forage } from "@/utils/localforage.ts";
 import { ForageEnums } from "@/enums/localforage.ts";
+import { MenuModeEnum } from "@/enums/system.ts";
 
 // 定义一个异步函数来获取初始数据
 const fetchInitialData = async () => {
@@ -12,9 +13,12 @@ const fetchInitialData = async () => {
   // 更新html的类来改变主题
   document.documentElement.className = theme;
 
+  const menuMode = await forage.getItem<MenuMode>(ForageEnums.MENU_MODE);
+
   return {
     navItem,
     theme: theme || "light",
+    menuMode: menuMode || MenuModeEnum.COMMON_MENU,
   };
 };
 
@@ -58,10 +62,25 @@ export const systemInfoSlice: Slice<SystemInfo> = createSlice({
       document.documentElement.className = state.theme;
       forage.setItem(ForageEnums.THEME, state.theme);
     },
+    /**
+     * Sets the current menu mode of the system.
+     *
+     * @param {SystemInfo} state - The current state of the system.
+     * @param {PayloadAction<MenuMode>} action - The action containing the new menu mode.
+     */
+    setMenuMode: (state, action: PayloadAction<MenuMode>) => {
+      // 设置的菜单模式和当前的菜单模式相同则不更新
+      if (state.menuMode === action.payload) {
+        return;
+      }
+
+      state.menuMode = action.payload;
+      forage.setItem(ForageEnums.MENU_MODE, state.menuMode);
+    },
   },
 });
 
-export const { setNavItemAction, pushNavItemAction, setTheme } =
+export const { setNavItemAction, pushNavItemAction, setTheme, setMenuMode } =
   systemInfoSlice.actions;
 
 // selectors 等其他代码可以使用导入的 `RootState` 类型

@@ -4,3 +4,9 @@ export enum ContextMenuKey {
   CLOSE_OTHERS = "closeOthers",
   FIXED = "fixed",
 }
+
+export enum MenuModeEnum {
+  COMMON_MENU = "common-menu",
+  DRAWER_MENU = "drawer-menu",
+  HEADER_MENU = "header-menu",
+}

@@ -7,13 +7,23 @@ type NavItem = {
   active: boolean;
 };
 
+type MenuMode = "common-menu" | "drawer-menu" | "header-menu";
+
 type SystemInfo = {
-  // 系统导航栏
-  navItem: NavItem[];
   // 系统主题 浅色/深色
   theme: Theme;
+  // 系统导航栏
+  navItem: NavItem[];
+  // 导航菜单模式
+  menuMode: MenuMode;
 };
 
 type RouterState = {
   router: RouteObject[];
 };
+
+type MenuItem = Required<MenuProps>["items"][number];
+
+type MenuSlice = {
+  menu: MenuItem[];
+}

@@ -1,119 +1,21 @@
 import { Menu } from "antd";
-import HeaderOperate from "../components/header-operate";
-import NavigationBar from "../components/navigation-bar/navigation-bar";
+import HeaderOperate from "./components/header-operate";
+import NavigationBar from "./components/navigation-bar/navigation-bar";
 import { Outlet, useLocation } from "react-router-dom";
-import {
-  CodeOutlined,
-  FieldStringOutlined,
-  HomeFilled,
-  MehOutlined,
-  MenuOutlined,
-  TableOutlined,
-  ToolOutlined,
-  UsergroupAddOutlined,
-  UserOutlined,
-  VideoCameraOutlined,
-} from "@ant-design/icons";
-import { useAppDispatch } from "@/store/hooks";
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { pushNavItemAction } from "@/store/slice/system-info.ts";
 import useCustomNavigate from "@/hooks/useCustomNavigate";
 
 import type { MenuProps } from "antd";
 import { useEffect, useState } from "react";
-import { useCustomRoutes } from "@/routes";
-import { dynamicRoutes } from "@/routes/dynamic-routes";
-export type MenuItem = Required<MenuProps>["items"][number];
-
-const items: MenuItem[] = [
-  {
-    key: "/dashboard",
-    label: "主页",
-    title: "主页",
-    icon: <HomeFilled />,
-  },
-  {
-    key: "/event",
-    label: "业务组件",
-    icon: <MehOutlined />,
-    children: [
-      {
-        key: "/event/table",
-        label: "表格分页",
-        title: "表格分页",
-        icon: <TableOutlined />,
-      },
-      {
-        key: "/event/table-frontend",
-        label: "前端表格分页",
-        title: "前端表格分页",
-        icon: <FieldStringOutlined />,
-      },
-      {
-        key: "/event/copy-to-clipboard",
-        label: "复制到剪切板",
-        title: "复制到剪切板",
-        icon: <FieldStringOutlined />,
-      },
-    ],
-  },
-  {
-    key: "/event-pro",
-    label: "业务组件Pro",
-    icon: <MehOutlined />,
-    children: [
-      {
-        key: "/event-pro/danmu",
-        label: "弹幕",
-        title: "弹幕",
-        icon: <CodeOutlined />,
-      },
-      {
-        key: "/event-pro/video-player",
-        label: "视频播放器",
-        title: "视频播放器",
-        icon: <VideoCameraOutlined />,
-      },
-      {
-        key: "/event-pro/picture-stitching",
-        label: "图片拼接",
-        title: "图片拼接",
-        icon: <VideoCameraOutlined />,
-      },
-    ],
-  },
-  {
-    key: "/system",
-    label: "系统管理",
-    icon: <ToolOutlined />,
-    children: [
-      {
-        key: "/system/user",
-        label: "用户管理",
-        title: "用户管理",
-        icon: <UserOutlined />,
-      },
-      {
-        key: "/system/role",
-        label: "角色管理",
-        title: "角色管理",
-        icon: <UsergroupAddOutlined />,
-      },
-      {
-        key: "/system/menu",
-        label: "菜单管理",
-        title: "菜单管理",
-        icon: <MenuOutlined />,
-      },
-    ],
-  },
-];
 
 /**
- * 常规的左侧可折叠菜单
+ * 常规菜单
  */
 function CommonMenu() {
   const navigate = useCustomNavigate();
   const dispatch = useAppDispatch();
+  const menus = useAppSelector((state) => state.menu.menu);
 
   const onClick: MenuProps["onClick"] = (e) => {
     navigate(e.key);
@@ -165,7 +67,7 @@ function CommonMenu() {
   const [openKeys, setOpenKeys] = useState<string[]>([]);
 
   useEffect(() => {
-    const result = findSelectedAndOpenKeys(items, location.pathname);
+    const result = findSelectedAndOpenKeys(menus, location.pathname);
     setSelectedKey([result.selectedKey]);
     setOpenKeys(result.openKeys);
   }, [location]);
@@ -175,12 +77,6 @@ function CommonMenu() {
     setOpenKeys(keys);
   };
 
-  const { addRoutes } = useCustomRoutes();
-
-  useEffect(() => {
-    addRoutes(dynamicRoutes);
-  }, []);
-
   return (
     <>
       <div className="grid grid-cols-[256px_1fr] w-full h-screen">
@@ -189,12 +85,11 @@ function CommonMenu() {
           <Menu
             className="max-h-full overflow-y-auto"
             onClick={onClick}
-            style={{ width: 256 }}
             selectedKeys={selectedKey}
             openKeys={openKeys}
             onOpenChange={onOpenChange}
             mode="inline"
-            items={items}
+            items={menus}
           />
         </aside>
 
