@@ -1,6 +1,6 @@
 import { Menu } from "antd";
-import HeaderOperate from "../components/headerOperate";
-import NavigationBar from "../components/navigationBar/NavigationBar";
+import HeaderOperate from "../components/header-operate";
+import NavigationBar from "../components/navigation-bar/navigation-bar";
 import { Outlet, useLocation } from "react-router-dom";
 import {
   CodeOutlined,
@@ -108,6 +108,9 @@ const items: MenuItem[] = [
   },
 ];
 
+/**
+ * 常规的左侧可折叠菜单
+ */
 function CommonMenu() {
   const navigate = useCustomNavigate();
   const dispatch = useAppDispatch();
