@@ -1,5 +1,6 @@
 import share from "@/assets/imgs/share.jpg";
 import useCustomNavigate from "@/hooks/useCustomNavigate";
+import { flushSync } from "react-dom";
 
 const showList = [
   {
@@ -19,7 +20,10 @@ function ShareAnimation() {
 
   function viewDetail() {
     document.startViewTransition(() => {
-      navigate("/event-pro/animate/share-animation-detail");
+      // 诸多问题，导致需要这么做
+      flushSync(() => {
+        navigate("/event-pro/animate/share-animation-detail");
+      });
     });
   }
 

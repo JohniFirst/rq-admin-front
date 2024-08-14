@@ -68,5 +68,5 @@ body {
 }
 
 .share-animation {
-  view-transition-name: "getIn";
+  view-transition-name: share;
 }

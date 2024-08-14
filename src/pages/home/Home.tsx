@@ -22,6 +22,12 @@ function Home() {
           <li>7、深浅色模式切换</li>
           <li>8、导航菜单快速查询、支持快捷键【ctrl + m】呼出</li>
           <li>9、轻量级的表格展示组件，支持查询、分页、excel导出</li>
+          <li>10、使用eslint对代码质量进行检查</li>
+          <li>11、使用prettier进行代码格式化</li>
+          <li>12、使用typescript，增强代码健壮性</li>
+          <li>
+            13、增加git提交钩子，提交到git仓库的代码进行质量管理，对提交信息进行规范
+          </li>
         </ul>
 
         <p className={home.introTitle}>hooks一览</p>
