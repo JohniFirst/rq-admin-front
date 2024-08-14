@@ -3,12 +3,15 @@ import { ConfigProvider, theme } from "antd";
 import { useCustomRoutes } from "./routes";
 import { createBrowserRouter } from "react-router-dom";
 import { useAppSelector } from "./store/hooks";
+import { useJumpToVscodeSource } from "@/hooks/useJumpToVscodeSource";
 
 function App() {
   const localTheme = useAppSelector((state) => state.systemInfo.theme);
   const { routes } = useCustomRoutes();
 
   const router = createBrowserRouter(routes);
+
+  useJumpToVscodeSource();
 
   return (
     <ConfigProvider
