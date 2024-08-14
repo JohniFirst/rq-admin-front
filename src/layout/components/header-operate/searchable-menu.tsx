@@ -1,73 +1,142 @@
-import React, { useState, useEffect } from "react";
-import { Input, List, Typography, Popover } from "antd";
-import { Link } from "react-router-dom";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { Input, Modal } from "antd";
 import { SearchOutlined } from "@ant-design/icons";
+import { useAppSelector } from "@/store/hooks";
+import system from "./css/system.module.css";
+import type { ChangeEvent, FC } from "react";
+import type { InputRef } from "antd";
+import useCustomNavigate from "@/hooks/useCustomNavigate";
 
-interface MenuItem {
-  name: string;
-  path: string;
-  parentName: string;
-}
-
-const SearchableMenu: React.FC = () => {
+const SearchableMenu: FC = () => {
   const [searchText, setSearchText] = useState("");
-  const [menuItems, setMenuItems] = useState<MenuItem[]>([]);
+  const menuItems = useAppSelector((state) => state.menu.menu);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const inputRef = useRef<InputRef>(null);
+  const navigate = useCustomNavigate();
 
   useEffect(() => {
-    // 模拟菜单数据
-    const menuData: MenuItem[] = [
-      { name: "页面 1", path: "/page1", parentName: "主菜单" },
-      { name: "页面 2", path: "/page2", parentName: "主菜单" },
-      { name: "子页面 1", path: "/subpage1", parentName: "子菜单" },
-      { name: "子页面 2", path: "/subpage2", parentName: "子菜单" },
-    ];
-    setMenuItems(menuData);
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.ctrlKey && event.key === "m") {
+        setIsModalOpen(true);
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
   }, []);
 
-  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleSearchChange = (e: ChangeEvent<HTMLInputElement>) => {
     setSearchText(e.target.value);
   };
 
-  const filteredMenuItems = menuItems.filter((item) =>
-    item.name.includes(searchText)
-  );
+  const findMatchingItems = (arr: MenuItem[], keyword: string): MenuItem[] => {
+    if (keyword === "") {
+      return [];
+    }
 
-  const content = (
-    <List
-      style={{ minWidth: 204 }}
-      dataSource={filteredMenuItems}
-      renderItem={(item) => (
-        <List.Item>
-          <Link to={item.path}>
-            <Typography.Text strong>
-              {item.parentName}:
-              {searchText ? (
-                <span
-                  dangerouslySetInnerHTML={{
-                    __html: item.name.replace(
-                      new RegExp(searchText, "ig"),
-                      `<span style="color: red;">${searchText}</span>`
-                    ),
-                  }}
-                />
-              ) : (
-                item.name
-              )}
-            </Typography.Text>
-          </Link>
-        </List.Item>
-      )}
-    />
-  );
+    function checkLabel(arr: MenuItem[]) {
+      const tempResult: MenuItem[] = [];
+      arr.forEach((item) => {
+        if (item.children) {
+          const childrenLableIncludesKeyword = checkLabel(item.children);
+          if (childrenLableIncludesKeyword.length) {
+            tempResult.push({
+              ...item,
+              children: childrenLableIncludesKeyword,
+            });
+          }
+        } else {
+          if (item.label.includes(keyword)) {
+            tempResult.push(item);
+          }
+        }
+      });
+
+      return tempResult;
+    }
+
+    return checkLabel(arr);
+  };
+
+  const filterNav = (key: string) => {
+    setIsModalOpen(false);
+    navigate(key);
+  };
+
+  const FilterResultItem = (item: MenuItem) => {
+    if (item.children) {
+      return (
+        <div key={item.key} className={system.filterMenuWp}>
+          <p>{item.label}</p>
+          {item.children.map((child: MenuItem) => FilterResultItem(child))}
+        </div>
+      );
+    }
+    return (
+      <p
+        key={item.key}
+        className={system.filterMenuItem}
+        onClick={() => filterNav(item.key)}
+      >
+        {item.label.split("").map((labelItem: string) => {
+          return (
+            <span
+              key={labelItem}
+              style={{ color: searchText.includes(labelItem) ? "red" : "" }}
+            >
+              {labelItem}
+            </span>
+          );
+        })}
+      </p>
+    );
+  };
+
+  const content = useMemo(() => {
+    return (
+      <div className="relative left-[-1.75rem] mt-2">
+        {findMatchingItems(menuItems, searchText).map((item) => {
+          return FilterResultItem(item);
+        })}
+      </div>
+    );
+  }, [searchText]);
 
   return (
-    <Popover trigger="focus" content={content}>
+    <>
       <Input
         prefix={<SearchOutlined />}
-        onChange={handleSearchChange}
+        onFocus={() => setIsModalOpen(true)}
         placeholder="输入菜单名"
       />
-    </Popover>
+
+      <Modal
+        open={isModalOpen}
+        closeIcon={null}
+        footer={null}
+        onCancel={() => setIsModalOpen(false)}
+        focusTriggerAfterClose={false}
+        wrapClassName="max-h-[500px]"
+        afterOpenChange={(open) => {
+          if (open) {
+            inputRef.current!.focus({
+              cursor: "all",
+            });
+          }
+        }}
+      >
+        <Input
+          ref={inputRef}
+          prefix={<SearchOutlined />}
+          onChange={handleSearchChange}
+          placeholder="输入菜单名"
+        />
+        {content}
+      </Modal>
+    </>
   );
 };
 

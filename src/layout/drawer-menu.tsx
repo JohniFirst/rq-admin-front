@@ -11,7 +11,7 @@ import drawer from "./css/drawerMenu.module.css";
 import type { MenuProps } from "antd";
 
 /**
- * 常规菜单
+ * 可折叠的子菜单
  */
 function DrawerMenu() {
   const navigate = useCustomNavigate();

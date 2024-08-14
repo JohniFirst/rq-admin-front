@@ -1,6 +1,6 @@
 import type { RouteObject } from "react-router-dom";
 
-import LoginForm from "@/pages/login/Login";
+import LoginForm from "@/pages/login/login";
 import Home from "@/pages/home/Home";
 import NotFound from "@/pages/NotFound/NotFound";
 

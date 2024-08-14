@@ -9,7 +9,7 @@ export function useCustomRoutes() {
     ...defaultRoutes,
     ...dynamicRoutes,
     ...errorRoutes,
-  ]);
+  ]);  
 
   // 动态添加路由
   const addRoutes = (route: RouteObject[]) => {

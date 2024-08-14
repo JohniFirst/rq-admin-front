@@ -28,19 +28,16 @@ const initialState: MenuSlice = {
         {
           key: "/event/table",
           label: "表格分页",
-          title: "表格分页",
           icon: <TableOutlined />,
         },
         {
           key: "/event/table-frontend",
           label: "前端表格分页",
-          title: "前端表格分页",
           icon: <FieldStringOutlined />,
         },
         {
           key: "/event/copy-to-clipboard",
           label: "复制到剪切板",
-          title: "复制到剪切板",
           icon: <FieldStringOutlined />,
         },
       ],
@@ -53,21 +50,30 @@ const initialState: MenuSlice = {
         {
           key: "/event-pro/danmu",
           label: "弹幕",
-          title: "弹幕",
           icon: <CodeOutlined />,
         },
         {
           key: "/event-pro/video-player",
           label: "视频播放器",
-          title: "视频播放器",
           icon: <VideoCameraOutlined />,
         },
         {
           key: "/event-pro/picture-stitching",
           label: "图片拼接",
-          title: "图片拼接",
           icon: <VideoCameraOutlined />,
         },
+        {
+          key: "/event-pro/animate",
+          label: "动画",
+          icon: <VideoCameraOutlined />,
+          children: [
+            {
+              key: "/event-pro/animate/share-animation",
+              label: "共享元素动画",
+              icon: <VideoCameraOutlined />,
+            }
+          ]
+        }
       ],
     },
     {
@@ -78,19 +84,16 @@ const initialState: MenuSlice = {
         {
           key: "/system/user",
           label: "用户管理",
-          title: "用户管理",
           icon: <UserOutlined />,
         },
         {
           key: "/system/role",
           label: "角色管理",
-          title: "角色管理",
           icon: <UsergroupAddOutlined />,
         },
         {
           key: "/system/menu",
           label: "菜单管理",
-          title: "菜单管理",
           icon: <MenuOutlined />,
         },
       ],

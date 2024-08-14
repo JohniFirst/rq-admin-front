@@ -48,12 +48,10 @@ const SystemSettings: React.FC<SystemSettingsProps> = () => {
       <Drawer
         title="系统设置"
         placement="right"
-        closable={false}
         onClose={toggleDrawer}
         open={isDrawerVisible}
       >
-        {/* 添加更多设置项的逻辑 */}
-        <p>导航模式</p>
+        <p className={system.systemNavTitle}>导航模式</p>
         <div className="grid grid-cols-2 gap-4">
           {menuModeArr.map((item) => (
             <img
@@ -67,6 +65,11 @@ const SystemSettings: React.FC<SystemSettingsProps> = () => {
             />
           ))}
         </div>
+
+        <p className={system.systemNavTitle}>快捷键</p>
+        <ul>
+          <li>Ctrl + M 打开菜单搜索界面</li>
+        </ul>
       </Drawer>
     </>
   );
