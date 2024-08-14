@@ -42,18 +42,18 @@ const onFinishFailed: FormProps<FieldType>["onFinishFailed"] = (errorInfo) => {
  */
 function exportToExcel(
   { headers, data }: ExcelData,
-  fileName = "your_file_name.xlsx"
+  fileName = "your_file_name.xlsx",
 ) {
   const worksheet = XLSX.utils.aoa_to_sheet([headers, ...data]);
   // 设置表头样式
-  worksheet['A1'].s = {
+  worksheet["A1"].s = {
     font: { bold: true },
-    alignment: { horizontal: 'center' }
+    alignment: { horizontal: "center" },
   };
 
   worksheet["!margins"] = {
-    bottom: 10
-  }
+    bottom: 10,
+  };
 
   // 为数据添加边框
   for (let row = 1; row <= data.length + 1; row++) {
@@ -62,11 +62,11 @@ function exportToExcel(
       if (cell) {
         cell.s = {
           border: {
-            top: { style: 'thin' },
-            bottom: { style: 'thin' },
-            left: { style: 'thin' },
-            right: { style: 'thin' }
-          }
+            top: { style: "thin" },
+            bottom: { style: "thin" },
+            left: { style: "thin" },
+            right: { style: "thin" },
+          },
         };
       }
     }
@@ -77,9 +77,7 @@ function exportToExcel(
   XLSX.writeFile(workbook, fileName);
 }
 
-
 const BaseTable: React.FC<BaseTableProps> = ({ tableProps }) => {
-
   /**
    * Handles exporting data to an Excel file.
    *

@@ -27,12 +27,11 @@ function DrawerMenu() {
     dispatch(
       pushNavItemAction({
         key: e.key,
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         label: e.item.props.title,
         active: true,
         fixed: false,
-      })
+      }),
     );
   };
 
@@ -46,7 +45,6 @@ function DrawerMenu() {
     const findKeys = (items: MenuItem[]) => {
       items.forEach((item: MenuItem) => {
         if (item && Object.keys(item).includes("children")) {
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-ignore
           const children = item.children;
           if (

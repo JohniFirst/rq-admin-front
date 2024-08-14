@@ -9,8 +9,6 @@ import useCustomNavigate from "@/hooks/useCustomNavigate";
 import type { MenuProps } from "antd";
 import { useEffect, useState } from "react";
 
-
-
 /**
  * 顶部导航菜单
  */
@@ -25,12 +23,11 @@ function HeaderMenu() {
     dispatch(
       pushNavItemAction({
         key: e.key,
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         label: e.item.props.title,
         active: true,
         fixed: false,
-      })
+      }),
     );
   };
 
@@ -44,7 +41,6 @@ function HeaderMenu() {
     const findKeys = (items: MenuItem[]) => {
       items.forEach((item: MenuItem) => {
         if (item && Object.keys(item).includes("children")) {
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-ignore
           const children = item.children;
           if (

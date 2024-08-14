@@ -10,7 +10,7 @@ import {
   GridComponent,
   DatasetComponent,
   TransformComponent,
-  LegendComponent
+  LegendComponent,
 } from "echarts/components";
 // 标签自动布局、全局过渡动画等特性
 import { LabelLayout, UniversalTransition } from "echarts/features";
@@ -28,7 +28,7 @@ echarts.use([
   LineChart,
   LabelLayout,
   UniversalTransition,
-  CanvasRenderer
+  CanvasRenderer,
 ]);
 
 interface SalesData {
@@ -48,7 +48,7 @@ function ChartOfDynamicSales(): JSX.Element {
     { time: "09:00", amount: 800 },
     { time: "10:00", amount: 600 },
     { time: "11:00", amount: 900 },
-    { time: "12:00", amount: 1200 }
+    { time: "12:00", amount: 1200 },
   ]);
 
   useEffect(() => {
@@ -65,23 +65,23 @@ function ChartOfDynamicSales(): JSX.Element {
     // 配置选项
     const option: EChartsOption = {
       title: {
-        text: "销售额变化（动态排序）"
+        text: "销售额变化（动态排序）",
       },
       xAxis: {
         type: "category",
-        data: salesData.map((item) => item.time)
+        data: salesData.map((item) => item.time),
       },
       yAxis: {
-        type: "value"
+        type: "value",
       },
       series: [
         {
           data: salesData.map((item) => item.amount),
-          type: "line"
-        }
+          type: "line",
+        },
       ],
       tooltip: {
-        trigger: "axis"
+        trigger: "axis",
       },
     };
 
@@ -91,8 +91,11 @@ function ChartOfDynamicSales(): JSX.Element {
     // 模拟数据动态变化（例如每隔一段时间更新销售额数据，并排序）
     const interval = setInterval(() => {
       const newData = {
-        time: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
-        amount: Math.random() * 1500
+        time: new Date().toLocaleTimeString([], {
+          hour: "2-digit",
+          minute: "2-digit",
+        }),
+        amount: Math.random() * 1500,
       };
       setSalesData((prevData) => {
         const updatedData = [...prevData, newData];

@@ -12,7 +12,7 @@ class DanmuStyle {
     text: string,
     speed: number,
     color: string,
-    canvas: HTMLCanvasElement
+    canvas: HTMLCanvasElement,
   ) {
     this.text = text;
     this.speed = speed;

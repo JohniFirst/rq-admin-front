@@ -6,7 +6,7 @@ interface VideoTimesSpeedProps {
   onChange: (newValue: number) => void;
 }
 
-const speedChangeList = ['3.0', '2.0', '1.5', '1.0', '0.75', '0.5'] as const;
+const speedChangeList = ["3.0", "2.0", "1.5", "1.0", "0.75", "0.5"] as const;
 
 function VideoTimesSpeed({ onChange }: VideoTimesSpeedProps) {
   const [playTimes, setPlayTimes] = useState(1);
@@ -27,7 +27,9 @@ function VideoTimesSpeed({ onChange }: VideoTimesSpeedProps) {
 
       <ul className="play-times-speed-select-wp" onClick={changePlaySpeed}>
         {speedChangeList.map((item) => (
-          <li key={item} className={playTimes === +item ? "speed-acive" : ""}>{item}</li>
+          <li key={item} className={playTimes === +item ? "speed-acive" : ""}>
+            {item}
+          </li>
         ))}
       </ul>
     </div>

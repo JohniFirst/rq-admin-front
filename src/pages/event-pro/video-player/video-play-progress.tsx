@@ -6,7 +6,6 @@ interface VideoPlayProgressProps {
   onChange: (newValue: number) => void;
 }
 
-
 /**
  * A video play progress bar component that allows users to drag and drop to change the video playback progress.
  *
@@ -92,11 +91,11 @@ function VideoPlayProgress({ max, value, onChange }: VideoPlayProgressProps) {
     return () => {
       document.documentElement.removeEventListener(
         "mousedown",
-        handleMouseDown
+        handleMouseDown,
       );
       document.documentElement.removeEventListener(
         "mousemove",
-        handleMouseMove
+        handleMouseMove,
       );
       document.documentElement.removeEventListener("mouseup", handleMouseUp);
     };
@@ -115,7 +114,6 @@ function VideoPlayProgress({ max, value, onChange }: VideoPlayProgressProps) {
   }, [value]);
 
   return (
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     <div ref={progressWPRef} id="progress-wp" onClick={handleClick}>
       <div ref={progressFinishedRef} id="progress-finished"></div>

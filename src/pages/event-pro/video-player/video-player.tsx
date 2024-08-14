@@ -38,7 +38,7 @@ function VideoPlayer() {
     const videoWpHeight = video.offsetHeight;
 
     const videoControls = document.querySelector(
-      ".video-controls"
+      ".video-controls",
     ) as HTMLDivElement;
     videoControls.style.width = `${videoWpWidth}px`;
     videoControls.style.height = `${videoWpHeight}px`;

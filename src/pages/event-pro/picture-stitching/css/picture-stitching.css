@@ -1,4 +1,4 @@
-.img-tocopy:hover+.img-del-btn {
+.img-tocopy:hover + .img-del-btn {
   display: block;
 }
 

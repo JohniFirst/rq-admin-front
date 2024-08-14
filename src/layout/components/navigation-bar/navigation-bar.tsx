@@ -55,7 +55,7 @@ function NavigationBar() {
    */
   const handleMenuClick: MenuProps["onClick"] = (e) => {
     const clickIndex = navItem.findIndex(
-      (item) => item.key === currentClickTarget.key
+      (item) => item.key === currentClickTarget.key,
     );
     let newNavItem: NavItem[] = [];
 
@@ -85,8 +85,8 @@ function NavigationBar() {
       case ContextMenuKey.CLOSE_OTHERS:
         setNavItem(
           navItem.filter(
-            (item) => item.key === currentClickTarget.key || item.fixed
-          )
+            (item) => item.key === currentClickTarget.key || item.fixed,
+          ),
         );
         break;
 
@@ -110,7 +110,7 @@ function NavigationBar() {
    */
   const closeCurrentNav = async (
     e: React.MouseEvent<HTMLElement, MouseEvent>,
-    item: NavItem
+    item: NavItem,
   ) => {
     e.stopPropagation();
 
@@ -167,7 +167,7 @@ function NavigationBar() {
                 location.pathname === item.key
                   ? "bg-sky-50 text-blue-500 border-blue-500 border-x border-y"
                   : ""
-              } cursor-pointer dark:bg-[#242424] bg-white py-1 px-3 rounded-md`}
+              } cursor-pointer dark:bg-[#242424] bg-white py-1 px-3 rounded-md shrink-0`}
               key={item.key}
               onClick={() => navCurrentItem(item)}
               onContextMenu={() => navContentMenu(item)}

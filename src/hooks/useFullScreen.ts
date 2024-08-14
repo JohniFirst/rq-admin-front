@@ -46,7 +46,7 @@ class FullScreenManager {
  */
 export function useFullScreen(isBody = false) {
   const [isFullscreen, setIsFullscreen] = useState(
-    FullScreenManager.getInstance().getIsFullscreen()
+    FullScreenManager.getInstance().getIsFullscreen(),
   );
 
   useEffect(() => {

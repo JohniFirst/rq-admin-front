@@ -34,7 +34,7 @@ echarts.use([
 
 /**
  * Renders a pie chart displaying the proportion of guests from different sources.
- * 
+ *
  * Represents the data of guest source.
  *
  * @return {JSX.Element} A div element containing the pie chart.

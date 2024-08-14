@@ -27,7 +27,9 @@ body {
 body {
   background-color: var(--background-color);
   color: var(--text-color);
-  transition: background-color 0.3s, color 0.3s;
+  transition:
+    background-color 0.3s,
+    color 0.3s;
 }
 
 ::-webkit-scrollbar {
@@ -54,14 +56,17 @@ body {
   position: absolute;
   z-index: 999999;
   visibility: hidden;
-  /* display: none; */
 }
 
 .jump-to-vscode-source-container a {
   text-decoration: underline;
-  color: #0000EE;
+  color: #0000ee;
 }
 
 .jump-to-vscode-source-container a:hover {
-  color: #8A2BE2;
+  color: #8a2be2;
+}
+
+.share-animation {
+  view-transition-name: "getIn";
 }

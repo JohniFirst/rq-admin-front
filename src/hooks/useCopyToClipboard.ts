@@ -16,7 +16,7 @@ export function useCopyToClipboard(
   options: CopyToClipboardOptions = {
     prefix: config.clipboardPrefix,
     suffix: config.clipboardSuffix,
-  }
+  },
 ) {
   const [isCopied, setIsCopied] = useState<boolean>(false);
 

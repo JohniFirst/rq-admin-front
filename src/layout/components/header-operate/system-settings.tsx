@@ -68,8 +68,8 @@ const SystemSettings: React.FC<SystemSettingsProps> = () => {
 
         <p className={system.systemNavTitle}>快捷键</p>
         <ul>
-          <li>Ctrl + M 打开菜单搜索界面</li>
-          <li>Ctrl + 鼠标左键快速定位到vscode源码</li>
+          <li>【Ctrl + M】 打开菜单搜索界面</li>
+          <li>【Ctrl + 鼠标左键】 快速定位到vscode源码</li>
         </ul>
       </Drawer>
     </>

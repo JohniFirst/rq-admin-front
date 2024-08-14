@@ -12,6 +12,8 @@ import CopyToClipboard from "@/pages/event/clipboard/copy-to-clipboard";
 import Danmu from "@/pages/event-pro/danmu/Danmu";
 import VideoPlayer from "@/pages/event-pro/video-player/video-player";
 import PictureStitching from "@/pages/event-pro/picture-stitching/picture-stitching";
+import ShareAnimation from "@/pages/event-pro/animate/share-animation/share-animation";
+import ShareAnimationDetail from "@/pages/event-pro/animate/share-animation-detail/share-animation-detail";
 
 export const dynamicRoutes: RouteObject[] = [
   {
@@ -62,6 +64,19 @@ export const dynamicRoutes: RouteObject[] = [
             // lazy: () => import("@/pages/event-pro/picture-stitching/picture-stitching").then((module) => ({
             //   element: <module.default />,
             // })),
+          },
+          {
+            path: "animate",
+            children: [
+              {
+                path: "share-animation",
+                element: <ShareAnimation />,
+              },
+              {
+                path: "share-animation-detail",
+                element: <ShareAnimationDetail />,
+              },
+            ],
           },
         ],
       },

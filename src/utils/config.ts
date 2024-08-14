@@ -3,6 +3,6 @@ export const config = {
   clipboardPrefix: "clipboard prefix",
   // 复制到剪切板的默认后缀
   clipboardSuffix: "clipboard suffix",
-}
+};
 
-Object.freeze(config)
+Object.freeze(config);
