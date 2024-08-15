@@ -152,17 +152,6 @@ function NavigationBar() {
     currentClickTarget = item
   }
 
-  /**
-   * Sets the active navigation item and performs a navigation action.
-   *
-   * @param {NavItem} item - The navigation item to set as active.
-   * @return {void} This function does not return anything.
-   */
-  const navCurrentItem = (item: NavItem) => {
-    // TODO: 跳转到对应页面
-    navgation(item.key)
-  }
-
   return (
     <Dropdown
       menu={{ items: contextMenu, onClick: handleMenuClick }}
@@ -179,7 +168,7 @@ function NavigationBar() {
                   : ''
               } cursor-pointer dark:bg-[#242424] bg-white py-1 px-3 rounded-md shrink-0`}
               key={item.key}
-              onClick={() => navCurrentItem(item)}
+              onClick={() => navgation(item.key)}
               onContextMenu={() => navContentMenu(item)}
             >
               {item.fixed ? <PushpinOutlined className="text-red-500" /> : ''}

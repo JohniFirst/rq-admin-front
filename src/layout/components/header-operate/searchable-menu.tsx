@@ -41,9 +41,9 @@ const SearchMenuFooter: FC = () => {
 }
 
 const SearchableMenu: FC = () => {
-  const [searchText, setSearchText] = useState('动画')
+  const [searchText, setSearchText] = useState('')
   const menuItems = useAppSelector((state) => state.menu)
-  const [isModalOpen, setIsModalOpen] = useState(true)
+  const [isModalOpen, setIsModalOpen] = useState(false)
   const inputRef = useRef<InputRef>(null)
   const navigate = useCustomNavigate()
 
@@ -95,7 +95,10 @@ const SearchableMenu: FC = () => {
     navigate(key)
   }
 
-  const FilterResultItem = (item: MenuItem, indent = 0) => {
+  const FilterResultItem: FC<{ item: MenuItem; indent?: number }> = ({
+    item,
+    indent = 0
+  }) => {
     if (item.children) {
       return (
         <div
@@ -104,9 +107,13 @@ const SearchableMenu: FC = () => {
           style={{ marginLeft: `${indent * 16}px` }}
         >
           <p>{item.label}</p>
-          {item.children.map((child: MenuItem) =>
-            FilterResultItem(child, indent + 1)
-          )}
+          {item.children.map((child: MenuItem) => (
+            <FilterResultItem
+              key={child.key}
+              item={child}
+              indent={indent + 1}
+            />
+          ))}
         </div>
       )
     }
@@ -137,7 +144,7 @@ const SearchableMenu: FC = () => {
       <div className="mt-2 min-h-2">
         {filterResult.length ? (
           filterResult.map((item) => {
-            return FilterResultItem(item)
+            return <FilterResultItem key={item.key} item={item} />
           })
         ) : (
           <p className="my-4 ml-7">无匹配项</p>

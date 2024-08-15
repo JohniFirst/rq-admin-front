@@ -61,9 +61,12 @@
     }
   },
   "lint-staged": {
-    "*.{ts,tsx,js}": [
-      "pnpm run lint",
-      "pnpm run format"
+    "*.{js,json}": [
+      "prettier --write"
+    ],
+    "*.{ts,tsx}": [
+      "eslint --fix",
+      "prettier --parser=typescript --write"
     ]
   }
 }
