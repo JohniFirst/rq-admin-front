@@ -61,7 +61,7 @@
     }
   },
   "lint-staged": {
-    "*.{ts,tsx,vue}": [
+    "*.{ts,tsx,js}": [
       "pnpm run lint",
       "pnpm run format"
     ]

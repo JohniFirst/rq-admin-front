@@ -1,5 +1,5 @@
-import { type FC } from "react";
-import styled from "styled-components";
+import { type FC } from 'react'
+import styled from 'styled-components'
 
 interface Props {}
 
@@ -33,7 +33,7 @@ const CenterWrapper = styled.div`
     font-size: 1.2rem;
     color: #6c757d;
   }
-`;
+`
 
 const NotFound: FC<Props> = () => {
   return (
@@ -41,7 +41,7 @@ const NotFound: FC<Props> = () => {
       <h1>404 - Page Not Found</h1>
       <p>The page you are looking for does not exist.</p>
     </CenterWrapper>
-  );
-};
+  )
+}
 
-export default NotFound;
+export default NotFound

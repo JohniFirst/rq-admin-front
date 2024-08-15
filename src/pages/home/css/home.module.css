@@ -7,7 +7,7 @@
 }
 
 .introTitle::before {
-  content: "1";
+  content: '1';
   display: inline-block;
   background-color: var(--theme-color);
   color: transparent;

@@ -1,40 +1,40 @@
-import { useEffect, useState, type MouseEvent } from "react";
+import { useEffect, useState, type MouseEvent } from 'react'
 
 class FullScreenManager {
-  private static instance: FullScreenManager;
-  private isFullscreen: boolean;
+  private static instance: FullScreenManager
+  private isFullscreen: boolean
 
   private constructor() {
-    this.isFullscreen = false;
+    this.isFullscreen = false
   }
 
   public static getInstance(): FullScreenManager {
     if (!FullScreenManager.instance) {
-      FullScreenManager.instance = new FullScreenManager();
+      FullScreenManager.instance = new FullScreenManager()
     }
-    return FullScreenManager.instance;
+    return FullScreenManager.instance
   }
 
   public toggleFullscreen(e: MouseEvent, isBody = false) {
-    const target = e.currentTarget as HTMLElement;
+    const target = e.currentTarget as HTMLElement
 
     if (this.isFullscreen) {
-      document.exitFullscreen();
+      document.exitFullscreen()
     } else {
       if (isBody) {
-        document.documentElement.requestFullscreen();
+        document.documentElement.requestFullscreen()
       } else {
         if (target) {
-          target.requestFullscreen();
+          target.requestFullscreen()
         }
       }
     }
 
-    this.isFullscreen = !this.isFullscreen;
+    this.isFullscreen = !this.isFullscreen
   }
 
   public getIsFullscreen() {
-    return this.isFullscreen;
+    return this.isFullscreen
   }
 }
 
@@ -46,28 +46,28 @@ class FullScreenManager {
  */
 export function useFullScreen(isBody = false) {
   const [isFullscreen, setIsFullscreen] = useState(
-    FullScreenManager.getInstance().getIsFullscreen(),
-  );
+    FullScreenManager.getInstance().getIsFullscreen()
+  )
 
   useEffect(() => {
     // 监听全屏变化事件
     const fullscreenchange = () => {
-      setIsFullscreen(FullScreenManager.getInstance().getIsFullscreen());
-    };
+      setIsFullscreen(FullScreenManager.getInstance().getIsFullscreen())
+    }
 
-    document.addEventListener("fullscreenchange", fullscreenchange);
+    document.addEventListener('fullscreenchange', fullscreenchange)
 
     return () => {
-      document.removeEventListener("fullscreenchange", fullscreenchange);
-    };
-  }, []);
+      document.removeEventListener('fullscreenchange', fullscreenchange)
+    }
+  }, [])
 
   const toggleFullscreen = (e: MouseEvent) => {
-    FullScreenManager.getInstance().toggleFullscreen(e, isBody);
-  };
+    FullScreenManager.getInstance().toggleFullscreen(e, isBody)
+  }
 
   return {
     isFullscreen,
-    toggleFullscreen,
-  };
+    toggleFullscreen
+  }
 }

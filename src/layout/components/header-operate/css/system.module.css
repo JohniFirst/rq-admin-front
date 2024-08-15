@@ -4,7 +4,7 @@
 }
 
 .systemNavTitle::before {
-  content: "1";
+  content: '1';
   display: inline-block;
   width: 4px;
   color: transparent;

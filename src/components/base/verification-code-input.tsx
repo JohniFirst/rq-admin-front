@@ -1,5 +1,5 @@
-import { SetStateAction, useState } from "react";
-import { Form, Input, Image, Row, Col } from "antd";
+import { SetStateAction, useState } from 'react'
+import { Form, Input, Image, Row, Col } from 'antd'
 
 /**
  * Renders a form item for verification code input with an image code.
@@ -8,20 +8,20 @@ import { Form, Input, Image, Row, Col } from "antd";
  * @return {JSX.Element} The form item for verification code input.
  */
 function VerificationCodeInput() {
-  const [code, setCode] = useState("");
-  const [imageCodeUrl] = useState("https://example.com/imageCode.jpg"); // 假设这是图片验证码的 URL
+  const [code, setCode] = useState('')
+  const [imageCodeUrl] = useState('https://example.com/imageCode.jpg') // 假设这是图片验证码的 URL
 
   const handleCodeChange = (e: {
-    target: { value: SetStateAction<string> };
+    target: { value: SetStateAction<string> }
   }) => {
-    setCode(e.target.value);
-  };
+    setCode(e.target.value)
+  }
 
   return (
     <Form.Item
       name="verificationCode"
       label="验证码"
-      rules={[{ required: true, message: "请输入验证码" }]}
+      rules={[{ required: true, message: '请输入验证码' }]}
     >
       <Row>
         <Col span={16}>
@@ -37,7 +37,7 @@ function VerificationCodeInput() {
         </Col>
       </Row>
     </Form.Item>
-  );
+  )
 }
 
-export default VerificationCodeInput;
+export default VerificationCodeInput

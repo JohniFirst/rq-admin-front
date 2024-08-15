@@ -1,31 +1,31 @@
-import React, { useState } from "react";
-import { Badge, Button, Popover, Tabs, type TabsProps } from "antd";
-import { BellOutlined } from "@ant-design/icons";
+import React, { useState } from 'react'
+import { Badge, Button, Popover, Tabs, type TabsProps } from 'antd'
+import { BellOutlined } from '@ant-design/icons'
 
 interface MessageNotificationProps {
-  unreadMessages: number;
+  unreadMessages: number
 }
 
-type MessageNotificationTab = "unread" | "read";
+type MessageNotificationTab = 'unread' | 'read'
 
 const MessageNotification: React.FC<MessageNotificationProps> = ({
-  unreadMessages,
+  unreadMessages
 }) => {
-  const [activeTab, setActiveTab] = useState<MessageNotificationTab>("unread"); // 未读消息或已读消息
+  const [activeTab, setActiveTab] = useState<MessageNotificationTab>('unread') // 未读消息或已读消息
 
   const handleTabChange = (key: string) => {
-    setActiveTab(key as MessageNotificationTab);
-  };
+    setActiveTab(key as MessageNotificationTab)
+  }
 
   const handleMarkAllAsRead = () => {
     // 标记所有消息为已读的逻辑
-    setActiveTab("read"); // 切换到已读消息标签页
-  };
+    setActiveTab('read') // 切换到已读消息标签页
+  }
 
-  const items: TabsProps["items"] = [
+  const items: TabsProps['items'] = [
     {
-      key: "unread",
-      label: "未读消息列表",
+      key: 'unread',
+      label: '未读消息列表',
       children: (
         <div>
           <p>
@@ -38,14 +38,14 @@ const MessageNotification: React.FC<MessageNotificationProps> = ({
             标记所有为已读
           </Button>
         </div>
-      ),
+      )
     },
     {
-      key: "read",
-      label: "已读消息列表",
-      children: "Content of Tab Pane 2",
-    },
-  ];
+      key: 'read',
+      label: '已读消息列表',
+      children: 'Content of Tab Pane 2'
+    }
+  ]
 
   return (
     <div>
@@ -66,7 +66,7 @@ const MessageNotification: React.FC<MessageNotificationProps> = ({
         </Badge>
       </Popover>
     </div>
-  );
-};
+  )
+}
 
-export default MessageNotification;
+export default MessageNotification

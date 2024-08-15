@@ -1,42 +1,42 @@
-import { createSlice, Slice, type PayloadAction } from "@reduxjs/toolkit";
-import type { RootState } from "../store.ts";
-import { forage } from "@/utils/localforage.ts";
-import { ForageEnums } from "@/enums/localforage.ts";
-import { MenuModeEnum } from "@/enums/system.ts";
+import { createSlice, Slice, type PayloadAction } from '@reduxjs/toolkit'
+import type { RootState } from '../store.ts'
+import { forage } from '@/utils/localforage.ts'
+import { ForageEnums } from '@/enums/localforage.ts'
+import { MenuModeEnum } from '@/enums/system.ts'
 
 // 定义一个异步函数来获取初始数据
 export const fetchInitialData = async () => {
-  const res = await forage.getItem<string>(ForageEnums.APP_HISTORY);
-  const navItem = (JSON.parse(res) as NavItem[]) || [];
+  const res = await forage.getItem<string>(ForageEnums.APP_HISTORY)
+  const navItem = (JSON.parse(res) as NavItem[]) || []
 
-  const SYSTEM_INFO = await forage.getItem<string>(ForageEnums.SYSTEM_INFO);
-  const localSystemInfo = JSON.parse(SYSTEM_INFO) as LocalSystemInfo;
+  const SYSTEM_INFO = await forage.getItem<string>(ForageEnums.SYSTEM_INFO)
+  const localSystemInfo = JSON.parse(SYSTEM_INFO) as LocalSystemInfo
   // 更新html的类来改变主题
-  document.documentElement.className = localSystemInfo?.theme;
+  document.documentElement.className = localSystemInfo?.theme
 
   return {
     navItem,
-    theme: localSystemInfo?.theme || "light",
-    menuMode: localSystemInfo?.menuMode || MenuModeEnum.COMMON_MENU,
-  };
-};
+    theme: localSystemInfo?.theme || 'light',
+    menuMode: localSystemInfo?.menuMode || MenuModeEnum.COMMON_MENU
+  }
+}
 
 // 妥协解决方案
 const initialState: SystemInfo = {
-  theme: "light",
+  theme: 'light',
   navItem: [],
-  menuMode: MenuModeEnum.COMMON_MENU,
-};
+  menuMode: MenuModeEnum.COMMON_MENU
+}
 
 export const systemInfoSlice: Slice<SystemInfo> = createSlice({
-  name: "systemInfo",
+  name: 'systemInfo',
   initialState,
   reducers: {
     initSystemInfoState: (state, action: PayloadAction<SystemInfo>) => {
       Object.keys(action.payload).forEach((key) => {
         // @ts-ignore
-        state[key] = action.payload[key];
-      });
+        state[key] = action.payload[key]
+      })
     },
     /**
      * Sets the current navigation items in the system.
@@ -45,8 +45,8 @@ export const systemInfoSlice: Slice<SystemInfo> = createSlice({
      * @param {PayloadAction<NavItem[]>} action - The action containing the new navigation items.
      */
     setNavItemAction: (state, action: PayloadAction<NavItem[]>) => {
-      state.navItem = action.payload;
-      forage.setItem(ForageEnums.APP_HISTORY, state.navItem);
+      state.navItem = action.payload
+      forage.setItem(ForageEnums.APP_HISTORY, state.navItem)
     },
     /**
      * Adds a new navigation item to the system's navigation bar if it does not already exist.
@@ -56,8 +56,8 @@ export const systemInfoSlice: Slice<SystemInfo> = createSlice({
      */
     pushNavItemAction: (state, action: PayloadAction<NavItem>) => {
       if (!state.navItem.some((item) => item.key === action.payload.key)) {
-        state.navItem.push(action.payload);
-        forage.setItem(ForageEnums.APP_HISTORY, state.navItem);
+        state.navItem.push(action.payload)
+        forage.setItem(ForageEnums.APP_HISTORY, state.navItem)
       }
     },
     /**
@@ -67,11 +67,11 @@ export const systemInfoSlice: Slice<SystemInfo> = createSlice({
      * @param {PayloadAction<Theme>} action - The action containing the new theme.
      */
     setTheme: (state, action: PayloadAction<Theme>) => {
-      state.theme = action.payload;
-      document.documentElement.className = state.theme;
-      const copyState = JSON.parse(JSON.stringify(state));
-      delete copyState.navItem;
-      forage.setItem(ForageEnums.SYSTEM_INFO, copyState);
+      state.theme = action.payload
+      document.documentElement.className = state.theme
+      const copyState = JSON.parse(JSON.stringify(state))
+      delete copyState.navItem
+      forage.setItem(ForageEnums.SYSTEM_INFO, copyState)
     },
     /**
      * Sets the current menu mode of the system.
@@ -82,26 +82,26 @@ export const systemInfoSlice: Slice<SystemInfo> = createSlice({
     setMenuMode: (state, action: PayloadAction<MenuMode>) => {
       // 设置的菜单模式和当前的菜单模式相同则不更新
       if (state.menuMode === action.payload) {
-        return;
+        return
       }
 
-      state.menuMode = action.payload;
-      const copyState = JSON.parse(JSON.stringify(state));
-      delete copyState.navItem;
-      forage.setItem(ForageEnums.SYSTEM_INFO, copyState);
-    },
-  },
-});
+      state.menuMode = action.payload
+      const copyState = JSON.parse(JSON.stringify(state))
+      delete copyState.navItem
+      forage.setItem(ForageEnums.SYSTEM_INFO, copyState)
+    }
+  }
+})
 
 export const {
   setNavItemAction,
   pushNavItemAction,
   setTheme,
   setMenuMode,
-  initSystemInfoState,
-} = systemInfoSlice.actions;
+  initSystemInfoState
+} = systemInfoSlice.actions
 
 // selectors 等其他代码可以使用导入的 `RootState` 类型
-export const navItem = (state: RootState) => state.systemInfo.navItem;
+export const navItem = (state: RootState) => state.systemInfo.navItem
 
-export default systemInfoSlice.reducer;
+export default systemInfoSlice.reducer

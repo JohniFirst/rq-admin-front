@@ -1,15 +1,15 @@
-import { useLoaderData } from "react-router-dom";
-import ChartOfInStorePeople from "./chart-of-in-store-people";
-import dashboardStyles from "./css/dashboard.module.css";
-import ChartOfGuestSourcePie from "./chart-of-guest-source-pie";
-import ChartOfOrderRelation from "./chart-of-order-relation";
-import ChartOfDiningAndEntryTimeRelation from "./chart-of-dining-and-entry-time-relation";
-import ChartOfPayMethodRelation from "./chart-of-pay-method-relation";
-import NumberJumping from "@/components/number-jumping";
-import ChartOfDishSales from "@/pages/dashboard/chart-of-dish-sales.tsx";
-import ChartOfCustomerIncomeProportion from "@/pages/dashboard/chart-of-customer-income-proportion.tsx";
-import ChartOfCustomerNumbers from "@/pages/dashboard/chart-of-customer-numbers.tsx";
-import ChartOfDynamicSales from "@/pages/dashboard/chart-of-dynamic-sales.tsx";
+import { useLoaderData } from 'react-router-dom'
+import ChartOfInStorePeople from './chart-of-in-store-people'
+import dashboardStyles from './css/dashboard.module.css'
+import ChartOfGuestSourcePie from './chart-of-guest-source-pie'
+import ChartOfOrderRelation from './chart-of-order-relation'
+import ChartOfDiningAndEntryTimeRelation from './chart-of-dining-and-entry-time-relation'
+import ChartOfPayMethodRelation from './chart-of-pay-method-relation'
+import NumberJumping from '@/components/number-jumping'
+import ChartOfDishSales from '@/pages/dashboard/chart-of-dish-sales.tsx'
+import ChartOfCustomerIncomeProportion from '@/pages/dashboard/chart-of-customer-income-proportion.tsx'
+import ChartOfCustomerNumbers from '@/pages/dashboard/chart-of-customer-numbers.tsx'
+import ChartOfDynamicSales from '@/pages/dashboard/chart-of-dynamic-sales.tsx'
 
 import {
   BankOutlined,
@@ -17,12 +17,12 @@ import {
   CaretUpOutlined,
   PieChartOutlined,
   StrikethroughOutlined,
-  UserOutlined,
-} from "@ant-design/icons";
+  UserOutlined
+} from '@ant-design/icons'
 
 function Dashboard() {
-  const data = useLoaderData();
-  console.log("from route loader:", data);
+  const data = useLoaderData()
+  console.log('from route loader:', data)
 
   return (
     <>
@@ -30,16 +30,16 @@ function Dashboard() {
         {/* 进店人数 */}
         <li className="container flex">
           <UserOutlined
-            style={{ fontSize: "50px", color: "#ff5500", width: "70px" }}
+            style={{ fontSize: '50px', color: '#ff5500', width: '70px' }}
           />
           <div className="flex-1">
             <p>进店人数/人次</p>
             <p
               className="text-2xl my-2 flex justify-between"
-              style={{ color: "red" }}
+              style={{ color: 'red' }}
             >
               <NumberJumping endValue={5000} />
-              <CaretUpOutlined style={{ color: "red" }} />
+              <CaretUpOutlined style={{ color: 'red' }} />
             </p>
             <p className="text-sm">每天为一个统计周期</p>
           </div>
@@ -48,16 +48,16 @@ function Dashboard() {
         {/* 销售额 */}
         <li className="container flex">
           <StrikethroughOutlined
-            style={{ fontSize: "50px", color: "red", width: "70px" }}
+            style={{ fontSize: '50px', color: 'red', width: '70px' }}
           />
           <div className="flex-1">
             <p>销售额/元</p>
             <p
               className="text-2xl my-2 flex justify-between"
-              style={{ color: "red" }}
+              style={{ color: 'red' }}
             >
               <NumberJumping endValue={98748780.56} />
-              <CaretDownOutlined style={{ color: "green" }} />
+              <CaretDownOutlined style={{ color: 'green' }} />
             </p>
             <p className="text-sm">呈现下降趋势</p>
           </div>
@@ -66,18 +66,18 @@ function Dashboard() {
         {/* 经营目标 */}
         <li className="container flex">
           <PieChartOutlined
-            style={{ fontSize: "50px", color: "#9dffa7", width: "70px" }}
+            style={{ fontSize: '50px', color: '#9dffa7', width: '70px' }}
           />
           <div className="flex-1">
             <p>经营目标/完成率</p>
             <p
               className="text-2xl my-2 flex justify-between"
-              style={{ color: "red" }}
+              style={{ color: 'red' }}
             >
               <span>
                 <NumberJumping endValue={66} />%
               </span>
-              <CaretDownOutlined style={{ color: "green" }} />
+              <CaretDownOutlined style={{ color: 'green' }} />
             </p>
             <p className="text-sm">实际完成的比例</p>
           </div>
@@ -86,16 +86,16 @@ function Dashboard() {
         {/* 当月利润 */}
         <li className="container flex">
           <BankOutlined
-            style={{ fontSize: "50px", color: "#307dff", width: "70px" }}
+            style={{ fontSize: '50px', color: '#307dff', width: '70px' }}
           />
           <div className="flex-1">
             <p>当月利润/元</p>
             <p
               className="text-2xl my-2 flex justify-between"
-              style={{ color: "red" }}
+              style={{ color: 'red' }}
             >
               <NumberJumping endValue={56456.98} />
-              <CaretUpOutlined style={{ color: "red" }} />
+              <CaretUpOutlined style={{ color: 'red' }} />
             </p>
             <p className="text-sm">扣除经营成本之后所得</p>
           </div>
@@ -144,7 +144,7 @@ function Dashboard() {
         </section>
       </section>
     </>
-  );
+  )
 }
 
-export default Dashboard;
+export default Dashboard

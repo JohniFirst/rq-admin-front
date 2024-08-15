@@ -1,5 +1,5 @@
 function Role() {
-  return <div>Role</div>;
+  return <div>Role</div>
 }
 
-export default Role;
+export default Role

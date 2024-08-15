@@ -1,13 +1,13 @@
-import { useEffect, useRef } from "react";
-import * as echarts from "echarts/core";
-import { GridComponent, LegendComponent } from "echarts/components";
-import { BarChart } from "echarts/charts";
-import { CanvasRenderer } from "echarts/renderers";
+import { useEffect, useRef } from 'react'
+import * as echarts from 'echarts/core'
+import { GridComponent, LegendComponent } from 'echarts/components'
+import { BarChart } from 'echarts/charts'
+import { CanvasRenderer } from 'echarts/renderers'
 
-import type { EChartsOption } from "echarts";
-import { echartsColors } from "@/enums/echartsColors";
+import type { EChartsOption } from 'echarts'
+import { echartsColors } from '@/enums/echartsColors'
 
-echarts.use([GridComponent, LegendComponent, BarChart, CanvasRenderer]);
+echarts.use([GridComponent, LegendComponent, BarChart, CanvasRenderer])
 
 /**
  * Renders a dynamic sorting bar chart for dish sales.
@@ -15,93 +15,93 @@ echarts.use([GridComponent, LegendComponent, BarChart, CanvasRenderer]);
  * @return {JSX.Element} The rendered dynamic sorting bar chart component.
  */
 function ChartOfDishSales(): JSX.Element {
-  const chartRef = useRef(null);
+  const chartRef = useRef(null)
 
-  const data: number[] = [];
+  const data: number[] = []
   for (let i = 0; i < 5; ++i) {
-    data.push(Math.round(Math.random() * 200));
+    data.push(Math.round(Math.random() * 200))
   }
 
   useEffect(() => {
     // 基于准备好的 dom，初始化 echarts 实例
-    const myChart = echarts.init(chartRef.current);
+    const myChart = echarts.init(chartRef.current)
 
     // 初始配置选项
     const option: EChartsOption = {
       title: {
-        text: "菜品销售数据",
+        text: '菜品销售数据'
       },
       xAxis: {
-        max: "dataMax",
+        max: 'dataMax'
       },
       yAxis: {
-        type: "category",
-        data: ["宫保鸡丁", "鱼香肉丝", "麻婆豆腐", "回锅肉", "糖醋排骨"],
+        type: 'category',
+        data: ['宫保鸡丁', '鱼香肉丝', '麻婆豆腐', '回锅肉', '糖醋排骨'],
         inverse: true,
         animationDuration: 300,
-        animationDurationUpdate: 300,
+        animationDurationUpdate: 300
       },
       color: echartsColors,
       tooltip: {
-        trigger: "axis",
+        trigger: 'axis'
       },
       series: [
         {
           realtimeSort: true,
-          name: "销量/份",
-          type: "bar",
+          name: '销量/份',
+          type: 'bar',
           data: data,
           label: {
             show: true,
-            position: "right",
-            valueAnimation: true,
-          },
-        },
+            position: 'right',
+            valueAnimation: true
+          }
+        }
       ],
       legend: {
-        show: true,
+        show: true
       },
       animationDuration: 0,
       animationDurationUpdate: 3000,
-      animationEasing: "linear",
-      animationEasingUpdate: "linear",
-    };
+      animationEasing: 'linear',
+      animationEasingUpdate: 'linear'
+    }
 
-    myChart.setOption(option);
+    myChart.setOption(option)
     function run() {
       for (let i = 0; i < data.length; ++i) {
         if (Math.random() > 0.9) {
-          data[i] += Math.round(Math.random() * 2000);
+          data[i] += Math.round(Math.random() * 2000)
         } else {
-          data[i] += Math.round(Math.random() * 200);
+          data[i] += Math.round(Math.random() * 200)
         }
       }
       myChart.setOption({
         series: [
           {
-            type: "bar",
-            data,
-          },
-        ],
-      });
+            type: 'bar',
+            data
+          }
+        ]
+      })
     }
 
-    run();
+    run()
 
     const interval = setInterval(() => {
-      run();
-    }, 3000);
+      run()
+    }, 3000)
 
     // 组件卸载时销毁图表和定时器
     return () => {
       if (myChart) {
-        myChart.dispose();
+        myChart.dispose()
       }
-      clearInterval(interval);
-    };
-  }, []);
+      clearInterval(interval)
+    }
+  }, [])
 
-  return <div ref={chartRef} style={{ width: "100%", height: "400px" }}></div>;
+  return <div ref={chartRef} style={{ width: '100%', height: '400px' }}></div>
 }
 
-export default ChartOfDishSales;
+export default ChartOfDishSales

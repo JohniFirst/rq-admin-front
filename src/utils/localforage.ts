@@ -1,5 +1,5 @@
-import localforage from "localforage";
-import type { ForageKeys } from "@/enums/localforage";
+import localforage from 'localforage'
+import type { ForageKeys } from '@/enums/localforage'
 
 class Forage {
   /**
@@ -13,12 +13,12 @@ class Forage {
     return new Promise((resolve) => {
       try {
         localforage.getItem(key).then((value) => {
-          return resolve(value as T);
-        });
+          return resolve(value as T)
+        })
       } catch (err) {
-        throw new Error(err as string);
+        throw new Error(err as string)
       }
-    });
+    })
   }
 
   /**
@@ -30,13 +30,13 @@ class Forage {
    */
   setItem(key: ForageKeys, value: object | string) {
     try {
-      if (typeof value !== "string") {
-        value = JSON.stringify(value);
+      if (typeof value !== 'string') {
+        value = JSON.stringify(value)
       }
 
-      localforage.setItem(key, value);
+      localforage.setItem(key, value)
     } catch (err) {
-      throw new Error(err as string);
+      throw new Error(err as string)
     }
   }
 
@@ -48,9 +48,9 @@ class Forage {
    */
   removeItem(key: ForageKeys) {
     try {
-      localforage.removeItem(key);
+      localforage.removeItem(key)
     } catch (err) {
-      throw new Error(err as string);
+      throw new Error(err as string)
     }
   }
 
@@ -61,11 +61,11 @@ class Forage {
    */
   clear() {
     try {
-      localforage.clear();
+      localforage.clear()
     } catch (err) {
-      throw new Error(err as string);
+      throw new Error(err as string)
     }
   }
 }
 
-export const forage = new Forage();
+export const forage = new Forage()
