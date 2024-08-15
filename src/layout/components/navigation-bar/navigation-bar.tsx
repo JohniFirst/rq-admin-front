@@ -13,6 +13,20 @@ import { useAppDispatch, useAppSelector } from '@/store/hooks'
 import { setNavItemAction } from '@/store/slice/system-info.ts'
 import useCustomNavigate from '@/hooks/useCustomNavigate'
 import { ContextMenuKey } from '@/enums/system'
+import {
+  DndContext,
+  PointerSensor,
+  closestCenter,
+  useSensor
+} from '@dnd-kit/core'
+import {
+  arrayMove,
+  horizontalListSortingStrategy,
+  SortableContext,
+  useSortable
+} from '@dnd-kit/sortable'
+import { CSS } from '@dnd-kit/utilities'
+import type { DragEndEvent } from '@dnd-kit/core'
 
 const contextMenu: MenuProps['items'] = [
   {
@@ -152,34 +166,76 @@ function NavigationBar() {
     currentClickTarget = item
   }
 
+  const sensor = useSensor(PointerSensor, {
+    activationConstraint: { distance: 10 }
+  })
+
+  const onDragEnd = ({ active, over }: DragEndEvent) => {
+    if (active.id !== over?.id) {
+      const temp = (() => {
+        const activeIndex = navItem.findIndex((i) => i.key === active.id)
+        const overIndex = navItem.findIndex((i) => i.key === over?.id)
+        return arrayMove(navItem, activeIndex, overIndex)
+      })()
+      setNavItem(temp)
+    }
+  }
+
+  const DraggableTabNode = ({ item }: { item: NavItem }) => {
+    const { transform, transition, setNodeRef, attributes, listeners } =
+      useSortable({ id: item.key })
+
+    const style: React.CSSProperties = {
+      transform: CSS.Translate.toString(transform),
+      transition,
+      cursor: 'move'
+    }
+
+    return (
+      <li
+        ref={setNodeRef}
+        {...attributes}
+        {...listeners}
+        style={style}
+        className={`${
+          location.pathname === item.key
+            ? 'bg-sky-50 text-blue-500 border-blue-500 border-x border-y'
+            : ''
+        } cursor-pointer dark:bg-[#242424] bg-white py-1 px-3 rounded-md shrink-0`}
+        onClick={() => navgation(item.key)}
+        key={item.key}
+        onContextMenu={() => navContentMenu(item)}
+      >
+        {item.fixed ? <PushpinOutlined className="text-red-500" /> : ''}
+        {item.label}{' '}
+        <CloseOutlined
+          onClick={(e) => closeCurrentNav(e, item)}
+          className="text-xs text-gray-400 hover:text-blue-600"
+        />
+      </li>
+    )
+  }
+
   return (
     <Dropdown
       menu={{ items: contextMenu, onClick: handleMenuClick }}
       trigger={['contextMenu']}
     >
       <ul className="flex gap-2 dark:bg-black bg-gray-50 py-2">
-        {navItem.map((item) => {
-          return (
-            <li
-              draggable
-              className={`${
-                location.pathname === item.key
-                  ? 'bg-sky-50 text-blue-500 border-blue-500 border-x border-y'
-                  : ''
-              } cursor-pointer dark:bg-[#242424] bg-white py-1 px-3 rounded-md shrink-0`}
-              key={item.key}
-              onClick={() => navgation(item.key)}
-              onContextMenu={() => navContentMenu(item)}
-            >
-              {item.fixed ? <PushpinOutlined className="text-red-500" /> : ''}
-              {item.label}{' '}
-              <CloseOutlined
-                onClick={(e) => closeCurrentNav(e, item)}
-                className="text-xs text-gray-400 hover:text-blue-600"
-              />
-            </li>
-          )
-        })}
+        <DndContext
+          sensors={[sensor]}
+          onDragEnd={onDragEnd}
+          collisionDetection={closestCenter}
+        >
+          <SortableContext
+            items={navItem.map((i) => i.key)}
+            strategy={horizontalListSortingStrategy}
+          >
+            {navItem.map((item) => (
+              <DraggableTabNode key={item.key} item={item} />
+            ))}
+          </SortableContext>
+        </DndContext>
       </ul>
     </Dropdown>
   )
