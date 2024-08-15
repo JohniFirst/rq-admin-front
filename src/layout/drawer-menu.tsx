@@ -1,28 +1,28 @@
-import { useEffect, useState } from "react";
-import { Menu } from "antd";
-import HeaderOperate from "./components/header-operate";
-import NavigationBar from "./components/navigation-bar/navigation-bar";
-import { Outlet, useLocation } from "react-router-dom";
-import { useAppDispatch, useAppSelector } from "@/store/hooks";
-import { pushNavItemAction } from "@/store/slice/system-info.ts";
-import useCustomNavigate from "@/hooks/useCustomNavigate";
-import drawer from "./css/drawerMenu.module.css";
+import { useEffect, useState } from 'react'
+import { Menu } from 'antd'
+import HeaderOperate from './components/header-operate'
+import NavigationBar from './components/navigation-bar/navigation-bar'
+import { Outlet, useLocation } from 'react-router-dom'
+import { useAppDispatch, useAppSelector } from '@/store/hooks'
+import { pushNavItemAction } from '@/store/slice/system-info.ts'
+import useCustomNavigate from '@/hooks/useCustomNavigate'
+import drawer from './css/drawerMenu.module.css'
 
-import type { MenuProps } from "antd";
+import type { MenuProps } from 'antd'
 
 /**
  * 可折叠的子菜单
  */
 function DrawerMenu() {
-  const navigate = useCustomNavigate();
-  const dispatch = useAppDispatch();
-  const menus = useAppSelector((state) => state.menu.menu);
-  const [topActiveMenu, setTopActiveMenu] = useState<MenuItem>(menus[0]);
+  const navigate = useCustomNavigate()
+  const dispatch = useAppDispatch()
+  const menus = useAppSelector((state) => state.menu)
+  const [topActiveMenu, setTopActiveMenu] = useState<MenuItem>(menus[0])
 
-  console.log("topActiveMenu", topActiveMenu);
+  console.log('topActiveMenu', topActiveMenu)
 
-  const onClick: MenuProps["onClick"] = (e) => {
-    navigate(e.key);
+  const onClick: MenuProps['onClick'] = (e) => {
+    navigate(e.key)
 
     dispatch(
       pushNavItemAction({
@@ -30,54 +30,54 @@ function DrawerMenu() {
         // @ts-ignore
         label: e.item.props.title,
         active: true,
-        fixed: false,
-      }),
-    );
-  };
+        fixed: false
+      })
+    )
+  }
 
-  const location = useLocation();
+  const location = useLocation()
 
   // 找到当前选中项和需要展开的项
   const findSelectedAndOpenKeys = (items: MenuItem[], currentPath: string) => {
-    let selectedKey = "";
-    const openKeys: string[] = [];
+    let selectedKey = ''
+    const openKeys: string[] = []
 
     const findKeys = (items: MenuItem[]) => {
       items.forEach((item: MenuItem) => {
-        if (item && Object.keys(item).includes("children")) {
+        if (item && Object.keys(item).includes('children')) {
           // @ts-ignore
-          const children = item.children;
+          const children = item.children
           if (
             Array.isArray(children) &&
             children.some((child: { key: string }) => child.key === currentPath)
           ) {
-            selectedKey = currentPath;
-            openKeys.push(item.key as string);
+            selectedKey = currentPath
+            openKeys.push(item.key as string)
           }
-          findKeys(children);
+          findKeys(children)
         } else if (item?.key === currentPath) {
-          selectedKey = currentPath;
+          selectedKey = currentPath
         }
-      });
-    };
+      })
+    }
 
-    findKeys(items);
-    return { selectedKey, openKeys };
-  };
+    findKeys(items)
+    return { selectedKey, openKeys }
+  }
 
-  const [selectedKey, setSelectedKey] = useState([""]);
-  const [openKeys, setOpenKeys] = useState<string[]>([]);
+  const [selectedKey, setSelectedKey] = useState([''])
+  const [openKeys, setOpenKeys] = useState<string[]>([])
 
   useEffect(() => {
-    const result = findSelectedAndOpenKeys(menus, location.pathname);
-    setSelectedKey([result.selectedKey]);
-    setOpenKeys(result.openKeys);
-  }, [location]);
+    const result = findSelectedAndOpenKeys(menus, location.pathname)
+    setSelectedKey([result.selectedKey])
+    setOpenKeys(result.openKeys)
+  }, [location])
 
   const onOpenChange = (keys: string[]) => {
     // 更新展开的菜单项
-    setOpenKeys(keys);
-  };
+    setOpenKeys(keys)
+  }
 
   return (
     <>
@@ -90,7 +90,7 @@ function DrawerMenu() {
                   className={`${
                     topActiveMenu.key === item.key
                       ? `${drawer.activeTopMenu}`
-                      : ""
+                      : ''
                   }`}
                   key={item.key}
                   onClick={() => setTopActiveMenu(item)}
@@ -98,7 +98,7 @@ function DrawerMenu() {
                   {item.icon}
                   <p>{item.label}</p>
                 </li>
-              );
+              )
             })}
           </ul>
 
@@ -131,7 +131,7 @@ function DrawerMenu() {
         </section>
       </div>
     </>
-  );
+  )
 }
 
-export default DrawerMenu;
+export default DrawerMenu

@@ -70,3 +70,13 @@ body {
 .share-animation {
   view-transition-name: share;
 }
+
+.login-view-transitoin {
+  view-transition-name: login;
+}
+
+.searchable-menu-icon-wp {
+  padding: 2px;
+  background-color: #f9fafb;
+  border-radius: 4px;
+}

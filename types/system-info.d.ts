@@ -1,32 +1,28 @@
-type Theme = "light" | "dark";
+type Theme = 'light' | 'dark'
 
 type NavItem = {
-  key: string;
-  label: string;
-  fixed: boolean;
-  active: boolean;
-};
+  key: string
+  label: string
+  fixed: boolean
+  active: boolean
+}
 
-type MenuMode = "common-menu" | "drawer-menu" | "header-menu";
+type MenuMode = 'common-menu' | 'drawer-menu' | 'header-menu'
 
 type LocalSystemInfo = {
   // 系统主题 浅色/深色
-  theme: Theme;
+  theme: Theme
   // 导航菜单模式
-  menuMode: MenuMode;
-};
+  menuMode: MenuMode
+}
 
 type SystemInfo = LocalSystemInfo & {
   // 系统导航栏
-  navItem: NavItem[];
-};
+  navItem: NavItem[]
+}
 
 type RouterState = {
-  router: RouteObject[];
-};
+  router: RouteObject[]
+}
 
-type MenuItem = Required<MenuProps>["items"][number];
-
-type MenuSlice = {
-  menu: MenuItem[];
-};
+type MenuItem = Required<MenuProps>['items'][number]

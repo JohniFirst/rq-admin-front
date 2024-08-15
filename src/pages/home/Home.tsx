@@ -1,15 +1,20 @@
-import { Link } from "react-router-dom";
-
-import home from "./css/home.module.css";
+import useCustomNavigate from '@/hooks/useCustomNavigate'
+import home from './css/home.module.css'
 
 function Home() {
+  const navigate = useCustomNavigate()
+
   return (
     <>
       <header className="w-full text-right p-5 bg-blue-400">
-        <Link className="text-slate-50" to="/login">
+        <span
+          className="text-slate-50 login-view-transitoin cursor-pointer"
+          onClick={() => navigate('/login', false)}
+        >
           登录
-        </Link>
+        </span>
       </header>
+
       <main className="m-4">
         <p className={home.introTitle}>功能特点</p>
         <ul className="ml-4">
@@ -28,6 +33,7 @@ function Home() {
           <li>
             13、增加git提交钩子，提交到git仓库的代码进行质量管理，对提交信息进行规范
           </li>
+          <li>14、实现了共享元素动画</li>
         </ul>
 
         <p className={home.introTitle}>hooks一览</p>
@@ -44,15 +50,18 @@ function Home() {
         <ul className="ml-4">
           <li>1、动态路由</li>
           <li>2、动态菜单，并且完善菜单的导航方式</li>
-          <li>3、完善动画组件（共享元素动画）</li>
+          <li>3、完善动画组件</li>
           <li>4、实现pdf编辑组件，向pdf内部新增图片</li>
           <li>5、更灵活的图片裁剪组件，支持放大，缩小，所见即所得</li>
           <li>6、表格组件增加pdf导出功能、增加打印功能</li>
-          <li>6、路由切换增加动画，其余界面增加动画</li>
+          <li>7、路由切换增加动画，其余界面增加动画</li>
+          <li>8、实现文件上传组件、支持多文件上传、支持拖拽</li>
+          <li>9、实现浏览器端的文件选择</li>
+          <li>10、修改复制到剪切板hooks，使用更新的api</li>
         </ul>
       </main>
     </>
-  );
+  )
 }
 
-export default Home;
+export default Home

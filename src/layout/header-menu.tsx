@@ -1,24 +1,24 @@
-import { Menu } from "antd";
-import HeaderOperate from "./components/header-operate";
-import NavigationBar from "./components/navigation-bar/navigation-bar";
-import { Outlet, useLocation } from "react-router-dom";
-import { useAppDispatch, useAppSelector } from "@/store/hooks";
-import { pushNavItemAction } from "@/store/slice/system-info.ts";
-import useCustomNavigate from "@/hooks/useCustomNavigate";
+import { Menu } from 'antd'
+import HeaderOperate from './components/header-operate'
+import NavigationBar from './components/navigation-bar/navigation-bar'
+import { Outlet, useLocation } from 'react-router-dom'
+import { useAppDispatch, useAppSelector } from '@/store/hooks'
+import { pushNavItemAction } from '@/store/slice/system-info.ts'
+import useCustomNavigate from '@/hooks/useCustomNavigate'
 
-import type { MenuProps } from "antd";
-import { useEffect, useState } from "react";
+import type { MenuProps } from 'antd'
+import { useEffect, useState } from 'react'
 
 /**
  * 顶部导航菜单
  */
 function HeaderMenu() {
-  const navigate = useCustomNavigate();
-  const dispatch = useAppDispatch();
-  const menus = useAppSelector((state) => state.menu.menu);
+  const navigate = useCustomNavigate()
+  const dispatch = useAppDispatch()
+  const menus = useAppSelector((state) => state.menu)
 
-  const onClick: MenuProps["onClick"] = (e) => {
-    navigate(e.key);
+  const onClick: MenuProps['onClick'] = (e) => {
+    navigate(e.key)
 
     dispatch(
       pushNavItemAction({
@@ -26,47 +26,47 @@ function HeaderMenu() {
         // @ts-ignore
         label: e.item.props.title,
         active: true,
-        fixed: false,
-      }),
-    );
-  };
+        fixed: false
+      })
+    )
+  }
 
-  const location = useLocation();
+  const location = useLocation()
 
   // 找到当前选中项和需要展开的项
   const findSelectedAndOpenKeys = (items: MenuItem[], currentPath: string) => {
-    let selectedKey = "";
-    const openKeys: string[] = [];
+    let selectedKey = ''
+    const openKeys: string[] = []
 
     const findKeys = (items: MenuItem[]) => {
       items.forEach((item: MenuItem) => {
-        if (item && Object.keys(item).includes("children")) {
+        if (item && Object.keys(item).includes('children')) {
           // @ts-ignore
-          const children = item.children;
+          const children = item.children
           if (
             Array.isArray(children) &&
             children.some((child: { key: string }) => child.key === currentPath)
           ) {
-            selectedKey = currentPath;
-            openKeys.push(item.key as string);
+            selectedKey = currentPath
+            openKeys.push(item.key as string)
           }
-          findKeys(children);
+          findKeys(children)
         } else if (item?.key === currentPath) {
-          selectedKey = currentPath;
+          selectedKey = currentPath
         }
-      });
-    };
+      })
+    }
 
-    findKeys(items);
-    return { selectedKey, openKeys };
-  };
+    findKeys(items)
+    return { selectedKey, openKeys }
+  }
 
-  const [selectedKey, setSelectedKey] = useState([""]);
+  const [selectedKey, setSelectedKey] = useState([''])
 
   useEffect(() => {
-    const result = findSelectedAndOpenKeys(menus, location.pathname);
-    setSelectedKey([result.selectedKey]);
-  }, [location]);
+    const result = findSelectedAndOpenKeys(menus, location.pathname)
+    setSelectedKey([result.selectedKey])
+  }, [location])
 
   return (
     <section className="w-full flex flex-col h-screen col-auto">
@@ -87,7 +87,7 @@ function HeaderMenu() {
         <Outlet />
       </main>
     </section>
-  );
+  )
 }
 
-export default HeaderMenu;
+export default HeaderMenu

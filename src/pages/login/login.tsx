@@ -1,20 +1,20 @@
 // import React, { useState, useEffect } from "react";
-import { Form, Input, Button, Checkbox } from "antd";
-import { useNavigate } from "react-router-dom";
+import { Form, Input, Button, Checkbox } from 'antd'
+import { useNavigate } from 'react-router-dom'
 // import JSEncrypt from "jsencrypt";
-import login from "./login.module.css";
-import VerificationCodeInput from "@/components/base/verification-code-input";
+import login from './login.module.css'
+import VerificationCodeInput from '@/components/base/verification-code-input'
 // import { useCustomRoutes } from "@/routes";
 // import { dynamicRoutes } from "@/routes/dynamic-routes";
 
 interface LoginFormValues {
-  username: string;
-  password: string;
+  username: string
+  password: string
 }
 
 const LoginForm = () => {
-  const [form] = Form.useForm();
-  const navigate = useNavigate();
+  const [form] = Form.useForm()
+  const navigate = useNavigate()
   // const { routes, addRoutes } = useCustomRoutes();
 
   // useEffect(() => {
@@ -32,9 +32,9 @@ const LoginForm = () => {
     // console.log("Encrypted Password:", encryptedPassword);
     // addRoutes(dynamicRoutes);
 
-    console.log(values);
-    navigate("/dashboard");
-  };
+    console.log(values)
+    navigate('/dashboard')
+  }
 
   // const encryptPassword = async (password: string) => {};
 
@@ -46,7 +46,7 @@ const LoginForm = () => {
       </video>
 
       <section className={login.formWp}>
-        <h2 className={login.loginTitle}>登 录</h2>
+        <h2 className={`${login.loginTitle} login-view-transitoin`}>登 录</h2>
         <Form
           form={form}
           name="loginForm"
@@ -57,20 +57,20 @@ const LoginForm = () => {
             remember: true,
             username: 1,
             password: 2,
-            verificationCode: 1,
+            verificationCode: 1
           }}
         >
           <Form.Item
             name="username"
             label="用户名"
-            rules={[{ required: true, message: "请输入您的用户名！" }]}
+            rules={[{ required: true, message: '请输入您的用户名！' }]}
           >
             <Input placeholder="用户名" />
           </Form.Item>
           <Form.Item
             name="password"
             label="密码"
-            rules={[{ required: true, message: "请输入您的密码！" }]}
+            rules={[{ required: true, message: '请输入您的密码！' }]}
           >
             <Input.Password placeholder="8-24位字母、数字组合" />
           </Form.Item>
@@ -93,7 +93,7 @@ const LoginForm = () => {
         </Form>
       </section>
     </section>
-  );
-};
+  )
+}
 
-export default LoginForm;
+export default LoginForm

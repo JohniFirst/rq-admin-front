@@ -1,24 +1,24 @@
-import { Menu } from "antd";
-import HeaderOperate from "./components/header-operate";
-import NavigationBar from "./components/navigation-bar/navigation-bar";
-import { Outlet, useLocation } from "react-router-dom";
-import { useAppDispatch, useAppSelector } from "@/store/hooks";
-import { pushNavItemAction } from "@/store/slice/system-info.ts";
-import useCustomNavigate from "@/hooks/useCustomNavigate";
+import { Menu } from 'antd'
+import HeaderOperate from './components/header-operate'
+import NavigationBar from './components/navigation-bar/navigation-bar'
+import { Outlet, useLocation } from 'react-router-dom'
+import { useAppDispatch, useAppSelector } from '@/store/hooks'
+import { pushNavItemAction } from '@/store/slice/system-info.ts'
+import useCustomNavigate from '@/hooks/useCustomNavigate'
 
-import type { MenuProps } from "antd";
-import { useEffect, useState } from "react";
+import type { MenuProps } from 'antd'
+import { useEffect, useState } from 'react'
 
 /**
  * 常规菜单
  */
 function CommonMenu() {
-  const navigate = useCustomNavigate();
-  const dispatch = useAppDispatch();
-  const menus = useAppSelector((state) => state.menu.menu);
+  const navigate = useCustomNavigate()
+  const dispatch = useAppDispatch()
+  const menus = useAppSelector((state) => state.menu)
 
-  const onClick: MenuProps["onClick"] = (e) => {
-    navigate(e.key);
+  const onClick: MenuProps['onClick'] = (e) => {
+    navigate(e.key)
 
     dispatch(
       pushNavItemAction({
@@ -26,54 +26,53 @@ function CommonMenu() {
         // @ts-ignore
         label: e.item.props.title,
         active: true,
-        fixed: false,
-      }),
-    );
-  };
+        fixed: false
+      })
+    )
+  }
 
-  const location = useLocation();
+  const location = useLocation()
 
   // 找到当前选中项和需要展开的项
   const findSelectedAndOpenKeys = (items: MenuItem[], currentPath: string) => {
-    let selectedKey = "";
-    const openKeys: string[] = [];
+    let selectedKey = ''
 
-    const findKeys = (items: MenuItem[]) => {
-      items.forEach((item: MenuItem) => {
-        if (item && Object.keys(item).includes("children")) {
-          // @ts-ignore
-          const children = item.children;
-          if (
-            Array.isArray(children) &&
-            children.some((child: { key: string }) => child.key === currentPath)
-          ) {
-            selectedKey = currentPath;
-            openKeys.push(item.key as string);
+    const findKeys = (items: MenuItem[]): string[] | undefined => {
+      for (let i = 0, l = items.length; i < l; i++) {
+        if (items[i].key === currentPath) {
+          selectedKey = items[i].key
+          return items[i].key
+        } else if (items[i].children) {
+          const tempResult = findKeys(items[i].children)
+          if (tempResult) {
+            const tempOpenKey = [items[i].key]
+            if (Array.isArray(tempResult)) {
+              tempOpenKey.push(tempResult[0])
+            }
+            return tempOpenKey
           }
-          findKeys(children);
-        } else if (item?.key === currentPath) {
-          selectedKey = currentPath;
         }
-      });
-    };
+      }
+    }
 
-    findKeys(items);
-    return { selectedKey, openKeys };
-  };
+    const openKeys = findKeys(items)
 
-  const [selectedKey, setSelectedKey] = useState([""]);
-  const [openKeys, setOpenKeys] = useState<string[]>([]);
+    return { selectedKey, openKeys }
+  }
+
+  const [selectedKey, setSelectedKey] = useState([''])
+  const [openKeys, setOpenKeys] = useState<string[]>([])
 
   useEffect(() => {
-    const result = findSelectedAndOpenKeys(menus, location.pathname);
-    setSelectedKey([result.selectedKey]);
-    setOpenKeys(result.openKeys);
-  }, [location]);
+    const result = findSelectedAndOpenKeys(menus, location.pathname)
+    setSelectedKey([result.selectedKey])
+    setOpenKeys(result.openKeys as string[])
+  }, [location])
 
   const onOpenChange = (keys: string[]) => {
     // 更新展开的菜单项
-    setOpenKeys(keys);
-  };
+    setOpenKeys(keys)
+  }
 
   return (
     <>
@@ -106,7 +105,7 @@ function CommonMenu() {
         </section>
       </div>
     </>
-  );
+  )
 }
 
-export default CommonMenu;
+export default CommonMenu

@@ -1,4 +1,5 @@
-import { useNavigate } from "react-router-dom";
+import { flushSync } from 'react-dom'
+import { useNavigate } from 'react-router-dom'
 
 /**
  * 重写react-router-dom的useNavigate
@@ -8,13 +9,17 @@ import { useNavigate } from "react-router-dom";
  * 默认采用replace模式
  */
 function useCustomNavigate() {
-  const navigate = useNavigate();
+  const navigate = useNavigate()
 
-  return (path: string) => {
+  return (path: string, replace = true) => {
     if (path !== window.location.pathname) {
-      navigate(path, { replace: true });
+      document.startViewTransition(() => {
+        flushSync(() => {
+          navigate(path, { replace })
+        })
+      })
     }
-  };
+  }
 }
 
-export default useCustomNavigate;
+export default useCustomNavigate

@@ -1,38 +1,25 @@
-import share from "@/assets/imgs/share.jpg";
-import useCustomNavigate from "@/hooks/useCustomNavigate";
-import { flushSync } from "react-dom";
+import share from '@/assets/imgs/share.jpg'
+import useCustomNavigate from '@/hooks/useCustomNavigate'
 
 const showList = [
   {
     src: share,
-    title: "给你一个炫彩的标题",
-    descriptions: "lorem ",
-    time: "2024-08-14",
-  },
-];
-
-/**
- *
- * @returns
- */
-function ShareAnimation() {
-  const navigate = useCustomNavigate();
-
-  function viewDetail() {
-    document.startViewTransition(() => {
-      // 诸多问题，导致需要这么做
-      flushSync(() => {
-        navigate("/event-pro/animate/share-animation-detail");
-      });
-    });
+    title: '给你一个炫彩的标题',
+    descriptions: 'lorem ',
+    time: '2024-08-14'
   }
+]
+
+/** 共享元素动画列表 */
+function ShareAnimation() {
+  const navigate = useCustomNavigate()
 
   return (
     <ul className="container">
       {showList.map((item, index) => (
         <li
           className="flex mb-4 border-b-2 py-3"
-          onClick={viewDetail}
+          onClick={() => navigate('/event-pro/animate/share-animation-detail')}
           key={index}
         >
           <img
@@ -49,7 +36,7 @@ function ShareAnimation() {
         </li>
       ))}
     </ul>
-  );
+  )
 }
 
-export default ShareAnimation;
+export default ShareAnimation
