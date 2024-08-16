@@ -3,7 +3,7 @@ import {
   DownloadOutlined,
   PrinterOutlined,
   ReloadOutlined,
-  SettingOutlined
+  SettingOutlined,
 } from '@ant-design/icons'
 import { Button, Col, Form, Input, Row, Space, Table, Tooltip } from 'antd'
 import { format } from 'date-fns'
@@ -11,7 +11,7 @@ import type { FormProps, TableProps } from 'antd'
 
 type BaseTableProps = {
   tableProps: TableProps
-  searchProps: FormProps
+  searchProps?: FormProps
 }
 
 type FieldType = {
@@ -41,7 +41,7 @@ const BaseTable: React.FC<BaseTableProps> = ({ tableProps }) => {
       headers: tableProps.columns!.map((column) => column.title) as string[],
       data: tableProps.dataSource!.map((item) => {
         return keys.map((key) => item[key])
-      })
+      }),
     }
     exportToExcel(excelData, `${format(Date.now(), 'yyyy-MM-dd')}.xlsx`)
   }
@@ -61,7 +61,7 @@ const BaseTable: React.FC<BaseTableProps> = ({ tableProps }) => {
               label="Username"
               name="username"
               rules={[
-                { required: true, message: 'Please input your username!' }
+                { required: true, message: 'Please input your username!' },
               ]}
             >
               <Input />
@@ -72,7 +72,7 @@ const BaseTable: React.FC<BaseTableProps> = ({ tableProps }) => {
               label="Username"
               name="username"
               rules={[
-                { required: true, message: 'Please input your username!' }
+                { required: true, message: 'Please input your username!' },
               ]}
             >
               <Input />
@@ -96,8 +96,6 @@ const BaseTable: React.FC<BaseTableProps> = ({ tableProps }) => {
         {/* 操作栏 */}
         <section className="mb-4 text-right">
           <Space size={'middle'}>
-            <Button type="primary">新增</Button>
-
             <Tooltip title="导出Excel">
               <DownloadOutlined
                 className="cursor-pointer hover:text-red-500"
@@ -130,7 +128,7 @@ const BaseTable: React.FC<BaseTableProps> = ({ tableProps }) => {
             showSizeChanger: true,
             showQuickJumper: true,
             showTotal: (total) => `总计 ${total} 条`,
-            ...tableProps.pagination
+            ...tableProps.pagination,
           }}
         />
       </section>

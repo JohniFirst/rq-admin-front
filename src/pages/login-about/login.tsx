@@ -30,7 +30,7 @@ const LoginForm = () => {
 
     await handleLogin(values)
 
-    // navigate('/dashboard')
+    navigate('/dashboard')
   }
 
   // const encryptPassword = async (password: string) => {};
@@ -52,7 +52,7 @@ const LoginForm = () => {
             remember: true,
             username: 'zhangsan',
             password: 2,
-            verificationCode: 1
+            verificationCode: 1,
           }}
         >
           <Form.Item

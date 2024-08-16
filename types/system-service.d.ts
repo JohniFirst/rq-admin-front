@@ -12,3 +12,8 @@ type GlobalResponse<T> = {
   message: string
   data: T
 }
+
+type UserListRes = {
+  id: number
+  isEnabled: 0 | 1
+}
