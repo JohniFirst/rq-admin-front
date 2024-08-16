@@ -3,11 +3,11 @@ export enum ContextMenuKey {
   CLOSE_RIGHT = 'close-right',
   CLOSE_OTHERS = 'close-others',
   FIXED = 'fixed',
-  OPEN_NEW = 'open-new'
+  OPEN_NEW = 'open-new',
 }
 
 export enum MenuModeEnum {
   COMMON_MENU = 'common-menu',
   DRAWER_MENU = 'drawer-menu',
-  HEADER_MENU = 'header-menu'
+  HEADER_MENU = 'header-menu',
 }

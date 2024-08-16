@@ -29,21 +29,21 @@ function ChartOfDishSales(): JSX.Element {
     // 初始配置选项
     const option: EChartsOption = {
       title: {
-        text: '菜品销售数据'
+        text: '菜品销售数据',
       },
       xAxis: {
-        max: 'dataMax'
+        max: 'dataMax',
       },
       yAxis: {
         type: 'category',
         data: ['宫保鸡丁', '鱼香肉丝', '麻婆豆腐', '回锅肉', '糖醋排骨'],
         inverse: true,
         animationDuration: 300,
-        animationDurationUpdate: 300
+        animationDurationUpdate: 300,
       },
       color: echartsColors,
       tooltip: {
-        trigger: 'axis'
+        trigger: 'axis',
       },
       series: [
         {
@@ -54,17 +54,17 @@ function ChartOfDishSales(): JSX.Element {
           label: {
             show: true,
             position: 'right',
-            valueAnimation: true
-          }
-        }
+            valueAnimation: true,
+          },
+        },
       ],
       legend: {
-        show: true
+        show: true,
       },
       animationDuration: 0,
       animationDurationUpdate: 3000,
       animationEasing: 'linear',
-      animationEasingUpdate: 'linear'
+      animationEasingUpdate: 'linear',
     }
 
     myChart.setOption(option)
@@ -80,9 +80,9 @@ function ChartOfDishSales(): JSX.Element {
         series: [
           {
             type: 'bar',
-            data
-          }
-        ]
+            data,
+          },
+        ],
       })
     }
 

@@ -4,7 +4,7 @@ import { PieChart } from 'echarts/charts'
 import {
   TitleComponent,
   TooltipComponent,
-  LegendComponent
+  LegendComponent,
 } from 'echarts/components'
 import { LabelLayout, UniversalTransition } from 'echarts/features'
 import { CanvasRenderer } from 'echarts/renderers'
@@ -20,7 +20,7 @@ echarts.use([
   PieChart,
   LabelLayout,
   UniversalTransition,
-  CanvasRenderer
+  CanvasRenderer,
 ])
 
 interface PayMethod {
@@ -41,7 +41,7 @@ function ChartOfPayMethodRelation() {
     { name: '支付宝', value: 20 },
     { name: '云闪付', value: 10 },
     { name: '数字人民币', value: 5 },
-    { name: '其它方式', value: 5 }
+    { name: '其它方式', value: 5 },
   ])
 
   useEffect(() => {
@@ -53,7 +53,7 @@ function ChartOfPayMethodRelation() {
         { name: '支付宝', value: 20 },
         { name: '云闪付', value: 10 },
         { name: '数字人民币', value: 5 },
-        { name: '其它方式', value: 5 }
+        { name: '其它方式', value: 5 },
       ])
     } else if (timeRange === '每周') {
       setData([
@@ -62,7 +62,7 @@ function ChartOfPayMethodRelation() {
         { name: '支付宝', value: 15 },
         { name: '云闪付', value: 10 },
         { name: '数字人民币', value: 8 },
-        { name: '其它方式', value: 7 }
+        { name: '其它方式', value: 7 },
       ])
     } else if (timeRange === '每月') {
       setData([
@@ -71,7 +71,7 @@ function ChartOfPayMethodRelation() {
         { name: '支付宝', value: 15 },
         { name: '云闪付', value: 8 },
         { name: '数字人民币', value: 5 },
-        { name: '其它方式', value: 2 }
+        { name: '其它方式', value: 2 },
       ])
     } else if (timeRange === '每年') {
       setData([
@@ -80,7 +80,7 @@ function ChartOfPayMethodRelation() {
         { name: '支付宝', value: 15 },
         { name: '云闪付', value: 8 },
         { name: '数字人民币', value: 5 },
-        { name: '其它方式', value: 2 }
+        { name: '其它方式', value: 2 },
       ])
     }
 
@@ -88,14 +88,14 @@ function ChartOfPayMethodRelation() {
 
     const option: EChartsOption = {
       title: {
-        text: `顾客支付方式（${timeRange}）`
+        text: `顾客支付方式（${timeRange}）`,
       },
       color: echartsColors,
       tooltip: {
-        trigger: 'item'
+        trigger: 'item',
       },
       legend: {
-        bottom: 'bottom'
+        bottom: 'bottom',
       },
       series: [
         {
@@ -107,11 +107,11 @@ function ChartOfPayMethodRelation() {
             itemStyle: {
               shadowBlur: 10,
               shadowOffsetX: 0,
-              shadowColor: 'rgba(0, 0, 0, 0.5)'
-            }
-          }
-        }
-      ]
+              shadowColor: 'rgba(0, 0, 0, 0.5)',
+            },
+          },
+        },
+      ],
     }
 
     myChart.setOption(option)

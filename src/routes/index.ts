@@ -8,7 +8,7 @@ export function useCustomRoutes() {
   const [routes, setRoutes] = useState<RouteObject[]>([
     ...defaultRoutes,
     ...dynamicRoutes,
-    ...errorRoutes
+    ...errorRoutes,
   ])
 
   // 动态添加路由

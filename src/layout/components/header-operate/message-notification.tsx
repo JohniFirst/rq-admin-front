@@ -9,7 +9,7 @@ interface MessageNotificationProps {
 type MessageNotificationTab = 'unread' | 'read'
 
 const MessageNotification: React.FC<MessageNotificationProps> = ({
-  unreadMessages
+  unreadMessages,
 }) => {
   const [activeTab, setActiveTab] = useState<MessageNotificationTab>('unread') // 未读消息或已读消息
 
@@ -38,13 +38,13 @@ const MessageNotification: React.FC<MessageNotificationProps> = ({
             标记所有为已读
           </Button>
         </div>
-      )
+      ),
     },
     {
       key: 'read',
       label: '已读消息列表',
-      children: 'Content of Tab Pane 2'
-    }
+      children: 'Content of Tab Pane 2',
+    },
   ]
 
   return (

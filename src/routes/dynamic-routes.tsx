@@ -14,6 +14,7 @@ import VideoPlayer from '@/pages/event-pro/video-player/video-player'
 import PictureStitching from '@/pages/event-pro/picture-stitching/picture-stitching'
 import ShareAnimation from '@/pages/event-pro/animate/share-animation/share-animation'
 import ShareAnimationDetail from '@/pages/event-pro/animate/share-animation-detail/share-animation-detail'
+import UserInfo from '@/pages/system/user-info/user-info'
 
 export const dynamicRoutes: RouteObject[] = [
   {
@@ -28,39 +29,39 @@ export const dynamicRoutes: RouteObject[] = [
           return new Promise((resolve) => {
             resolve('dashboard')
           })
-        }
+        },
       },
       {
         path: '/event',
         children: [
           {
             path: 'table',
-            element: <Table />
+            element: <Table />,
           },
           {
             path: 'table-frontend',
-            element: <TableFrontend />
+            element: <TableFrontend />,
           },
           {
             path: 'copy-to-clipboard',
-            element: <CopyToClipboard />
-          }
-        ]
+            element: <CopyToClipboard />,
+          },
+        ],
       },
       {
         path: '/event-pro',
         children: [
           {
             path: 'danmu',
-            element: <Danmu />
+            element: <Danmu />,
           },
           {
             path: 'video-player',
-            element: <VideoPlayer />
+            element: <VideoPlayer />,
           },
           {
             path: 'picture-stitching',
-            element: <PictureStitching />
+            element: <PictureStitching />,
             // lazy: () => import("@/pages/event-pro/picture-stitching/picture-stitching").then((module) => ({
             //   element: <module.default />,
             // })),
@@ -70,33 +71,34 @@ export const dynamicRoutes: RouteObject[] = [
             children: [
               {
                 path: 'share-animation',
-                element: <ShareAnimation />
+                element: <ShareAnimation />,
               },
               {
                 path: 'share-animation-detail',
-                element: <ShareAnimationDetail />
-              }
-            ]
-          }
-        ]
+                element: <ShareAnimationDetail />,
+              },
+            ],
+          },
+        ],
       },
       {
         path: '/system',
         children: [
           {
             path: 'user',
-            element: <User />
+            element: <User />,
           },
           {
             path: 'role',
-            element: <Role />
+            element: <Role />,
           },
           {
             path: 'menu',
-            element: <Menu />
-          }
-        ]
-      }
-    ]
-  }
+            element: <Menu />,
+          },
+          { path: 'user-info', element: <UserInfo /> },
+        ],
+      },
+    ],
+  },
 ]

@@ -10,7 +10,7 @@ import {
   GridComponent,
   DatasetComponent,
   TransformComponent,
-  LegendComponent
+  LegendComponent,
 } from 'echarts/components'
 // 标签自动布局、全局过渡动画等特性
 import { LabelLayout, UniversalTransition } from 'echarts/features'
@@ -30,7 +30,7 @@ echarts.use([
   LabelLayout,
   UniversalTransition,
   CanvasRenderer,
-  LegendComponent
+  LegendComponent,
 ])
 
 /**
@@ -63,31 +63,31 @@ function ChartOfInStorePeople(): JSX.Element {
       { time: '15:00', people: 110 },
       { time: '16:00', people: 95 },
       { time: '17:00', people: 130 },
-      { time: '18:00', people: 105 }
+      { time: '18:00', people: 105 },
     ]
 
     // 配置选项
     const option: EChartsOption = {
       title: {
-        text: '客流量'
+        text: '客流量',
       },
       color: ['#FF4500'],
       tooltip: {
-        trigger: 'item'
+        trigger: 'item',
       },
       xAxis: {
         type: 'category',
-        data: data.map((item) => item.time)
+        data: data.map((item) => item.time),
       },
       yAxis: {
-        type: 'value'
+        type: 'value',
       },
       series: [
         {
           data: data.map((item) => item.people),
-          type: 'bar'
-        }
-      ]
+          type: 'bar',
+        },
+      ],
     }
 
     // 使用配置项显示图表

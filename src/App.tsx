@@ -7,7 +7,7 @@ import { useJumpToVscodeSource } from '@/hooks/useJumpToVscodeSource'
 import { useEffect } from 'react'
 import {
   fetchInitialData,
-  initSystemInfoState
+  initSystemInfoState,
 } from './store/slice/system-info'
 
 function App() {
@@ -37,8 +37,8 @@ function App() {
         algorithm:
           localTheme === 'dark' ? theme.darkAlgorithm : theme.defaultAlgorithm,
         token: {
-          colorPrimary: '#FF4500'
-        }
+          colorPrimary: '#FF4500',
+        },
       }}
     >
       <RouterProvider router={router} />

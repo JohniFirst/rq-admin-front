@@ -15,8 +15,8 @@ interface CopyToClipboardOptions {
 export function useCopyToClipboard(
   options: CopyToClipboardOptions = {
     prefix: config.clipboardPrefix,
-    suffix: config.clipboardSuffix
-  }
+    suffix: config.clipboardSuffix,
+  },
 ) {
   const [isCopied, setIsCopied] = useState<boolean>(false)
 

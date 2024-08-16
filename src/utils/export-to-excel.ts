@@ -10,17 +10,17 @@ import * as XLSX from 'xlsx'
  */
 export function exportToExcel(
   { headers, data }: ExcelData,
-  fileName = 'your_file_name.xlsx'
+  fileName = 'your_file_name.xlsx',
 ) {
   const worksheet = XLSX.utils.aoa_to_sheet([headers, ...data])
   // 设置表头样式
   worksheet['A1'].s = {
     font: { bold: true },
-    alignment: { horizontal: 'center' }
+    alignment: { horizontal: 'center' },
   }
 
   worksheet['!margins'] = {
-    bottom: 10
+    bottom: 10,
   }
 
   // 为数据添加边框
@@ -33,8 +33,8 @@ export function exportToExcel(
             top: { style: 'thin' },
             bottom: { style: 'thin' },
             left: { style: 'thin' },
-            right: { style: 'thin' }
-          }
+            right: { style: 'thin' },
+          },
         }
       }
     }

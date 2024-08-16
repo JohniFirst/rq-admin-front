@@ -9,7 +9,7 @@ import {
   ToolOutlined,
   UsergroupAddOutlined,
   UserOutlined,
-  VideoCameraOutlined
+  VideoCameraOutlined,
 } from '@ant-design/icons'
 
 const initialState: MenuItem[] = [
@@ -17,7 +17,7 @@ const initialState: MenuItem[] = [
     key: '/dashboard',
     label: '主页',
     title: '主页',
-    icon: <HomeFilled />
+    icon: <HomeFilled />,
   },
   {
     key: '/event',
@@ -29,21 +29,21 @@ const initialState: MenuItem[] = [
         key: '/event/table',
         label: '表格分页',
         title: '表格分页',
-        icon: <TableOutlined />
+        icon: <TableOutlined />,
       },
       {
         key: '/event/table-frontend',
         label: '前端表格分页',
         title: '前端表格分页',
-        icon: <FieldStringOutlined />
+        icon: <FieldStringOutlined />,
       },
       {
         key: '/event/copy-to-clipboard',
         label: '复制到剪切板',
         title: '复制到剪切板',
-        icon: <FieldStringOutlined />
-      }
-    ]
+        icon: <FieldStringOutlined />,
+      },
+    ],
   },
   {
     key: '/event-pro',
@@ -55,19 +55,19 @@ const initialState: MenuItem[] = [
         key: '/event-pro/danmu',
         label: '弹幕',
         title: '弹幕',
-        icon: <CodeOutlined />
+        icon: <CodeOutlined />,
       },
       {
         key: '/event-pro/video-player',
         label: '视频播放器',
         title: '视频播放器',
-        icon: <VideoCameraOutlined />
+        icon: <VideoCameraOutlined />,
       },
       {
         key: '/event-pro/picture-stitching',
         label: '图片拼接',
         title: '图片拼接',
-        icon: <VideoCameraOutlined />
+        icon: <VideoCameraOutlined />,
       },
       {
         key: '/event-pro/animate',
@@ -79,11 +79,11 @@ const initialState: MenuItem[] = [
             key: '/event-pro/animate/share-animation',
             label: '共享元素动画',
             title: '共享元素动画',
-            icon: <VideoCameraOutlined />
-          }
-        ]
-      }
-    ]
+            icon: <VideoCameraOutlined />,
+          },
+        ],
+      },
+    ],
   },
   {
     key: '/system',
@@ -95,22 +95,22 @@ const initialState: MenuItem[] = [
         key: '/system/user',
         label: '用户管理',
         title: '用户管理',
-        icon: <UserOutlined />
+        icon: <UserOutlined />,
       },
       {
         key: '/system/role',
         label: '角色管理',
         title: '角色管理',
-        icon: <UsergroupAddOutlined />
+        icon: <UsergroupAddOutlined />,
       },
       {
         key: '/system/menu',
         label: '菜单管理',
         title: '菜单管理',
-        icon: <MenuOutlined />
-      }
-    ]
-  }
+        icon: <MenuOutlined />,
+      },
+    ],
+  },
 ]
 
 export const menuSlice: Slice<MenuItem[]> = createSlice({
@@ -119,8 +119,8 @@ export const menuSlice: Slice<MenuItem[]> = createSlice({
   reducers: {
     updateMenu(state, action: PayloadAction<MenuItem>) {
       state = action.payload
-    }
-  }
+    },
+  },
 })
 
 export const { updateMenu } = menuSlice.actions

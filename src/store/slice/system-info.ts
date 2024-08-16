@@ -17,7 +17,7 @@ export const fetchInitialData = async () => {
   return {
     navItem,
     theme: localSystemInfo?.theme || 'light',
-    menuMode: localSystemInfo?.menuMode || MenuModeEnum.COMMON_MENU
+    menuMode: localSystemInfo?.menuMode || MenuModeEnum.COMMON_MENU,
   }
 }
 
@@ -25,7 +25,7 @@ export const fetchInitialData = async () => {
 const initialState: SystemInfo = {
   theme: 'light',
   navItem: [],
-  menuMode: MenuModeEnum.COMMON_MENU
+  menuMode: MenuModeEnum.COMMON_MENU,
 }
 
 export const systemInfoSlice: Slice<SystemInfo> = createSlice({
@@ -89,8 +89,8 @@ export const systemInfoSlice: Slice<SystemInfo> = createSlice({
       const copyState = JSON.parse(JSON.stringify(state))
       delete copyState.navItem
       forage.setItem(ForageEnums.SYSTEM_INFO, copyState)
-    }
-  }
+    },
+  },
 })
 
 export const {
@@ -98,7 +98,7 @@ export const {
   pushNavItemAction,
   setTheme,
   setMenuMode,
-  initSystemInfoState
+  initSystemInfoState,
 } = systemInfoSlice.actions
 
 // selectors 等其他代码可以使用导入的 `RootState` 类型

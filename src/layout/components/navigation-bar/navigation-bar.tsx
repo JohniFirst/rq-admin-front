@@ -5,7 +5,7 @@ import {
   DoubleRightOutlined,
   FilterOutlined,
   PicCenterOutlined,
-  PushpinOutlined
+  PushpinOutlined,
 } from '@ant-design/icons'
 import { cloneDeep } from 'lodash-es'
 import { useLocation } from 'react-router-dom'
@@ -17,13 +17,13 @@ import {
   DndContext,
   PointerSensor,
   closestCenter,
-  useSensor
+  useSensor,
 } from '@dnd-kit/core'
 import {
   arrayMove,
   horizontalListSortingStrategy,
   SortableContext,
-  useSortable
+  useSortable,
 } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
 import type { DragEndEvent } from '@dnd-kit/core'
@@ -32,28 +32,31 @@ const contextMenu: MenuProps['items'] = [
   {
     label: '在新窗口打开',
     key: ContextMenuKey.OPEN_NEW,
-    icon: <PicCenterOutlined />
+    icon: <PicCenterOutlined />,
+  },
+  {
+    type: 'divider',
   },
   {
     label: '关闭左侧标签页',
     key: ContextMenuKey.CLOSE_LEFT,
-    icon: <DoubleLeftOutlined />
+    icon: <DoubleLeftOutlined />,
   },
   {
     label: '关闭右侧标签页',
     key: ContextMenuKey.CLOSE_RIGHT,
-    icon: <DoubleRightOutlined />
+    icon: <DoubleRightOutlined />,
   },
   {
     label: '关闭其它标签页',
     key: ContextMenuKey.CLOSE_OTHERS,
-    icon: <FilterOutlined />
+    icon: <FilterOutlined />,
   },
   {
     label: '取消/固定到导航栏',
     key: ContextMenuKey.FIXED,
-    icon: <PushpinOutlined />
-  }
+    icon: <PushpinOutlined />,
+  },
 ]
 
 function NavigationBar() {
@@ -75,7 +78,7 @@ function NavigationBar() {
    */
   const handleMenuClick: MenuProps['onClick'] = (e) => {
     const clickIndex = navItem.findIndex(
-      (item) => item.key === currentClickTarget.key
+      (item) => item.key === currentClickTarget.key,
     )
     let newNavItem: NavItem[] = []
 
@@ -109,8 +112,8 @@ function NavigationBar() {
       case ContextMenuKey.CLOSE_OTHERS:
         setNavItem(
           navItem.filter(
-            (item) => item.key === currentClickTarget.key || item.fixed
-          )
+            (item) => item.key === currentClickTarget.key || item.fixed,
+          ),
         )
         break
 
@@ -134,7 +137,7 @@ function NavigationBar() {
    */
   const closeCurrentNav = async (
     e: React.MouseEvent<HTMLElement, MouseEvent>,
-    item: NavItem
+    item: NavItem,
   ) => {
     e.stopPropagation()
 
@@ -147,7 +150,7 @@ function NavigationBar() {
         cancelText: '取消',
         onOk: () => {
           setNavItem(navItem.filter((nav) => nav.key !== item.key))
-        }
+        },
       })
 
       return
@@ -167,7 +170,7 @@ function NavigationBar() {
   }
 
   const sensor = useSensor(PointerSensor, {
-    activationConstraint: { distance: 10 }
+    activationConstraint: { distance: 10 },
   })
 
   const onDragEnd = ({ active, over }: DragEndEvent) => {
@@ -188,7 +191,7 @@ function NavigationBar() {
     const style: React.CSSProperties = {
       transform: CSS.Translate.toString(transform),
       transition,
-      cursor: 'move'
+      cursor: 'move',
     }
 
     return (

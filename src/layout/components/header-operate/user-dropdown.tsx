@@ -1,6 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import { Avatar, Dropdown, type MenuProps } from 'antd'
-import { UserOutlined, LogoutOutlined } from '@ant-design/icons'
+import {
+  UserOutlined,
+  LogoutOutlined,
+  EyeInvisibleOutlined,
+} from '@ant-design/icons'
 import useCustomNavigate from '@/hooks/useCustomNavigate'
 
 const UserDropdown: React.FC = () => {
@@ -20,7 +24,21 @@ const UserDropdown: React.FC = () => {
     {
       key: 'userInfo',
       icon: <UserOutlined />,
-      label: '查看个人信息'
+      label: '查看个人信息',
+      onClick: () => {
+        navigate('/system/user-info')
+      },
+    },
+    {
+      key: 'resetPassword',
+      icon: <EyeInvisibleOutlined />,
+      label: '修改密码?',
+      // onClick: () => {
+      //   navigate('/system/reset-password')
+      // },
+    },
+    {
+      type: 'divider',
     },
     {
       key: 'logout',
@@ -29,8 +47,8 @@ const UserDropdown: React.FC = () => {
       onClick: () => {
         //TODO 退出登录的逻辑
         navigate('/login')
-      }
-    }
+      },
+    },
   ]
 
   return (

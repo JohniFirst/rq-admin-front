@@ -4,7 +4,7 @@ import {
   DownOutlined,
   EnterOutlined,
   SearchOutlined,
-  UpOutlined
+  UpOutlined,
 } from '@ant-design/icons'
 import { useAppSelector } from '@/store/hooks'
 import system from './css/system.module.css'
@@ -74,7 +74,7 @@ const SearchableMenu: FC = () => {
           if (childrenLableIncludesKeyword.length) {
             tempResult.push({
               ...item,
-              children: childrenLableIncludesKeyword
+              children: childrenLableIncludesKeyword,
             })
           }
         } else {
@@ -97,7 +97,7 @@ const SearchableMenu: FC = () => {
 
   const FilterResultItem: FC<{ item: MenuItem; indent?: number }> = ({
     item,
-    indent = 0
+    indent = 0,
   }) => {
     if (item.children) {
       return (
@@ -171,7 +171,7 @@ const SearchableMenu: FC = () => {
         afterOpenChange={(open) => {
           if (open) {
             inputRef.current!.focus({
-              cursor: 'all'
+              cursor: 'all',
             })
           }
         }}

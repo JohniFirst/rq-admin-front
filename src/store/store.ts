@@ -7,8 +7,8 @@ const store = configureStore({
   reducer: {
     systemInfo: systemInfoSlice,
     router: routerSlice,
-    menu: menuSlice
-  }
+    menu: menuSlice,
+  },
 })
 
 // 从 store 本身推断 `RootState` 和 `AppDispatch` 类型

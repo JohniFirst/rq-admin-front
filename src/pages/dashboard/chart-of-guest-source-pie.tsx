@@ -9,7 +9,7 @@ import {
   TooltipComponent,
   GridComponent,
   DatasetComponent,
-  TransformComponent
+  TransformComponent,
 } from 'echarts/components'
 // 标签自动布局、全局过渡动画等特性
 import { LabelLayout, UniversalTransition } from 'echarts/features'
@@ -29,7 +29,7 @@ echarts.use([
   PieChart,
   LabelLayout,
   UniversalTransition,
-  CanvasRenderer
+  CanvasRenderer,
 ])
 
 /**
@@ -51,20 +51,20 @@ function ChartOfGuestSourcePie() {
       { name: '自然进店', value: 40 },
       { name: '朋友推荐', value: 30 },
       { name: '抖音视频', value: 20 },
-      { name: '小红书广告', value: 10 }
+      { name: '小红书广告', value: 10 },
     ]
 
     const option: EChartsOption = {
       title: {
-        text: '客人来源占比'
+        text: '客人来源占比',
       },
       color: echartsColors,
       tooltip: {
-        trigger: 'item'
+        trigger: 'item',
       },
       legend: {
         bottom: 'bottom',
-        align: 'right'
+        align: 'right',
       },
       series: [
         {
@@ -76,11 +76,11 @@ function ChartOfGuestSourcePie() {
             itemStyle: {
               shadowBlur: 10,
               shadowOffsetX: 0,
-              shadowColor: 'rgba(0, 0, 0, 0.5)'
-            }
-          }
-        }
-      ]
+              shadowColor: 'rgba(0, 0, 0, 0.5)',
+            },
+          },
+        },
+      ],
     }
 
     myChart.setOption(option)

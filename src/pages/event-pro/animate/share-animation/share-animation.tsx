@@ -6,8 +6,8 @@ const showList = [
     src: share,
     title: '给你一个炫彩的标题',
     descriptions: 'lorem ',
-    time: '2024-08-14'
-  }
+    time: '2024-08-14',
+  },
 ]
 
 /** 共享元素动画列表 */

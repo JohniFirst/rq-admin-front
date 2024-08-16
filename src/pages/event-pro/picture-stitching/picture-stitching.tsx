@@ -23,7 +23,7 @@ function PictureStitching() {
       return {
         width: img.naturalWidth,
         height: img.naturalHeight,
-        scaleFactor: 0
+        scaleFactor: 0,
       }
     })
 

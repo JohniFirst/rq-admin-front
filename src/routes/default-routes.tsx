@@ -9,10 +9,10 @@ import RegisterForm from '@/pages/login-about/register'
 export const defaultRoutes: RouteObject[] = [
   { path: '/', element: <Home /> },
   { path: '/login', element: <LoginForm /> },
-  { path: '/register', element: <RegisterForm /> }
+  { path: '/register', element: <RegisterForm /> },
 ]
 
 // 默认出错路由
 export const errorRoutes: RouteObject[] = [
-  { path: '/*', element: <NotFound /> }
+  { path: '/*', element: <NotFound /> },
 ]

@@ -7,7 +7,7 @@ import {
   GridComponent,
   DatasetComponent,
   TransformComponent,
-  LegendComponent
+  LegendComponent,
 } from 'echarts/components'
 import { LabelLayout, UniversalTransition } from 'echarts/features'
 import { CanvasRenderer } from 'echarts/renderers'
@@ -27,7 +27,7 @@ echarts.use([
   LabelLayout,
   UniversalTransition,
   CanvasRenderer,
-  LegendComponent
+  LegendComponent,
 ])
 
 /**
@@ -49,55 +49,55 @@ function ChartOfDiningAndEntryTimeRelation() {
       { entryTime: '13:00', averageDiningTime: 2, customerCount: 30 },
       { entryTime: '14:00', averageDiningTime: 1.8, customerCount: 25 },
       { entryTime: '15:00', averageDiningTime: 2.2, customerCount: 35 },
-      { entryTime: '16:00', averageDiningTime: 1.7, customerCount: 28 }
+      { entryTime: '16:00', averageDiningTime: 1.7, customerCount: 28 },
     ]
 
     // 配置选项
     const option: EChartsOption = {
       title: {
-        text: '复杂关系图表'
+        text: '复杂关系图表',
       },
       color: echartsColors,
       tooltip: {
-        trigger: 'axis'
+        trigger: 'axis',
       },
       legend: {
-        data: ['平均用餐时间', '进店人数']
+        data: ['平均用餐时间', '进店人数'],
       },
       grid: {
         left: '3%',
         right: '4%',
         bottom: '3%',
-        containLabel: true
+        containLabel: true,
       },
       xAxis: {
         type: 'category',
-        data: data.map((item) => item.entryTime)
+        data: data.map((item) => item.entryTime),
       },
       yAxis: [
         {
           type: 'value',
-          name: '平均用餐时间（小时）'
+          name: '平均用餐时间（小时）',
         },
         {
           type: 'value',
-          name: '进店人数'
-        }
+          name: '进店人数',
+        },
       ],
       series: [
         {
           name: '平均用餐时间',
           type: 'line',
           yAxisIndex: 0,
-          data: data.map((item) => item.averageDiningTime)
+          data: data.map((item) => item.averageDiningTime),
         },
         {
           name: '进店人数',
           type: 'bar',
           yAxisIndex: 1,
-          data: data.map((item) => item.customerCount)
-        }
-      ]
+          data: data.map((item) => item.customerCount),
+        },
+      ],
     }
 
     myChart.setOption(option)

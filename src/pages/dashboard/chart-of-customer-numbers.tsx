@@ -10,7 +10,7 @@ import {
   GridComponent,
   DatasetComponent,
   TransformComponent,
-  LegendComponent
+  LegendComponent,
 } from 'echarts/components'
 // 标签自动布局、全局过渡动画等特性
 import { LabelLayout, UniversalTransition } from 'echarts/features'
@@ -31,7 +31,7 @@ echarts.use([
   LabelLayout,
   UniversalTransition,
   CanvasRenderer,
-  LegendComponent
+  LegendComponent,
 ])
 
 /**
@@ -53,40 +53,40 @@ function ChartOfCustomerNumbers() {
     const data = [
       { period: '每天', oldCustomers: 200, newCustomers: 300 },
       { period: '每周', oldCustomers: 300, newCustomers: 500 },
-      { period: '每月', oldCustomers: 400, newCustomers: 800 }
+      { period: '每月', oldCustomers: 400, newCustomers: 800 },
     ]
 
     // 配置选项
     const option: EChartsOption = {
       title: {
-        text: '不同周期顾客人数'
+        text: '不同周期顾客人数',
       },
       color: echartsColors,
       xAxis: {
         type: 'category',
-        data: data.map((item) => item.period)
+        data: data.map((item) => item.period),
       },
       yAxis: {
         type: 'value',
-        name: '人数'
+        name: '人数',
       },
       tooltip: {
-        trigger: 'item'
+        trigger: 'item',
       },
       series: [
         {
           name: '老顾客',
           stack: 'total',
           data: data.map((item) => item.oldCustomers),
-          type: 'bar'
+          type: 'bar',
         },
         {
           name: '新顾客',
           stack: 'total',
           data: data.map((item) => item.newCustomers),
-          type: 'bar'
-        }
-      ]
+          type: 'bar',
+        },
+      ],
     }
 
     // 使用配置项显示图表

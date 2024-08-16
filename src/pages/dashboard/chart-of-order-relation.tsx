@@ -7,7 +7,7 @@ import {
   GridComponent,
   DatasetComponent,
   TransformComponent,
-  LegendComponent
+  LegendComponent,
 } from 'echarts/components'
 import { LabelLayout, UniversalTransition } from 'echarts/features'
 import { CanvasRenderer } from 'echarts/renderers'
@@ -25,7 +25,7 @@ echarts.use([
   LabelLayout,
   UniversalTransition,
   CanvasRenderer,
-  LegendComponent
+  LegendComponent,
 ])
 
 /**
@@ -52,60 +52,60 @@ function ChartOfOrderRelation() {
       { date: '07/01', amount: 5000, count: 75 },
       { date: '08/01', amount: 7500, count: 105 },
       { date: '09/01', amount: 6000, count: 90 },
-      { date: '10/01', amount: 8000, count: 120 }
+      { date: '10/01', amount: 8000, count: 120 },
     ]
 
     // 配置选项
     const option: EChartsOption = {
       title: {
-        text: '订单金额与订单数关系'
+        text: '订单金额与订单数关系',
       },
       tooltip: {
-        trigger: 'axis'
+        trigger: 'axis',
       },
       color: ['#FF4500', '#FF007F'],
       legend: {
-        data: ['订单金额', '订单数']
+        data: ['订单金额', '订单数'],
       },
       grid: {
         left: '3%',
         right: '4%',
         bottom: '3%',
-        containLabel: true
+        containLabel: true,
       },
       xAxis: [
         {
           type: 'category',
-          data: data.map((item) => item.date)
-        }
+          data: data.map((item) => item.date),
+        },
       ],
       yAxis: [
         {
           type: 'value',
-          name: '订单金额'
+          name: '订单金额',
         },
         {
           type: 'value',
           name: '订单数',
           axisLabel: {
-            formatter: '{value}'
-          }
-        }
+            formatter: '{value}',
+          },
+        },
       ],
       series: [
         {
           name: '订单金额',
           type: 'bar',
           data: data.map((item) => item.amount),
-          yAxisIndex: 0
+          yAxisIndex: 0,
         },
         {
           name: '订单数',
           type: 'line',
           data: data.map((item) => item.count),
-          yAxisIndex: 1
-        }
-      ]
+          yAxisIndex: 1,
+        },
+      ],
     }
 
     myChart.setOption(option)

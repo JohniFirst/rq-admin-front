@@ -14,17 +14,17 @@ const columns: TableProps<DataType>['columns'] = [
     title: 'Name',
     dataIndex: 'name',
     key: 'name',
-    render: (text) => <a>{text}</a>
+    render: (text) => <a>{text}</a>,
   },
   {
     title: 'Age',
     dataIndex: 'age',
-    key: 'age'
+    key: 'age',
   },
   {
     title: 'Address',
     dataIndex: 'address',
-    key: 'address'
+    key: 'address',
   },
   {
     title: 'Tags',
@@ -44,7 +44,7 @@ const columns: TableProps<DataType>['columns'] = [
           )
         })}
       </>
-    )
+    ),
   },
   {
     title: 'Action',
@@ -54,8 +54,8 @@ const columns: TableProps<DataType>['columns'] = [
         <a>Invite {record.name}</a>
         <a>Delete</a>
       </Space>
-    )
-  }
+    ),
+  },
 ]
 
 const dataSource: DataType[] = [
@@ -64,22 +64,22 @@ const dataSource: DataType[] = [
     name: 'John Brown',
     age: 32,
     address: 'New York No. 1 Lake Park',
-    tags: ['nice', 'developer']
+    tags: ['nice', 'developer'],
   },
   {
     key: '2',
     name: 'Jim Green',
     age: 42,
     address: 'London No. 1 Lake Park',
-    tags: ['loser']
+    tags: ['loser'],
   },
   {
     key: '3',
     name: 'Joe Black',
     age: 32,
     address: 'Sydney No. 1 Lake Park',
-    tags: ['cool', 'teacher']
-  }
+    tags: ['cool', 'teacher'],
+  },
 ]
 
 function Table() {
@@ -87,7 +87,7 @@ function Table() {
     <BaseTable
       tableProps={{
         columns,
-        dataSource
+        dataSource,
       }}
       searchProps={{}}
     />

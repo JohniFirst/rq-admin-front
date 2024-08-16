@@ -26,8 +26,8 @@ function HeaderMenu() {
         // @ts-ignore
         label: e.item.props.title,
         active: true,
-        fixed: false
-      })
+        fixed: false,
+      }),
     )
   }
 

@@ -11,7 +11,7 @@ function NumberJumping({
   startValue = 0,
   endValue,
   duration = 300,
-  className
+  className,
 }: NumberJumpingProps) {
   const [currentValue, setCurrentValue] = useState(startValue)
 

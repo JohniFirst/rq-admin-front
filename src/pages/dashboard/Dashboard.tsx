@@ -17,7 +17,7 @@ import {
   CaretUpOutlined,
   PieChartOutlined,
   StrikethroughOutlined,
-  UserOutlined
+  UserOutlined,
 } from '@ant-design/icons'
 
 function Dashboard() {

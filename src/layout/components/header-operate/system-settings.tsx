@@ -18,18 +18,18 @@ const menuModeArr = [
   {
     imgSrc: CommonMenu,
     title: '常规菜单',
-    value: MenuModeEnum.COMMON_MENU
+    value: MenuModeEnum.COMMON_MENU,
   },
   {
     imgSrc: DrawerMenu,
     title: '可折叠的子菜单',
-    value: MenuModeEnum.DRAWER_MENU
+    value: MenuModeEnum.DRAWER_MENU,
   },
   {
     imgSrc: HeaderMenu,
     title: '顶部导航菜单',
-    value: MenuModeEnum.HEADER_MENU
-  }
+    value: MenuModeEnum.HEADER_MENU,
+  },
 ]
 
 const SystemSettings: React.FC<SystemSettingsProps> = () => {

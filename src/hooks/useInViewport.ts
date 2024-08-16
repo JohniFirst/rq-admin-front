@@ -13,7 +13,7 @@ import { useState, useEffect, type MutableRefObject } from 'react'
  *   `isInViewport` boolean and the `entry` object.
  */
 export function useInViewport(
-  ref: MutableRefObject<null>
+  ref: MutableRefObject<null>,
 ): [boolean, IntersectionObserverEntry | null] {
   const [isInViewport, setIsInViewport] = useState(false)
   const [entry, setEntry] = useState<IntersectionObserverEntry | null>(null)
@@ -28,8 +28,8 @@ export function useInViewport(
       },
       {
         rootMargin: '0px',
-        threshold: 0.5
-      }
+        threshold: 0.5,
+      },
     )
 
     if (ref.current) {

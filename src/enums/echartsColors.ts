@@ -11,5 +11,5 @@ export const echartsColors = [
   '#ADD8E6',
   '#8B0000',
   '#228B22',
-  '#87CEEB'
+  '#87CEEB',
 ]

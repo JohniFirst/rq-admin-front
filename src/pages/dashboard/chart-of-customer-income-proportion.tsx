@@ -10,7 +10,7 @@ import {
   GridComponent,
   DatasetComponent,
   TransformComponent,
-  LegendComponent
+  LegendComponent,
 } from 'echarts/components'
 // 标签自动布局、全局过渡动画等特性
 import { LabelLayout, UniversalTransition } from 'echarts/features'
@@ -31,7 +31,7 @@ echarts.use([
   LabelLayout,
   UniversalTransition,
   CanvasRenderer,
-  LegendComponent
+  LegendComponent,
 ])
 
 /**
@@ -52,20 +52,20 @@ function ChartOfCustomerIncomeProportion() {
     const data = [
       { name: '低收入', value: 30 },
       { name: '中等收入', value: 50 },
-      { name: '高收入', value: 20 }
+      { name: '高收入', value: 20 },
     ]
 
     // 配置选项
     const option: EChartsOption = {
       title: {
-        text: '顾客收入占比'
+        text: '顾客收入占比',
       },
       color: echartsColors,
       tooltip: {
-        trigger: 'item'
+        trigger: 'item',
       },
       legend: {
-        bottom: 'bottom'
+        bottom: 'bottom',
       },
       series: [
         {
@@ -77,11 +77,11 @@ function ChartOfCustomerIncomeProportion() {
             itemStyle: {
               shadowBlur: 10,
               shadowOffsetX: 0,
-              shadowColor: 'rgba(0, 0, 0, 0.5)'
-            }
-          }
-        }
-      ]
+              shadowColor: 'rgba(0, 0, 0, 0.5)',
+            },
+          },
+        },
+      ],
     }
 
     // 使用配置项显示图表
