@@ -20,13 +20,13 @@ function VerificationCodeInput() {
   return (
     <Form.Item
       name="verificationCode"
-      label="验证码"
       rules={[{ required: true, message: '请输入验证码' }]}
     >
       <Row>
         <Col span={16}>
           <Input
             type="text"
+            placeholder="请输入验证码"
             maxLength={6}
             onChange={handleCodeChange}
             value={code}
