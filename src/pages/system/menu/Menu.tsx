@@ -43,6 +43,7 @@ function Menu() {
 
   return (
     <BaseTable
+      noPage
       tableProps={{
         columns,
         getList: getMenuList,

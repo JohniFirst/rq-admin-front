@@ -2,6 +2,7 @@ import { createSlice, Slice, type PayloadAction } from '@reduxjs/toolkit'
 import type { RootState } from '../store.ts'
 import { forage } from '@/utils/localforage.ts'
 import { ForageEnums, LocalStorageKeys } from '@/enums/localforage.ts'
+import { LayoutModeEnum } from '@/enums/system.ts'
 
 // 定义一个异步函数来获取初始数据
 export const fetchInitialData = async () => {

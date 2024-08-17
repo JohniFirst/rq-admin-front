@@ -8,6 +8,7 @@ import DrawerMenu from '@/assets/svgs/nav-type/drawer-menu.svg'
 import system from './css/system.module.css'
 import { useAppDispatch, useAppSelector } from '@/store/hooks'
 import { setlayoutMode } from '@/store/slice/system-info'
+import { LayoutModeEnum } from '@/enums/system'
 
 interface SystemSettingsProps {
   // 这里不需要定义任何接口，因为深色模式状态在组件内部管理

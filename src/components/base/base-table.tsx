@@ -21,6 +21,7 @@ import type { FormProps, TableProps } from 'antd'
 import { useEffect, useState } from 'react'
 
 type BaseTableProps = {
+  noPage?: boolean
   tableProps: TableProps & {
     getList: () => void
   }
@@ -45,7 +46,11 @@ const onFinishFailed: FormProps<FieldType>['onFinishFailed'] = (errorInfo) => {
   console.log('Failed:', errorInfo)
 }
 
-const BaseTable: React.FC<BaseTableProps> = ({ tableProps, addForm }) => {
+const BaseTable: React.FC<BaseTableProps> = ({
+  tableProps,
+  addForm,
+  noPage,
+}) => {
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [dataSource, setDataSource] = useState([])
 
@@ -56,8 +61,10 @@ const BaseTable: React.FC<BaseTableProps> = ({ tableProps, addForm }) => {
   const getList = async () => {
     const res = await tableProps.getList()
 
+    const data = noPage ? res : res.content
+
     setDataSource(
-      res.map((item) => {
+      data.map((item) => {
         return {
           ...item,
           key: item.id,

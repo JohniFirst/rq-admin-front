@@ -26,6 +26,7 @@ import {
 } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
 import type { DragEndEvent } from '@dnd-kit/core'
+import { ContextMenuKey } from '@/enums/system'
 
 const contextMenu: MenuProps['items'] = [
   {

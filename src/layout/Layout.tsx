@@ -2,6 +2,7 @@ import { useAppSelector } from '@/store/hooks'
 import CommonMenu from './common-menu'
 import HeaderMenu from './header-menu'
 import DrawerMenu from './drawer-menu'
+import { LayoutModeEnum } from '@/enums/system'
 
 /**
  * 布局组件
