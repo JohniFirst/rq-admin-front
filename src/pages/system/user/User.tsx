@@ -1,22 +1,10 @@
+import { Switch } from 'antd'
+import type { FC } from 'react'
 import { getAllUserList, updateUserIsEnabled } from '@/api/system-api'
 import BaseTable from '@/components/base/base-table'
-import { Switch } from 'antd'
-import { FC, useEffect, useState } from 'react'
 
 /** 当前所有用户列表 */
 function User() {
-  const [userList, setUserList] = useState<UserListRes[]>([])
-
-  useEffect(() => {
-    getList()
-  }, [])
-
-  const getList = async () => {
-    const res = await getAllUserList()
-
-    setUserList(res)
-  }
-
   const columns: BaseTableColumns = [
     {
       title: '昵称',
@@ -70,8 +58,6 @@ function User() {
   }) => {
     const toogleUserEnable = async (checked: boolean) => {
       await updateUserIsEnabled({ id: record.id, isEnabled: checked ? 1 : 0 })
-
-      getList()
     }
 
     return (
@@ -84,7 +70,7 @@ function User() {
     )
   }
 
-  return <BaseTable tableProps={{ columns, dataSource: userList }} />
+  return <BaseTable tableProps={{ columns, getList: getAllUserList }} />
 }
 
 export default User

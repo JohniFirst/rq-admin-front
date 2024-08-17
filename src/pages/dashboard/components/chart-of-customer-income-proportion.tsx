@@ -1,8 +1,8 @@
 import { useEffect, useRef } from 'react'
 // 引入 echarts 核心模块，核心模块提供了 echarts 使用必须要的接口。
 import * as echarts from 'echarts/core'
-// 引入柱状图图表，图表后缀都为 Chart
-import { BarChart } from 'echarts/charts'
+// 引入饼图图表，图表后缀都为 Chart
+import { PieChart } from 'echarts/charts'
 // 引入标题，提示框，直角坐标系，数据集，内置数据转换器组件，组件后缀都为 Component
 import {
   TitleComponent,
@@ -17,8 +17,8 @@ import { LabelLayout, UniversalTransition } from 'echarts/features'
 // 引入 Canvas 渲染器，注意引入 CanvasRenderer 或者 SVGRenderer 是必须的一步
 import { CanvasRenderer } from 'echarts/renderers'
 import type { EChartsOption } from 'echarts'
-import { echartsColors } from '@/enums/echartsColors'
-import { useInViewport } from '@/hooks/useInViewport'
+import { echartsColors } from '@/enums/echartsColors.ts'
+import { useInViewport } from '@/hooks/useInViewport.ts'
 
 // 注册必须的组件
 echarts.use([
@@ -27,7 +27,7 @@ echarts.use([
   GridComponent,
   DatasetComponent,
   TransformComponent,
-  BarChart,
+  PieChart,
   LabelLayout,
   UniversalTransition,
   CanvasRenderer,
@@ -35,12 +35,11 @@ echarts.use([
 ])
 
 /**
- * Renders a bar chart component showing the number of old and new customers within the same period.
- * The old customers are displayed on the top part and the new customers on the bottom part of each bar.
+ * Renders a pie chart component showing the proportion of customer incomes.
  *
- * @return {JSX.Element} The rendered bar chart component.
+ * @return {JSX.Element} The rendered pie chart component.
  */
-function ChartOfCustomerNumbers() {
+function ChartOfCustomerIncomeProportion() {
   const chartRef = useRef(null)
 
   const [isInViewport] = useInViewport(chartRef)
@@ -51,40 +50,36 @@ function ChartOfCustomerNumbers() {
 
     // 准备数据
     const data = [
-      { period: '每天', oldCustomers: 200, newCustomers: 300 },
-      { period: '每周', oldCustomers: 300, newCustomers: 500 },
-      { period: '每月', oldCustomers: 400, newCustomers: 800 },
+      { name: '低收入', value: 30 },
+      { name: '中等收入', value: 50 },
+      { name: '高收入', value: 20 },
     ]
 
     // 配置选项
     const option: EChartsOption = {
       title: {
-        text: '不同周期顾客人数',
+        text: '顾客收入占比',
       },
       color: echartsColors,
-      xAxis: {
-        type: 'category',
-        data: data.map((item) => item.period),
-      },
-      yAxis: {
-        type: 'value',
-        name: '人数',
-      },
       tooltip: {
         trigger: 'item',
       },
+      legend: {
+        bottom: 'bottom',
+      },
       series: [
         {
-          name: '老顾客',
-          stack: 'total',
-          data: data.map((item) => item.oldCustomers),
-          type: 'bar',
-        },
-        {
-          name: '新顾客',
-          stack: 'total',
-          data: data.map((item) => item.newCustomers),
-          type: 'bar',
+          name: '收入占比',
+          type: 'pie',
+          radius: '50%',
+          data: data,
+          emphasis: {
+            itemStyle: {
+              shadowBlur: 10,
+              shadowOffsetX: 0,
+              shadowColor: 'rgba(0, 0, 0, 0.5)',
+            },
+          },
         },
       ],
     }
@@ -101,4 +96,4 @@ function ChartOfCustomerNumbers() {
   return <div ref={chartRef} style={{ width: '100%', height: '400px' }}></div>
 }
 
-export default ChartOfCustomerNumbers
+export default ChartOfCustomerIncomeProportion

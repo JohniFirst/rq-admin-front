@@ -17,3 +17,8 @@ type UserListRes = {
   id: number
   isEnabled: 0 | 1
 }
+
+type SelectOptions = {
+  label: string
+  value: string | number
+}

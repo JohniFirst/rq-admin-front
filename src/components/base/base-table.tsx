@@ -5,13 +5,30 @@ import {
   ReloadOutlined,
   SettingOutlined,
 } from '@ant-design/icons'
-import { Button, Col, Form, Input, Row, Space, Table, Tooltip } from 'antd'
+import {
+  Button,
+  Col,
+  Form,
+  Input,
+  Modal,
+  Row,
+  Space,
+  Table,
+  Tooltip,
+} from 'antd'
 import { format } from 'date-fns'
 import type { FormProps, TableProps } from 'antd'
+import { useEffect, useState } from 'react'
 
 type BaseTableProps = {
-  tableProps: TableProps
+  tableProps: TableProps & {
+    getList: () => void
+  }
   searchProps?: FormProps
+  addForm?: {
+    addFormApi: unknown
+    AddForm: React.FC
+  }
 }
 
 type FieldType = {
@@ -28,7 +45,35 @@ const onFinishFailed: FormProps<FieldType>['onFinishFailed'] = (errorInfo) => {
   console.log('Failed:', errorInfo)
 }
 
-const BaseTable: React.FC<BaseTableProps> = ({ tableProps }) => {
+const BaseTable: React.FC<BaseTableProps> = ({ tableProps, addForm }) => {
+  const [isModalOpen, setIsModalOpen] = useState(false)
+  const [dataSource, setDataSource] = useState<>([])
+
+  useEffect(() => {
+    getList()
+  }, [])
+
+  const getList = async () => {
+    const res = await tableProps.getList()
+
+    setDataSource(
+      res.map((item) => {
+        return {
+          ...item,
+          key: item.id,
+        }
+      }),
+    )
+  }
+
+  const handleSubmit = async (values: { roleName: string }) => {
+    await addForm?.addFormApi(values)
+
+    getList()
+
+    setIsModalOpen(false)
+  }
+
   /**
    * Handles exporting data to an Excel file.
    *
@@ -96,6 +141,10 @@ const BaseTable: React.FC<BaseTableProps> = ({ tableProps }) => {
         {/* 操作栏 */}
         <section className="mb-4 text-right">
           <Space size={'middle'}>
+            <Button type="primary" onClick={() => setIsModalOpen(true)}>
+              新增
+            </Button>
+
             <Tooltip title="导出Excel">
               <DownloadOutlined
                 className="cursor-pointer hover:text-red-500"
@@ -122,6 +171,7 @@ const BaseTable: React.FC<BaseTableProps> = ({ tableProps }) => {
 
         {/* 表格 */}
         <Table
+          dataSource={dataSource}
           {...tableProps}
           className="print-table"
           pagination={{
@@ -132,6 +182,18 @@ const BaseTable: React.FC<BaseTableProps> = ({ tableProps }) => {
           }}
         />
       </section>
+
+      <Modal
+        title="新增"
+        open={isModalOpen}
+        okButtonProps={{ autoFocus: true, htmlType: 'submit' }}
+        onCancel={() => setIsModalOpen(false)}
+        cancelText="取消"
+        okText="提交"
+        modalRender={(dom) => <Form onFinish={handleSubmit}>{dom}</Form>}
+      >
+        {addForm ? <addForm.AddForm /> : null}
+      </Modal>
     </>
   )
 }

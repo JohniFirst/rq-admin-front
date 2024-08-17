@@ -159,16 +159,6 @@ function NavigationBar() {
     setNavItem(navItem.filter((nav) => nav.key !== item.key))
   }
 
-  /**
-   * Updates the current click target to the provided item.
-   *
-   * @param {NavItem} item - The item to set as the current click target.
-   * @return {void} This function does not return anything.
-   */
-  const navContentMenu = (item: NavItem) => {
-    currentClickTarget = item
-  }
-
   const sensor = useSensor(PointerSensor, {
     activationConstraint: { distance: 10 },
   })
@@ -196,6 +186,7 @@ function NavigationBar() {
 
     return (
       <li
+        key={item.key + '1'}
         ref={setNodeRef}
         {...attributes}
         {...listeners}
@@ -206,8 +197,7 @@ function NavigationBar() {
             : ''
         } cursor-pointer dark:bg-[#242424] bg-white py-1 px-3 rounded-md shrink-0`}
         onClick={() => navgation(item.key)}
-        key={item.key}
-        onContextMenu={() => navContentMenu(item)}
+        onContextMenu={() => (currentClickTarget = item)}
       >
         {item.fixed ? <PushpinOutlined className="text-red-500" /> : ''}
         {item.label}{' '}

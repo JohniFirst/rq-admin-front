@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react'
-import VideoPlayProgress from './video-play-progress'
+import VideoPlayProgress from './components/video-play-progress.tsx'
 import play from '@/assets/svgs/video-player/play.svg'
 import pause from '@/assets/svgs/video-player/pause.svg'
-import VideoTimesSpeed from './video-times-speed'
+import VideoTimesSpeed from './components/video-times-speed.tsx'
 import './css/video.css'
 
 import type { MouseEvent } from 'react'

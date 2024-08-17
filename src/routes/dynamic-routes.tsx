@@ -102,3 +102,25 @@ export const dynamicRoutes: RouteObject[] = [
     ],
   },
 ]
+
+const pagesComponent = import.meta.glob('../pages/**/*.tsx')
+
+const menus = []
+// 供菜单选择界面使用
+const menuUrls: SelectOptions[] = []
+for (let i = 0, length = Object.keys(pagesComponent).length; i < length; i++) {
+  const originPath = Object.keys(pagesComponent)[i]
+  if (originPath.includes('components')) {
+    continue
+  }
+  const path = originPath.replace('../pages', '').replace('.tsx', '')
+
+  menus.push({
+    path,
+    element: pagesComponent[originPath](),
+  })
+
+  menuUrls.push({ value: path, label: path })
+}
+
+export { menuUrls, menus }

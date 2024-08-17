@@ -1,8 +1,8 @@
 import { useEffect, useRef } from 'react'
 // 引入 echarts 核心模块，核心模块提供了 echarts 使用必须要的接口。
 import * as echarts from 'echarts/core'
-// 引入饼图图表，图表后缀都为 Chart
-import { PieChart } from 'echarts/charts'
+// 引入柱状图图表，图表后缀都为 Chart
+import { BarChart } from 'echarts/charts'
 // 引入标题，提示框，直角坐标系，数据集，内置数据转换器组件，组件后缀都为 Component
 import {
   TitleComponent,
@@ -17,8 +17,7 @@ import { LabelLayout, UniversalTransition } from 'echarts/features'
 // 引入 Canvas 渲染器，注意引入 CanvasRenderer 或者 SVGRenderer 是必须的一步
 import { CanvasRenderer } from 'echarts/renderers'
 import type { EChartsOption } from 'echarts'
-import { echartsColors } from '@/enums/echartsColors'
-import { useInViewport } from '@/hooks/useInViewport'
+import { useInViewport } from '@/hooks/useInViewport.ts'
 
 // 注册必须的组件
 echarts.use([
@@ -27,7 +26,7 @@ echarts.use([
   GridComponent,
   DatasetComponent,
   TransformComponent,
-  PieChart,
+  BarChart,
   LabelLayout,
   UniversalTransition,
   CanvasRenderer,
@@ -35,11 +34,15 @@ echarts.use([
 ])
 
 /**
- * Renders a pie chart component showing the proportion of customer incomes.
+ * Renders a bar chart component using ECharts library.
  *
- * @return {JSX.Element} The rendered pie chart component.
+ * Just import the components needed.
+ *
+ * Represents the data of when people git in store.
+ *
+ * @return {JSX.Element} The rendered bar chart component.
  */
-function ChartOfCustomerIncomeProportion() {
+function ChartOfInStorePeople(): JSX.Element {
   const chartRef = useRef(null)
 
   const [isInViewport] = useInViewport(chartRef)
@@ -50,36 +53,39 @@ function ChartOfCustomerIncomeProportion() {
 
     // 准备数据
     const data = [
-      { name: '低收入', value: 30 },
-      { name: '中等收入', value: 50 },
-      { name: '高收入', value: 20 },
+      { time: '08:00', people: 50 },
+      { time: '09:00', people: 80 },
+      { time: '10:00', people: 60 },
+      { time: '11:00', people: 90 },
+      { time: '12:00', people: 120 },
+      { time: '13:00', people: 100 },
+      { time: '14:00', people: 70 },
+      { time: '15:00', people: 110 },
+      { time: '16:00', people: 95 },
+      { time: '17:00', people: 130 },
+      { time: '18:00', people: 105 },
     ]
 
     // 配置选项
     const option: EChartsOption = {
       title: {
-        text: '顾客收入占比',
+        text: '客流量',
       },
-      color: echartsColors,
+      color: ['#FF4500'],
       tooltip: {
         trigger: 'item',
       },
-      legend: {
-        bottom: 'bottom',
+      xAxis: {
+        type: 'category',
+        data: data.map((item) => item.time),
+      },
+      yAxis: {
+        type: 'value',
       },
       series: [
         {
-          name: '收入占比',
-          type: 'pie',
-          radius: '50%',
-          data: data,
-          emphasis: {
-            itemStyle: {
-              shadowBlur: 10,
-              shadowOffsetX: 0,
-              shadowColor: 'rgba(0, 0, 0, 0.5)',
-            },
-          },
+          data: data.map((item) => item.people),
+          type: 'bar',
         },
       ],
     }
@@ -96,4 +102,4 @@ function ChartOfCustomerIncomeProportion() {
   return <div ref={chartRef} style={{ width: '100%', height: '400px' }}></div>
 }
 
-export default ChartOfCustomerIncomeProportion
+export default ChartOfInStorePeople

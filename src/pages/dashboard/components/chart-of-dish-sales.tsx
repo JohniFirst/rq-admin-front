@@ -5,7 +5,7 @@ import { BarChart } from 'echarts/charts'
 import { CanvasRenderer } from 'echarts/renderers'
 
 import type { EChartsOption } from 'echarts'
-import { echartsColors } from '@/enums/echartsColors'
+import { echartsColors } from '@/enums/echartsColors.ts'
 
 echarts.use([GridComponent, LegendComponent, BarChart, CanvasRenderer])
 

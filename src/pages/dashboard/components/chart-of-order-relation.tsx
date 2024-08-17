@@ -12,7 +12,7 @@ import {
 import { LabelLayout, UniversalTransition } from 'echarts/features'
 import { CanvasRenderer } from 'echarts/renderers'
 import type { EChartsOption } from 'echarts'
-import { useInViewport } from '@/hooks/useInViewport'
+import { useInViewport } from '@/hooks/useInViewport.ts'
 
 echarts.use([
   TitleComponent,

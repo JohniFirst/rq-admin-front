@@ -12,7 +12,7 @@ http.interceptors.request.use(
     return config
   },
   (error) => {
-    console.log(error)
+    message.error(error)
     return Promise.reject(error)
   },
 )
@@ -33,7 +33,7 @@ http.interceptors.response.use(
     throw new Error(data.message)
   },
   (error) => {
-    console.log(error)
+    message.error(error)
     return Promise.reject(error)
   },
 )

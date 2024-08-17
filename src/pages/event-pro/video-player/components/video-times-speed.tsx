@@ -1,6 +1,6 @@
 import { useState, type MouseEvent } from 'react'
 
-import './css/video.css'
+import '../css/video.css'
 
 interface VideoTimesSpeedProps {
   onChange: (newValue: number) => void

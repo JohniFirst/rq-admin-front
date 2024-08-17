@@ -13,8 +13,8 @@ import { LabelLayout, UniversalTransition } from 'echarts/features'
 import { CanvasRenderer } from 'echarts/renderers'
 import type { EChartsOption } from 'echarts'
 
-import { echartsColors } from '@/enums/echartsColors'
-import { useInViewport } from '@/hooks/useInViewport'
+import { echartsColors } from '@/enums/echartsColors.ts'
+import { useInViewport } from '@/hooks/useInViewport.ts'
 
 echarts.use([
   TitleComponent,
