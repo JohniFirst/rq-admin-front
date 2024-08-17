@@ -1,5 +1,4 @@
 import { useAppSelector } from '@/store/hooks'
-import { MenuModeEnum } from '@/enums/system'
 import CommonMenu from './common-menu'
 import HeaderMenu from './header-menu'
 import DrawerMenu from './drawer-menu'
@@ -8,13 +7,13 @@ import DrawerMenu from './drawer-menu'
  * 布局组件
  */
 function Layout() {
-  const menuMode = useAppSelector((state) => state.systemInfo.menuMode)
+  const layoutMode = useAppSelector((state) => state.systemInfo.layoutMode)
 
-  switch (menuMode) {
-    case MenuModeEnum.COMMON_MENU:
+  switch (layoutMode) {
+    case LayoutModeEnum.COMMON_MENU:
       return <CommonMenu />
 
-    case MenuModeEnum.HEADER_MENU:
+    case LayoutModeEnum.HEADER_MENU:
       return <HeaderMenu />
 
     default:

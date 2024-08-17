@@ -7,34 +7,33 @@ import DrawerMenu from '@/assets/svgs/nav-type/drawer-menu.svg'
 
 import system from './css/system.module.css'
 import { useAppDispatch, useAppSelector } from '@/store/hooks'
-import { MenuModeEnum } from '@/enums/system'
-import { setMenuMode } from '@/store/slice/system-info'
+import { setlayoutMode } from '@/store/slice/system-info'
 
 interface SystemSettingsProps {
   // 这里不需要定义任何接口，因为深色模式状态在组件内部管理
 }
 
-const menuModeArr = [
+const layoutModeArr = [
   {
     imgSrc: CommonMenu,
     title: '常规菜单',
-    value: MenuModeEnum.COMMON_MENU,
+    value: LayoutModeEnum.COMMON_MENU,
   },
   {
     imgSrc: DrawerMenu,
     title: '可折叠的子菜单',
-    value: MenuModeEnum.DRAWER_MENU,
+    value: LayoutModeEnum.DRAWER_MENU,
   },
   {
     imgSrc: HeaderMenu,
     title: '顶部导航菜单',
-    value: MenuModeEnum.HEADER_MENU,
+    value: LayoutModeEnum.HEADER_MENU,
   },
 ]
 
 const SystemSettings: React.FC<SystemSettingsProps> = () => {
   const [isDrawerVisible, setIsDrawerVisible] = useState(false)
-  const menuMode = useAppSelector((state) => state.systemInfo.menuMode)
+  const layoutMode = useAppSelector((state) => state.systemInfo.layoutMode)
   const dispatch = useAppDispatch()
 
   const toggleDrawer = () => {
@@ -53,13 +52,13 @@ const SystemSettings: React.FC<SystemSettingsProps> = () => {
       >
         <p className={system.systemNavTitle}>导航模式</p>
         <div className="grid grid-cols-2 gap-4">
-          {menuModeArr.map((item) => (
+          {layoutModeArr.map((item) => (
             <img
               key={item.value}
               className={`${
-                menuMode === item.value ? system.activeMenuMode : ''
+                layoutMode === item.value ? system.activelayoutMode : ''
               }`}
-              onClick={() => dispatch(setMenuMode(item.value))}
+              onClick={() => dispatch(setlayoutMode(item.value))}
               src={item.imgSrc}
               alt={item.title}
             />

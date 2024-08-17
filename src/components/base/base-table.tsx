@@ -47,7 +47,7 @@ const onFinishFailed: FormProps<FieldType>['onFinishFailed'] = (errorInfo) => {
 
 const BaseTable: React.FC<BaseTableProps> = ({ tableProps, addForm }) => {
   const [isModalOpen, setIsModalOpen] = useState(false)
-  const [dataSource, setDataSource] = useState<>([])
+  const [dataSource, setDataSource] = useState([])
 
   useEffect(() => {
     getList()

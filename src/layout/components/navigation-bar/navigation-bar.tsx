@@ -12,7 +12,6 @@ import { useLocation } from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from '@/store/hooks'
 import { setNavItemAction } from '@/store/slice/system-info.ts'
 import useCustomNavigate from '@/hooks/useCustomNavigate'
-import { ContextMenuKey } from '@/enums/system'
 import {
   DndContext,
   PointerSensor,

@@ -1,3 +1,5 @@
+import LucideIcon, { LucideIconType } from '@/components/lucide-icon'
+import { LucideIconList } from '@/components/LucideIconList'
 import { menuUrls } from '@/routes/dynamic-routes'
 import { Input, Form, InputNumber, Row, Col, Select } from 'antd'
 
@@ -13,12 +15,9 @@ const MenuAddForm = () => {
         <Input placeholder="请输入菜单名" />
       </Form.Item>
 
-      <Form.Item
-        label="路由"
-        name="url"
-        rules={[{ required: true, message: '请输入路由' }]}
-      >
+      <Form.Item label="路由" name="url">
         <Select
+          allowClear
           showSearch
           placeholder="请输入路由"
           filterOption={(input, option) =>
@@ -33,7 +32,15 @@ const MenuAddForm = () => {
         name="icon"
         rules={[{ required: true, message: '请选择图标' }]}
       >
-        <Input />
+        <Select
+          options={LucideIconList.map((name) => ({ label: name, value: name }))}
+          labelRender={(option) => (
+            <LucideIcon name={option.label as LucideIconType} />
+          )}
+          optionRender={(options) => (
+            <LucideIcon name={options.label as LucideIconType} />
+          )}
+        />
       </Form.Item>
 
       <Row>

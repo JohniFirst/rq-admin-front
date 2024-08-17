@@ -1,6 +1,7 @@
 import { addMenu, getMenuList } from '@/api/system-api'
 import BaseTable from '@/components/base/base-table'
-import MenuAddForm from './menu-add-form'
+import MenuAddForm from './components/menu-add-form'
+import LucideIcon, { LucideIconType } from '@/components/lucide-icon'
 
 function Menu() {
   const columns: BaseTableColumns = [
@@ -23,6 +24,9 @@ function Menu() {
       title: '图标',
       dataIndex: 'icon',
       key: 'icon',
+      render: (_, { icon }) => {
+        return <LucideIcon name={icon as LucideIconType} />
+      },
     },
     {
       title: '排序',

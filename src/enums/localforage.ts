@@ -5,4 +5,9 @@ export enum ForageEnums {
   SYSTEM_INFO = 'SYSTEM_INFO',
 }
 
+export enum LocalStorageKeys {
+  // 布局模式
+  LAYOUT_MODE = 'LAYOUT_MODE',
+}
+
 export type ForageKeys = keyof typeof ForageEnums

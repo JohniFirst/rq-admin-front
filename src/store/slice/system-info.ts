@@ -1,8 +1,7 @@
 import { createSlice, Slice, type PayloadAction } from '@reduxjs/toolkit'
 import type { RootState } from '../store.ts'
 import { forage } from '@/utils/localforage.ts'
-import { ForageEnums } from '@/enums/localforage.ts'
-import { MenuModeEnum } from '@/enums/system.ts'
+import { ForageEnums, LocalStorageKeys } from '@/enums/localforage.ts'
 
 // 定义一个异步函数来获取初始数据
 export const fetchInitialData = async () => {
@@ -13,11 +12,12 @@ export const fetchInitialData = async () => {
   const localSystemInfo = JSON.parse(SYSTEM_INFO) as LocalSystemInfo
   // 更新html的类来改变主题
   document.documentElement.className = localSystemInfo?.theme
+  const layoutMode = localStorage.getItem(LocalStorageKeys.LAYOUT_MODE)
 
   return {
     navItem,
     theme: localSystemInfo?.theme || 'light',
-    menuMode: localSystemInfo?.menuMode || MenuModeEnum.COMMON_MENU,
+    layoutMode: layoutMode ?? LayoutModeEnum.COMMON_MENU,
   }
 }
 
@@ -25,7 +25,7 @@ export const fetchInitialData = async () => {
 const initialState: SystemInfo = {
   theme: 'light',
   navItem: [],
-  menuMode: MenuModeEnum.COMMON_MENU,
+  layoutMode: LayoutModeEnum.COMMON_MENU,
 }
 
 export const systemInfoSlice: Slice<SystemInfo> = createSlice({
@@ -77,15 +77,15 @@ export const systemInfoSlice: Slice<SystemInfo> = createSlice({
      * Sets the current menu mode of the system.
      *
      * @param {SystemInfo} state - The current state of the system.
-     * @param {PayloadAction<MenuMode>} action - The action containing the new menu mode.
+     * @param {PayloadAction<LayoutMode>} action - The action containing the new menu mode.
      */
-    setMenuMode: (state, action: PayloadAction<MenuMode>) => {
+    setlayoutMode: (state, action: PayloadAction<LayoutMode>) => {
       // 设置的菜单模式和当前的菜单模式相同则不更新
-      if (state.menuMode === action.payload) {
+      if (state.layoutMode === action.payload) {
         return
       }
 
-      state.menuMode = action.payload
+      state.layoutMode = action.payload
       const copyState = JSON.parse(JSON.stringify(state))
       delete copyState.navItem
       forage.setItem(ForageEnums.SYSTEM_INFO, copyState)
@@ -97,7 +97,7 @@ export const {
   setNavItemAction,
   pushNavItemAction,
   setTheme,
-  setMenuMode,
+  setlayoutMode,
   initSystemInfoState,
 } = systemInfoSlice.actions
 
