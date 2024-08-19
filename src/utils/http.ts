@@ -27,6 +27,8 @@ http.interceptors.response.use(
       return data
     }
 
+    // console.log(data)
+
     // antd 抛出错误
     message.error(data.message)
 

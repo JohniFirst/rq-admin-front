@@ -1,24 +1,18 @@
-// import React, { useState, useEffect } from "react";
+import { useEffect, useState } from 'react'
 import { Form, Input, Button, Checkbox } from 'antd'
-import { useNavigate } from 'react-router-dom'
 // import JSEncrypt from "jsencrypt";
 import login from './login.module.css'
 import VerificationCodeInput from '@/components/base/verification-code-input'
-import { handleLogin } from '@/api/system-api'
-// import { useCustomRoutes } from "@/routes";
-// import { dynamicRoutes } from "@/routes/dynamic-routes";
+import { getMenuList, handleLogin } from '@/api/system-api'
+import useCustomNavigate from '@/hooks/useCustomNavigate'
+import { useAppDispatch } from '@/store/hooks'
+import { updateMenu } from '@/store/slice/menu-slice'
 
 const LoginForm = () => {
   const [form] = Form.useForm()
-  const navigate = useNavigate()
-  // const { routes, addRoutes } = useCustomRoutes();
-
-  // useEffect(() => {
-  //   // 登录成功后的处理逻辑
-  //   if (/* 假设登录成功 */) {
-  //     navigate('/dashboard'); // 跳转到主页
-  //   }
-  // }, []);
+  const navigate = useCustomNavigate()
+  const [isLogin, setIsLogin] = useState(false)
+  const dispatch = useAppDispatch()
 
   const handleSubmit = async (values: LoginFormValues) => {
     // e.preventDefault();
@@ -30,10 +24,19 @@ const LoginForm = () => {
 
     await handleLogin(values)
 
-    navigate('/dashboard')
+    const res = await getMenuList()
+
+    dispatch(updateMenu(res))
+
+    setIsLogin(true)
   }
 
-  // const encryptPassword = async (password: string) => {};
+  // 异步导航，避免异步获取到的路由数据访问不到
+  useEffect(() => {
+    if (isLogin) {
+      navigate('/dashboard', false)
+    }
+  }, [isLogin])
 
   return (
     <section className="w-screen h-screen overflow-hidden">

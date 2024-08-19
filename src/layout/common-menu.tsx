@@ -8,6 +8,23 @@ import useCustomNavigate from '@/hooks/useCustomNavigate'
 
 import type { MenuProps } from 'antd'
 import { useEffect, useState } from 'react'
+import LucideIcon, { LucideIconType } from '@/components/lucide-icon'
+
+const menuItenWithIcon = (menu: MenuItem[]): MenuItem[] => {
+  return menu.map((item) => {
+    const tempMenu: MenuItem = {
+      key: item.url,
+      label: item.title,
+      title: item.title,
+      icon: <LucideIcon name={item.icon as LucideIconType} />,
+    }
+
+    if (item.children) {
+      tempMenu.children = menuItenWithIcon(item.children)
+    }
+    return tempMenu
+  })
+}
 
 /**
  * 常规菜单
@@ -15,23 +32,10 @@ import { useEffect, useState } from 'react'
 function CommonMenu() {
   const navigate = useCustomNavigate()
   const dispatch = useAppDispatch()
-  const menus = useAppSelector((state) => state.menu)
-
-  const onClick: MenuProps['onClick'] = (e) => {
-    navigate(e.key)
-
-    dispatch(
-      pushNavItemAction({
-        key: e.key,
-        // @ts-ignore
-        label: e.item.props.title,
-        active: true,
-        fixed: false,
-      }),
-    )
-  }
-
+  const menus = menuItenWithIcon(useAppSelector((state) => state.menu))
   const location = useLocation()
+  const [selectedKey, setSelectedKey] = useState([''])
+  const [openKeys, setOpenKeys] = useState<string[]>([])
 
   // 找到当前选中项和需要展开的项
   const findSelectedAndOpenKeys = (items: MenuItem[], currentPath: string) => {
@@ -60,18 +64,24 @@ function CommonMenu() {
     return { selectedKey, openKeys }
   }
 
-  const [selectedKey, setSelectedKey] = useState([''])
-  const [openKeys, setOpenKeys] = useState<string[]>([])
-
   useEffect(() => {
     const result = findSelectedAndOpenKeys(menus, location.pathname)
     setSelectedKey([result.selectedKey])
     setOpenKeys(result.openKeys as string[])
   }, [location])
 
-  const onOpenChange = (keys: string[]) => {
-    // 更新展开的菜单项
-    setOpenKeys(keys)
+  const onClick: MenuProps['onClick'] = (e) => {
+    navigate(e.key)
+
+    dispatch(
+      pushNavItemAction({
+        key: e.key,
+        // @ts-ignore
+        label: e.item.props.title,
+        active: true,
+        fixed: false,
+      }),
+    )
   }
 
   return (
@@ -79,12 +89,13 @@ function CommonMenu() {
       <div className="grid grid-cols-[256px_1fr] w-full h-screen">
         <aside className="max-h-screen">
           <p>你可以在这里放logo</p>
+
           <Menu
             className="max-h-full overflow-y-auto"
             onClick={onClick}
             selectedKeys={selectedKey}
             openKeys={openKeys}
-            onOpenChange={onOpenChange}
+            onOpenChange={(keys) => setOpenKeys(keys)}
             mode="inline"
             items={menus}
           />

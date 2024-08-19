@@ -22,3 +22,8 @@ type SelectOptions = {
   label: string
   value: string | number
 }
+
+type RoleListRes = {
+  id: number
+  roleName: string
+}

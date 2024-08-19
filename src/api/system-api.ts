@@ -24,8 +24,13 @@ export function updateUserIsEnabled(data: {
 }
 
 /** 所有角色列表 */
-export function getAllRoleList(): Promise<string[]> {
+export function getAllRoleList(): Promise<RoleListRes[]> {
   return http.get('/role/list')
+}
+
+/** 角色枚举 */
+export function getRoleEnumList(): Promise<SelectOptions[]> {
+  return http.get('/role-enum-list')
 }
 
 /** 新增角色 */
@@ -35,10 +40,20 @@ export function addRole(data: { roleName: string }): Promise<null> {
 
 /** 菜单列表 */
 export function getMenuList(): Promise<string[]> {
-  return http.get('/menu/list')
+  return http.get('/menu-list')
+}
+
+/** 菜单列表不带角色信息 */
+export function getMenuListWithoutRole(): Promise<string[]> {
+  return http.get('/menu/without-role')
 }
 
 /** 新增菜单 */
 export function addMenu(data: { roleName: string }): Promise<null> {
-  return http.post('/menu/add', data)
+  return http.post('/menu-add', data)
+}
+
+/** 删除菜单 */
+export function delMenu(id: number) {
+  return http.delete('/menu/' + id)
 }

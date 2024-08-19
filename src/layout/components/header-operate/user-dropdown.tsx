@@ -6,10 +6,13 @@ import {
   EyeInvisibleOutlined,
 } from '@ant-design/icons'
 import useCustomNavigate from '@/hooks/useCustomNavigate'
+import { useAppDispatch } from '@/store/hooks'
+import { resetMenu } from '@/store/slice/menu-slice'
 
 const UserDropdown: React.FC = () => {
   const [userName] = useState('默认用户名')
   const [userAvatar] = useState('默认头像')
+  const dispatch = useAppDispatch()
 
   const navigate = useCustomNavigate()
 
@@ -45,7 +48,8 @@ const UserDropdown: React.FC = () => {
       icon: <LogoutOutlined />,
       label: '退出登录',
       onClick: () => {
-        //TODO 退出登录的逻辑
+        dispatch(resetMenu({}))
+
         navigate('/login')
       },
     },
