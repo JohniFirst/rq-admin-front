@@ -25,8 +25,20 @@ export function useJumpToVscodeSource() {
         }
       }
 
-      const { _debugSource, _debugOwner } = sourceTarget
-      const source = _debugSource || (_debugOwner && _debugOwner._debugSource)
+      const getDebugSouece = (target, depth = 1) => {
+        // 避免太深层次的递归，影响性能
+        if (depth > 10) {
+          return
+        }
+
+        return (
+          target._debugSource ?? getDebugSouece(target._debugOwner, depth + 1)
+        )
+      }
+
+      const { _debugOwner } = sourceTarget
+      const source = _debugOwner && getDebugSouece(_debugOwner)
+
       if (!source) {
         return
       }
