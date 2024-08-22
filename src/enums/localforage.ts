@@ -10,4 +10,14 @@ export enum LocalStorageKeys {
   LAYOUT_MODE = 'LAYOUT_MODE',
 }
 
+export enum IsLogin {
+  YES,
+  NO,
+}
+
+export enum SessionStorageKeys {
+  // 语言
+  IS_LOGIN,
+}
+
 export type ForageKeys = keyof typeof ForageEnums

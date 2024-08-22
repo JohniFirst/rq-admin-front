@@ -39,12 +39,14 @@ export function addRole(data: { roleName: string }): Promise<null> {
 }
 
 /** 菜单列表 */
-export function getMenuList(): Promise<string[]> {
+export function getMenuList(): Promise<MenuApiResponse[]> {
   return http.get('/menu-list')
 }
 
 /** 菜单列表不带角色信息 */
-export function getMenuListWithoutRole(): Promise<string[]> {
+export function getMenuListWithoutRole(): Promise<
+  MenuApiWithoutRoleResponse[]
+> {
   return http.get('/menu/without-role')
 }
 

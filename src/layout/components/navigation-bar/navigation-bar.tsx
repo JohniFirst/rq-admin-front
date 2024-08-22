@@ -214,7 +214,7 @@ function NavigationBar() {
       menu={{ items: contextMenu, onClick: handleMenuClick }}
       trigger={['contextMenu']}
     >
-      <ul className="flex gap-2 dark:bg-black bg-gray-50 py-2">
+      <ul className="flex user-select-none gap-2 dark:bg-black bg-gray-50 py-2">
         <DndContext
           sensors={[sensor]}
           onDragEnd={onDragEnd}

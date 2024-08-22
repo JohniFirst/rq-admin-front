@@ -8,6 +8,7 @@ import {
 import useCustomNavigate from '@/hooks/useCustomNavigate'
 import { useAppDispatch } from '@/store/hooks'
 import { resetMenu } from '@/store/slice/menu-slice'
+import { IsLogin, SessionStorageKeys } from '@/enums/localforage'
 
 const UserDropdown: React.FC = () => {
   const [userName] = useState('默认用户名')
@@ -49,6 +50,11 @@ const UserDropdown: React.FC = () => {
       label: '退出登录',
       onClick: () => {
         dispatch(resetMenu({}))
+
+        sessionStorage.setItem(
+          `${SessionStorageKeys.IS_LOGIN}`,
+          `${IsLogin.NO}`,
+        )
 
         navigate('/login')
       },

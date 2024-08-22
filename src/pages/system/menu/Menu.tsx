@@ -1,10 +1,10 @@
 import { addMenu, delMenu, getMenuList } from '@/api/system-api'
-import BaseTable from '@/components/base/base-table'
+import BaseDraggableTable from '@/components/base/base-draggable-table'
 import MenuAddForm from './components/menu-add-form'
 import LucideIcon, { LucideIconType } from '@/components/lucide-icon'
 import { Button, message, Modal } from 'antd'
 
-function Menu() {
+const Menu = () => {
   const [modal, contextHolder] = Modal.useModal()
 
   const columns: BaseTableColumns = [
@@ -77,8 +77,7 @@ function Menu() {
   return (
     <>
       {contextHolder}
-      <BaseTable
-        noPage
+      <BaseDraggableTable
         tableProps={{
           columns,
           getList: getMenuList,

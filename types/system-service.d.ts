@@ -27,3 +27,16 @@ type RoleListRes = {
   id: number
   roleName: string
 }
+
+type MenuApiWithoutRoleResponse = {
+  menuOrder: number
+  title: string
+  id: number
+  url: string
+  icon: string
+  children?: MenuApiResponse[]
+}
+
+type MenuApiResponse = MenuApiWithoutRoleResponse & {
+  role: RoleListRes[]
+}

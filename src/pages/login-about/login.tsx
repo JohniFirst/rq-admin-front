@@ -7,6 +7,7 @@ import { getMenuList, handleLogin } from '@/api/system-api'
 import useCustomNavigate from '@/hooks/useCustomNavigate'
 import { useAppDispatch } from '@/store/hooks'
 import { updateMenu } from '@/store/slice/menu-slice'
+import { IsLogin, SessionStorageKeys } from '@/enums/localforage'
 
 const LoginForm = () => {
   const [form] = Form.useForm()
@@ -23,6 +24,8 @@ const LoginForm = () => {
     // addRoutes(dynamicRoutes);
 
     await handleLogin(values)
+
+    sessionStorage.setItem(`${SessionStorageKeys.IS_LOGIN}`, `${IsLogin.YES}`)
 
     const res = await getMenuList()
 
