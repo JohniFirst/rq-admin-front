@@ -14,6 +14,7 @@ const LoginForm = () => {
   const navigate = useCustomNavigate()
   const [isLogin, setIsLogin] = useState(false)
   const dispatch = useAppDispatch()
+  // const menu = useAppSelector((state) => state.menu)
 
   const handleSubmit = async (values: LoginFormValues) => {
     // e.preventDefault();
@@ -37,6 +38,21 @@ const LoginForm = () => {
   // 异步导航，避免异步获取到的路由数据访问不到
   useEffect(() => {
     if (isLogin) {
+      // const getUrl = (menus: MenuItem[]) => {
+      //   for (let i = 0, l = menus.length; i < l; i++) {
+      //     const currentMenuItem = menus[i]
+
+      //     if (currentMenuItem.url) {
+      //       return currentMenuItem.url
+      //     } else if (currentMenuItem.children) {
+      //       return getUrl(currentMenuItem.children)
+      //     }
+      //   }
+      // }
+
+      // const url = getUrl(menu)
+
+      // navigate(url, false)
       navigate('/dashboard', false)
     }
   }, [isLogin])

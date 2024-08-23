@@ -15,10 +15,12 @@ const Menu = () => {
     {
       title: '菜单名',
       dataIndex: 'title',
+      searchFormItemConfig: {},
     },
     {
       title: '路由',
       dataIndex: 'url',
+      searchFormItemConfig: {},
     },
     {
       title: '图标',

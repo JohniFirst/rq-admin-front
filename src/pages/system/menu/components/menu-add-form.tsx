@@ -1,9 +1,9 @@
+import { useEffect, useState } from 'react'
 import { getRoleEnumList } from '@/api/system-api'
 import LucideIcon, { LucideIconType } from '@/components/lucide-icon'
 import { LucideIconList } from '@/components/LucideIconList'
 import { menuUrls } from '@/routes/dynamic-routes'
 import { Input, Form, InputNumber, Row, Col, Select } from 'antd'
-import { useEffect, useState } from 'react'
 
 /** 新增菜单的表单 */
 const MenuAddForm = () => {
@@ -22,7 +22,7 @@ const MenuAddForm = () => {
     <>
       <Row>
         <Col span={12}>
-          <Form.Item
+          <Form.Item<MenuAddFormFields>
             label="菜单名"
             name="title"
             rules={[{ required: true, message: '请输入菜单名' }]}
@@ -32,7 +32,7 @@ const MenuAddForm = () => {
         </Col>
 
         <Col span={12}>
-          <Form.Item
+          <Form.Item<MenuAddFormFields>
             label="角色"
             name="roles"
             rules={[{ required: true, message: '请选择角色' }]}
@@ -53,7 +53,7 @@ const MenuAddForm = () => {
         </Col>
       </Row>
 
-      <Form.Item label="路由" name="url">
+      <Form.Item<MenuAddFormFields> label="路由" name="url">
         <Select
           allowClear
           showSearch
@@ -65,7 +65,7 @@ const MenuAddForm = () => {
         />
       </Form.Item>
 
-      <Form.Item
+      <Form.Item<MenuAddFormFields>
         label="图标"
         name="icon"
         rules={[{ required: true, message: '请选择图标' }]}
@@ -83,13 +83,13 @@ const MenuAddForm = () => {
 
       <Row>
         <Col span={12}>
-          <Form.Item label="父级菜单ID" name="parent">
+          <Form.Item<MenuAddFormFields> label="父级菜单ID" name="parent">
             <InputNumber className="w-full" placeholder="一级菜单可以不填" />
           </Form.Item>
         </Col>
 
         <Col span={12}>
-          <Form.Item label="排序" name="menuOrder">
+          <Form.Item<MenuAddFormFields> label="排序" name="menuOrder">
             <InputNumber placeholder="升序排序" />
           </Form.Item>
         </Col>

@@ -40,3 +40,12 @@ type MenuApiWithoutRoleResponse = {
 type MenuApiResponse = MenuApiWithoutRoleResponse & {
   role: RoleListRes[]
 }
+
+type MenuAddFormFields = {
+  title: string
+  roles: string[]
+  url: string
+  icon: string
+  parent: number
+  menuOrder: number
+}

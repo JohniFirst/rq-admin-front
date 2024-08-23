@@ -34,27 +34,14 @@ import { sortMenu } from '@/store/slice/menu-slice'
 
 type BaseTableProps = {
   tableProps: TableProps & {
-    getList: () => void
+    columns: BaseTableColumns
+    getList: (params?: unknown) => void
   }
-  searchProps?: FormProps
+  searchProps?: BaseTableSearchProps
   addForm?: {
     addFormApi: unknown
     AddForm: React.FC
   }
-}
-
-type FieldType = {
-  username?: string
-  password?: string
-  remember?: string
-}
-
-const onFinish: FormProps<FieldType>['onFinish'] = (values) => {
-  console.log('Success:', values)
-}
-
-const onFinishFailed: FormProps<FieldType>['onFinishFailed'] = (errorInfo) => {
-  console.log('Failed:', errorInfo)
 }
 
 interface RowProps extends React.HTMLAttributes<HTMLTableRowElement> {
@@ -64,16 +51,22 @@ interface RowProps extends React.HTMLAttributes<HTMLTableRowElement> {
 const BaseDraggableTable: React.FC<BaseTableProps> = ({
   tableProps,
   addForm,
+  searchProps = { gutter: 16, span: 6 },
 }) => {
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [dataSource, setDataSource] = useState([])
+
+  const searchFormItems = tableProps.columns?.filter(
+    // @ts-ignore
+    (item) => item.searchFormItemConfig,
+  )
 
   useEffect(() => {
     getList()
   }, [])
 
-  const getList = async () => {
-    const res = await tableProps.getList()
+  const getList = async (params?: unknown) => {
+    const res = await tableProps.getList(params)
 
     sortMenu(res)
 
@@ -137,12 +130,7 @@ const BaseDraggableTable: React.FC<BaseTableProps> = ({
   }
 
   const sensors = useSensors(
-    useSensor(PointerSensor, {
-      activationConstraint: {
-        // https://docs.dndkit.com/api-documentation/sensors/pointer#activation-constraints
-        distance: 1,
-      },
-    }),
+    useSensor(PointerSensor, { activationConstraint: { distance: 1 } }),
   )
 
   const onDragEnd = ({ active, over }: DragEndEvent) => {
@@ -155,38 +143,45 @@ const BaseDraggableTable: React.FC<BaseTableProps> = ({
     }
   }
 
+  const onFinish: FormProps['onFinish'] = (values) => {
+    const params: typeof values = {}
+
+    Object.keys(values).forEach((item) => {
+      if (values[item] !== undefined) {
+        params[item] = values[item]
+      }
+    })
+
+    getList(params)
+  }
+
+  const onFinishFailed: FormProps['onFinishFailed'] = (errorInfo) => {
+    console.log('Failed:', errorInfo)
+  }
+
   return (
     <>
       <Form
         className="container mb-4 w-full"
-        name="basic"
+        name="searchForm"
         onFinish={onFinish}
         onFinishFailed={onFinishFailed}
         autoComplete="off"
       >
-        <Row gutter={16}>
-          <Col span={6}>
-            <Form.Item<FieldType>
-              label="Username"
-              name="username"
-              rules={[
-                { required: true, message: 'Please input your username!' },
-              ]}
-            >
-              <Input />
-            </Form.Item>
-          </Col>
-          <Col span={6}>
-            <Form.Item<FieldType>
-              label="Username"
-              name="username"
-              rules={[
-                { required: true, message: 'Please input your username!' },
-              ]}
-            >
-              <Input />
-            </Form.Item>
-          </Col>
+        <Row gutter={searchProps.gutter}>
+          {searchFormItems.map((item, index) => {
+            return (
+              <Col span={searchProps.span} key={index}>
+                <Form.Item
+                  label={item.title}
+                  name={item.dataIndex}
+                  rules={item.searchFormItemConfig.rules}
+                >
+                  <Input />
+                </Form.Item>
+              </Col>
+            )
+          })}
 
           <Col span={6}>
             <Form.Item>
@@ -194,6 +189,7 @@ const BaseDraggableTable: React.FC<BaseTableProps> = ({
                 <Button type="primary" htmlType="submit">
                   查询
                 </Button>
+
                 <Button htmlType="submit">重置</Button>
               </Space>
             </Form.Item>

@@ -39,8 +39,8 @@ export function addRole(data: { roleName: string }): Promise<null> {
 }
 
 /** 菜单列表 */
-export function getMenuList(): Promise<MenuApiResponse[]> {
-  return http.get('/menu-list')
+export function getMenuList(params?: unknown): Promise<MenuApiResponse[]> {
+  return http.get('/menu-list', { params })
 }
 
 /** 菜单列表不带角色信息 */
@@ -51,7 +51,7 @@ export function getMenuListWithoutRole(): Promise<
 }
 
 /** 新增菜单 */
-export function addMenu(data: { roleName: string }): Promise<null> {
+export function addMenu(data: MenuAddFormFields): Promise<null> {
   return http.post('/menu-add', data)
 }
 
