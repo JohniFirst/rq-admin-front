@@ -23,36 +23,29 @@ import { useEffect, useState } from 'react'
 type BaseTableProps = {
   noPage?: boolean
   tableProps: TableProps & {
+    columns: BaseTableColumns
     getList: () => void
   }
-  searchProps?: FormProps
+  searchProps?: BaseTableSearchProps
   addForm?: {
     addFormApi: unknown
     AddForm: React.FC
   }
 }
 
-type FieldType = {
-  username?: string
-  password?: string
-  remember?: string
-}
-
-const onFinish: FormProps<FieldType>['onFinish'] = (values) => {
-  console.log('Success:', values)
-}
-
-const onFinishFailed: FormProps<FieldType>['onFinishFailed'] = (errorInfo) => {
-  console.log('Failed:', errorInfo)
-}
-
 const BaseTable: React.FC<BaseTableProps> = ({
   tableProps,
   addForm,
   noPage,
+  searchProps = { gutter: 16, span: 6 },
 }) => {
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [dataSource, setDataSource] = useState([])
+
+  const searchFormItems = tableProps.columns?.filter(
+    // @ts-ignore
+    (item) => item.searchFormItemConfig,
+  )
 
   useEffect(() => {
     getList()
@@ -98,6 +91,22 @@ const BaseTable: React.FC<BaseTableProps> = ({
     exportToExcel(excelData, `${format(Date.now(), 'yyyy-MM-dd')}.xlsx`)
   }
 
+  const onFinish: FormProps['onFinish'] = (values) => {
+    const params: typeof values = {}
+
+    Object.keys(values).forEach((item) => {
+      if (values[item] !== undefined) {
+        params[item] = values[item]
+      }
+    })
+
+    getList(params)
+  }
+
+  const onFinishFailed: FormProps['onFinishFailed'] = (errorInfo) => {
+    console.log('Failed:', errorInfo)
+  }
+
   return (
     <>
       <Form
@@ -107,29 +116,20 @@ const BaseTable: React.FC<BaseTableProps> = ({
         onFinishFailed={onFinishFailed}
         autoComplete="off"
       >
-        <Row gutter={16}>
-          <Col span={6}>
-            <Form.Item<FieldType>
-              label="Username"
-              name="username"
-              rules={[
-                { required: true, message: 'Please input your username!' },
-              ]}
-            >
-              <Input />
-            </Form.Item>
-          </Col>
-          <Col span={6}>
-            <Form.Item<FieldType>
-              label="Username"
-              name="username"
-              rules={[
-                { required: true, message: 'Please input your username!' },
-              ]}
-            >
-              <Input />
-            </Form.Item>
-          </Col>
+        <Row gutter={searchProps.gutter}>
+          {searchFormItems.map((item, index) => {
+            return (
+              <Col span={searchProps.span} key={index}>
+                <Form.Item
+                  label={item.title}
+                  name={item.dataIndex}
+                  rules={item.searchFormItemConfig.rules}
+                >
+                  <Input />
+                </Form.Item>
+              </Col>
+            )
+          })}
 
           <Col span={6}>
             <Form.Item>

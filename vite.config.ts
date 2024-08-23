@@ -1,6 +1,8 @@
 import { defineConfig, type UserConfig } from 'vite'
 import react from '@vitejs/plugin-react-swc'
 import path from 'path'
+import tailwindcss from 'tailwindcss'
+import autoprefixer from 'autoprefixer'
 
 import viteCompression from 'vite-plugin-compression'
 import bundleAnalyzer from 'rollup-plugin-bundle-analyzer'
@@ -14,25 +16,30 @@ export default defineConfig((configEnv: UserConfig): UserConfig => {
       configEnv.mode === 'gzip'
         ? viteCompression({
             // 压缩后删除原文件
-            deleteOriginFile: false
+            deleteOriginFile: false,
           })
         : undefined,
-      configEnv.mode === 'analyzer' ? bundleAnalyzer({}) : undefined
+      configEnv.mode === 'analyzer' ? bundleAnalyzer({}) : undefined,
     ],
     resolve: {
       alias: {
         '@': path.resolve(__dirname, './src'),
-        types: path.resolve(__dirname, './types')
-      }
+        types: path.resolve(__dirname, './types'),
+      },
+    },
+    css: {
+      postcss: {
+        plugins: [tailwindcss(), autoprefixer()],
+      },
     },
     server: {
       proxy: {
         '/api': {
           target: 'http://localhost:8080',
           changeOrigin: true,
-          rewrite: (path) => path.replace(/^\/api/, '')
-        }
-      }
+          rewrite: (path) => path.replace(/^\/api/, ''),
+        },
+      },
     },
     build: {
       cssCodeSplit: false,
@@ -55,9 +62,9 @@ export default defineConfig((configEnv: UserConfig): UserConfig => {
               extType = 'fonts'
             }
             return `${extType}/[name].[ext]`
-          }
-        }
-      }
-    }
+          },
+        },
+      },
+    },
   }
 })
