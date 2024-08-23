@@ -19,4 +19,8 @@ export const LucideIconList = [
   'building',
   'contact',
   'pointer',
+  'file-pen-line',
+  'share-2',
+  'link',
+  'copy',
 ]

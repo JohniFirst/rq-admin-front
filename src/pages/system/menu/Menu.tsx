@@ -1,8 +1,9 @@
-import { addMenu, delMenu, getMenuList } from '@/api/system-api'
+import { addMenu, getMenuList } from '@/api/system-api'
 import BaseDraggableTable from '@/components/base/base-draggable-table'
 import MenuAddForm from './components/menu-add-form'
 import LucideIcon, { LucideIconType } from '@/components/lucide-icon'
-import { Button, message, Modal } from 'antd'
+import { Modal } from 'antd'
+import PopoverMenu from '@/components/base/popover-menu'
 
 const Menu = () => {
   const [modal, contextHolder] = Modal.useModal()
@@ -45,33 +46,7 @@ const Menu = () => {
       key: 'operation',
       align: 'right',
       render(value, record) {
-        return (
-          <>
-            <Button type="link" size="small">
-              修改
-            </Button>
-
-            <Button
-              type="link"
-              size="small"
-              onClick={async () => {
-                const confirmed = await modal.confirm({
-                  title: '确认删除？',
-                  cancelText: '取消',
-                  okText: '删除',
-                })
-
-                if (!confirmed) return
-
-                await delMenu(record.id)
-
-                message.success('删除成功')
-              }}
-            >
-              删除
-            </Button>
-          </>
-        )
+        return <PopoverMenu values={record} modal={modal} />
       },
     },
   ]
