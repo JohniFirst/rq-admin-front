@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { getRoleEnumList } from '@/api/system-api'
 import LucideIcon, { LucideIconType } from '@/components/lucide-icon'
-import { LucideIconList } from '@/components/LucideIconList'
+import { LucideIconList } from '@/utils/config'
 import { menuUrls } from '@/routes/dynamic-routes'
 import { Input, Form, InputNumber, Row, Col, Select } from 'antd'
 
