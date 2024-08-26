@@ -8,7 +8,11 @@ export function useJumpToVscodeSource() {
   const handleClick = (event: MouseEvent) => {
     if (event.ctrlKey && event.button === 0) {
       event.preventDefault()
-      const element = event.target
+      let element = event.target
+      if (element.tagName === 'CANVAS') {
+        element = element.parentNode.parentNode
+      }
+
       let sourceTarget
 
       if ('_reactRootContainer' in element) {
@@ -25,19 +29,20 @@ export function useJumpToVscodeSource() {
         }
       }
 
-      const getDebugSouece = (target, depth = 1) => {
+      const getDebugSource = (target, depth = 1) => {
         // 避免太深层次的递归，影响性能
         if (depth > 10) {
           return
         }
 
         return (
-          target._debugSource ?? getDebugSouece(target._debugOwner, depth + 1)
+          target._debugSource ?? getDebugSource(target._debugOwner, depth + 1)
         )
       }
 
-      const { _debugOwner } = sourceTarget
-      const source = _debugOwner && getDebugSouece(_debugOwner)
+      const { _debugOwner, _debugSource } = sourceTarget
+      const source =
+        _debugSource || (_debugOwner && getDebugSource(_debugOwner))
 
       if (!source) {
         return

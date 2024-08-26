@@ -22,7 +22,7 @@
     "@dnd-kit/utilities": "^3.2.2",
     "@reduxjs/toolkit": "^2.2.7",
     "antd": "^5.20.2",
-    "axios": "^1.7.4",
+    "axios": "^1.7.5",
     "date-fns": "^3.6.0",
     "echarts": "^5.5.1",
     "jsencrypt": "^3.3.2",

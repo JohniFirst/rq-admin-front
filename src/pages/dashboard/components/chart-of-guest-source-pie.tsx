@@ -70,8 +70,13 @@ function ChartOfGuestSourcePie() {
         {
           name: '客人来源',
           type: 'pie',
-          radius: '50%',
-          data: data,
+          radius: ['40%', '70%'],
+          padAngle: 5,
+          data,
+          label: {
+            // show: false,
+            // position: 'center'
+          },
           emphasis: {
             itemStyle: {
               shadowBlur: 10,

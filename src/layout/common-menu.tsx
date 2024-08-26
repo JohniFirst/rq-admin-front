@@ -26,9 +26,7 @@ const menuItenWithIcon = (menu: MenuItem[]): MenuItem[] => {
   })
 }
 
-/**
- * 常规菜单
- */
+/** * 常规菜单 */
 function CommonMenu() {
   const navigate = useCustomNavigate()
   const dispatch = useAppDispatch()

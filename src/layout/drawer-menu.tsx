@@ -19,8 +19,6 @@ function DrawerMenu() {
   const menus = useAppSelector((state) => state.menu)
   const [topActiveMenu, setTopActiveMenu] = useState<MenuItem>(menus[0])
 
-  console.log('topActiveMenu', topActiveMenu)
-
   const onClick: MenuProps['onClick'] = (e) => {
     navigate(e.key)
 

@@ -101,8 +101,10 @@ function ChartOfPayMethodRelation() {
         {
           name: '支付方式',
           type: 'pie',
-          radius: '50%',
-          data: data,
+          radius: [20, 140],
+          center: ['50%', '50%'],
+          roseType: 'area',
+          data,
           emphasis: {
             itemStyle: {
               shadowBlur: 10,
