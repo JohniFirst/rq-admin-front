@@ -8,9 +8,7 @@
     "build": "tsc -b && vite build",
     "build-gzip": "vite build --mode gzip",
     "build-analyze": "vite build --mode analyzer",
-    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
-    "format": "prettier --write src/",
     "update": "pnpm update",
     "prepare": "husky"
   },
@@ -37,6 +35,7 @@
     "xlsx": "^0.18.5"
   },
   "devDependencies": {
+    "@biomejs/biome": "1.8.3",
     "@commitlint/cli": "^19.4.0",
     "@commitlint/config-conventional": "^19.2.2",
     "@remix-run/router": "^1.19.1",
@@ -48,15 +47,10 @@
     "@typescript-eslint/parser": "^7.18.0",
     "@vitejs/plugin-react-swc": "^3.7.0",
     "autoprefixer": "^10.4.20",
-    "eslint": "^8.57.0",
-    "eslint-plugin-react": "^7.35.0",
-    "eslint-plugin-react-hooks": "^4.6.2",
-    "eslint-plugin-react-refresh": "^0.4.11",
     "husky": "^9.1.5",
     "less-loader": "^12.2.0",
     "lint-staged": "^15.2.9",
     "postcss": "^8.4.41",
-    "prettier": "^3.3.3",
     "rollup-plugin-bundle-analyzer": "^1.6.6",
     "tailwindcss": "^3.4.10",
     "typescript": "^5.5.4",
@@ -69,12 +63,8 @@
     }
   },
   "lint-staged": {
-    "*.{js,json}": [
-      "prettier --write"
-    ],
-    "*.{ts,tsx}": [
-      "eslint --fix",
-      "prettier --parser=typescript --write"
-    ]
+    "*.{js,ts,d.ts,tsx,.json}": [
+			"biome check --write --unsafe --no-errors-on-unmatched"
+		]
   }
 }
