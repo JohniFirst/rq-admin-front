@@ -1,3 +1,3 @@
 export default function VideoPlayProgress() {
-  return 'VideoPlayProgress'
+	return 'VideoPlayProgress'
 }

@@ -1,4 +1,4 @@
-import { useState, useEffect, type MutableRefObject } from 'react'
+import { type MutableRefObject, useEffect, useState } from 'react'
 
 /**
  * A custom React hook that checks if the element referenced by the provided
@@ -13,35 +13,35 @@ import { useState, useEffect, type MutableRefObject } from 'react'
  *   `isInViewport` boolean and the `entry` object.
  */
 export function useInViewport(
-  ref: MutableRefObject<null>,
+	ref: MutableRefObject<null>,
 ): [boolean, IntersectionObserverEntry | null] {
-  const [isInViewport, setIsInViewport] = useState(false)
-  const [entry, setEntry] = useState<IntersectionObserverEntry | null>(null)
+	const [isInViewport, setIsInViewport] = useState(false)
+	const [entry, setEntry] = useState<IntersectionObserverEntry | null>(null)
 
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          setIsInViewport(entry.isIntersecting)
-          setEntry(entry)
-        })
-      },
-      {
-        rootMargin: '0px',
-        threshold: 0.5,
-      },
-    )
+	useEffect(() => {
+		const observer = new IntersectionObserver(
+			(entries) => {
+				entries.forEach((entry) => {
+					setIsInViewport(entry.isIntersecting)
+					setEntry(entry)
+				})
+			},
+			{
+				rootMargin: '0px',
+				threshold: 0.5,
+			},
+		)
 
-    if (ref.current) {
-      observer.observe(ref.current)
-    }
+		if (ref.current) {
+			observer.observe(ref.current)
+		}
 
-    return () => {
-      if (ref.current) {
-        observer.unobserve(ref.current)
-      }
-    }
-  }, [])
+		return () => {
+			if (ref.current) {
+				observer.unobserve(ref.current)
+			}
+		}
+	}, [])
 
-  return [isInViewport, entry]
+	return [isInViewport, entry]
 }

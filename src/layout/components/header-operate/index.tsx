@@ -1,27 +1,27 @@
 import { Space } from 'antd'
 import FullScreen from './full-screen'
 import MessageNotification from './message-notification'
-import UserDropdown from './user-dropdown'
-import SystemSettings from './system-settings'
 import SearchableMenu from './searchable-menu'
+import SystemSettings from './system-settings'
 import ThemeSwitcher from './theme-switcher'
+import UserDropdown from './user-dropdown'
 
 function HeaderOperate() {
-  return (
-    <Space size="large">
-      <SearchableMenu />
+	return (
+		<Space size='large'>
+			<SearchableMenu />
 
-      <ThemeSwitcher />
+			<ThemeSwitcher />
 
-      <MessageNotification unreadMessages={3} />
+			<MessageNotification unreadMessages={3} />
 
-      <FullScreen />
+			<FullScreen />
 
-      <SystemSettings />
+			<SystemSettings />
 
-      <UserDropdown />
-    </Space>
-  )
+			<UserDropdown />
+		</Space>
+	)
 }
 
 export default HeaderOperate

@@ -1,14 +1,14 @@
 import { configureStore } from '@reduxjs/toolkit'
-import systemInfoSlice from './slice/system-info.ts'
-import routerSlice from './slice/router-slice.ts'
 import menuSlice from './slice/menu-slice.tsx'
+import routerSlice from './slice/router-slice.ts'
+import systemInfoSlice from './slice/system-info.ts'
 
 const store = configureStore({
-  reducer: {
-    systemInfo: systemInfoSlice,
-    router: routerSlice,
-    menu: menuSlice,
-  },
+	reducer: {
+		systemInfo: systemInfoSlice,
+		router: routerSlice,
+		menu: menuSlice,
+	},
 })
 
 // 从 store 本身推断 `RootState` 和 `AppDispatch` 类型

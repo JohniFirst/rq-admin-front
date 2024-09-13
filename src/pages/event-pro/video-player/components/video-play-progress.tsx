@@ -1,9 +1,9 @@
 import { useEffect, useRef, useState } from 'react'
 
 interface VideoPlayProgressProps {
-  max: number
-  value: number
-  onChange: (newValue: number) => void
+	max: number
+	value: number
+	onChange: (newValue: number) => void
 }
 
 /**
@@ -16,104 +16,104 @@ interface VideoPlayProgressProps {
  * @return {JSX.Element} The video play progress bar component.
  */
 function VideoPlayProgress({ max, value, onChange }: VideoPlayProgressProps) {
-  const progressDragDotRef = useRef<HTMLDivElement>(null)
-  const progressFinishedRef = useRef<HTMLDivElement>(null)
-  const progressWPRef = useRef<HTMLDivElement>(null)
+	const progressDragDotRef = useRef<HTMLDivElement>(null)
+	const progressFinishedRef = useRef<HTMLDivElement>(null)
+	const progressWPRef = useRef<HTMLDivElement>(null)
 
-  const [isDragging, setIsDragging] = useState(false)
-  const [dotX, setDotX] = useState(0)
+	const [isDragging, setIsDragging] = useState(false)
+	const [dotX, setDotX] = useState(0)
 
-  const handleClick = (e: MouseEvent) => {
-    e.stopPropagation()
-    const target = e.target as HTMLDivElement
-    if (target !== progressDragDotRef.current) {
-      const progressFinished = progressFinishedRef.current!
-      const progressWP = progressWPRef.current!
-      const totalWidth =
-        progressWP.clientWidth - progressDragDotRef.current!.clientWidth
+	const handleClick = (e: MouseEvent) => {
+		e.stopPropagation()
+		const target = e.target as HTMLDivElement
+		if (target !== progressDragDotRef.current) {
+			const progressFinished = progressFinishedRef.current!
+			const progressWP = progressWPRef.current!
+			const totalWidth =
+				progressWP.clientWidth - progressDragDotRef.current?.clientWidth
 
-      progressFinished.style.transition = 'width 0.2s ease'
-      progressDragDotRef.current!.style.transition = 'width 0.2s ease'
+			progressFinished.style.transition = 'width 0.2s ease'
+			progressDragDotRef.current?.style.transition = 'width 0.2s ease'
 
-      const newValue = (e.offsetX / totalWidth) * max
-      progressDragDotRef.current!.style.left = `${
-        e.offsetX - progressDragDotRef.current!.offsetWidth / 2
-      }px`
-      progressFinished.style.width = `${
-        e.offsetX + progressDragDotRef.current!.offsetWidth / 2
-      }px`
+			const newValue = (e.offsetX / totalWidth) * max
+			progressDragDotRef.current?.style.left = `${
+				e.offsetX - progressDragDotRef.current?.offsetWidth / 2
+			}px`
+			progressFinished.style.width = `${
+				e.offsetX + progressDragDotRef.current?.offsetWidth / 2
+			}px`
 
-      onChange(newValue)
+			onChange(newValue)
 
-      setTimeout(() => {
-        progressFinished.style.transition = 'none'
-        progressDragDotRef.current!.style.transition = 'none'
-      }, 200)
-    }
-  }
+			setTimeout(() => {
+				progressFinished.style.transition = 'none'
+				progressDragDotRef.current?.style.transition = 'none'
+			}, 200)
+		}
+	}
 
-  const handleMouseDown = (e: MouseEvent) => {
-    if (e.target === progressDragDotRef.current) {
-      setIsDragging(true)
-      setDotX(progressDragDotRef.current!.offsetLeft)
-    }
-  }
+	const handleMouseDown = (e: MouseEvent) => {
+		if (e.target === progressDragDotRef.current) {
+			setIsDragging(true)
+			setDotX(progressDragDotRef.current?.offsetLeft)
+		}
+	}
 
-  const handleMouseMove = (e: MouseEvent) => {
-    if (isDragging) {
-      const moveX = e.clientX - dotX
-      const newDotX = dotX + moveX
-      const totalWidth =
-        progressWPRef.current!.clientWidth -
-        progressDragDotRef.current!.clientWidth
+	const handleMouseMove = (e: MouseEvent) => {
+		if (isDragging) {
+			const moveX = e.clientX - dotX
+			const newDotX = dotX + moveX
+			const totalWidth =
+				progressWPRef.current?.clientWidth -
+				progressDragDotRef.current?.clientWidth
 
-      const clampedDotX = Math.max(0, Math.min(newDotX, totalWidth))
-      const newValue = (clampedDotX / totalWidth) * max
+			const clampedDotX = Math.max(0, Math.min(newDotX, totalWidth))
+			const newValue = (clampedDotX / totalWidth) * max
 
-      progressDragDotRef.current!.style.left = `${clampedDotX}px`
-      progressFinishedRef.current!.style.width = `${
-        clampedDotX + progressDragDotRef.current!.offsetWidth / 2
-      }px`
+			progressDragDotRef.current?.style.left = `${clampedDotX}px`
+			progressFinishedRef.current?.style.width = `${
+				clampedDotX + progressDragDotRef.current?.offsetWidth / 2
+			}px`
 
-      onChange(newValue)
-    }
-  }
+			onChange(newValue)
+		}
+	}
 
-  const handleMouseUp = () => {
-    setIsDragging(false)
-  }
+	const handleMouseUp = () => {
+		setIsDragging(false)
+	}
 
-  useEffect(() => {
-    document.documentElement.addEventListener('mousedown', handleMouseDown)
-    document.documentElement.addEventListener('mousemove', handleMouseMove)
-    document.documentElement.addEventListener('mouseup', handleMouseUp)
+	useEffect(() => {
+		document.documentElement.addEventListener('mousedown', handleMouseDown)
+		document.documentElement.addEventListener('mousemove', handleMouseMove)
+		document.documentElement.addEventListener('mouseup', handleMouseUp)
 
-    return () => {
-      document.documentElement.removeEventListener('mousedown', handleMouseDown)
-      document.documentElement.removeEventListener('mousemove', handleMouseMove)
-      document.documentElement.removeEventListener('mouseup', handleMouseUp)
-    }
-  }, [])
+		return () => {
+			document.documentElement.removeEventListener('mousedown', handleMouseDown)
+			document.documentElement.removeEventListener('mousemove', handleMouseMove)
+			document.documentElement.removeEventListener('mouseup', handleMouseUp)
+		}
+	}, [])
 
-  useEffect(() => {
-    const progressWP = progressWPRef.current!
-    const totalWidth =
-      progressWP.clientWidth - progressDragDotRef.current!.clientWidth
-    const dotX = (value / max) * totalWidth
+	useEffect(() => {
+		const progressWP = progressWPRef.current!
+		const totalWidth =
+			progressWP.clientWidth - progressDragDotRef.current?.clientWidth
+		const dotX = (value / max) * totalWidth
 
-    progressDragDotRef.current!.style.left = `${dotX}px`
-    progressFinishedRef.current!.style.width = `${
-      dotX + progressDragDotRef.current!.offsetWidth / 2
-    }px`
-  }, [value])
+		progressDragDotRef.current?.style.left = `${dotX}px`
+		progressFinishedRef.current?.style.width = `${
+			dotX + progressDragDotRef.current?.offsetWidth / 2
+		}px`
+	}, [value])
 
-  return (
-    // @ts-ignore
-    <div ref={progressWPRef} id="progress-wp" onClick={handleClick}>
-      <div ref={progressFinishedRef} id="progress-finished"></div>
-      <div ref={progressDragDotRef} id="progress-drag-dot"></div>
-    </div>
-  )
+	return (
+		// @ts-ignore
+		<div ref={progressWPRef} id='progress-wp' onClick={handleClick}>
+			<div ref={progressFinishedRef} id='progress-finished' />
+			<div ref={progressDragDotRef} id='progress-drag-dot' />
+		</div>
+	)
 }
 
 export default VideoPlayProgress

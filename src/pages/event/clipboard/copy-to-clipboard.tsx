@@ -25,23 +25,23 @@ const CopyButton = styled.button`
 `
 
 function CopyToClipboard() {
-  const { copyToClipboard, isCopied } = useCopyToClipboard()
+	const { copyToClipboard, isCopied } = useCopyToClipboard()
 
-  return (
-    <CopyWrapper>
-      <p>
-        Click the button below to copy the following text to your clipboard:
-      </p>
-      <p className="mx-[24px]" style={{ color: 'red' }}>
-        "This is the text you will copy!"
-      </p>
-      <CopyButton
-        onClick={() => copyToClipboard('This is the text you will copy!')}
-      >
-        {isCopied ? 'Copied!' : 'Copy'}
-      </CopyButton>
-    </CopyWrapper>
-  )
+	return (
+		<CopyWrapper>
+			<p>
+				Click the button below to copy the following text to your clipboard:
+			</p>
+			<p className='mx-[24px]' style={{ color: 'red' }}>
+				"This is the text you will copy!"
+			</p>
+			<CopyButton
+				onClick={() => copyToClipboard('This is the text you will copy!')}
+			>
+				{isCopied ? 'Copied!' : 'Copy'}
+			</CopyButton>
+		</CopyWrapper>
+	)
 }
 
 export default CopyToClipboard
