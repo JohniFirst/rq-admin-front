@@ -13,11 +13,7 @@ const NotFound: FC = () => {
 				<p
 					className='cursor-pointer text-blue-400 hover:text-blue-700 text-lg'
 					onClick={() => navigate('/dashboard')}
-					onKeyUp={(e) => {
-						if (e.key === 'Enter') {
-							navigate('/dashboard');
-						}
-					}}
+					onKeyUp={() => navigate('/dashboard')}
 				>
 					回到首页
 				</p>

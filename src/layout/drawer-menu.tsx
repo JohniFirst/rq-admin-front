@@ -41,7 +41,7 @@ function DrawerMenu() {
 		const openKeys: string[] = []
 
 		const findKeys = (items: MenuItem[]) => {
-			items.forEach((item: MenuItem) => {
+			for (const item of items) {
 				if (item && Object.keys(item).includes('children')) {
 					// @ts-ignore
 					const children = item.children
@@ -56,7 +56,7 @@ function DrawerMenu() {
 				} else if (item?.key === currentPath) {
 					selectedKey = currentPath
 				}
-			})
+			}
 		}
 
 		findKeys(items)
@@ -92,6 +92,7 @@ function DrawerMenu() {
 									}`}
 									key={item.key}
 									onClick={() => setTopActiveMenu(item)}
+									onKeyUp={() => setTopActiveMenu(item)}
 								>
 									{item.icon}
 									<p>{item.label}</p>

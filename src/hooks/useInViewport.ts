@@ -21,10 +21,10 @@ export function useInViewport(
 	useEffect(() => {
 		const observer = new IntersectionObserver(
 			(entries) => {
-				entries.forEach((entry) => {
+				for (const entry of entries) {
 					setIsInViewport(entry.isIntersecting)
 					setEntry(entry)
-				})
+				}
 			},
 			{
 				rootMargin: '0px',

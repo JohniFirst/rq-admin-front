@@ -1,9 +1,10 @@
 import { addRole, getAllRoleList } from '@/api/system-api.ts'
 import BaseTable from '@/components/base/base-table.tsx'
 import { Button, Form, Input } from 'antd'
+import type { TableProps } from 'antd'
 
 function Role() {
-	const columns: BaseTableColumns = [
+	const columns: TableProps<RoleListRes>['columns'] = [
 		{
 			title: '角色名',
 			dataIndex: 'roleName',

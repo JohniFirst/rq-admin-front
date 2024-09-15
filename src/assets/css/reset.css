@@ -2,9 +2,7 @@ html,
 body,
 p,
 h1,
-li,
 ul,
-ol,
 h2,
 h3,
 h4,
@@ -13,6 +11,10 @@ dt,
 dd {
   margin: 0;
   padding: 0;
+}
+
+ol {
+  margin: 0;
 }
 
 ul>li {

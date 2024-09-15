@@ -1,6 +1,11 @@
 // @ts-nocheck
 import { type MouseEvent, useEffect } from 'react'
 
+type SourceTarget = {
+	_debugOwner: string
+	_debugSource: string
+}
+
 /**
  * A hook that allows jumping to the source code in VSCode by clicking on an element with the Ctrl key pressed.
  */
@@ -13,7 +18,7 @@ export function useJumpToVscodeSource() {
 				element = element.parentNode.parentNode
 			}
 
-			let sourceTarget
+			let sourceTarget: SourceTarget
 
 			if ('_reactRootContainer' in element) {
 				sourceTarget = element._reactRootContainer._internalRoot.current.child
@@ -68,8 +73,8 @@ export function useJumpToVscodeSource() {
 			const left = clientX + width > viewportWidth ? clientX - width : clientX
 			const top = clientY + height > viewportHeight ? clientY - height : clientY
 
-			div.style.left = `${left}px`
-			div.style.top = `${top}px`
+			div.style.left = left + 'px'
+			div.style.top = top + 'px'
 			div.style.visibility = 'visible'
 
 			const removeDiv = (event) => {

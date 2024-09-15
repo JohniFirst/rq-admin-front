@@ -71,7 +71,7 @@ export const systemInfoSlice: Slice<SystemInfo> = createSlice({
 			state.theme = action.payload
 			document.documentElement.className = state.theme
 			const copyState = JSON.parse(JSON.stringify(state))
-			copyState.navItem = undefined
+			delete copyState.navItem
 			forage.setItem(ForageEnums.SYSTEM_INFO, copyState)
 		},
 		/**
@@ -88,7 +88,7 @@ export const systemInfoSlice: Slice<SystemInfo> = createSlice({
 
 			state.layoutMode = action.payload
 			const copyState = JSON.parse(JSON.stringify(state))
-			copyState.navItem = undefined
+			delete copyState.navItem
 			forage.setItem(ForageEnums.SYSTEM_INFO, copyState)
 		},
 	},

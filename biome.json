@@ -8,11 +8,20 @@
 		"rules": {
 			"recommended": true,
 			"style": {
-				"noNonNullAssertion": "off",
-				"noParameterAssign": "off"
+				"useTemplate": "off",
+				"noNonNullAssertion": "off"
 			},
 			"correctness": {
 				"useExhaustiveDependencies": "off"
+			},
+			"complexity": {
+				"useOptionalChain": "off"
+			},
+			"performance": {
+				"noDelete": "off"
+			},
+			"suspicious": {
+				"noAssignInExpressions": "off"
 			}
 		}
 	},
@@ -22,6 +31,11 @@
 			"quoteStyle": "single",
 			"jsxQuoteStyle": "single",
 			"semicolons": "asNeeded"
+		}
+	},
+	"json": {
+		"parser": {
+			"allowComments": true
 		}
 	}
 }

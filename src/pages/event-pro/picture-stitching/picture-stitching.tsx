@@ -10,13 +10,13 @@ function PictureStitching() {
 	const [copyImgSrc, setCopyImgSrc] = useState<string>('')
 
 	function handleUploadListChange(event: ChangeEvent<HTMLInputElement>): void {
-		setSrcList([...srcList, URL.createObjectURL(event.target.files?.[0])])
+		setSrcList([...srcList, URL.createObjectURL(event.target.files![0])])
 	}
 
 	const copyImg = () => {
 		const canvas = document.createElement('canvas')
 		const ctx = canvas.getContext('2d')!
-		const images = imgWrapper.current?.getElementsByTagName('img')
+		const images = imgWrapper.current!.getElementsByTagName('img')
 
 		// Get the original dimensions of the images
 		const imageDimensions = Array.from(images).map((img) => {

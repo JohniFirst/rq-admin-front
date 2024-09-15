@@ -57,5 +57,5 @@ export function addMenu(data: MenuAddFormFields): Promise<null> {
 
 /** 删除菜单 */
 export function delMenu(id: number) {
-	return http.delete(`/menu/${id}`)
+	return http.delete('/menu/' + id)
 }

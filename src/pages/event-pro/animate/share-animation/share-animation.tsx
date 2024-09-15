@@ -3,6 +3,7 @@ import useCustomNavigate from '@/hooks/useCustomNavigate'
 
 const showList = [
 	{
+		id: 1,
 		src: share,
 		title: '给你一个炫彩的标题',
 		descriptions: 'lorem ',
@@ -16,11 +17,12 @@ function ShareAnimation() {
 
 	return (
 		<ul className='container'>
-			{showList.map((item, index) => (
+			{showList.map((item) => (
 				<li
 					className='flex mb-4 border-b-2 py-3'
 					onClick={() => navigate('/event-pro/animate/share-animation-detail')}
-					key={index}
+					onKeyUp={() => navigate('/event-pro/animate/share-animation-detail')}
+					key={item.id}
 				>
 					<img
 						className='mr-4 share-animation'

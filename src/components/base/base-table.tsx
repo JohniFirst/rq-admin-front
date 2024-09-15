@@ -16,19 +16,16 @@ import {
 	Table,
 	Tooltip,
 } from 'antd'
-import type { FormProps, TableProps } from 'antd'
+import type { FormProps, TablePaginationConfig, TableProps } from 'antd'
 import { format } from 'date-fns'
-import { useEffect, useState } from 'react'
+import { type ReactNode, useEffect, useState } from 'react'
 
 type BaseTableProps = {
-	noPage?: boolean
-	tableProps: TableProps & {
-		columns: BaseTableColumns
-		getList: () => void
-	}
+	tableProps: TableProps
 	searchProps?: BaseTableSearchProps
+	getTableData: () => Promise<[]>
 	addForm?: {
-		addFormApi: unknown
+		addFormApi: (params: unknown) => void
 		AddForm: React.FC
 	}
 }
@@ -36,34 +33,20 @@ type BaseTableProps = {
 const BaseTable: React.FC<BaseTableProps> = ({
 	tableProps,
 	addForm,
-	noPage,
 	searchProps = { gutter: 16, span: 6 },
+	getTableData,
 }) => {
 	const [isModalOpen, setIsModalOpen] = useState(false)
 	const [dataSource, setDataSource] = useState([])
-
-	const searchFormItems = tableProps.columns?.filter(
-		// @ts-ignore
-		(item) => item.searchFormItemConfig,
-	)
 
 	useEffect(() => {
 		getList()
 	}, [])
 
 	const getList = async () => {
-		const res = await tableProps.getList()
+		const data = await getTableData()
 
-		const data = noPage ? res : res.content
-
-		setDataSource(
-			data.map((item) => {
-				return {
-					...item,
-					key: item.id,
-				}
-			}),
-		)
+		console.log('data', data)
 	}
 
 	const handleSubmit = async (values: { roleName: string }) => {
@@ -81,10 +64,10 @@ const BaseTable: React.FC<BaseTableProps> = ({
 	 */
 	const handleExport = () => {
 		// @ts-ignore
-		const keys = tableProps.columns?.map((column) => column.dataIndex)
+		const keys = tableProps.columns!.map((column) => column.dataIndex)
 		const excelData: ExcelData = {
-			headers: tableProps.columns?.map((column) => column.title) as string[],
-			data: tableProps.dataSource?.map((item) => {
+			headers: tableProps.columns!.map((column) => column.title) as string[],
+			data: tableProps.dataSource!.map((item) => {
 				return keys.map((key) => item[key])
 			}),
 		}
@@ -94,17 +77,21 @@ const BaseTable: React.FC<BaseTableProps> = ({
 	const onFinish: FormProps['onFinish'] = (values) => {
 		const params: typeof values = {}
 
-		Object.keys(values).forEach((item) => {
+		for (const item of Object.keys(values)) {
 			if (values[item] !== undefined) {
 				params[item] = values[item]
 			}
-		})
+		}
 
-		getList(params)
+		console.log('search params', params)
 	}
 
 	const onFinishFailed: FormProps['onFinishFailed'] = (errorInfo) => {
 		console.log('Failed:', errorInfo)
+	}
+
+	const tableOperationChange = (pagination: TablePaginationConfig) => {
+		console.log('pagination change', pagination)
 	}
 
 	return (
@@ -117,20 +104,6 @@ const BaseTable: React.FC<BaseTableProps> = ({
 				autoComplete='off'
 			>
 				<Row gutter={searchProps.gutter}>
-					{searchFormItems.map((item, index) => {
-						return (
-							<Col span={searchProps.span} key={index}>
-								<Form.Item
-									label={item.title}
-									name={item.dataIndex}
-									rules={item.searchFormItemConfig.rules}
-								>
-									<Input />
-								</Form.Item>
-							</Col>
-						)
-					})}
-
 					<Col span={6}>
 						<Form.Item>
 							<Space>
@@ -187,6 +160,7 @@ const BaseTable: React.FC<BaseTableProps> = ({
 						showTotal: (total) => `总计 ${total} 条`,
 						...tableProps.pagination,
 					}}
+					onChange={tableOperationChange}
 				/>
 			</section>
 

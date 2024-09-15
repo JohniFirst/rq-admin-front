@@ -146,11 +146,11 @@ const BaseDraggableTable: React.FC<BaseTableProps> = ({
 	const onFinish: FormProps['onFinish'] = (values) => {
 		const params: typeof values = {}
 
-		Object.keys(values).forEach((item) => {
+		for (const item of Object.keys(values)) {
 			if (values[item] !== undefined) {
 				params[item] = values[item]
 			}
-		})
+		}
 
 		getList(params)
 	}
@@ -169,20 +169,6 @@ const BaseDraggableTable: React.FC<BaseTableProps> = ({
 				autoComplete='off'
 			>
 				<Row gutter={searchProps.gutter}>
-					{searchFormItems.map((item, index) => {
-						return (
-							<Col span={searchProps.span} key={index}>
-								<Form.Item
-									label={item.title}
-									name={item.dataIndex}
-									rules={item.searchFormItemConfig.rules}
-								>
-									<Input />
-								</Form.Item>
-							</Col>
-						)
-					})}
-
 					<Col span={6}>
 						<Form.Item>
 							<Space>

@@ -30,24 +30,24 @@ function VideoPlayProgress({ max, value, onChange }: VideoPlayProgressProps) {
 			const progressFinished = progressFinishedRef.current!
 			const progressWP = progressWPRef.current!
 			const totalWidth =
-				progressWP.clientWidth - progressDragDotRef.current?.clientWidth
+				progressWP.clientWidth - progressDragDotRef.current!.clientWidth
 
 			progressFinished.style.transition = 'width 0.2s ease'
-			progressDragDotRef.current?.style.transition = 'width 0.2s ease'
+			progressDragDotRef.current!.style.transition = 'width 0.2s ease'
 
 			const newValue = (e.offsetX / totalWidth) * max
-			progressDragDotRef.current?.style.left = `${
-				e.offsetX - progressDragDotRef.current?.offsetWidth / 2
+			progressDragDotRef.current!.style.left = `${
+				e.offsetX - progressDragDotRef.current!.offsetWidth / 2
 			}px`
 			progressFinished.style.width = `${
-				e.offsetX + progressDragDotRef.current?.offsetWidth / 2
+				e.offsetX + progressDragDotRef.current!.offsetWidth / 2
 			}px`
 
 			onChange(newValue)
 
 			setTimeout(() => {
 				progressFinished.style.transition = 'none'
-				progressDragDotRef.current?.style.transition = 'none'
+				progressDragDotRef.current!.style.transition = 'none'
 			}, 200)
 		}
 	}
@@ -55,7 +55,7 @@ function VideoPlayProgress({ max, value, onChange }: VideoPlayProgressProps) {
 	const handleMouseDown = (e: MouseEvent) => {
 		if (e.target === progressDragDotRef.current) {
 			setIsDragging(true)
-			setDotX(progressDragDotRef.current?.offsetLeft)
+			setDotX(progressDragDotRef.current!.offsetLeft)
 		}
 	}
 
@@ -64,15 +64,15 @@ function VideoPlayProgress({ max, value, onChange }: VideoPlayProgressProps) {
 			const moveX = e.clientX - dotX
 			const newDotX = dotX + moveX
 			const totalWidth =
-				progressWPRef.current?.clientWidth -
-				progressDragDotRef.current?.clientWidth
+				progressWPRef.current!.clientWidth -
+				progressDragDotRef.current!.clientWidth
 
 			const clampedDotX = Math.max(0, Math.min(newDotX, totalWidth))
 			const newValue = (clampedDotX / totalWidth) * max
 
-			progressDragDotRef.current?.style.left = `${clampedDotX}px`
-			progressFinishedRef.current?.style.width = `${
-				clampedDotX + progressDragDotRef.current?.offsetWidth / 2
+			progressDragDotRef.current!.style.left = `${clampedDotX}px`
+			progressFinishedRef.current!.style.width = `${
+				clampedDotX + progressDragDotRef.current!.offsetWidth / 2
 			}px`
 
 			onChange(newValue)
@@ -98,18 +98,23 @@ function VideoPlayProgress({ max, value, onChange }: VideoPlayProgressProps) {
 	useEffect(() => {
 		const progressWP = progressWPRef.current!
 		const totalWidth =
-			progressWP.clientWidth - progressDragDotRef.current?.clientWidth
+			progressWP.clientWidth - progressDragDotRef.current!.clientWidth
 		const dotX = (value / max) * totalWidth
 
-		progressDragDotRef.current?.style.left = `${dotX}px`
-		progressFinishedRef.current?.style.width = `${
-			dotX + progressDragDotRef.current?.offsetWidth / 2
+		progressDragDotRef.current!.style.left = `${dotX}px`
+		progressFinishedRef.current!.style.width = `${
+			dotX + progressDragDotRef.current!.offsetWidth / 2
 		}px`
 	}, [value])
 
 	return (
 		// @ts-ignore
-		<div ref={progressWPRef} id='progress-wp' onClick={handleClick}>
+		<div
+			ref={progressWPRef}
+			id='progress-wp'
+			onClick={handleClick}
+			onKeyUp={handleClick}
+		>
 			<div ref={progressFinishedRef} id='progress-finished' />
 			<div ref={progressDragDotRef} id='progress-drag-dot' />
 		</div>

@@ -1,5 +1,5 @@
 import BaseTable from '@/components/base/base-table'
-import { Space, type TableProps, Tag } from 'antd'
+import { Button, Space, type TableProps, Tag } from 'antd'
 
 interface DataType {
 	key: string
@@ -14,7 +14,7 @@ const columns: TableProps<DataType>['columns'] = [
 		title: 'Name',
 		dataIndex: 'name',
 		key: 'name',
-		render: (text) => <a>{text}</a>,
+		// render: (text) => text,
 	},
 	{
 		title: 'Age',
@@ -51,8 +51,8 @@ const columns: TableProps<DataType>['columns'] = [
 		key: 'action',
 		render: (_, record) => (
 			<Space size='middle'>
-				<a>Invite {record.name}</a>
-				<a>Delete</a>
+				<Button type='text'>Invite {record.name}</Button>
+				<Button type='text'>Delete</Button>
 			</Space>
 		),
 	},

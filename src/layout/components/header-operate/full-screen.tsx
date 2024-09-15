@@ -5,9 +5,13 @@ function FullScreen() {
 	const { isFullscreen, toggleFullscreen } = useFullScreen(true)
 
 	return (
-		<button onClick={toggleFullscreen}>
+		<div
+			className='cursor-pointer'
+			onClick={toggleFullscreen}
+			onKeyUp={() => toggleFullscreen}
+		>
 			{isFullscreen ? <FullscreenExitOutlined /> : <FullscreenOutlined />}
-		</button>
+		</div>
 	)
 }
 

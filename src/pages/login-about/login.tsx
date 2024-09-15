@@ -12,8 +12,8 @@ import login from './login.module.css'
 const LoginForm = () => {
 	const [form] = Form.useForm()
 	const navigate = useCustomNavigate()
-	const [isLogin, setIsLogin] = useState(false)
-	const dispatch = useAppDispatch()
+	// const [isLogin, setIsLogin] = useState(false)
+	// const dispatch = useAppDispatch()
 	// const menu = useAppSelector((state) => state.menu)
 
 	const handleSubmit = async (values: LoginFormValues) => {
@@ -21,41 +21,42 @@ const LoginForm = () => {
 		// 对密码进行非对称加密
 		// const encryptedPassword = await encryptPassword(values.password);
 		// 这里可以添加登录逻辑，例如发送请求到后端
-		// console.log("Encrypted Password:", encryptedPassword);
+		console.log('Encrypted Password:', values)
 		// addRoutes(dynamicRoutes);
+		navigate('/dashboard', false)
 
-		await handleLogin(values)
+		// await handleLogin(values)
 
-		sessionStorage.setItem(`${SessionStorageKeys.IS_LOGIN}`, `${IsLogin.YES}`)
+		// sessionStorage.setItem(`${SessionStorageKeys.IS_LOGIN}`, `${IsLogin.YES}`)
 
-		const res = await getMenuList()
+		// const res = await getMenuList()
 
-		dispatch(updateMenu(res))
+		// dispatch(updateMenu(res))
 
-		setIsLogin(true)
+		// setIsLogin(true)
 	}
 
 	// 异步导航，避免异步获取到的路由数据访问不到
-	useEffect(() => {
-		if (isLogin) {
-			// const getUrl = (menus: MenuItem[]) => {
-			//   for (let i = 0, l = menus.length; i < l; i++) {
-			//     const currentMenuItem = menus[i]
+	// useEffect(() => {
+	// 	if (isLogin) {
+	// const getUrl = (menus: MenuItem[]) => {
+	//   for (let i = 0, l = menus.length; i < l; i++) {
+	//     const currentMenuItem = menus[i]
 
-			//     if (currentMenuItem.url) {
-			//       return currentMenuItem.url
-			//     } else if (currentMenuItem.children) {
-			//       return getUrl(currentMenuItem.children)
-			//     }
-			//   }
-			// }
+	//     if (currentMenuItem.url) {
+	//       return currentMenuItem.url
+	//     } else if (currentMenuItem.children) {
+	//       return getUrl(currentMenuItem.children)
+	//     }
+	//   }
+	// }
 
-			// const url = getUrl(menu)
+	// const url = getUrl(menu)
 
-			// navigate(url, false)
-			navigate('/dashboard', false)
-		}
-	}, [isLogin])
+	// navigate(url, false)
+	// 		navigate('/dashboard', false)
+	// 	}
+	// }, [isLogin])
 
 	return (
 		<section className='w-screen h-screen overflow-hidden'>

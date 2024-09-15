@@ -1,5 +1,5 @@
 import { addMenu, getMenuList } from '@/api/system-api'
-import BaseDraggableTable from '@/components/base/base-draggable-table'
+import BaseDraggableTable from '@/components/base/base-table'
 import PopoverMenu from '@/components/base/popover-menu'
 import LucideIcon, { type LucideIconType } from '@/components/lucide-icon'
 import { Modal } from 'antd'
@@ -8,7 +8,7 @@ import MenuAddForm from './components/menu-add-form'
 const Menu = () => {
 	const [modal, contextHolder] = Modal.useModal()
 
-	const columns: BaseTableColumns = [
+	const columns = [
 		{
 			title: 'id',
 			dataIndex: 'id',

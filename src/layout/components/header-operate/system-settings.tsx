@@ -11,8 +11,6 @@ import { useAppDispatch, useAppSelector } from '@/store/hooks'
 import { setlayoutMode } from '@/store/slice/system-info'
 import system from './css/system.module.css'
 
-type SystemSettingsProps = {}
-
 const layoutModeArr = [
 	{
 		imgSrc: CommonMenu,
@@ -31,7 +29,7 @@ const layoutModeArr = [
 	},
 ]
 
-const SystemSettings: React.FC<SystemSettingsProps> = () => {
+const SystemSettings: React.FC = () => {
 	const [isDrawerVisible, setIsDrawerVisible] = useState(false)
 	const layoutMode = useAppSelector((state) => state.systemInfo.layoutMode)
 	const dispatch = useAppDispatch()
@@ -59,6 +57,7 @@ const SystemSettings: React.FC<SystemSettingsProps> = () => {
 								layoutMode === item.value ? system.activelayoutMode : ''
 							}`}
 							onClick={() => dispatch(setlayoutMode(item.value))}
+							onKeyUp={() => dispatch(setlayoutMode(item.value))}
 							src={item.imgSrc}
 							alt={item.title}
 						/>

@@ -184,7 +184,7 @@ function NavigationBar() {
 
 		return (
 			<li
-				key={`${item.key}1`}
+				key={item.key + '1'}
 				ref={setNodeRef}
 				{...attributes}
 				{...listeners}

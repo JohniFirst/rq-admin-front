@@ -5,7 +5,7 @@ import VideoPlayProgress from './components/video-play-progress.tsx'
 import VideoTimesSpeed from './components/video-times-speed.tsx'
 import './css/video.css'
 
-import type { MouseEvent } from 'react'
+import type { KeyboardEvent, MouseEvent } from 'react'
 
 function VideoPlayer() {
 	// 视频播放/暂停
@@ -100,7 +100,7 @@ function VideoPlayer() {
 	 * 处理视频播放/暂停
 	 * @param _event
 	 */
-	const handleVideoPlay = (e: MouseEvent): void => {
+	const handleVideoPlay = (e: MouseEvent | KeyboardEvent): void => {
 		e.stopPropagation()
 		const video = document.querySelector('#video') as HTMLVideoElement
 
@@ -130,7 +130,15 @@ function VideoPlayer() {
 
 	return (
 		<div className='video-controls-wp' onDoubleClick={handleVideoFullScreen}>
-			<video id='video' width='960' src='/demo.mp4' height='540' />
+			<video id='video' width='960' height='540'>
+				<source src='/demo.mp4' type='video/mp4' />
+				<track
+					src='captions_en.vtt'
+					kind='captions'
+					srcLang='en'
+					label='english_captions'
+				/>
+			</video>
 
 			<div className='video-controls'>
 				<div
@@ -141,6 +149,7 @@ function VideoPlayer() {
 						{/* 小的播放/暂停按钮 */}
 						<img
 							onClick={handleVideoPlay}
+							onKeyUp={handleVideoPlay}
 							style={{ cursor: 'pointer' }}
 							src={isPlay ? pause : play}
 							width={50}

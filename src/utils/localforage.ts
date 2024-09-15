@@ -31,10 +31,10 @@ class Forage {
 	setItem(key: ForageKeys, value: object | string) {
 		try {
 			if (typeof value !== 'string') {
-				value = JSON.stringify(value)
+				localforage.setItem(key, JSON.stringify(value))
+			} else {
+				localforage.setItem(key, value)
 			}
-
-			localforage.setItem(key, value)
 		} catch (err) {
 			throw new Error(err as string)
 		}

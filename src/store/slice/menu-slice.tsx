@@ -8,6 +8,7 @@ export function sortMenu(menuList: MenuApiResponse[]) {
 		if (a.children) {
 			return sortMenu(a.children) as unknown as number
 		}
+
 		return a.menuOrder - b.menuOrder
 	})
 }

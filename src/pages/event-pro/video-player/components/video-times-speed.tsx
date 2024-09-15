@@ -1,4 +1,5 @@
-import { type MouseEvent, useState } from 'react'
+import { useState } from 'react'
+import type { KeyboardEvent, MouseEvent } from 'react'
 
 import '../css/video.css'
 
@@ -11,12 +12,23 @@ const speedChangeList = ['3.0', '2.0', '1.5', '1.0', '0.75', '0.5'] as const
 function VideoTimesSpeed({ onChange }: VideoTimesSpeedProps) {
 	const [playTimes, setPlayTimes] = useState(1)
 
-	function changePlaySpeed(event: MouseEvent<HTMLUListElement>): void {
+	const changePlaySpeed = (event: MouseEvent<HTMLUListElement>) => {
 		const target = event.target as HTMLLIElement
 
 		setPlayTimes(+target.innerText)
 
 		onChange(+target.innerText)
+	}
+
+	const handleKeyboardEvent = (event: KeyboardEvent<HTMLUListElement>) => {
+		const target = event.target as HTMLLIElement
+
+		// TODO 增加键盘操作对应的事件
+		if (event.key === 'Enter') {
+			setPlayTimes(+target.innerText)
+
+			onChange(+target.innerText)
+		}
 	}
 
 	return (
@@ -25,7 +37,11 @@ function VideoTimesSpeed({ onChange }: VideoTimesSpeedProps) {
 				{playTimes === 1 ? '倍速' : `${playTimes}x`}
 			</p>
 
-			<ul className='play-times-speed-select-wp' onClick={changePlaySpeed}>
+			<ul
+				className='play-times-speed-select-wp'
+				onClick={changePlaySpeed}
+				onKeyUp={handleKeyboardEvent}
+			>
 				{speedChangeList.map((item) => (
 					<li key={item} className={playTimes === +item ? 'speed-acive' : ''}>
 						{item}

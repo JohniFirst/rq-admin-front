@@ -45,6 +45,7 @@ function CommonMenu() {
 					selectedKey = items[i].key
 					return items[i].key
 				}
+
 				if (items[i].children) {
 					const tempResult = findKeys(items[i].children)
 					if (tempResult) {

@@ -68,7 +68,8 @@ const SearchableMenu: FC = () => {
 
 		function checkLabel(arr: MenuItem[]) {
 			const tempResult: MenuItem[] = []
-			arr.forEach((item) => {
+
+			for (const item of arr) {
 				if (item.children) {
 					const childrenLableIncludesKeyword = checkLabel(item.children)
 					if (childrenLableIncludesKeyword.length) {
@@ -82,7 +83,7 @@ const SearchableMenu: FC = () => {
 						tempResult.push(item)
 					}
 				}
-			})
+			}
 
 			return tempResult
 		}
@@ -123,6 +124,7 @@ const SearchableMenu: FC = () => {
 				className={system.filterMenuItem}
 				style={{ marginLeft: `${indent * 16}px` }}
 				onClick={() => filterNav(item.key)}
+				onKeyUp={() => filterNav(item.key)}
 			>
 				{item.label.split('').map((labelItem: string) => {
 					return (
@@ -170,7 +172,7 @@ const SearchableMenu: FC = () => {
 				wrapClassName='max-h-[500px]'
 				afterOpenChange={(open) => {
 					if (open) {
-						inputRef.current?.focus({
+						inputRef.current!.focus({
 							cursor: 'all',
 						})
 					}
