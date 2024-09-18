@@ -24,8 +24,8 @@ export function updateUserIsEnabled(data: {
 }
 
 /** 所有角色列表 */
-export function getAllRoleList(): Promise<RoleListRes[]> {
-	return http.get('/role/list')
+export function getAllRoleList(params: unknown): Promise<RoleListRes[]> {
+	return http.get('/role/list', { params })
 }
 
 /** 角色枚举 */

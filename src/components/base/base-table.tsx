@@ -18,12 +18,13 @@ import {
 } from 'antd'
 import type { FormProps, TablePaginationConfig, TableProps } from 'antd'
 import { format } from 'date-fns'
-import { type ReactNode, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 
 type BaseTableProps = {
 	tableProps: TableProps
 	searchProps?: BaseTableSearchProps
-	getTableData: () => Promise<[]>
+	// 获取表格数据的工具函数
+	getTableData: GetTableData
 	addForm?: {
 		addFormApi: (params: unknown) => void
 		AddForm: React.FC
@@ -36,23 +37,23 @@ const BaseTable: React.FC<BaseTableProps> = ({
 	searchProps = { gutter: 16, span: 6 },
 	getTableData,
 }) => {
+	const [form] = Form.useForm()
 	const [isModalOpen, setIsModalOpen] = useState(false)
-	const [dataSource, setDataSource] = useState([])
+	// 查询参数
+	const [searchParams, setSearchParams] = useState({})
+	// 分页参数
+	const [pagination, setPagination] = useState<SearchPagination>({
+		pageSize: 10,
+		current: 1,
+	})
 
+	// 当查询参数或者分页参数发生变化时，触发这个函数
 	useEffect(() => {
-		getList()
-	}, [])
-
-	const getList = async () => {
-		const data = await getTableData()
-
-		console.log('data', data)
-	}
+		getTableData({ ...searchParams, ...pagination })
+	}, [searchParams, pagination])
 
 	const handleSubmit = async (values: { roleName: string }) => {
 		await addForm?.addFormApi(values)
-
-		getList()
 
 		setIsModalOpen(false)
 	}
@@ -74,24 +75,28 @@ const BaseTable: React.FC<BaseTableProps> = ({
 		exportToExcel(excelData, `${format(Date.now(), 'yyyy-MM-dd')}.xlsx`)
 	}
 
+	/** 提交查询表单 */
 	const onFinish: FormProps['onFinish'] = (values) => {
-		const params: typeof values = {}
-
-		for (const item of Object.keys(values)) {
-			if (values[item] !== undefined) {
-				params[item] = values[item]
-			}
-		}
-
-		console.log('search params', params)
+		setSearchParams(values)
 	}
 
+	/** 重置表单 */
+	const onReset = () => {
+		form.resetFields()
+
+		onFinish({})
+	}
+
+	/** 查询表单提交失败 */
 	const onFinishFailed: FormProps['onFinishFailed'] = (errorInfo) => {
 		console.log('Failed:', errorInfo)
 	}
 
+	/** 分页参数发生变化 */
 	const tableOperationChange = (pagination: TablePaginationConfig) => {
-		console.log('pagination change', pagination)
+		const { current, pageSize } = pagination
+
+		setPagination({ current, pageSize })
 	}
 
 	return (
@@ -105,12 +110,24 @@ const BaseTable: React.FC<BaseTableProps> = ({
 			>
 				<Row gutter={searchProps.gutter}>
 					<Col span={6}>
+						<Form.Item
+							label='角色名'
+							name='roleName'
+							rules={[{ required: true, message: '请输入角色名' }]}
+						>
+							<Input />
+						</Form.Item>
+					</Col>
+
+					<Col span={6}>
 						<Form.Item>
 							<Space>
 								<Button type='primary' htmlType='submit'>
 									查询
 								</Button>
-								<Button htmlType='submit'>重置</Button>
+								<Button htmlType='reset' onClick={onReset}>
+									重置
+								</Button>
 							</Space>
 						</Form.Item>
 					</Col>
@@ -151,7 +168,6 @@ const BaseTable: React.FC<BaseTableProps> = ({
 
 				{/* 表格 */}
 				<Table
-					dataSource={dataSource}
 					{...tableProps}
 					className='print-table'
 					pagination={{

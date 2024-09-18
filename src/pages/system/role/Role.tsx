@@ -2,8 +2,11 @@ import { addRole, getAllRoleList } from '@/api/system-api.ts'
 import BaseTable from '@/components/base/base-table.tsx'
 import { Button, Form, Input } from 'antd'
 import type { TableProps } from 'antd'
+import { useState } from 'react'
 
 function Role() {
+	const [dataSource, setDataSource] = useState<RoleListRes[]>([])
+
 	const columns: TableProps<RoleListRes>['columns'] = [
 		{
 			title: '角色名',
@@ -14,8 +17,8 @@ function Role() {
 			title: '操作',
 			key: 'action',
 			align: 'right',
-			render: (_, { id }) => (
-				<div key={id + 1}>
+			render: (_) => (
+				<div>
 					<Button type='link' size='small'>
 						删除
 					</Button>
@@ -27,9 +30,16 @@ function Role() {
 		},
 	]
 
+	const testGetTableData: GetTableData = async (searchParams) => {
+		const res = await getAllRoleList(searchParams)
+
+		setDataSource(res)
+	}
+
 	return (
 		<BaseTable
-			tableProps={{ columns, getList: getAllRoleList }}
+			tableProps={{ columns, dataSource }}
+			getTableData={testGetTableData}
 			addForm={{
 				addFormApi: addRole,
 				AddForm: () => (

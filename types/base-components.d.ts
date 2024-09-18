@@ -3,6 +3,13 @@ type ExcelData = {
 	data: unknown[][]
 }
 
+type SearchPagination = {
+	current: number | undefined
+	pageSize: number | undefined
+}
+
+type GetTableData = (params: unknown) => void
+
 type BaseTableSearchProps = {
 	// 每个搜索项占的span数 默认6
 	span: number
