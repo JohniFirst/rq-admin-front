@@ -1,11 +1,11 @@
-import { getMenuList, handleLogin } from '@/api/system-api'
+// import { getMenuList, handleLogin } from '@/api/system-api'
 import VerificationCodeInput from '@/components/base/verification-code-input'
-import { IsLogin, SessionStorageKeys } from '@/enums/localforage'
+// import { IsLogin, SessionStorageKeys } from '@/enums/localforage'
 import useCustomNavigate from '@/hooks/useCustomNavigate'
-import { useAppDispatch } from '@/store/hooks'
-import { updateMenu } from '@/store/slice/menu-slice'
+// import { useAppDispatch } from '@/store/hooks'
+// import { updateMenu } from '@/store/slice/menu-slice'
 import { Button, Checkbox, Form, Input } from 'antd'
-import { useEffect, useState } from 'react'
+// import { useEffect, useState } from 'react'
 // import JSEncrypt from "jsencrypt";
 import login from './login.module.css'
 

@@ -3,6 +3,10 @@ import BaseTable from '@/components/base/base-table'
 import { Switch } from 'antd'
 import type { FC } from 'react'
 
+const test: number = '1'
+
+console.log(test)
+
 /** 当前所有用户列表 */
 function User() {
 	const columns: BaseTableColumns = [

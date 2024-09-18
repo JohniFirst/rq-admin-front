@@ -5,6 +5,7 @@ import tailwindcss from 'tailwindcss'
 import { type UserConfig, defineConfig } from 'vite'
 
 import bundleAnalyzer from 'rollup-plugin-bundle-analyzer'
+import checker from 'vite-plugin-checker'
 import viteCompression from 'vite-plugin-compression'
 
 // https://vitejs.dev/config/
@@ -12,6 +13,9 @@ export default defineConfig((configEnv: UserConfig): UserConfig => {
 	return {
 		plugins: [
 			react(),
+			checker({
+				typescript: true,
+			}),
 			// 开启gzip压缩
 			configEnv.mode === 'gzip'
 				? viteCompression({
