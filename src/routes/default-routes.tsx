@@ -1,9 +1,9 @@
 import type { RouteObject } from 'react-router-dom'
 
-import NotFound from '@/pages/NotFound/NotFound'
-import Home from '@/pages/home/Home'
-import LoginForm from '@/pages/login-about/login'
-import RegisterForm from '@/pages/login-about/register'
+import NotFound from '@/pages-default/NotFound/NotFound'
+import Home from '@/pages-default/home/Home'
+import LoginForm from '@/pages-default/login-about/login'
+import RegisterForm from '@/pages-default/login-about/register'
 
 // 默认路由
 export const defaultRoutes: RouteObject[] = [

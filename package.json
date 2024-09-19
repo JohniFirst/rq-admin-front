@@ -5,7 +5,7 @@
 	"type": "module",
 	"scripts": {
 		"dev": "vite",
-		"build": "tsc -b && vite build",
+		"build": "tsc -b && pnpm run biome && vite build",
 		"build-gzip": "vite build --mode gzip",
 		"build-analyze": "vite build --mode analyzer",
 		"biome": "biome check --write --no-errors-on-unmatched",
