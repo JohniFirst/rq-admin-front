@@ -11,7 +11,7 @@
 		"biome": "biome check --write --no-errors-on-unmatched",
 		"preview": "vite preview",
 		"update": "pnpm update",
-		"reinstall": "npx rimraf node_modules ./**/node_modules && pnpm i",
+		"reinstall": "npx rimraf node_modules && pnpm install",
 		"prepare": "husky"
 	},
 	"dependencies": {
