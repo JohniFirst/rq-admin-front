@@ -1,22 +1,22 @@
 .topLevelMenu {
-  width: 76px;
-  text-align: center;
-  cursor: pointer;
+	width: 76px;
+	text-align: center;
+	cursor: pointer;
 }
 
 .topLevelMenu li {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  padding: 6px 0;
-  font-size: 14px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	padding: 6px 0;
+	font-size: 14px;
 }
 
 .topLevelMenu li:not(:last-child) {
-  margin-bottom: 12px;
+	margin-bottom: 12px;
 }
 
 .activeTopMenu {
-  color: white;
-  background-color: var(--theme-color);
+	color: white;
+	background-color: var(--theme-color);
 }

@@ -14,7 +14,8 @@ export default defineConfig((configEnv: UserConfig): UserConfig => {
 		plugins: [
 			react(),
 			checker({
-				// typescript: true,
+				typescript: true,
+				biome: true,
 			}),
 			// 开启gzip压缩
 			configEnv.mode === 'gzip'

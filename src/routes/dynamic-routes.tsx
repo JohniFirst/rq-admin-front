@@ -11,7 +11,7 @@ import VideoPlayer from '@/pages/event-pro/video-player/video-player'
 import CopyToClipboard from '@/pages/event/clipboard/copy-to-clipboard'
 import TableFrontend from '@/pages/event/table-frontend/TableFrontend'
 import Table from '@/pages/event/table/Table'
-import Menu from '@/pages/system/menu/Menu'
+// import Menu from '@/pages/system/menu/Menu'
 import Role from '@/pages/system/role/Role'
 import UserInfo from '@/pages/system/user-info/user-info'
 import User from '@/pages/system/user/User'
@@ -92,10 +92,10 @@ export const dynamicRoutes: RouteObject[] = [
 						path: 'role',
 						element: <Role />,
 					},
-					{
-						path: 'menu',
-						element: <Menu />,
-					},
+					// {
+					// 	path: 'menu',
+					// 	element: <Menu />,
+					// },
 					{ path: 'user-info', element: <UserInfo /> },
 				],
 			},

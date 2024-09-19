@@ -1,6 +1,6 @@
-import { addRole, getAllRoleList } from '@/api/system-api.ts'
+import { getAllRoleList } from '@/api/system-api.ts'
 import BaseTable from '@/components/base/base-table.tsx'
-import { Button, Form, Input } from 'antd'
+import { Button } from 'antd'
 import type { TableProps } from 'antd'
 import { useState } from 'react'
 
@@ -37,21 +37,9 @@ function Role() {
 	}
 
 	return (
-		<BaseTable
+		<BaseTable<RoleListRes>
 			tableProps={{ columns, dataSource }}
 			getTableData={testGetTableData}
-			addForm={{
-				addFormApi: addRole,
-				AddForm: () => (
-					<Form.Item
-						label='角色名'
-						name='roleName'
-						rules={[{ required: true, message: '请输入角色名' }]}
-					>
-						<Input />
-					</Form.Item>
-				),
-			}}
 		/>
 	)
 }

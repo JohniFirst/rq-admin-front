@@ -4,83 +4,81 @@
 
 html,
 body {
-  width: 100%;
-  word-break: break-all;
-  font-size: 16px;
-  border-radius: 0;
+	width: 100%;
+	word-break: break-all;
+	font-size: 16px;
+	border-radius: 0;
 }
 
 /* 默认的浅色主题样式 */
 :root {
-  --background-color: #ffffff;
-  --text-color: #000000;
-  --default-gap: 16px;
-  --theme-color: #ff5500;
+	--background-color: #ffffff;
+	--text-color: #000000;
+	--default-gap: 16px;
+	--theme-color: #ff5500;
 }
 
 /* 暗色主题样式 */
 .dark {
-  --background-color: #000000;
-  --text-color: #ffffff;
+	--background-color: #000000;
+	--text-color: #ffffff;
 }
 
 body {
-  background-color: var(--background-color);
-  color: var(--text-color);
-  transition:
-    background-color 0.3s,
-    color 0.3s;
+	background-color: var(--background-color);
+	color: var(--text-color);
+	transition: background-color 0.3s, color 0.3s;
 }
 
 ::-webkit-scrollbar {
-  width: 6px;
+	width: 6px;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #d3d2d2;
-  border-radius: 5px;
+	background: #d3d2d2;
+	border-radius: 5px;
 }
 
 .container {
-  background-color: var(--background-color);
-  color: var(--text-color);
-  padding: 24px 16px;
-  border-radius: 8px;
+	background-color: var(--background-color);
+	color: var(--text-color);
+	padding: 24px 16px;
+	border-radius: 8px;
 }
 
 .jump-to-vscode-source-container {
-  border-radius: 8px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-  padding: 12px 16px;
-  background-color: var(--background-color);
-  position: absolute;
-  z-index: 999999;
-  visibility: hidden;
+	border-radius: 8px;
+	box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+	padding: 12px 16px;
+	background-color: var(--background-color);
+	position: absolute;
+	z-index: 999999;
+	visibility: hidden;
 }
 
 .jump-to-vscode-source-container a {
-  text-decoration: underline;
-  color: #0000ee;
+	text-decoration: underline;
+	color: #0000ee;
 }
 
 .jump-to-vscode-source-container a:hover {
-  color: #8a2be2;
+	color: #8a2be2;
 }
 
 .share-animation {
-  view-transition-name: share;
+	view-transition-name: share;
 }
 
 .login-view-transitoin {
-  view-transition-name: login;
+	view-transition-name: login;
 }
 
 .searchable-menu-icon-wp {
-  padding: 2px;
-  background-color: #f9fafb;
-  border-radius: 4px;
+	padding: 2px;
+	background-color: #f9fafb;
+	border-radius: 4px;
 }
 
 .user-select-none {
-  user-select: none;
+	user-select: none;
 }

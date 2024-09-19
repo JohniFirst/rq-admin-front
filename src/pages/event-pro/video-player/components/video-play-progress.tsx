@@ -112,8 +112,8 @@ function VideoPlayProgress({ max, value, onChange }: VideoPlayProgressProps) {
 		<div
 			ref={progressWPRef}
 			id='progress-wp'
-			onClick={handleClick}
-			onKeyUp={handleClick}
+			onClick={() => handleClick}
+			onKeyUp={() => handleClick}
 		>
 			<div ref={progressFinishedRef} id='progress-finished' />
 			<div ref={progressDragDotRef} id='progress-drag-dot' />

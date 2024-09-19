@@ -11,8 +11,8 @@ export function handleLogin(data: LoginFormValues): Promise<null> {
 }
 
 /** 所有用户列表 */
-export function getAllUserList(): Promise<UserListRes[]> {
-	return http.post('/user/list', {})
+export function getAllUserList(data: unknown): Promise<UserListRes[]> {
+	return http.post('/user/list', data)
 }
 
 /** 用户启用/禁用 */

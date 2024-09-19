@@ -84,12 +84,12 @@ const dataSource: DataType[] = [
 
 function Table() {
 	return (
-		<BaseTable
+		<BaseTable<DataType>
 			tableProps={{
 				columns,
 				dataSource,
 			}}
-			searchProps={{}}
+			getTableData={() => {}}
 		/>
 	)
 }

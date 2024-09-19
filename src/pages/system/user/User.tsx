@@ -1,20 +1,23 @@
 import { getAllUserList, updateUserIsEnabled } from '@/api/system-api'
 import BaseTable from '@/components/base/base-table'
-import { Switch } from 'antd'
-import type { FC } from 'react'
-
-const test: number = '1'
-
-console.log(test)
+import { Switch, type TableProps } from 'antd'
+import { type FC, useState } from 'react'
 
 /** 当前所有用户列表 */
 function User() {
-	const columns: BaseTableColumns = [
+	const [dataSource, setDataSource] = useState<UserListRes[]>([])
+
+	const getTableData: GetTableData = async (searchParams) => {
+		const res = await getAllUserList(searchParams)
+
+		setDataSource(res)
+	}
+
+	const columns: TableProps<UserListRes>['columns'] = [
 		{
 			title: '昵称',
 			dataIndex: 'nickname',
 			key: 'nickname',
-			searchFormItemConfig: {},
 		},
 		{
 			title: '头像',
@@ -25,13 +28,11 @@ function User() {
 			title: '用户名',
 			dataIndex: 'username',
 			key: 'username',
-			searchFormItemConfig: {},
 		},
 		{
 			title: '手机号',
 			dataIndex: 'phone',
 			key: 'phone',
-			searchFormItemConfig: {},
 		},
 		{
 			title: '电子邮箱',
@@ -42,19 +43,16 @@ function User() {
 			title: '部门',
 			dataIndex: 'departmentId',
 			key: 'departmentId',
-			searchFormItemConfig: {},
 		},
 		{
 			title: '角色',
 			dataIndex: 'roleId',
 			key: 'roleId',
-			searchFormItemConfig: {},
 		},
 		{
 			title: '是否启用',
 			dataIndex: 'isEnabled',
 			key: 'isEnabled',
-			searchFormItemConfig: {},
 			render: (value, record: UserListRes) => (
 				<IsEnabled value={value} record={record} />
 			),
@@ -80,7 +78,12 @@ function User() {
 		)
 	}
 
-	return <BaseTable tableProps={{ columns, getList: getAllUserList }} />
+	return (
+		<BaseTable<UserListRes>
+			tableProps={{ columns, dataSource }}
+			getTableData={getTableData}
+		/>
+	)
 }
 
 export default User

@@ -20,8 +20,8 @@ import type { FormProps, TablePaginationConfig, TableProps } from 'antd'
 import { format } from 'date-fns'
 import { useEffect, useState } from 'react'
 
-type BaseTableProps = {
-	tableProps: TableProps
+type BaseTableProps<T> = {
+	tableProps: TableProps<T>
 	searchProps?: BaseTableSearchProps
 	// 获取表格数据的工具函数
 	getTableData: GetTableData
@@ -31,12 +31,12 @@ type BaseTableProps = {
 	}
 }
 
-const BaseTable: React.FC<BaseTableProps> = ({
+const BaseTable = <T extends object>({
 	tableProps,
 	addForm,
 	searchProps = { gutter: 16, span: 6 },
 	getTableData,
-}) => {
+}: BaseTableProps<T>) => {
 	const [form] = Form.useForm()
 	const [isModalOpen, setIsModalOpen] = useState(false)
 	// 查询参数
@@ -49,11 +49,18 @@ const BaseTable: React.FC<BaseTableProps> = ({
 
 	// 当查询参数或者分页参数发生变化时，触发这个函数
 	useEffect(() => {
-		getTableData({ ...searchParams, ...pagination })
+		refreshData()
 	}, [searchParams, pagination])
+
+	/** 更新表格数据 */
+	const refreshData = () => {
+		getTableData({ ...searchParams, ...pagination })
+	}
 
 	const handleSubmit = async (values: { roleName: string }) => {
 		await addForm?.addFormApi(values)
+
+		refreshData()
 
 		setIsModalOpen(false)
 	}
@@ -69,7 +76,7 @@ const BaseTable: React.FC<BaseTableProps> = ({
 		const excelData: ExcelData = {
 			headers: tableProps.columns!.map((column) => column.title) as string[],
 			data: tableProps.dataSource!.map((item) => {
-				return keys.map((key) => item[key])
+				return keys.map((key: keyof T) => item[key])
 			}),
 		}
 		exportToExcel(excelData, `${format(Date.now(), 'yyyy-MM-dd')}.xlsx`)
@@ -153,11 +160,16 @@ const BaseTable: React.FC<BaseTableProps> = ({
 							<PrinterOutlined
 								className='cursor-pointer hover:text-red-500'
 								onClick={() => window.print()}
+								onKeyUp={() => window.print()}
 							/>
 						</Tooltip>
 
 						<Tooltip title='刷新'>
-							<ReloadOutlined className='cursor-pointer hover:text-red-500' />
+							<ReloadOutlined
+								className='cursor-pointer hover:text-red-500'
+								onClick={refreshData}
+								onKeyUp={refreshData}
+							/>
 						</Tooltip>
 
 						<Tooltip title='列设置'>
