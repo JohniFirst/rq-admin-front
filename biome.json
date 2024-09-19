@@ -39,6 +39,9 @@
 		}
 	},
 	"files": {
-		"include": ["src/**/*.tsx?"]
+		"ignoreUnknown": true,
+		"include": [
+			"src/**/*.tsx?"
+		]
 	}
 }
