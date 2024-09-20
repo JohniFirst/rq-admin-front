@@ -1,4 +1,4 @@
-// import { getMenuList, handleLogin } from '@/api/system-api'
+import { handleLogin } from '@/api/system-api'
 import VerificationCodeInput from '@/components/base/verification-code-input'
 // import { IsLogin, SessionStorageKeys } from '@/enums/localforage'
 import useCustomNavigate from '@/hooks/useCustomNavigate'
@@ -23,9 +23,11 @@ const LoginForm = () => {
 		// 这里可以添加登录逻辑，例如发送请求到后端
 		console.log('Encrypted Password:', values)
 		// addRoutes(dynamicRoutes);
-		navigate('/dashboard', false)
+		// navigate('/dashboard', false)
 
-		// await handleLogin(values)
+		const res = await handleLogin(values)
+
+		console.log('Login Mock Result:', res)
 
 		// sessionStorage.setItem(`${SessionStorageKeys.IS_LOGIN}`, `${IsLogin.YES}`)
 

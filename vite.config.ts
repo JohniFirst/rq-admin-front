@@ -18,7 +18,6 @@ export default defineConfig((configEnv: UserConfig): UserConfig => {
 			react(),
 			checker({
 				typescript: true,
-				biome: true,
 			}),
 			viteMockServe({
 				mockPath: path.resolve(__dirname, 'mock'),
