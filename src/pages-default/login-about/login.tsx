@@ -23,7 +23,7 @@ const LoginForm = () => {
 		// 这里可以添加登录逻辑，例如发送请求到后端
 		console.log('Encrypted Password:', values)
 		// addRoutes(dynamicRoutes);
-		// navigate('/dashboard', false)
+		navigate('/dashboard', false)
 
 		const res = await handleLogin(values)
 

@@ -1,4 +1,3 @@
-// import { lazy } from "react";
 import type { RouteObject } from 'react-router-dom'
 
 import Layout from '@/layout/Layout'
@@ -37,6 +36,12 @@ export const dynamicRoutes: RouteObject[] = [
 					{
 						path: 'table',
 						element: <Table />,
+					},
+					{
+						path: 'cloud-album',
+						lazy: () => import("@/pages/event/cloud-album/cloud-album.tsx").then((module) => ({
+						  element: <module.default />,
+						})),
 					},
 					{
 						path: 'table-frontend',
