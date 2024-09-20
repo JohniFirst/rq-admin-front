@@ -38,6 +38,7 @@ function Home() {
 					<li>实现了共享元素动画</li>
 					<li>实现了动态路由</li>
 					<li>实现了动态菜单</li>
+					<li>实现了瀑布流显示的图片上传管理</li>
 				</ol>
 
 				<p className={home.introTitle}>hooks一览</p>
@@ -60,6 +61,7 @@ function Home() {
 					<li>实现文件上传组件、支持多文件上传、支持拖拽</li>
 					<li>实现浏览器端的文件选择</li>
 					<li>添加后台接口</li>
+					<li>完善云相册的增删改查功能</li>
 				</ol>
 			</main>
 		</>
