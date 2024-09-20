@@ -16,5 +16,3 @@ export const routerSlice: Slice<RouterState> = createSlice({
 })
 
 export const { addRoutes } = routerSlice.actions
-
-export default routerSlice.reducer

@@ -104,5 +104,3 @@ export const {
 
 // selectors 等其他代码可以使用导入的 `RootState` 类型
 export const navItem = (state: RootState) => state.systemInfo.navItem
-
-export default systemInfoSlice.reducer

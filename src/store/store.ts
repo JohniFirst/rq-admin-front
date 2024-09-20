@@ -1,13 +1,13 @@
 import { configureStore } from '@reduxjs/toolkit'
-import menuSlice from './slice/menu-slice.tsx'
-import routerSlice from './slice/router-slice.ts'
-import systemInfoSlice from './slice/system-info.ts'
+import { menuSlice } from './slice/menu-slice.tsx'
+import { routerSlice } from './slice/router-slice.ts'
+import { systemInfoSlice } from './slice/system-info.ts'
 
 const store = configureStore({
 	reducer: {
-		systemInfo: systemInfoSlice,
-		router: routerSlice,
-		menu: menuSlice,
+		systemInfo: systemInfoSlice.reducer,
+		router: routerSlice.reducer,
+		menu: menuSlice.reducer,
 	},
 })
 

@@ -7,9 +7,12 @@ import { type UserConfig, defineConfig } from 'vite'
 import bundleAnalyzer from 'rollup-plugin-bundle-analyzer'
 import checker from 'vite-plugin-checker'
 import viteCompression from 'vite-plugin-compression'
+import { viteMockServe } from 'vite-plugin-mock';
 
 // https://vitejs.dev/config/
 export default defineConfig((configEnv: UserConfig): UserConfig => {
+	const { mode } = configEnv
+
 	return {
 		plugins: [
 			react(),
@@ -17,14 +20,18 @@ export default defineConfig((configEnv: UserConfig): UserConfig => {
 				typescript: true,
 				biome: true,
 			}),
+			viteMockServe({
+				mockPath: path.resolve(__dirname, 'mock'),
+				enable: mode === 'mock',
+			}),
 			// 开启gzip压缩
-			configEnv.mode === 'gzip'
+			mode === 'gzip'
 				? viteCompression({
-						// 压缩后删除原文件
-						deleteOriginFile: false,
-					})
+					// 压缩后删除原文件
+					deleteOriginFile: false,
+				})
 				: undefined,
-			configEnv.mode === 'analyzer' ? bundleAnalyzer({}) : undefined,
+			mode === 'analyzer' ? bundleAnalyzer({}) : undefined,
 		],
 		resolve: {
 			alias: {

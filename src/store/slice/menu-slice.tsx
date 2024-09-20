@@ -30,5 +30,3 @@ export const menuSlice: Slice<MenuItem[]> = createSlice({
 })
 
 export const { updateMenu, resetMenu } = menuSlice.actions
-
-export default menuSlice.reducer
