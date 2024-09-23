@@ -85,7 +85,7 @@ function Danmu() {
 	}, [])
 
 	return (
-		<div className='container'>
+		<div className='custom-container'>
 			<canvas id='canvas' width='600' height='400' />
 		</div>
 	)

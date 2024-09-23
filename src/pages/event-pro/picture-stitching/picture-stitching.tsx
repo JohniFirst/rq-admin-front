@@ -69,7 +69,7 @@ function PictureStitching() {
 	}
 
 	return (
-		<Row className='container'>
+		<Row className='custom-container'>
 			<Col span={12}>
 				<input type='file' accept='image/*' onChange={handleUploadListChange} />
 

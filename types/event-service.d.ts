@@ -1,4 +1,4 @@
-type CloudAlbumList = {
+type CloudAlbumItem = {
   id: number
   name: string
   src: string

@@ -16,7 +16,7 @@ function ShareAnimation() {
 	const navigate = useCustomNavigate()
 
 	return (
-		<ul className='container'>
+		<ul className='custom-container'>
 			{showList.map((item) => (
 				<li
 					className='flex mb-4 border-b-2 py-3'

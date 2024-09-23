@@ -109,7 +109,7 @@ const BaseTable = <T extends object>({
 	return (
 		<>
 			<Form
-				className='container mb-4 w-full'
+				className='custom-container mb-4 w-full'
 				name='basic'
 				onFinish={onFinish}
 				onFinishFailed={onFinishFailed}
@@ -141,7 +141,7 @@ const BaseTable = <T extends object>({
 				</Row>
 			</Form>
 
-			<section className='container'>
+			<section className='custom-container'>
 				{/* 操作栏 */}
 				<section className='mb-4 text-right'>
 					<Space size={'middle'}>

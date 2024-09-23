@@ -26,7 +26,7 @@ function Dashboard() {
 	return (
 		<div className='grid grid-cols-8 gap-4'>
 			{/* 进店人数 */}
-			<li className='container flex xl:col-span-2 md:col-span-3 sm:col-span-4'>
+			<li className='custom-container flex xl:col-span-2 md:col-span-3 sm:col-span-4'>
 				<UserOutlined
 					style={{ fontSize: '50px', color: '#ff5500', width: '70px' }}
 				/>
@@ -44,7 +44,7 @@ function Dashboard() {
 			</li>
 
 			{/* 销售额 */}
-			<li className='container flex xl:col-span-2 md:col-span-3 sm:col-span-4'>
+			<li className='custom-container flex xl:col-span-2 md:col-span-3 sm:col-span-4'>
 				<StrikethroughOutlined
 					style={{ fontSize: '50px', color: 'red', width: '70px' }}
 				/>
@@ -62,7 +62,7 @@ function Dashboard() {
 			</li>
 
 			{/* 经营目标 */}
-			<li className='container flex xl:col-span-2 md:col-span-3 sm:col-span-4'>
+			<li className='custom-container flex xl:col-span-2 md:col-span-3 sm:col-span-4'>
 				<PieChartOutlined
 					style={{ fontSize: '50px', color: '#9dffa7', width: '70px' }}
 				/>
@@ -82,7 +82,7 @@ function Dashboard() {
 			</li>
 
 			{/* 当月利润 */}
-			<li className='container flex xl:col-span-2 md:col-span-3 sm:col-span-4'>
+			<li className='custom-container flex xl:col-span-2 md:col-span-3 sm:col-span-4'>
 				<BankOutlined
 					style={{ fontSize: '50px', color: '#307dff', width: '70px' }}
 				/>
@@ -99,39 +99,39 @@ function Dashboard() {
 				</div>
 			</li>
 
-			<div className='container col-span-5'>
+			<div className='custom-container col-span-5'>
 				<ChartOfInStorePeople />
 			</div>
 
-			<div className='container col-span-3'>
+			<div className='custom-container col-span-3'>
 				<ChartOfGuestSourcePie />
 			</div>
 
-			<section className='container col-span-8'>
+			<section className='custom-container col-span-8'>
 				<ChartOfOrderRelation />
 			</section>
 
-			<section className='container col-span-8'>
+			<section className='custom-container col-span-8'>
 				<ChartOfDynamicSales />
 			</section>
 
-			<section className='container col-span-4'>
+			<section className='custom-container col-span-4'>
 				<ChartOfPayMethodRelation />
 			</section>
 
-			<section className='container col-span-4'>
+			<section className='custom-container col-span-4'>
 				<ChartOfDiningAndEntryTimeRelation />
 			</section>
 
-			<section className='container col-span-3'>
+			<section className='custom-container col-span-3'>
 				<ChartOfDishSales />
 			</section>
 
-			<section className='container col-span-2'>
+			<section className='custom-container col-span-2'>
 				<ChartOfCustomerIncomeProportion />
 			</section>
 
-			<section className='container col-span-3'>
+			<section className='custom-container col-span-3'>
 				<ChartOfCustomerNumbers />
 			</section>
 		</div>

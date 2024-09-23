@@ -34,7 +34,7 @@ const UserInfo: FC = () => {
 	}
 
 	return (
-		<div className='container'>
+		<div className='custom-container'>
 			<Form
 				name='basic'
 				labelCol={{ span: 8 }}
