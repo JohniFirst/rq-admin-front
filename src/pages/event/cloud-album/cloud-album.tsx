@@ -4,6 +4,9 @@ import { Divider, Image, Skeleton } from 'antd'
 import { useEffect, useState } from 'react'
 import InfiniteScroll from 'react-infinite-scroll-component'
 
+import albumAdd from '@/assets/svgs/system/album-add.svg'
+import albumCover from '@/assets/svgs/system/album-cover.svg'
+
 import CloudAlbumStyle from './css/cloud-album.module.css'
 
 enum CloudAlbumItemType {
@@ -55,30 +58,28 @@ const CloudAlbum = () => {
 	// 所有图片
 	const AllCloudImage = () => {
 		return (
-			<>
-				<div id='scrollableDiv'>
-					<InfiniteScroll
-						className='columns-5'
-						scrollableTarget='scrollableDiv'
-						dataLength={data.length}
-						next={loadMoreData}
-						hasMore={data.length < 50}
-						loader={<Skeleton paragraph={{ rows: 2 }} active />}
-						endMessage={<Divider plain>It is all, nothing more 🤐</Divider>}
-					>
-						<Image.PreviewGroup items={data.map((item) => item.src)}>
-							{data.map((item) => (
-								<Image
-									className='break-inside-avoid'
-									key={item.id}
-									src={item.src}
-									width='100%'
-								/>
-							))}
-						</Image.PreviewGroup>
-					</InfiniteScroll>
-				</div>
-			</>
+			<div id='scrollableDiv'>
+				<InfiniteScroll
+					className='columns-5'
+					scrollableTarget='scrollableDiv'
+					dataLength={data.length}
+					next={loadMoreData}
+					hasMore={data.length < 50}
+					loader={<Skeleton paragraph={{ rows: 2 }} active />}
+					endMessage={<Divider plain>It is all, nothing more 🤐</Divider>}
+				>
+					<Image.PreviewGroup items={data.map((item) => item.src)}>
+						{data.map((item) => (
+							<Image
+								className='break-inside-avoid'
+								key={item.id}
+								src={item.src}
+								width='100%'
+							/>
+						))}
+					</Image.PreviewGroup>
+				</InfiniteScroll>
+			</div>
 		)
 	}
 
@@ -98,8 +99,8 @@ const CloudAlbum = () => {
 	const AlbumPage = () => {
 		return (
 			<ul className='grid gap-4 2xl:grid-cols-12 xl:grid-cols-8 lg:grid-cols-6 md:grid-cols-4 sm:grid-cols-3'>
-				<li className='h-36 bg-red-500'>
-					<p>这里放相册封面</p>
+				<li className='h-36'>
+					<img src={albumCover} alt='相册封面' />
 					<p
 						suppressContentEditableWarning
 						contentEditable
@@ -109,12 +110,9 @@ const CloudAlbum = () => {
 						这里是相册名字
 					</p>
 				</li>
-				<li
-					className='h-36 bg-red-500'
-					onClick={addNewAlbum}
-					onKeyUp={addNewAlbum}
-				>
-					新增
+
+				<li className='h-36' onClick={addNewAlbum} onKeyUp={addNewAlbum}>
+					<img src={albumAdd} alt='相册封面' />
 				</li>
 			</ul>
 		)
