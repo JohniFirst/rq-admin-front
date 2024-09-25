@@ -68,8 +68,10 @@ const LoginForm = () => {
 			</video>
 
 			<section className={login.formWp}>
-				<h2 className={`${login.loginTitle} login-view-transitoin cursor-pointer`}>
-					<a href="/">登 录</a>
+				<h2
+					className={`${login.loginTitle} login-view-transitoin cursor-pointer`}
+				>
+					<a href='/'>登 录</a>
 				</h2>
 				<Form
 					form={form}

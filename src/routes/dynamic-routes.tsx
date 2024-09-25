@@ -39,9 +39,12 @@ export const dynamicRoutes: RouteObject[] = [
 					},
 					{
 						path: 'cloud-album',
-						lazy: () => import("@/pages/event/cloud-album/cloud-album.tsx").then((module) => ({
-						  element: <module.default />,
-						})),
+						lazy: () =>
+							import('@/pages/event/cloud-album/cloud-album.tsx').then(
+								(module) => ({
+									element: <module.default />,
+								}),
+							),
 					},
 					{
 						path: 'table-frontend',
