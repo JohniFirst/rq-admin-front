@@ -1,9 +1,9 @@
-interface LoginFormValues {
+type LoginFormValues = {
 	username: string
 	password: string
 }
 
-interface RegisterFormValues extends LoginFormValues {
+type RegisterFormValues = LoginFormValues & {
 	// email: string
 }
 
