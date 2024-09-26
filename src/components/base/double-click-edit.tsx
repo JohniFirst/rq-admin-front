@@ -1,3 +1,4 @@
+import { EditOutlined } from '@ant-design/icons'
 import { Input, type InputProps, type InputRef } from 'antd'
 import React, { useRef, type RefAttributes, useEffect } from 'react'
 
@@ -57,7 +58,12 @@ const DoubleClickEdit: React.FC<DoubleClickEditProps> = ({
 		)
 	}
 
-	return <p onDoubleClick={handleDoubleEdit}>{value}</p>
+	return (
+		<p onDoubleClick={handleDoubleEdit}>
+			{value}
+			<EditOutlined />
+		</p>
+	)
 }
 
 export default DoubleClickEdit

@@ -12,10 +12,6 @@ import {
 import type { UploadChangeParam } from 'antd/es/upload'
 import { type FC, useState } from 'react'
 
-type UploadCloudAlbumProps = {
-	uploadButtonText?: string
-}
-
 const steps: StepProps[] = [
 	{
 		title: '上传照片',
@@ -72,8 +68,6 @@ const UploadCloudAlbum: FC<UploadCloudAlbumProps> = ({ uploadButtonText }) => {
 			<Modal
 				open={open}
 				title='云相册上传'
-				okText='上传'
-				cancelText='取消'
 				footer={[
 					<Button key='cancel' onClick={toggleModal}>
 						取消
@@ -98,7 +92,6 @@ const UploadCloudAlbum: FC<UploadCloudAlbumProps> = ({ uploadButtonText }) => {
 						layout='vertical'
 						form={form}
 						name='cloud-album-form'
-						initialValues={{ modifier: 'public' }}
 						clearOnDestroy
 						onFinish={(values) => onCreate(values)}
 						scrollToFirstError={true}
