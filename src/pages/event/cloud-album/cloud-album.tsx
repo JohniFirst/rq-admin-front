@@ -1,12 +1,14 @@
 import { getUploadImageList } from '@/api/api-event'
 import UploadCloudAlbum from '@/components/upload-cloud-album'
 import { Divider, Image, Skeleton } from 'antd'
+import type React from 'react'
 import { useEffect, useState } from 'react'
 import InfiniteScroll from 'react-infinite-scroll-component'
 
 import albumAdd from '@/assets/svgs/system/album-add.svg'
 import albumCover from '@/assets/svgs/system/album-cover.svg'
 
+import { AlbumNameMaxLength } from '@/utils/config'
 import CloudAlbumStyle from './css/cloud-album.module.css'
 
 enum CloudAlbumItemType {
@@ -84,12 +86,30 @@ const CloudAlbum = () => {
 	}
 
 	const updateAlbumName = (e: React.ChangeEvent<HTMLParagraphElement>) => {
+		// TODO 更新相册名字接口
 		console.log(e.target.innerText)
 	}
 
 	const handleKeyboardSave = (e: React.KeyboardEvent<HTMLParagraphElement>) => {
+		// TODO 更新相册名字接口
+		const target = e.target as HTMLParagraphElement
+
+		console.log(!!window.getSelection()?.toString())
+
+		// 限制相册名最大长度为10
+		if (target.textContent!.length > AlbumNameMaxLength - 1) {
+			target.textContent = target.textContent!.slice(0, AlbumNameMaxLength)
+			if (
+				!['Backspace', 'Delete'].includes(e.key) &&
+				!window.getSelection()?.toString()
+			) {
+				e.preventDefault()
+			}
+			return
+		}
+
 		if (e.key === 'Enter') {
-			const target = e.target as HTMLParagraphElement
+			e.preventDefault()
 
 			target.blur()
 		}
@@ -102,16 +122,21 @@ const CloudAlbum = () => {
 				<li className='h-36'>
 					<img src={albumCover} alt='相册封面' />
 					<p
+						className='text-sm text-center'
 						suppressContentEditableWarning
-						contentEditable
+						contentEditable={'plaintext-only'}
 						onBlur={updateAlbumName}
-						onKeyUp={handleKeyboardSave}
+						onKeyDown={handleKeyboardSave}
 					>
 						这里是相册名字
 					</p>
 				</li>
 
-				<li className='h-36' onClick={addNewAlbum} onKeyUp={addNewAlbum}>
+				<li
+					className='h-36 cursor-pointer'
+					onClick={addNewAlbum}
+					onKeyUp={addNewAlbum}
+				>
 					<img src={albumAdd} alt='相册封面' />
 				</li>
 			</ul>

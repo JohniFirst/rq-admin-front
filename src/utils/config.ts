@@ -33,3 +33,5 @@ export const LucideIconList = [
 	'link',
 	'copy',
 ]
+
+export const AlbumNameMaxLength = 10
