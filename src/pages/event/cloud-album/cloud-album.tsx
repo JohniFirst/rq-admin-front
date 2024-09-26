@@ -1,13 +1,12 @@
 import { getUploadImageList } from '@/api/api-event'
+import albumAdd from '@/assets/svgs/system/album-add.svg'
+import albumCover from '@/assets/svgs/system/album-cover.svg'
 import UploadCloudAlbum from '@/components/upload-cloud-album'
 import { Divider, Image, Skeleton } from 'antd'
-import type React from 'react'
 import { useEffect, useState } from 'react'
 import InfiniteScroll from 'react-infinite-scroll-component'
 
-import albumAdd from '@/assets/svgs/system/album-add.svg'
-import albumCover from '@/assets/svgs/system/album-cover.svg'
-
+import DoubleClickEdit from '@/components/base/double-click-edit'
 import { AlbumNameMaxLength } from '@/utils/config'
 import CloudAlbumStyle from './css/cloud-album.module.css'
 
@@ -85,34 +84,8 @@ const CloudAlbum = () => {
 		)
 	}
 
-	const updateAlbumName = (e: React.ChangeEvent<HTMLParagraphElement>) => {
-		// TODO 更新相册名字接口
-		console.log(e.target.innerText)
-	}
-
-	const handleKeyboardSave = (e: React.KeyboardEvent<HTMLParagraphElement>) => {
-		// TODO 更新相册名字接口
-		const target = e.target as HTMLParagraphElement
-
-		console.log(!!window.getSelection()?.toString())
-
-		// 限制相册名最大长度为10
-		if (target.textContent!.length > AlbumNameMaxLength - 1) {
-			target.textContent = target.textContent!.slice(0, AlbumNameMaxLength)
-			if (
-				!['Backspace', 'Delete'].includes(e.key) &&
-				!window.getSelection()?.toString()
-			) {
-				e.preventDefault()
-			}
-			return
-		}
-
-		if (e.key === 'Enter') {
-			e.preventDefault()
-
-			target.blur()
-		}
+	const updateAlbumName = (newName: string) => {
+		console.log('新相册名字:', newName)
 	}
 
 	// 相册
@@ -121,15 +94,13 @@ const CloudAlbum = () => {
 			<ul className='grid gap-4 2xl:grid-cols-12 xl:grid-cols-8 lg:grid-cols-6 md:grid-cols-4 sm:grid-cols-3'>
 				<li className='h-36'>
 					<img src={albumCover} alt='相册封面' />
-					<p
-						className='text-sm text-center'
-						suppressContentEditableWarning
-						contentEditable={'plaintext-only'}
-						onBlur={updateAlbumName}
-						onKeyDown={handleKeyboardSave}
-					>
-						这里是相册名字
-					</p>
+					<div className='text-sm text-center'>
+						<DoubleClickEdit
+							value='这是相册名字'
+							inputProps={{ maxLength: AlbumNameMaxLength }}
+							editFinished={(value) => updateAlbumName(value)}
+						/>
+					</div>
 				</li>
 
 				<li

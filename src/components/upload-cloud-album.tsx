@@ -41,7 +41,7 @@ const onUploadChange = (info: UploadChangeParam) => {
 
 /**
  * 通用云相册上传组件
- * @param uploadButtonText 上传按钮的文字
+ * @prop uploadButtonText 上传按钮的文字
  */
 const UploadCloudAlbum: FC<UploadCloudAlbumProps> = ({ uploadButtonText }) => {
 	const [form] = Form.useForm()
