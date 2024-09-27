@@ -24,7 +24,7 @@ const CloudAlbum = () => {
 	const [newAlbumModalVisible, setNewAlbumModalVisible] = useState(false)
 
 	const [defaultActive, setDefaultActive] = useState<CloudAlbumItemType>(
-		CloudAlbumItemType.ALBUM,
+		CloudAlbumItemType.ALL,
 	)
 
 	const loadMoreData = async () => {
@@ -127,7 +127,6 @@ const CloudAlbum = () => {
 							layout='vertical'
 							form={newAlbumForm}
 							name='cloud-album-form'
-							initialValues={{ modifier: 'public' }}
 							clearOnDestroy
 							onFinish={(values) => onCreateAlbum(values)}
 							scrollToFirstError={true}

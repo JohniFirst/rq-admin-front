@@ -6,7 +6,7 @@ import { Outlet, useLocation } from 'react-router-dom'
 import HeaderOperate from './components/header-operate'
 import NavigationBar from './components/navigation-bar/navigation-bar'
 
-import LucideIcon, { type LucideIconType } from '@/components/lucide-icon'
+// import LucideIcon, { type LucideIconType } from '@/components/lucide-icon'
 import type { MenuProps } from 'antd'
 import { useEffect, useState } from 'react'
 
@@ -16,7 +16,7 @@ const menuItenWithIcon = (menu: MenuItem[]): MenuItem[] => {
 			key: item.url,
 			label: item.title,
 			title: item.title,
-			icon: <LucideIcon name={item.icon as LucideIconType} />,
+			// icon: <LucideIcon name={item.icon as LucideIconType} />,
 		}
 
 		if (item.children) {

@@ -1,7 +1,7 @@
 import { getRoleEnumList } from '@/api/system-api'
-import LucideIcon, { type LucideIconType } from '@/components/lucide-icon'
+// import LucideIcon, { type LucideIconType } from '@/components/lucide-icon'
 import { menuUrls } from '@/routes/dynamic-routes'
-import { LucideIconList } from '@/utils/config'
+// import { LucideIconList } from '@/utils/config'
 import { Col, Form, Input, InputNumber, Row, Select } from 'antd'
 import { useEffect, useState } from 'react'
 
@@ -65,7 +65,7 @@ const MenuAddForm = () => {
 				/>
 			</Form.Item>
 
-			<Form.Item<MenuAddFormFields>
+			{/* <Form.Item<MenuAddFormFields>
 				label='图标'
 				name='icon'
 				rules={[{ required: true, message: '请选择图标' }]}
@@ -79,7 +79,7 @@ const MenuAddForm = () => {
 						<LucideIcon name={options.label as LucideIconType} />
 					)}
 				/>
-			</Form.Item>
+			</Form.Item> */}
 
 			<Row>
 				<Col span={12}>

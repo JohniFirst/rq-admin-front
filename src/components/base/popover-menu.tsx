@@ -2,7 +2,7 @@ import { MoreOutlined } from '@ant-design/icons'
 import { Button, Popover, message } from 'antd'
 import type { HookAPI } from 'antd/es/modal/useModal'
 import type { FC } from 'react'
-import LucideIcon from '../lucide-icon'
+// import LucideIcon from '../lucide-icon'
 
 // 弹出式菜单
 const PopoverMenu: FC<{ values: unknown; modal: HookAPI }> = ({
@@ -14,7 +14,7 @@ const PopoverMenu: FC<{ values: unknown; modal: HookAPI }> = ({
 			<div className='p-0'>
 				<Button
 					type='text'
-					icon={<LucideIcon size={16} name='file-pen-line' />}
+					// icon={<LucideIcon size={16} name='file-pen-line' />}
 				>
 					修 改
 				</Button>
@@ -23,7 +23,7 @@ const PopoverMenu: FC<{ values: unknown; modal: HookAPI }> = ({
 
 				<Button
 					type='text'
-					icon={<LucideIcon size={16} name='trash-2' />}
+					// icon={<LucideIcon size={16} name='trash-2' />}
 					danger
 					onClick={async () => {
 						const confirmed = await modal.confirm({
