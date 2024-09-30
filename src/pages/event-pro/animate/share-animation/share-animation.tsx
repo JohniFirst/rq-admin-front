@@ -20,8 +20,18 @@ function ShareAnimation() {
 			{showList.map((item) => (
 				<li
 					className='flex mb-4 border-b-2 py-3'
-					onClick={() => navigate('/event-pro/animate/share-animation-detail')}
-					onKeyUp={() => navigate('/event-pro/animate/share-animation-detail')}
+					onClick={() =>
+						navigate(
+							'/event-pro/animate/share-animation/share-animation-detail',
+							false,
+						)
+					}
+					onKeyUp={() =>
+						navigate(
+							'/event-pro/animate/share-animation/share-animation-detail',
+							false,
+						)
+					}
 					key={item.id}
 				>
 					<img
