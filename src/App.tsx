@@ -10,13 +10,14 @@ import {
 	initSystemInfoState,
 } from './store/slice/system-info'
 
+import Loading from '@/components/loading'
 import NotFound from '@/pages-default/NotFound/NotFound'
 import Home from '@/pages-default/home/Home'
 import type { JSX } from 'react/jsx-runtime'
 import { generateRoutes } from './routes/dynamic-routes'
 
 const lazyElement = (Element: React.LazyExoticComponent<() => JSX.Element>) => (
-	<Suspense fallback={<p>loading</p>}>
+	<Suspense fallback={<Loading />}>
 		<Element />
 	</Suspense>
 )
