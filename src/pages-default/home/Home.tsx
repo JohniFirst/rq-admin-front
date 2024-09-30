@@ -41,7 +41,7 @@ function Home() {
 					<li>实现了瀑布流显示的图片上传管理</li>
 					<li>云相册实现了相册概念</li>
 					<li>
-						动画系统利用
+						动画系统利用&nbsp;
 						<a
 							className='underline'
 							target='_blank'
@@ -50,10 +50,10 @@ function Home() {
 						>
 							Framer Motion
 						</a>
-						实现，动画效果自然流畅
+						&nbsp; 实现，动画效果自然流畅
 					</li>
 					<li>
-						css使用
+						css使用&nbsp;
 						<a
 							className='underline'
 							target='_blank'
