@@ -19,6 +19,48 @@ function ShareAnimationDetail() {
 				onClick={goBack}
 				onKeyUp={goBack}
 			/>
+			<p>
+				Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ratione
+				quaerat officia doloremque sunt aut porro nemo excepturi tenetur quasi
+				provident corrupti suscipit eius, laudantium, similique nostrum dolor
+				debitis ea fugiat.
+			</p>
+			<p>
+				Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ratione
+				quaerat officia doloremque sunt aut porro nemo excepturi tenetur quasi
+				provident corrupti suscipit eius, laudantium, similique nostrum dolor
+				debitis ea fugiat.
+			</p>
+			<p>
+				Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ratione
+				quaerat officia doloremque sunt aut porro nemo excepturi tenetur quasi
+				provident corrupti suscipit eius, laudantium, similique nostrum dolor
+				debitis ea fugiat.
+			</p>
+			<p>
+				Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ratione
+				quaerat officia doloremque sunt aut porro nemo excepturi tenetur quasi
+				provident corrupti suscipit eius, laudantium, similique nostrum dolor
+				debitis ea fugiat.
+			</p>
+			<p>
+				Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ratione
+				quaerat officia doloremque sunt aut porro nemo excepturi tenetur quasi
+				provident corrupti suscipit eius, laudantium, similique nostrum dolor
+				debitis ea fugiat.
+			</p>
+			<p>
+				Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ratione
+				quaerat officia doloremque sunt aut porro nemo excepturi tenetur quasi
+				provident corrupti suscipit eius, laudantium, similique nostrum dolor
+				debitis ea fugiat.
+			</p>
+			<p>
+				Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ratione
+				quaerat officia doloremque sunt aut porro nemo excepturi tenetur quasi
+				provident corrupti suscipit eius, laudantium, similique nostrum dolor
+				debitis ea fugiat.
+			</p>
 		</div>
 	)
 }
