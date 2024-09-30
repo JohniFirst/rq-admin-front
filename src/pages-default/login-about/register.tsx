@@ -1,10 +1,9 @@
 import { handleRegister } from '@/api/system-api'
 import { Button, Form, Input } from 'antd'
-import type { FC } from 'react'
 import { useNavigate } from 'react-router-dom'
 import login from './login.module.css'
 
-const RegisterForm: FC = () => {
+const RegisterForm = () => {
 	const [form] = Form.useForm()
 	const navigate = useNavigate()
 

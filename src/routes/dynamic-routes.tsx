@@ -1,134 +1,68 @@
+import type { BaseOptionType } from 'antd/es/select'
+import { Suspense, lazy } from 'react'
 import type { RouteObject } from 'react-router-dom'
 
-import Layout from '@/layout/Layout'
-import Dashboard from '@/pages/dashboard/Dashboard'
-import ShareAnimationDetail from '@/pages/event-pro/animate/share-animation-detail/share-animation-detail'
-import ShareAnimation from '@/pages/event-pro/animate/share-animation/share-animation'
-import Danmu from '@/pages/event-pro/danmu/Danmu'
-import PictureStitching from '@/pages/event-pro/picture-stitching/picture-stitching'
-import VideoPlayer from '@/pages/event-pro/video-player/video-player'
-import CopyToClipboard from '@/pages/event/clipboard/copy-to-clipboard'
-import TableFrontend from '@/pages/event/table-frontend/TableFrontend'
-import Table from '@/pages/event/table/Table'
-// import Menu from '@/pages/system/menu/Menu'
-import Role from '@/pages/system/role/Role'
-import UserInfo from '@/pages/system/user-info/user-info'
-import User from '@/pages/system/user/User'
+const dynamicFiles = import.meta.glob(['../pages/**/*.tsx'])
 
-export const dynamicRoutes: RouteObject[] = [
-	{
-		path: '/',
-		element: <Layout />,
-		children: [
-			{
-				path: '/dashboard',
-				index: true,
-				element: <Dashboard />,
-				loader: () => {
-					return new Promise((resolve) => {
-						resolve('dashboard')
-					})
-				},
-			},
-			{
-				path: '/event',
-				children: [
-					{
-						path: 'table',
-						element: <Table />,
-					},
-					{
-						path: 'cloud-album',
-						lazy: () =>
-							import('@/pages/event/cloud-album/cloud-album.tsx').then(
-								(module) => ({
-									element: <module.default />,
-								}),
-							),
-					},
-					{
-						path: 'table-frontend',
-						element: <TableFrontend />,
-					},
-					{
-						path: 'copy-to-clipboard',
-						element: <CopyToClipboard />,
-					},
-				],
-			},
-			{
-				path: '/event-pro',
-				children: [
-					{
-						path: 'danmu',
-						element: <Danmu />,
-					},
-					{
-						path: 'video-player',
-						element: <VideoPlayer />,
-					},
-					{
-						path: 'picture-stitching',
-						element: <PictureStitching />,
-						// lazy: () => import("@/pages/event-pro/picture-stitching/picture-stitching").then((module) => ({
-						//   element: <module.default />,
-						// })),
-					},
-					{
-						path: 'animate',
-						children: [
-							{
-								path: 'share-animation',
-								element: <ShareAnimation />,
-							},
-							{
-								path: 'share-animation-detail',
-								element: <ShareAnimationDetail />,
-							},
-						],
-					},
-				],
-			},
-			{
-				path: '/system',
-				children: [
-					{
-						path: 'user',
-						element: <User />,
-					},
-					{
-						path: 'role',
-						element: <Role />,
-					},
-					// {
-					// 	path: 'menu',
-					// 	element: <Menu />,
-					// },
-					{ path: 'user-info', element: <UserInfo /> },
-				],
-			},
-		],
-	},
-]
+const lazyElement = (Element: React.LazyExoticComponent<() => JSX.Element>) => (
+	<Suspense fallback={<p>loading</p>}>
+		<Element />
+	</Suspense>
+)
 
-const pagesComponent = import.meta.glob('../pages/**/*.tsx')
+function createRoute(path: string): RouteObject {
+	// 移除路径中的 'views' 和 '.vue'，并将路径转换为小写
+	let routePath = path.replace(/(\.\.\/pages|\.tsx)/g, '').toLowerCase()
 
-const menus = []
-// 供菜单选择界面使用
-const menuUrls: SelectOptions[] = []
-for (let i = 0, length = Object.keys(pagesComponent).length; i < length; i++) {
-	const originPath = Object.keys(pagesComponent)[i]
-	if (originPath.includes('components')) {
-		continue
+	// 分割路径为文件名数组
+	const fileNames = routePath.split('/')
+	let name = fileNames[fileNames.length - 1]
+
+	// 如果文件名与上一级目录名相同，则移除文件名
+	if (fileNames[fileNames.length - 1] === fileNames[fileNames.length - 2]) {
+		fileNames.pop()
+		routePath = fileNames.join('/')
 	}
-	const path = originPath.replace('../pages', '').replace('.tsx', '')
 
-	menus.push({
-		path,
-		element: pagesComponent[originPath](),
-	})
+	// 处理动态路径部分
+	const dynamicPartMatches = path.match(/\[([^[\]]+)\]/g)
+	if (dynamicPartMatches) {
+		name = name.replace(dynamicPartMatches.join(''), '')
+		for (const match of dynamicPartMatches) {
+			const dynamicValue = match.slice(1, -1)
+			routePath = routePath.replace(`[${dynamicValue}]`, `/:${dynamicValue}`)
+		}
+	}
 
-	menuUrls.push({ value: path, label: path })
+	// @ts-ignore
+	const LazyElement = lazy(dynamicFiles[path])
+
+	// 创建路由对象
+	return {
+		path: routePath,
+		// key: name,
+		element: lazyElement(
+			LazyElement as React.LazyExoticComponent<() => JSX.Element>,
+		),
+	}
 }
 
-export { menuUrls, menus }
+/**
+ * 生成动态路由
+ * @returns 动态路由
+ */
+export function generateRoutes() {
+	const dynamicRoutes: RouteObject[] = []
+
+	for (const path in dynamicFiles) {
+		if (path.includes('components')) {
+			continue
+		}
+
+		dynamicRoutes.push(createRoute(path))
+	}
+
+	return dynamicRoutes
+}
+
+export const menuUrls: BaseOptionType[] = []

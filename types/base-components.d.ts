@@ -35,3 +35,7 @@ type BaseTableColumns = {
 	// 查询表单配置项
 	searchFormItemConfig?: SearchFormItemConfig
 }[]
+
+type DraggableSelectMode = 'add' | 'remove' | 'reverse'
+
+type DraggableSelectStartRange = 'all' | 'inside' | 'outside'

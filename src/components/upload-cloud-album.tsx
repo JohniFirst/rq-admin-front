@@ -1,6 +1,7 @@
-import { InboxOutlined } from '@ant-design/icons'
+import { CloudUploadOutlined, InboxOutlined } from '@ant-design/icons'
 import {
 	Button,
+	FloatButton,
 	Form,
 	Input,
 	Modal,
@@ -39,7 +40,7 @@ const onUploadChange = (info: UploadChangeParam) => {
  * 通用云相册上传组件
  * @prop uploadButtonText 上传按钮的文字
  */
-const UploadCloudAlbum: FC<UploadCloudAlbumProps> = ({ uploadButtonText }) => {
+const UploadCloudAlbum: FC<UploadCloudAlbumProps> = () => {
 	const [form] = Form.useForm()
 	const [open, setOpen] = useState(false)
 	// 当前步骤
@@ -61,9 +62,15 @@ const UploadCloudAlbum: FC<UploadCloudAlbumProps> = ({ uploadButtonText }) => {
 
 	return (
 		<>
-			<Button type='primary' onClick={toggleModal} onKeyUp={toggleModal}>
-				{uploadButtonText || '上传云相册'}
-			</Button>
+			<FloatButton.Group>
+				<FloatButton
+					type='primary'
+					onClick={toggleModal}
+					icon={<CloudUploadOutlined />}
+					onKeyUp={toggleModal}
+				/>
+				<FloatButton.BackTop />
+			</FloatButton.Group>
 
 			<Modal
 				open={open}

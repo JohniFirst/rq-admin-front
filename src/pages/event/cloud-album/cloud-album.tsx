@@ -66,12 +66,14 @@ const CloudAlbum = () => {
 				>
 					<Image.PreviewGroup items={data.map((item) => item.src)}>
 						{data.map((item) => (
-							<Image
-								className='break-inside-avoid'
-								key={item.id}
-								src={item.src}
-								width='100%'
-							/>
+							<div key={item.id}>
+								<Image
+									className='break-inside-avoid'
+									src={item.src}
+									width='100%'
+								/>
+								<p>{item.name}</p>
+							</div>
 						))}
 					</Image.PreviewGroup>
 				</InfiniteScroll>
@@ -177,8 +179,15 @@ const CloudAlbum = () => {
 
 	return (
 		<div className='custom-container'>
-			<h2>这是云相册页面</h2>
-			<p>这是介绍</p>
+			<h2>这是云相册页面,这个位置可以放一个图片/视频</h2>
+			<div className='text-center my-4'>
+				<Input.Search
+					className='max-w-7xl'
+					placeholder='输入照片名字进行模糊查询'
+					enterButton='立即搜索'
+					size='large'
+				/>
+			</div>
 			<UploadCloudAlbum />
 
 			<section className={CloudAlbumStyle.albumTitle}>

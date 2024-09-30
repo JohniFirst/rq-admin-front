@@ -2,10 +2,11 @@ import useCustomNavigate from '@/hooks/useCustomNavigate'
 import { useAppDispatch, useAppSelector } from '@/store/hooks'
 import { pushNavItemAction } from '@/store/slice/system-info.ts'
 import { Menu } from 'antd'
-import { Outlet, useLocation } from 'react-router-dom'
+import { Link, Outlet, useLocation } from 'react-router-dom'
 import HeaderOperate from './components/header-operate'
 import NavigationBar from './components/navigation-bar/navigation-bar'
 
+import { HomeOutlined } from '@ant-design/icons'
 // import LucideIcon, { type LucideIconType } from '@/components/lucide-icon'
 import type { MenuProps } from 'antd'
 import { useEffect, useState } from 'react'
@@ -103,7 +104,9 @@ function CommonMenu() {
 
 				<section className='w-full flex flex-col h-screen col-auto'>
 					<header className='flex justify-between items-center p-4'>
-						<div>left</div>
+						<Link to={'/dashboard'}>
+							<HomeOutlined />
+						</Link>
 
 						<HeaderOperate />
 					</header>

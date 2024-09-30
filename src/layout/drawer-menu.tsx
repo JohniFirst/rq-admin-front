@@ -3,11 +3,12 @@ import { useAppDispatch, useAppSelector } from '@/store/hooks'
 import { pushNavItemAction } from '@/store/slice/system-info.ts'
 import { Menu } from 'antd'
 import { useEffect, useState } from 'react'
-import { Outlet, useLocation } from 'react-router-dom'
+import { Link, Outlet, useLocation } from 'react-router-dom'
 import HeaderOperate from './components/header-operate'
 import NavigationBar from './components/navigation-bar/navigation-bar'
 import drawer from './css/drawerMenu.module.css'
 
+import { HomeOutlined } from '@ant-design/icons'
 import type { MenuProps } from 'antd'
 
 /**
@@ -117,7 +118,9 @@ function DrawerMenu() {
 
 				<section className='w-full flex flex-col h-screen col-auto'>
 					<header className='flex justify-between items-center p-4'>
-						<p>left</p>
+						<Link to={'/dashboard'}>
+							<HomeOutlined />
+						</Link>
 
 						<HeaderOperate />
 					</header>

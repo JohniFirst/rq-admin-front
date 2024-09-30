@@ -15,7 +15,8 @@
 				"useExhaustiveDependencies": "off"
 			},
 			"complexity": {
-				"useOptionalChain": "off"
+				"useOptionalChain": "off",
+				"noBannedTypes": "off"
 			},
 			"performance": {
 				"noDelete": "off"
