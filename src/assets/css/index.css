@@ -18,6 +18,18 @@ body {
 	--theme-color: #ff5500;
 }
 
+a:visited {
+	color: var(--theme-color);
+}
+
+a:hover {
+	color: var(--theme-color);
+}
+
+a:active {
+	color: var(--theme-color);
+}
+
 /* 暗色主题样式 */
 .dark {
 	--background-color: #000000;

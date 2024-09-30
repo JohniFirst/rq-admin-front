@@ -40,6 +40,30 @@ function Home() {
 					<li>实现了权限校验的动态菜单</li>
 					<li>实现了瀑布流显示的图片上传管理</li>
 					<li>云相册实现了相册概念</li>
+					<li>
+						动画系统利用
+						<a
+							className='underline'
+							target='_blank'
+							rel='noreferrer'
+							href='https://www.framer.com/motion/introduction/'
+						>
+							Framer Motion
+						</a>
+						实现，动画效果自然流畅
+					</li>
+					<li>
+						css使用
+						<a
+							className='underline'
+							target='_blank'
+							rel='noreferrer'
+							href='https://www.tailwindcss.cn/docs/text-decoration'
+						>
+							tailwindcss
+						</a>
+						，熟悉之后使用更方便
+					</li>
 				</ol>
 
 				<p className={home.introTitle}>hooks一览</p>
