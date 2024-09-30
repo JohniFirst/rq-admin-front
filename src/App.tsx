@@ -8,6 +8,7 @@ import { useAppDispatch, useAppSelector } from './store/hooks'
 import {
 	fetchInitialData,
 	initSystemInfoState,
+	setTheme,
 } from './store/slice/system-info'
 
 import Loading from '@/components/loading'
@@ -53,6 +54,17 @@ function App() {
 	if (import.meta.env.MODE === 'development') {
 		useJumpToVscodeSource()
 	}
+
+	useEffect(() => {
+		const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)')
+		const handleChange = (event: { matches: boolean }) => {
+			dispatch(setTheme(event.matches ? 'dark' : 'light'))
+		}
+		mediaQuery.addEventListener('change', handleChange)
+		return () => {
+			mediaQuery.removeEventListener('change', handleChange)
+		}
+	}, [])
 
 	useEffect(() => {
 		name()
