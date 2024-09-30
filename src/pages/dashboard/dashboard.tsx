@@ -1,14 +1,14 @@
+import ChartOfCustomerIncomeProportion from '@/components/dashboard/chart-of-customer-income-proportion.tsx'
+import ChartOfCustomerNumbers from '@/components/dashboard/chart-of-customer-numbers.tsx'
+import ChartOfDiningAndEntryTimeRelation from '@/components/dashboard/chart-of-dining-and-entry-time-relation.tsx'
+import ChartOfDishSales from '@/components/dashboard/chart-of-dish-sales.tsx'
+import ChartOfDynamicSales from '@/components/dashboard/chart-of-dynamic-sales.tsx'
+import ChartOfGuestSourcePie from '@/components/dashboard/chart-of-guest-source-pie.tsx'
+import ChartOfInStorePeople from '@/components/dashboard/chart-of-in-store-people.tsx'
+import ChartOfOrderRelation from '@/components/dashboard/chart-of-order-relation.tsx'
+import ChartOfPayMethodRelation from '@/components/dashboard/chart-of-pay-method-relation.tsx'
 import NumberJumping from '@/components/number-jumping'
 import { useLoaderData } from 'react-router-dom'
-import ChartOfCustomerIncomeProportion from './components/chart-of-customer-income-proportion.tsx'
-import ChartOfCustomerNumbers from './components/chart-of-customer-numbers.tsx'
-import ChartOfDiningAndEntryTimeRelation from './components/chart-of-dining-and-entry-time-relation.tsx'
-import ChartOfDishSales from './components/chart-of-dish-sales.tsx'
-import ChartOfDynamicSales from './components/chart-of-dynamic-sales.tsx'
-import ChartOfGuestSourcePie from './components/chart-of-guest-source-pie.tsx'
-import ChartOfInStorePeople from './components/chart-of-in-store-people.tsx'
-import ChartOfOrderRelation from './components/chart-of-order-relation.tsx'
-import ChartOfPayMethodRelation from './components/chart-of-pay-method-relation.tsx'
 
 import {
 	BankOutlined,
