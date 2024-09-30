@@ -18,7 +18,8 @@
         "refactor",
         "revert",
         "style",
-        "test"
+        "test",
+        "type"
       ]
     ]
   },
@@ -72,6 +73,11 @@
       {
         "value": "chore",
         "name": "chore:    🔨  Other changes that don't modify src or test files",
+        "emoji": "🔨"
+      },
+      {
+        "value": "type",
+        "name": "type:    🔨  Improve the type declaration file",
         "emoji": "🔨"
       },
       {

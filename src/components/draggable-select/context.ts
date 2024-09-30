@@ -38,9 +38,9 @@ interface ISelectableContext<T> {
 	compareFn: (a: T, b: T) => boolean
 }
 
-export const SelectableContext = React.createContext<
-	ISelectableContext<unknown>
->({} as ISelectableContext<unknown>)
+export const SelectableContext = React.createContext<ISelectableContext<any>>(
+	{} as ISelectableContext<any>,
+)
 
 export const useSelectableContext = () => {
 	const context = useContext(SelectableContext)
