@@ -1,20 +1,19 @@
-import { handleLogin } from '@/api/system-api'
+import { getMenuList, handleLogin } from '@/api/system-api'
 import VerificationCodeInput from '@/components/base/verification-code-input'
-// import { IsLogin, SessionStorageKeys } from '@/enums/localforage'
+import { IsLogin, SessionStorageKeys } from '@/enums/localforage'
 import useCustomNavigate from '@/hooks/useCustomNavigate'
-// import { useAppDispatch } from '@/store/hooks'
-// import { updateMenu } from '@/store/slice/menu-slice'
+import { useAppDispatch } from '@/store/hooks'
+import { updateMenu } from '@/store/slice/menu-slice'
 import { Button, Checkbox, Form, Input } from 'antd'
-// import { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 // import JSEncrypt from "jsencrypt";
 import login from './login.module.css'
 
 const LoginForm = () => {
 	const [form] = Form.useForm()
 	const navigate = useCustomNavigate()
-	// const [isLogin, setIsLogin] = useState(false)
-	// const dispatch = useAppDispatch()
-	// const menu = useAppSelector((state) => state.menu)
+	const [isLogin, setIsLogin] = useState(false)
+	const dispatch = useAppDispatch()
 
 	const handleSubmit = async (values: LoginFormValues) => {
 		// e.preventDefault();
@@ -22,43 +21,27 @@ const LoginForm = () => {
 		// const encryptedPassword = await encryptPassword(values.password);
 		// 这里可以添加登录逻辑，例如发送请求到后端
 		console.log('Encrypted Password:', values)
-		// addRoutes(dynamicRoutes);
-		navigate('/dashboard', false)
+		// navigate('/dashboard', false)
 
 		const res = await handleLogin(values)
 
 		console.log('Login Mock Result:', res)
 
-		// sessionStorage.setItem(`${SessionStorageKeys.IS_LOGIN}`, `${IsLogin.YES}`)
+		sessionStorage.setItem(`${SessionStorageKeys.IS_LOGIN}`, `${IsLogin.YES}`)
 
-		// const res = await getMenuList()
+		const menu = await getMenuList()
 
-		// dispatch(updateMenu(res))
+		dispatch(updateMenu(menu))
 
-		// setIsLogin(true)
+		setIsLogin(true)
 	}
 
 	// 异步导航，避免异步获取到的路由数据访问不到
-	// useEffect(() => {
-	// 	if (isLogin) {
-	// const getUrl = (menus: MenuItem[]) => {
-	//   for (let i = 0, l = menus.length; i < l; i++) {
-	//     const currentMenuItem = menus[i]
-
-	//     if (currentMenuItem.url) {
-	//       return currentMenuItem.url
-	//     } else if (currentMenuItem.children) {
-	//       return getUrl(currentMenuItem.children)
-	//     }
-	//   }
-	// }
-
-	// const url = getUrl(menu)
-
-	// navigate(url, false)
-	// 		navigate('/dashboard', false)
-	// 	}
-	// }, [isLogin])
+	useEffect(() => {
+		if (isLogin) {
+			navigate('/dashboard', false)
+		}
+	}, [isLogin])
 
 	return (
 		<section className='w-screen h-screen overflow-hidden'>
