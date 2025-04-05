@@ -182,6 +182,8 @@ function NavigationBar() {
 			cursor: 'move',
 		}
 
+		const isActive = location.pathname === item.key
+
 		return (
 			<li
 				key={item.key + '1'}
@@ -189,18 +191,30 @@ function NavigationBar() {
 				{...attributes}
 				{...listeners}
 				style={style}
-				className={`${
-					location.pathname === item.key
-						? 'bg-surface-hover text-primary border-primary border-x border-y'
-						: 'text-text-secondary hover:bg-surface-hover'
-				} cursor-pointer bg-surface py-1 px-3 rounded-md shrink-0 transition-colors duration-200 ease-in-out`}
+				className={`
+          group relative flex items-center gap-2 px-3 py-1.5 rounded-md cursor-pointer select-none
+          transition-all duration-200 ease-in-out bg-white
+          ${
+						isActive
+							? 'text-primary font-medium border-b-2 border-primary'
+							: 'text-gray-600 hover:bg-gray-50'
+					}
+        `}
 				onClick={() => navgation(item.key)}
 				onContextMenu={() => (currentClickTarget = item)}
 			>
-				{item.fixed ? <PushpinOutlined className='text-danger' /> : ''}
-				<span className='mx-1'>{item.label}</span>
+				{item.fixed && <PushpinOutlined className='text-primary text-xs' />}
+				<span className='whitespace-nowrap'>{item.label}</span>
 				<CloseOutlined
-					className='p-1 text-text-secondary hover:text-text hover:bg-surface-active rounded transition-colors duration-200'
+					className={`
+            ml-1 text-xs p-1 rounded hover:rounded-full
+            transition-all duration-200
+            ${
+							isActive
+								? 'text-primary hover:bg-primary/10'
+								: 'text-gray-400 hover:text-gray-600 hover:bg-gray-200'
+						}
+          `}
 					onClick={(e) => closeCurrentNav(e, item)}
 				/>
 			</li>
@@ -208,7 +222,7 @@ function NavigationBar() {
 	}
 
 	return (
-		<nav className='flex items-center gap-2 px-2 py-1 overflow-x-auto bg-background'>
+		<nav className='flex items-center px-4 py-2 bg-white border-b border-gray-200'>
 			<DndContext
 				sensors={[sensor]}
 				collisionDetection={closestCenter}
@@ -222,7 +236,7 @@ function NavigationBar() {
 						menu={{ items: contextMenu, onClick: handleMenuClick }}
 						trigger={['contextMenu']}
 					>
-						<ul className='flex items-center gap-2'>
+						<ul className='flex items-center gap-2 overflow-x-auto'>
 							{navItem.map((item) => (
 								<DraggableTabNode key={item.key} item={item} />
 							))}
