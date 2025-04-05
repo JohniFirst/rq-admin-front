@@ -10,10 +10,14 @@ import {
 import { Avatar, Dropdown, type MenuProps } from 'antd'
 import type React from 'react'
 import { useEffect, useState } from 'react'
+import ChangePasswordModal from './modals/change-password-modal'
+import UserInfoModal from './modals/user-info-modal'
 
 const UserDropdown: React.FC = () => {
 	const [userName] = useState('默认用户名')
 	const [userAvatar] = useState('默认头像')
+	const [showUserInfoModal, setShowUserInfoModal] = useState(false)
+	const [showPasswordModal, setShowPasswordModal] = useState(false)
 	const dispatch = useAppDispatch()
 	const navigate = useCustomNavigate()
 
@@ -30,11 +34,11 @@ const UserDropdown: React.FC = () => {
 			icon: <UserOutlined className='text-blue-500' />,
 			label: (
 				<span className='text-gray-700 dark:text-gray-200 font-medium'>
-					查看个人信息
+					个人信息
 				</span>
 			),
 			onClick: () => {
-				navigate('/system/user-info')
+				setShowUserInfoModal(true)
 			},
 		},
 		{
@@ -45,6 +49,9 @@ const UserDropdown: React.FC = () => {
 					修改密码
 				</span>
 			),
+			onClick: () => {
+				setShowPasswordModal(true)
+			},
 		},
 		{
 			type: 'divider',
@@ -69,27 +76,44 @@ const UserDropdown: React.FC = () => {
 	]
 
 	return (
-		<Dropdown
-			menu={{
-				items,
-				className:
-					'mt-2 p-1 bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-100 dark:border-gray-700',
-			}}
-			trigger={['click']}
-			placement='bottomRight'
-		>
-			<div className='flex items-center gap-2 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700 p-2 rounded-lg transition-all duration-300'>
-				<Avatar
-					size='default'
-					src={userAvatar}
-					alt={userName}
-					className='border-2 border-transparent hover:border-indigo-500 transition-all duration-300'
-				/>
-				<span className='text-sm font-medium text-gray-700 dark:text-gray-200'>
-					{userName}
-				</span>
-			</div>
-		</Dropdown>
+		<>
+			<Dropdown
+				menu={{
+					items,
+					className:
+						'mt-2 p-1 bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-100 dark:border-gray-700',
+				}}
+				trigger={['click']}
+				placement='bottomRight'
+			>
+				<div className='flex items-center gap-2 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700 p-2 rounded-lg transition-all duration-300'>
+					<Avatar
+						size='default'
+						src={userAvatar}
+						alt={userName}
+						className='border-2 border-transparent hover:border-indigo-500 transition-all duration-300'
+					/>
+					<span className='text-sm font-medium text-gray-700 dark:text-gray-200'>
+						{userName}
+					</span>
+				</div>
+			</Dropdown>
+
+			<UserInfoModal
+				open={showUserInfoModal}
+				onCancel={() => setShowUserInfoModal(false)}
+				initialValues={{
+					username: userName,
+					email: '', // TODO: 从用户数据中获取
+					avatar: userAvatar,
+				}}
+			/>
+
+			<ChangePasswordModal
+				open={showPasswordModal}
+				onCancel={() => setShowPasswordModal(false)}
+			/>
+		</>
 	)
 }
 
