@@ -69,7 +69,7 @@ function Home() {
 							className='underline'
 							target='_blank'
 							rel='noreferrer'
-							href='https://www.tailwindcss.cn/docs/text-decoration'
+							href='https://v3.tailwindcss.com/docs/container'
 						>
 							tailwindcss
 						</a>

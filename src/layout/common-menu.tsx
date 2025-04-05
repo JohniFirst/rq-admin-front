@@ -32,7 +32,6 @@ function CommonMenu() {
 	const navigate = useCustomNavigate()
 	const dispatch = useAppDispatch()
 	const menus = menuItenWithIcon(useAppSelector((state) => state.menu))
-	console.log('menus', menus)
 	const location = useLocation()
 	const [selectedKey, setSelectedKey] = useState([''])
 	const [openKeys, setOpenKeys] = useState<string[]>([])

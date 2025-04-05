@@ -56,7 +56,7 @@ const CloudAlbum = () => {
 		return (
 			<div id='scrollableDiv'>
 				<InfiniteScroll
-					className='columns-5'
+					className='columns-5 xl:columns-4 lg:columns-3 md:columns-2 sm:columns-1'
 					scrollableTarget='scrollableDiv'
 					dataLength={data.length}
 					next={loadMoreData}
@@ -71,7 +71,7 @@ const CloudAlbum = () => {
 								initial={{ opacity: 0, scale: 0.8 }}
 								whileInView={{ opacity: 1, scale: 1 }}
 								viewport={{ once: true }}
-								transition={{ duration: 0.5 }}
+								transition={{ duration: 0.8 }}
 								className='break-inside-avoid'
 							>
 								<Image src={item.src} width='100%' />
