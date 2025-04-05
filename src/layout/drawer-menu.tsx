@@ -11,10 +11,14 @@ import drawer from './css/drawerMenu.module.css'
 import { HomeOutlined } from '@ant-design/icons'
 import type { MenuProps } from 'antd'
 
+interface DrawerMenuProps {
+	showHeaderOperate?: boolean
+}
+
 /**
  * 可折叠的子菜单
  */
-function DrawerMenu() {
+function DrawerMenu({ showHeaderOperate = true }: DrawerMenuProps) {
 	const navigate = useCustomNavigate()
 	const dispatch = useAppDispatch()
 	const menus = useAppSelector((state) => state.menu)
@@ -122,7 +126,7 @@ function DrawerMenu() {
 							<HomeOutlined />
 						</Link>
 
-						<HeaderOperate />
+						{showHeaderOperate && <HeaderOperate />}
 					</header>
 
 					<NavigationBar />

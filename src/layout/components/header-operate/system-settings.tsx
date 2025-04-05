@@ -3,8 +3,8 @@ import DrawerMenu from '@/assets/svgs/nav-type/drawer-menu.svg'
 import HeaderMenu from '@/assets/svgs/nav-type/top-menu.svg'
 import { SettingOutlined } from '@ant-design/icons'
 import { Drawer, Switch } from 'antd'
-import type React from 'react'
-import { useState } from 'react'
+import { animate, motion, useMotionValue } from 'framer-motion'
+import { useEffect, useState } from 'react'
 
 import { LayoutModeEnum } from '@/enums/system'
 import { useAppDispatch, useAppSelector } from '@/store/hooks'
@@ -30,23 +30,100 @@ const layoutModeArr = [
 
 const SystemSettings: React.FC = () => {
 	const [open, setOpen] = useState(false)
+	const [isDragging, setIsDragging] = useState(false)
+
+	const x = useMotionValue(window.innerWidth - 80)
+	const y = useMotionValue(window.innerHeight / 2)
+
 	const layoutMode = useAppSelector((state) => state.systemInfo.layoutMode)
 	const dispatch = useAppDispatch()
 
+	useEffect(() => {
+		const handleResize = () => {
+			const maxX = window.innerWidth - 50
+			const maxY = window.innerHeight - 50
+			const currentX = x.get()
+			const currentY = y.get()
+
+			if (currentX > maxX) x.set(maxX)
+			if (currentY > maxY) y.set(maxY)
+		}
+
+		window.addEventListener('resize', handleResize)
+		return () => window.removeEventListener('resize', handleResize)
+	}, [x, y])
+
+	const handleDragStart = () => {
+		setIsDragging(true)
+	}
+
+	const handleDragEnd = () => {
+		const currentX = x.get()
+		const windowWidth = window.innerWidth
+		const targetX = currentX < windowWidth / 2 ? 16 : windowWidth - 66
+
+		animate(x, targetX, {
+			type: 'spring',
+			duration: 0.2,
+			bounce: 0,
+		})
+
+		setTimeout(() => setIsDragging(false), 0)
+	}
+
 	const showDrawer = () => {
-		setOpen(true)
+		if (!isDragging) {
+			setOpen(true)
+		}
 	}
 
 	const onClose = () => {
 		setOpen(false)
 	}
 
+	const handleLayoutChange = (newLayout: LayoutModeEnum) => {
+		if (layoutMode !== newLayout) {
+			dispatch(setlayoutMode(newLayout))
+		}
+	}
+
 	return (
 		<>
-			<SettingOutlined
-				className='text-xl text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 cursor-pointer transform hover:rotate-90 transition-all duration-500'
-				onClick={showDrawer}
-			/>
+			<motion.div
+				style={{
+					position: 'fixed',
+					x,
+					y,
+					zIndex: 1000,
+					cursor: isDragging ? 'grabbing' : 'grab',
+					touchAction: 'none',
+				}}
+				drag
+				dragMomentum={false}
+				dragElastic={0}
+				dragTransition={{
+					power: 0,
+					timeConstant: 0,
+					modifyTarget: (target) => target,
+				}}
+				dragConstraints={{
+					left: 16,
+					right: window.innerWidth - 66,
+					top: 16,
+					bottom: window.innerHeight - 66,
+				}}
+				onDragStart={handleDragStart}
+				onDragEnd={handleDragEnd}
+				className='bg-gradient-to-r from-blue-500 to-indigo-600 rounded-full p-3 shadow-lg hover:shadow-xl transition-colors duration-200 hover:from-blue-600 hover:to-indigo-700 group'
+				whileHover={{ scale: isDragging ? 1 : 1.1 }}
+				whileDrag={{ scale: 1.1 }}
+			>
+				<SettingOutlined
+					className='text-2xl text-white group-hover:rotate-90 transition-all duration-300'
+					onClick={showDrawer}
+				/>
+			</motion.div>
+
 			<Drawer
 				title={
 					<h3 className='text-lg font-semibold text-gray-800 dark:text-gray-200'>
@@ -57,6 +134,13 @@ const SystemSettings: React.FC = () => {
 				onClose={onClose}
 				open={open}
 				className='settings-drawer'
+				maskClosable={true}
+				width={480}
+				styles={{
+					body: {
+						padding: '24px',
+					},
+				}}
 			>
 				<div className='space-y-6'>
 					<section>
@@ -75,8 +159,8 @@ const SystemSettings: React.FC = () => {
 												: 'bg-gray-50 dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700'
 										}
 									`}
-									onClick={() => dispatch(setlayoutMode(item.value))}
-									onKeyUp={() => dispatch(setlayoutMode(item.value))}
+									onClick={() => handleLayoutChange(item.value)}
+									onKeyUp={() => handleLayoutChange(item.value)}
 								>
 									<img
 										src={item.imgSrc}

@@ -9,10 +9,14 @@ import NavigationBar from './components/navigation-bar/navigation-bar'
 import type { MenuProps } from 'antd'
 import { useEffect, useState } from 'react'
 
+interface HeaderMenuProps {
+	showHeaderOperate?: boolean
+}
+
 /**
  * 顶部导航菜单
  */
-function HeaderMenu() {
+function HeaderMenu({ showHeaderOperate = true }: HeaderMenuProps) {
 	const navigate = useCustomNavigate()
 	const dispatch = useAppDispatch()
 	const menus = useAppSelector((state) => state.menu)
@@ -78,7 +82,7 @@ function HeaderMenu() {
 					items={menus}
 				/>
 
-				<HeaderOperate />
+				{showHeaderOperate && <HeaderOperate />}
 			</header>
 
 			<NavigationBar />

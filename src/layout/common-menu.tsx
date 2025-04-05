@@ -27,8 +27,12 @@ const menuItenWithIcon = (menu: MenuItem[]): MenuItem[] => {
 	})
 }
 
+interface CommonMenuProps {
+	showHeaderOperate?: boolean
+}
+
 /** * 常规菜单 */
-function CommonMenu() {
+function CommonMenu({ showHeaderOperate = true }: CommonMenuProps) {
 	const navigate = useCustomNavigate()
 	const dispatch = useAppDispatch()
 	const menus = menuItenWithIcon(useAppSelector((state) => state.menu))
@@ -118,7 +122,7 @@ function CommonMenu() {
 							<HomeOutlined className='text-xl' />
 						</Link>
 
-						<HeaderOperate />
+						{showHeaderOperate && <HeaderOperate />}
 					</header>
 
 					<NavigationBar />
