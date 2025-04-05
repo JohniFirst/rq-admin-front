@@ -1,4 +1,5 @@
 import { getMenuList } from '@/api/system-api'
+import FullscreenTransition from '@/components/FullscreenTransition'
 import { LayoutModeEnum } from '@/enums/system'
 import { useAppDispatch, useAppSelector } from '@/store/hooks'
 import { updateMenu } from '@/store/slice/menu-slice'
@@ -10,9 +11,25 @@ import DrawerMenu from './drawer-menu'
 import HeaderMenu from './header-menu'
 
 const layoutVariants = {
-	initial: { opacity: 0, scale: 0.95 },
-	animate: { opacity: 1, scale: 1 },
-	exit: { opacity: 0, scale: 0.95 },
+	initial: { opacity: 0, scale: 0.96, y: 20 },
+	animate: {
+		opacity: 1,
+		scale: 1,
+		y: 0,
+		transition: {
+			duration: 0.4,
+			ease: [0.4, 0, 0.2, 1],
+		},
+	},
+	exit: {
+		opacity: 0,
+		scale: 0.96,
+		y: 20,
+		transition: {
+			duration: 0.3,
+			ease: [0.4, 0, 1, 1],
+		},
+	},
 }
 
 /**
@@ -51,19 +68,20 @@ function Layout() {
 	return (
 		<>
 			<SystemSettings />
-			<AnimatePresence mode='wait'>
-				<motion.div
-					key={layoutMode}
-					initial='initial'
-					animate='animate'
-					exit='exit'
-					variants={layoutVariants}
-					transition={{ duration: 0.3 }}
-					className='h-screen'
-				>
-					{renderLayout()}
-				</motion.div>
-			</AnimatePresence>
+			<FullscreenTransition>
+				<AnimatePresence mode='wait'>
+					<motion.div
+						key={layoutMode}
+						initial='initial'
+						animate='animate'
+						exit='exit'
+						variants={layoutVariants}
+						className='h-screen'
+					>
+						{renderLayout()}
+					</motion.div>
+				</AnimatePresence>
+			</FullscreenTransition>
 		</>
 	)
 }

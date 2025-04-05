@@ -1,5 +1,5 @@
 import { FullscreenExitOutlined, FullscreenOutlined } from '@ant-design/icons'
-import { motion } from 'framer-motion'
+import { AnimatePresence, motion } from 'framer-motion'
 import { useEffect, useState } from 'react'
 
 const FullScreen = () => {
@@ -29,25 +29,29 @@ const FullScreen = () => {
 
 	return (
 		<motion.div
-			className='cursor-pointer'
+			className='cursor-pointer relative'
 			whileHover={{ scale: 1.1 }}
-			whileTap={{ scale: 0.95 }}
+			whileTap={{ scale: 0.9 }}
 			onClick={toggleFullscreen}
 		>
-			<motion.div
-				initial={{ opacity: 0, scale: 0.5 }}
-				animate={{ opacity: 1, scale: 1 }}
-				transition={{
-					duration: 0.2,
-					ease: 'easeOut',
-				}}
-			>
-				{isFullscreen ? (
-					<FullscreenExitOutlined className='text-xl text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors duration-300' />
-				) : (
-					<FullscreenOutlined className='text-xl text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors duration-300' />
-				)}
-			</motion.div>
+			<AnimatePresence mode='wait'>
+				<motion.div
+					key={isFullscreen ? 'exit' : 'enter'}
+					initial={{ opacity: 0, rotate: -180, scale: 0.5 }}
+					animate={{ opacity: 1, rotate: 0, scale: 1 }}
+					exit={{ opacity: 0, rotate: 180, scale: 0.5 }}
+					transition={{
+						duration: 0.3,
+						ease: 'easeInOut',
+					}}
+				>
+					{isFullscreen ? (
+						<FullscreenExitOutlined className='text-xl text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors duration-300' />
+					) : (
+						<FullscreenOutlined className='text-xl text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors duration-300' />
+					)}
+				</motion.div>
+			</AnimatePresence>
 		</motion.div>
 	)
 }
