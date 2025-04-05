@@ -1,7 +1,8 @@
-// import { getMenuList } from '@/api/system-api'
+import { getMenuList } from '@/api/system-api'
 import { LayoutModeEnum } from '@/enums/system'
-import { useAppSelector } from '@/store/hooks'
-// import { updateMenu } from '@/store/slice/menu-slice'
+import { useAppDispatch, useAppSelector } from '@/store/hooks'
+import { updateMenu } from '@/store/slice/menu-slice'
+import { useEffect } from 'react'
 import CommonMenu from './common-menu'
 import DrawerMenu from './drawer-menu'
 import HeaderMenu from './header-menu'
@@ -11,19 +12,22 @@ import HeaderMenu from './header-menu'
  */
 function Layout() {
 	const layoutMode = useAppSelector((state) => state.systemInfo.layoutMode)
-	// const menu = useAppSelector((state) => state.menu)
-	// const dispatch = useAppDispatch()
+	const menu = useAppSelector((state) => state.menu)
+	const dispatch = useAppDispatch()
 
-	// const getMenu = async () => {
-	// 	const res = await getMenuList()
+	useEffect(() => {
+		const fetchMenu = async () => {
+			if (menu.length === 0) {
+				const res = await getMenuList()
+				dispatch(updateMenu(res))
+			}
+		}
+		fetchMenu()
+	}, [menu, dispatch])
 
-	// 	dispatch(updateMenu(res))
-	// }
-
-	// if (menu.length === 0) {
-	// 	getMenu()
-	// 	return <div>loading</div>
-	// }
+	if (menu.length === 0) {
+		return <div>loading</div>
+	}
 
 	switch (layoutMode) {
 		case LayoutModeEnum.COMMON_MENU:

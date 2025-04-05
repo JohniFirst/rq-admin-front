@@ -11,7 +11,7 @@ const lazyElement = (Element: React.LazyExoticComponent<() => JSX.Element>) => (
 )
 
 function createRoute(path: string): RouteObject {
-	// 移除路径中的 'views' 和 '.vue'，并将路径转换为小写
+	// 移除路径中的 'views' 和 '.tsx'，并将路径转换为小写
 	let routePath = path.replace(/(\.\.\/pages|\.tsx)/g, '').toLowerCase()
 
 	// 分割路径为文件名数组

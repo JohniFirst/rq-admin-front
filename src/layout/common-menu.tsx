@@ -32,6 +32,7 @@ function CommonMenu() {
 	const navigate = useCustomNavigate()
 	const dispatch = useAppDispatch()
 	const menus = menuItenWithIcon(useAppSelector((state) => state.menu))
+	console.log('menus', menus)
 	const location = useLocation()
 	const [selectedKey, setSelectedKey] = useState([''])
 	const [openKeys, setOpenKeys] = useState<string[]>([])
@@ -44,23 +45,21 @@ function CommonMenu() {
 			for (let i = 0, l = items.length; i < l; i++) {
 				if (items[i].key === currentPath) {
 					selectedKey = items[i].key
-					return items[i].key
+					return [items[i].key] // Ensure it returns an array
 				}
 
 				if (items[i].children) {
 					const tempResult = findKeys(items[i].children)
 					if (tempResult) {
 						const tempOpenKey = [items[i].key]
-						if (Array.isArray(tempResult)) {
-							tempOpenKey.push(tempResult[0])
-						}
+						tempOpenKey.push(...tempResult) // Spread the result into the array
 						return tempOpenKey
 					}
 				}
 			}
 		}
 
-		const openKeys = findKeys(items)
+		const openKeys = findKeys(items) || [] // Default to an empty array if undefined
 
 		return { selectedKey, openKeys }
 	}
