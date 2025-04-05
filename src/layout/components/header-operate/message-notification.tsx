@@ -38,9 +38,9 @@ const MessageNotification: React.FC<MessageNotificationProps> = ({
 			children: (
 				<div className='space-y-4'>
 					<div className='space-y-4 max-h-[300px] overflow-y-auto pr-2'>
-						{[...Array(3)].map((_) => (
+						{[...Array(3)].map((_, index) => (
 							<div
-								key={_}
+								key={`unread-${index}`}
 								className='p-4 bg-gray-50 dark:bg-gray-800 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-all duration-300 cursor-pointer'
 							>
 								<div className='flex items-start gap-3'>
@@ -75,9 +75,9 @@ const MessageNotification: React.FC<MessageNotificationProps> = ({
 			label: <span className='text-gray-500'>已读消息</span>,
 			children: (
 				<div className='space-y-4 max-h-[300px] overflow-y-auto pr-2'>
-					{[...Array(5)].map((_) => (
+					{[...Array(5)].map((_, index) => (
 						<div
-							key={_}
+							key={`read-${index}`}
 							className='p-4 bg-gray-50 dark:bg-gray-800 rounded-lg opacity-60 transition-all duration-300'
 						>
 							<div className='flex items-start gap-3'>
