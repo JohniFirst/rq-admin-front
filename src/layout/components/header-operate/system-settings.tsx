@@ -8,7 +8,8 @@ import { useEffect, useState } from 'react'
 
 import { LayoutModeEnum } from '@/enums/system'
 import { useAppDispatch, useAppSelector } from '@/store/hooks'
-import { setlayoutMode } from '@/store/slice/system-info'
+import { setTheme, setlayoutMode } from '@/store/slice/system-info'
+import ThemeConfig from './theme-config'
 
 const layoutModeArr = [
 	{
@@ -36,6 +37,7 @@ const SystemSettings: React.FC = () => {
 	const y = useMotionValue(window.innerHeight / 2)
 
 	const layoutMode = useAppSelector((state) => state.systemInfo.layoutMode)
+	const currentTheme = useAppSelector((state) => state.systemInfo.theme)
 	const dispatch = useAppDispatch()
 
 	useEffect(() => {
@@ -87,6 +89,10 @@ const SystemSettings: React.FC = () => {
 		}
 	}
 
+	const handleThemeChange = (themeId: string) => {
+		dispatch(setTheme(themeId))
+	}
+
 	return (
 		<>
 			<motion.div
@@ -135,14 +141,24 @@ const SystemSettings: React.FC = () => {
 				open={open}
 				className='settings-drawer'
 				maskClosable={true}
-				width={480}
+				width={720}
 				styles={{
 					body: {
 						padding: '24px',
 					},
 				}}
 			>
-				<div className='space-y-6'>
+				<div className='space-y-8'>
+					<section>
+						<h4 className='text-base font-medium text-gray-700 dark:text-gray-300 mb-4'>
+							主题配置
+						</h4>
+						<ThemeConfig
+							currentTheme={currentTheme}
+							onThemeChange={handleThemeChange}
+						/>
+					</section>
+
 					<section>
 						<h4 className='text-base font-medium text-gray-700 dark:text-gray-300 mb-4'>
 							导航菜单布局

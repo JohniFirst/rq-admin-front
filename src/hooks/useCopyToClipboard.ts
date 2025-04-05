@@ -1,4 +1,4 @@
-import { config } from '@/utils/config'
+import { appConfig } from '@/config/app'
 import { useState } from 'react'
 
 interface CopyToClipboardOptions {
@@ -14,8 +14,8 @@ interface CopyToClipboardOptions {
  */
 export function useCopyToClipboard(
 	options: CopyToClipboardOptions = {
-		prefix: config.clipboardPrefix,
-		suffix: config.clipboardSuffix,
+		prefix: appConfig.clipboard.prefix,
+		suffix: appConfig.clipboard.suffix,
 	},
 ) {
 	const [isCopied, setIsCopied] = useState<boolean>(false)

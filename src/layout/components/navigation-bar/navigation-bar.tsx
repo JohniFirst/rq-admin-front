@@ -191,44 +191,46 @@ function NavigationBar() {
 				style={style}
 				className={`${
 					location.pathname === item.key
-						? 'bg-sky-50 text-blue-500 border-blue-500 border-x border-y'
-						: ''
-				} cursor-pointer dark:bg-[#242424] bg-white py-1 px-3 rounded-md shrink-0`}
+						? 'bg-surface-hover text-primary border-primary border-x border-y'
+						: 'text-text-secondary hover:bg-surface-hover'
+				} cursor-pointer bg-surface py-1 px-3 rounded-md shrink-0 transition-colors duration-200 ease-in-out`}
 				onClick={() => navgation(item.key)}
 				onContextMenu={() => (currentClickTarget = item)}
 			>
-				{item.fixed ? <PushpinOutlined className='text-red-500' /> : ''}
-				{item.label}{' '}
+				{item.fixed ? <PushpinOutlined className='text-danger' /> : ''}
+				<span className='mx-1'>{item.label}</span>
 				<CloseOutlined
+					className='p-1 text-text-secondary hover:text-text hover:bg-surface-active rounded transition-colors duration-200'
 					onClick={(e) => closeCurrentNav(e, item)}
-					className='text-xs text-gray-400 hover:text-blue-600'
 				/>
 			</li>
 		)
 	}
 
 	return (
-		<Dropdown
-			menu={{ items: contextMenu, onClick: handleMenuClick }}
-			trigger={['contextMenu']}
-		>
-			<ul className='flex user-select-none gap-2 dark:bg-black bg-gray-50 py-2'>
-				<DndContext
-					sensors={[sensor]}
-					onDragEnd={onDragEnd}
-					collisionDetection={closestCenter}
+		<nav className='flex items-center gap-2 px-2 py-1 overflow-x-auto bg-background'>
+			<DndContext
+				sensors={[sensor]}
+				collisionDetection={closestCenter}
+				onDragEnd={onDragEnd}
+			>
+				<SortableContext
+					items={navItem.map((i) => i.key)}
+					strategy={horizontalListSortingStrategy}
 				>
-					<SortableContext
-						items={navItem.map((i) => i.key)}
-						strategy={horizontalListSortingStrategy}
+					<Dropdown
+						menu={{ items: contextMenu, onClick: handleMenuClick }}
+						trigger={['contextMenu']}
 					>
-						{navItem.map((item) => (
-							<DraggableTabNode key={item.key} item={item} />
-						))}
-					</SortableContext>
-				</DndContext>
-			</ul>
-		</Dropdown>
+						<ul className='flex items-center gap-2'>
+							{navItem.map((item) => (
+								<DraggableTabNode key={item.key} item={item} />
+							))}
+						</ul>
+					</Dropdown>
+				</SortableContext>
+			</DndContext>
+		</nav>
 	)
 }
 

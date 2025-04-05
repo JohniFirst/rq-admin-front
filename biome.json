@@ -24,6 +24,9 @@
 			"suspicious": {
 				"noAssignInExpressions": "off",
 				"noExplicitAny": "off"
+			},
+			"a11y": {
+				"useKeyWithClickEvents": "off"
 			}
 		}
 	},

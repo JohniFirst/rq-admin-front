@@ -8,7 +8,7 @@ import { useEffect, useState } from 'react'
 import InfiniteScroll from 'react-infinite-scroll-component'
 
 import DoubleClickEdit from '@/components/base/double-click-edit'
-import { AlbumNameMaxLength } from '@/utils/config'
+import { AlbumNameMaxLength } from '@/config/constants'
 
 enum CloudAlbumItemType {
 	ALL = 0,

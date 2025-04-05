@@ -1,20 +1,18 @@
 import { useJumpToVscodeSource } from '@/hooks/useJumpToVscodeSource'
-import { ConfigProvider, theme } from 'antd'
+import { ConfigProvider } from 'antd'
 import { AnimatePresence } from 'framer-motion'
 import { useEffect } from 'react'
 import { RouterProvider, createBrowserRouter } from 'react-router-dom'
+import ThemeProvider from './layout/components/theme-provider'
 import { defaultRoutes } from './routes/routes'
-import { useAppDispatch, useAppSelector } from './store/hooks'
+import { useAppDispatch } from './store/hooks'
 import {
 	fetchInitialData,
 	initSystemInfoState,
-	setTheme,
 } from './store/slice/system-info'
 
 function App() {
-	const localTheme = useAppSelector((state) => state.systemInfo.theme)
 	const dispatch = useAppDispatch()
-
 	const AppRouter = createBrowserRouter(defaultRoutes)
 
 	if (['test', 'development', 'mock'].includes(import.meta.env.MODE)) {
@@ -22,40 +20,22 @@ function App() {
 	}
 
 	useEffect(() => {
-		const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)')
-		const handleChange = (event: { matches: boolean }) => {
-			dispatch(setTheme(event.matches ? 'dark' : 'light'))
-		}
-		mediaQuery.addEventListener('change', handleChange)
-		return () => {
-			mediaQuery.removeEventListener('change', handleChange)
-		}
+		initApp()
 	}, [])
 
-	useEffect(() => {
-		name()
-	}, [])
-
-	async function name() {
+	async function initApp() {
 		const payload = await fetchInitialData()
-
 		dispatch(initSystemInfoState(payload))
 	}
 
 	return (
-		<ConfigProvider
-			theme={{
-				algorithm:
-					localTheme === 'dark' ? theme.darkAlgorithm : theme.defaultAlgorithm,
-				token: {
-					colorPrimary: '#FF4500',
-				},
-			}}
-		>
-			<AnimatePresence mode='wait' initial={false}>
-				<RouterProvider router={AppRouter} />
-			</AnimatePresence>
-		</ConfigProvider>
+		<ThemeProvider>
+			<ConfigProvider>
+				<AnimatePresence mode='wait' initial={false}>
+					<RouterProvider router={AppRouter} />
+				</AnimatePresence>
+			</ConfigProvider>
+		</ThemeProvider>
 	)
 }
 
