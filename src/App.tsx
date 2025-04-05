@@ -1,9 +1,9 @@
 import { useJumpToVscodeSource } from '@/hooks/useJumpToVscodeSource'
 import { ConfigProvider, theme } from 'antd'
 import { AnimatePresence } from 'framer-motion'
-import { Suspense, lazy, useEffect } from 'react'
+import { useEffect } from 'react'
 import { RouterProvider, createBrowserRouter } from 'react-router-dom'
-import type { RouteObject } from 'react-router-dom'
+import { defaultRoutes } from './routes/routes'
 import { useAppDispatch, useAppSelector } from './store/hooks'
 import {
 	fetchInitialData,
@@ -11,45 +11,11 @@ import {
 	setTheme,
 } from './store/slice/system-info'
 
-import Loading from '@/components/loading'
-import NotFound from '@/pages-default/NotFound/NotFound'
-import Home from '@/pages-default/home/Home'
-import type { JSX } from 'react/jsx-runtime'
-import { generateRoutes } from './routes/dynamic-routes'
-
-const lazyElement = (Element: React.LazyExoticComponent<() => JSX.Element>) => (
-	<Suspense fallback={<Loading />}>
-		<Element />
-	</Suspense>
-)
-
 function App() {
 	const localTheme = useAppSelector((state) => state.systemInfo.theme)
 	const dispatch = useAppDispatch()
 
-	const defaultRoutes: RouteObject[] = [
-		{ path: '/', element: <Home /> },
-		{
-			path: '/login',
-			element: lazyElement(
-				lazy(() => import('@/pages-default/login-about/login.tsx')),
-			),
-		},
-		{
-			path: '/register',
-			element: lazyElement(
-				lazy(() => import('@/pages-default/login-about/register.tsx')),
-			),
-		},
-		{
-			path: '/',
-			element: lazyElement(lazy(() => import('@/layout/Layout.tsx'))),
-			children: generateRoutes(),
-		},
-		{ path: '/*', element: <NotFound /> },
-	]
-
-	const router = createBrowserRouter(defaultRoutes)
+	const AppRouter = createBrowserRouter(defaultRoutes)
 
 	if (import.meta.env.MODE === 'development') {
 		useJumpToVscodeSource()
@@ -87,7 +53,7 @@ function App() {
 			}}
 		>
 			<AnimatePresence mode='wait' initial={false}>
-				<RouterProvider router={router} />
+				<RouterProvider router={AppRouter} />
 			</AnimatePresence>
 		</ConfigProvider>
 	)

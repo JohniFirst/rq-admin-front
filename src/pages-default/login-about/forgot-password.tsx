@@ -2,7 +2,7 @@ import { handleRegister } from '@/api/system-api'
 import { Button, Form, Input } from 'antd'
 import { NavLink, useNavigate } from 'react-router-dom'
 
-const RegisterForm = () => {
+const ForgotPassword = () => {
 	const [form] = Form.useForm()
 	const navigate = useNavigate()
 
@@ -14,7 +14,9 @@ const RegisterForm = () => {
 
 	return (
 		<>
-			<h2 className='text-4xl font-bold mb-4 login-view-transitoin'>注 册</h2>
+			<h2 className='text-4xl font-bold mb-4 login-view-transitoin'>
+				密码找回
+			</h2>
 			<Form form={form} name='loginForm' onFinish={handleSubmit}>
 				<Form.Item
 					name='username'
@@ -31,7 +33,7 @@ const RegisterForm = () => {
 
 				<Form.Item>
 					<Button type='primary' block htmlType='submit'>
-						立即注册
+						找回密码
 					</Button>
 				</Form.Item>
 
@@ -43,4 +45,4 @@ const RegisterForm = () => {
 	)
 }
 
-export default RegisterForm
+export default ForgotPassword
