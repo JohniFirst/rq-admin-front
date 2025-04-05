@@ -6,6 +6,7 @@ import { useAppDispatch } from '@/store/hooks'
 import { updateMenu } from '@/store/slice/menu-slice'
 import { Button, Checkbox, Form, Input } from 'antd'
 import { useEffect, useState } from 'react'
+import { NavLink } from 'react-router-dom'
 // import JSEncrypt from "jsencrypt";
 import login from './login.module.css'
 
@@ -54,7 +55,7 @@ const LoginForm = () => {
 				<h2
 					className={`${login.loginTitle} login-view-transitoin cursor-pointer`}
 				>
-					<a href='/'>登 录</a>
+					<NavLink to='/'>登 录</NavLink>
 				</h2>
 				<Form
 					form={form}
@@ -86,10 +87,7 @@ const LoginForm = () => {
 						<div className='flex justify-between'>
 							<Checkbox>记住我</Checkbox>
 							<p>
-								还没账号？
-								<Button type='link' onClick={() => navigate('/register')}>
-									立即注册
-								</Button>
+								还没账号?<NavLink to='/register'>立即注册</NavLink>
 							</p>
 						</div>
 					</Form.Item>

@@ -1,6 +1,6 @@
 import { handleRegister } from '@/api/system-api'
 import { Button, Form, Input } from 'antd'
-import { useNavigate } from 'react-router-dom'
+import { NavLink, useNavigate } from 'react-router-dom'
 import login from './login.module.css'
 
 const RegisterForm = () => {
@@ -37,14 +37,12 @@ const RegisterForm = () => {
 
 					<Form.Item>
 						<Button type='primary' block htmlType='submit'>
-							登 录
+							立即注册
 						</Button>
 					</Form.Item>
 
 					<section>
-						<Button type='link' onClick={() => navigate('/login')}>
-							去登录
-						</Button>
+						<NavLink to={'/login'}>去登录</NavLink>
 					</section>
 				</Form>
 			</section>
