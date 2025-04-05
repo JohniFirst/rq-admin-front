@@ -10,6 +10,13 @@ export function handleLogin(data: LoginFormValues): Promise<null> {
 	return http.post('/login', data)
 }
 
+/** 忘记密码 */
+export function handleForgotPassword(
+	data: ForgotPasswordFormValues,
+): Promise<null> {
+	return http.post('/forgot-password', data)
+}
+
 /** 所有用户列表 */
 export function getAllUserList(data: unknown): Promise<UserListRes[]> {
 	return http.post('/user/list', data)
@@ -38,9 +45,9 @@ export function addRole(data: { roleName: string }): Promise<null> {
 	return http.post('/role/add', data)
 }
 
-/** 菜单列表 */
-export function getMenuList(params?: unknown): Promise<MenuApiResponse[]> {
-	return http.get('/menu-list', { params })
+/** 获取菜单列表 */
+export function getMenuList(): Promise<any> {
+	return http.get('/menu/list')
 }
 
 /** 菜单列表不带角色信息 */
