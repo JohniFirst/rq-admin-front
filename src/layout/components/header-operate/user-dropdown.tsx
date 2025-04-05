@@ -11,6 +11,7 @@ import { Avatar, Dropdown, type MenuProps } from 'antd'
 import type React from 'react'
 import { useEffect, useState } from 'react'
 import ChangePasswordModal from './modals/change-password-modal'
+import LogoutConfirmModal from './modals/logout-confirm-modal'
 import UserInfoModal from './modals/user-info-modal'
 
 const UserDropdown: React.FC = () => {
@@ -18,6 +19,7 @@ const UserDropdown: React.FC = () => {
 	const [userAvatar] = useState('默认头像')
 	const [showUserInfoModal, setShowUserInfoModal] = useState(false)
 	const [showPasswordModal, setShowPasswordModal] = useState(false)
+	const [showLogoutModal, setShowLogoutModal] = useState(false)
 	const dispatch = useAppDispatch()
 	const navigate = useCustomNavigate()
 
@@ -27,6 +29,12 @@ const UserDropdown: React.FC = () => {
 		// setUserName('获取到的用户名');
 		// setUserAvatar('获取到的头像');
 	}, [])
+
+	const handleLogout = () => {
+		dispatch(resetMenu({}))
+		sessionStorage.setItem(`${SessionStorageKeys.IS_LOGIN}`, `${IsLogin.NO}`)
+		navigate('/login')
+	}
 
 	const items: MenuProps['items'] = [
 		{
@@ -65,12 +73,7 @@ const UserDropdown: React.FC = () => {
 				</span>
 			),
 			onClick: () => {
-				dispatch(resetMenu({}))
-				sessionStorage.setItem(
-					`${SessionStorageKeys.IS_LOGIN}`,
-					`${IsLogin.NO}`,
-				)
-				navigate('/login')
+				setShowLogoutModal(true)
 			},
 		},
 	]
@@ -112,6 +115,12 @@ const UserDropdown: React.FC = () => {
 			<ChangePasswordModal
 				open={showPasswordModal}
 				onCancel={() => setShowPasswordModal(false)}
+			/>
+
+			<LogoutConfirmModal
+				open={showLogoutModal}
+				onCancel={() => setShowLogoutModal(false)}
+				onConfirm={handleLogout}
 			/>
 		</>
 	)
