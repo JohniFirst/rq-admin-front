@@ -85,25 +85,37 @@ function CommonMenu() {
 
 	return (
 		<>
-			<div className='grid grid-cols-[256px_1fr] w-full h-screen'>
-				<aside className='max-h-screen'>
-					<p>你可以在这里放logo</p>
+			<div className='grid grid-cols-[256px_1fr] w-full h-screen bg-gray-50 dark:bg-gray-900'>
+				<aside className='max-h-screen bg-white dark:bg-gray-800 shadow-lg transition-all duration-300'>
+					<div className='p-4 border-b border-gray-100 dark:border-gray-700'>
+						<h1 className='text-xl font-bold text-gray-800 dark:text-white hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors duration-300'>
+							RQ Admin
+						</h1>
+					</div>
 
 					<Menu
-						className='max-h-full overflow-y-auto'
+						className='max-h-[calc(100vh-64px)] overflow-y-auto border-none'
 						onClick={onClick}
 						selectedKeys={selectedKey}
 						openKeys={openKeys}
 						onOpenChange={(keys) => setOpenKeys(keys)}
 						mode='inline'
 						items={menus}
+						theme={
+							document.documentElement.classList.contains('dark')
+								? 'dark'
+								: 'light'
+						}
 					/>
 				</aside>
 
 				<section className='w-full flex flex-col h-screen col-auto'>
-					<header className='flex justify-between items-center p-4'>
-						<Link to={'/dashboard'}>
-							<HomeOutlined />
+					<header className='flex justify-between items-center px-6 py-4 bg-white dark:bg-gray-800 shadow-sm z-10'>
+						<Link
+							to={'/dashboard'}
+							className='text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-all duration-300 transform hover:scale-110'
+						>
+							<HomeOutlined className='text-xl' />
 						</Link>
 
 						<HeaderOperate />
@@ -111,8 +123,10 @@ function CommonMenu() {
 
 					<NavigationBar />
 
-					<main className='bg-gray-50 dark:bg-black grow p-4 overflow-y-auto w-full'>
-						<Outlet />
+					<main className='bg-gray-50 dark:bg-gray-900 grow p-6 overflow-y-auto w-full'>
+						<div className='fade-in'>
+							<Outlet />
+						</div>
 					</main>
 				</section>
 			</div>

@@ -7,59 +7,41 @@ import {
 	UpOutlined,
 } from '@ant-design/icons'
 import { Input, Modal } from 'antd'
-import type { InputRef } from 'antd'
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { AnimatePresence, motion } from 'framer-motion'
+import { useEffect, useMemo, useState } from 'react'
 import type { FC } from 'react'
 import system from './css/system.module.css'
 
-/** 菜单搜索的底部提示 */
-const SearchMenuFooter: FC = () => {
-	return (
-		<div className='flex justify-end gap-6'>
-			<p>
-				<span className='searchable-menu-icon-wp'>
-					<DownOutlined />
-				</span>
-				&nbsp;
-				<span className='searchable-menu-icon-wp'>
-					<UpOutlined />
-				</span>
-				上下导航
-			</p>
-			<p>
-				<span className='searchable-menu-icon-wp'>
-					<EnterOutlined />
-				</span>
-				选择
-			</p>
-			<p>
-				<span className='searchable-menu-icon-wp'>ESC</span>
-				退出
-			</p>
-		</div>
-	)
-}
-
 const SearchableMenu: FC = () => {
-	const [searchText, setSearchText] = useState('')
-	const menuItems = useAppSelector((state) => state.menu)
 	const [isModalOpen, setIsModalOpen] = useState(false)
-	const inputRef = useRef<InputRef>(null)
+	const [searchValue, setSearchValue] = useState('')
+	const menuItems = useAppSelector((state) => state.menu)
 	const navigate = useCustomNavigate()
 
 	useEffect(() => {
-		const handleKeyDown = (event: KeyboardEvent) => {
+		const handleKeyPress = (event: KeyboardEvent) => {
 			if (event.ctrlKey && event.key === 'm') {
 				setIsModalOpen(true)
 			}
 		}
 
-		window.addEventListener('keydown', handleKeyDown)
-
-		return () => {
-			window.removeEventListener('keydown', handleKeyDown)
-		}
+		document.addEventListener('keydown', handleKeyPress)
+		return () => document.removeEventListener('keydown', handleKeyPress)
 	}, [])
+
+	const showModal = () => {
+		setIsModalOpen(true)
+	}
+
+	const handleCancel = () => {
+		setIsModalOpen(false)
+		setSearchValue('')
+	}
+
+	const handleSearch = (value: string) => {
+		setSearchValue(value)
+		// 实现搜索逻辑
+	}
 
 	const findMatchingItems = (arr: MenuItem[], keyword: string): MenuItem[] => {
 		if (keyword === '') {
@@ -130,7 +112,7 @@ const SearchableMenu: FC = () => {
 					return (
 						<span
 							key={labelItem}
-							style={{ color: searchText.includes(labelItem) ? 'red' : '' }}
+							style={{ color: searchValue.includes(labelItem) ? 'red' : '' }}
 						>
 							{labelItem}
 						</span>
@@ -141,7 +123,7 @@ const SearchableMenu: FC = () => {
 	}
 
 	const content = useMemo(() => {
-		const filterResult = findMatchingItems(menuItems, searchText)
+		const filterResult = findMatchingItems(menuItems, searchValue)
 		return (
 			<div className='mt-2 min-h-2'>
 				{filterResult.length ? (
@@ -153,38 +135,92 @@ const SearchableMenu: FC = () => {
 				)}
 			</div>
 		)
-	}, [searchText])
+	}, [searchValue])
 
 	return (
 		<>
-			<Input
-				prefix={<SearchOutlined />}
-				onFocus={() => setIsModalOpen(true)}
-				placeholder='ctrl + m 搜索菜单'
-			/>
+			<motion.div
+				className='cursor-pointer'
+				whileHover={{ scale: 1.1 }}
+				whileTap={{ scale: 0.95 }}
+				onClick={showModal}
+			>
+				<SearchOutlined className='text-xl text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors duration-300' />
+			</motion.div>
 
 			<Modal
+				title={
+					<div className='flex items-center gap-3'>
+						<SearchOutlined className='text-xl text-indigo-600' />
+						<span className='text-lg font-semibold text-gray-800 dark:text-gray-200'>
+							菜单搜索
+						</span>
+					</div>
+				}
 				open={isModalOpen}
-				closeIcon={null}
-				footer={<SearchMenuFooter />}
-				onCancel={() => setIsModalOpen(false)}
-				focusTriggerAfterClose={false}
-				wrapClassName='max-h-[500px]'
-				afterOpenChange={(open) => {
-					if (open) {
-						inputRef.current!.focus({
-							cursor: 'all',
-						})
-					}
-				}}
+				footer={
+					<div className='flex justify-end gap-6 text-sm text-gray-500 dark:text-gray-400 pt-4 border-t border-gray-100 dark:border-gray-700'>
+						<p className='flex items-center gap-2'>
+							<span className='px-2 py-1 bg-gray-100 dark:bg-gray-700 rounded'>
+								<DownOutlined />
+							</span>
+							<span className='px-2 py-1 bg-gray-100 dark:bg-gray-700 rounded'>
+								<UpOutlined />
+							</span>
+							上下导航
+						</p>
+						<p className='flex items-center gap-2'>
+							<span className='px-2 py-1 bg-gray-100 dark:bg-gray-700 rounded'>
+								<EnterOutlined />
+							</span>
+							选择
+						</p>
+						<p className='flex items-center gap-2'>
+							<span className='px-2 py-1 bg-gray-100 dark:bg-gray-700 rounded'>
+								ESC
+							</span>
+							退出
+						</p>
+					</div>
+				}
+				onCancel={handleCancel}
+				className='searchable-menu-modal'
+				width={600}
 			>
-				<Input
-					ref={inputRef}
-					onChange={(event) => setSearchText(event.target.value)}
-					prefix={<SearchOutlined />}
-					placeholder='输入菜单名'
-				/>
-				{content}
+				<div className='space-y-6'>
+					<div className='relative'>
+						<Input
+							placeholder='输入关键字搜索菜单 (Ctrl + M)'
+							value={searchValue}
+							onChange={(e) => handleSearch(e.target.value)}
+							className='py-3 pl-12 pr-4 text-lg rounded-lg border-2 border-gray-200 focus:border-indigo-500 transition-all duration-300'
+							autoFocus
+						/>
+						<SearchOutlined className='absolute left-4 top-1/2 -translate-y-1/2 text-lg text-gray-400' />
+					</div>
+
+					<AnimatePresence>
+						{searchValue && (
+							<motion.div
+								initial={{ opacity: 0, y: 20 }}
+								animate={{ opacity: 1, y: 0 }}
+								exit={{ opacity: 0, y: 20 }}
+								className='space-y-2'
+							>
+								<div className='text-sm text-gray-500 dark:text-gray-400 mb-4'>
+									搜索结果
+								</div>
+								{content}
+							</motion.div>
+						)}
+					</AnimatePresence>
+
+					{!searchValue && (
+						<div className='text-center text-gray-500 dark:text-gray-400'>
+							<p>使用快捷键 Ctrl + M 快速打开搜索</p>
+						</div>
+					)}
+				</div>
 			</Modal>
 		</>
 	)

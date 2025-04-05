@@ -2,7 +2,7 @@ import { responseFormat } from "./response-format"
 
 export default [
   {
-    url: '/api/menu-list',
+    url: '/api/menu/list',
     method: 'get',
     response: ({ query }) => {
       return responseFormat([
