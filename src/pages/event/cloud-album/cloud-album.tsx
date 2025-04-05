@@ -3,12 +3,12 @@ import albumAdd from '@/assets/svgs/system/album-add.svg'
 import albumCover from '@/assets/svgs/system/album-cover.svg'
 import UploadCloudAlbum from '@/components/upload-cloud-album'
 import { Divider, Form, Image, Input, Modal, Skeleton, Switch } from 'antd'
+import { motion } from 'framer-motion'
 import { useEffect, useState } from 'react'
 import InfiniteScroll from 'react-infinite-scroll-component'
 
 import DoubleClickEdit from '@/components/base/double-click-edit'
 import { AlbumNameMaxLength } from '@/utils/config'
-import CloudAlbumStyle from './css/cloud-album.module.css'
 
 enum CloudAlbumItemType {
 	ALL = 0,
@@ -66,14 +66,17 @@ const CloudAlbum = () => {
 				>
 					<Image.PreviewGroup items={data.map((item) => item.src)}>
 						{data.map((item) => (
-							<div key={item.id}>
-								<Image
-									className='break-inside-avoid'
-									src={item.src}
-									width='100%'
-								/>
+							<motion.div
+								key={item.id}
+								initial={{ opacity: 0, scale: 0.8 }}
+								whileInView={{ opacity: 1, scale: 1 }}
+								viewport={{ once: true }}
+								transition={{ duration: 0.5 }}
+								className='break-inside-avoid'
+							>
+								<Image src={item.src} width='100%' />
 								<p>{item.name}</p>
-							</div>
+							</motion.div>
 						))}
 					</Image.PreviewGroup>
 				</InfiniteScroll>
@@ -180,6 +183,7 @@ const CloudAlbum = () => {
 	return (
 		<div className='custom-container'>
 			<h2>这是云相册页面,这个位置可以放一个图片/视频</h2>
+
 			<div className='text-center my-4'>
 				<Input.Search
 					className='max-w-7xl'
@@ -190,36 +194,50 @@ const CloudAlbum = () => {
 			</div>
 			<UploadCloudAlbum />
 
-			<section className={CloudAlbumStyle.albumTitle}>
-				<p
-					className={
+			<motion.section
+				className='text-3xl font-extrabold text-sub-title flex mb-4 gap-4 h-16 items-end'
+				initial={{ opacity: 0, y: -10 }}
+				animate={{ opacity: 1, y: 0 }}
+				transition={{ duration: 0.3 }}
+			>
+				<motion.p
+					className={`cursor-pointer ${
 						defaultActive === CloudAlbumItemType.ALL
-							? CloudAlbumStyle.albumTitleActive
+							? 'text-blue-500 border-b-2 border-blue-500'
 							: ''
-					}
+					}`}
 					onClick={() => setDefaultActive(CloudAlbumItemType.ALL)}
 					onKeyUp={() => setDefaultActive(CloudAlbumItemType.ALL)}
+					whileHover={{ scale: 1.1 }}
 				>
 					所有照片
-				</p>
-				<p
-					className={
+				</motion.p>
+				<motion.p
+					className={`cursor-pointer ${
 						defaultActive === CloudAlbumItemType.ALBUM
-							? CloudAlbumStyle.albumTitleActive
+							? 'text-blue-500 border-b-2 border-blue-500'
 							: ''
-					}
+					}`}
 					onClick={() => setDefaultActive(CloudAlbumItemType.ALBUM)}
 					onKeyUp={() => setDefaultActive(CloudAlbumItemType.ALBUM)}
+					whileHover={{ scale: 1.1 }}
 				>
 					相册
-				</p>
-			</section>
+				</motion.p>
+			</motion.section>
 
-			{defaultActive === CloudAlbumItemType.ALL ? (
-				<AllCloudImage />
-			) : (
-				<AlbumPage />
-			)}
+			<motion.div
+				initial={{ opacity: 0, x: -50 }}
+				animate={{ opacity: 1, x: 0 }}
+				exit={{ opacity: 0, x: 50 }}
+				transition={{ duration: 0.3 }}
+			>
+				{defaultActive === CloudAlbumItemType.ALL ? (
+					<AllCloudImage />
+				) : (
+					<AlbumPage />
+				)}
+			</motion.div>
 		</div>
 	)
 }

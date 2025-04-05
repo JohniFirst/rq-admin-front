@@ -8,6 +8,7 @@ export default {
 			colors: {
 				theme: '#ff5500',
 				bg: '#rgba(255, 255, 255, 0.8)',
+				'sub-title': "#bfbfbf"
 			},
 		},
 	},
