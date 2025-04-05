@@ -1,5 +1,6 @@
 import useCustomNavigate from '@/hooks/useCustomNavigate'
 import { useAppDispatch, useAppSelector } from '@/store/hooks'
+import { selectCurrentTheme } from '@/store/slice/system-info'
 import { pushNavItemAction } from '@/store/slice/system-info.ts'
 import { HomeOutlined } from '@ant-design/icons'
 import { Menu } from 'antd'
@@ -60,6 +61,7 @@ function CommonMenu({ showHeaderOperate = true }: CommonMenuProps) {
 	const navigate = useCustomNavigate()
 	const dispatch = useAppDispatch()
 	const menus = menuItenWithIcon(useAppSelector((state) => state.menu))
+	const currentTheme = useAppSelector(selectCurrentTheme)
 	const location = useLocation()
 	const [selectedKey, setSelectedKey] = useState([''])
 	const [openKeys, setOpenKeys] = useState<string[]>([])
@@ -143,11 +145,7 @@ function CommonMenu({ showHeaderOperate = true }: CommonMenuProps) {
 					onOpenChange={(keys) => setOpenKeys(keys)}
 					mode='inline'
 					items={menus}
-					theme={
-						document.documentElement.classList.contains('dark')
-							? 'dark'
-							: 'light'
-					}
+					theme={currentTheme.isDark ? 'dark' : 'light'}
 				/>
 			</motion.aside>
 

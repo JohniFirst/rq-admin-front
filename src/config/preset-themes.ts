@@ -17,23 +17,6 @@ export const presetThemes: ThemeConfig[] = [
 		},
 	},
 	{
-		id: 'default-dark',
-		name: '默认深色',
-		isDark: true,
-		colors: {
-			primary: '#6366F1',
-			secondary: '#9CA3AF',
-			success: '#34D399',
-			warning: '#FBBF24',
-			danger: '#F87171',
-			info: '#60A5FA',
-			background: '#111827',
-			surface: '#1F2937',
-			text: '#F9FAFB',
-			border: '#374151',
-		},
-	},
-	{
 		id: 'green-light',
 		name: '清新绿',
 		isDark: false,

@@ -143,7 +143,7 @@ export const selectCurrentTheme = (state: RootState): ThemeConfig => {
 	return (
 		customThemes.find((t) => t.id === theme) ||
 		presetThemes.find((t) => t.id === theme) ||
-		presetThemes[0]
+		presetThemes.find((t) => t.id === 'default-light')!
 	)
 }
 
