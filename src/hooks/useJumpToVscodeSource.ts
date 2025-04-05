@@ -55,7 +55,7 @@ export function useJumpToVscodeSource() {
 			const { fileName, lineNumber = 1, columnNumber = 1 } = source
 
 			const div = document.createElement('div')
-			div.classList.add('jump-to-vscode-source-custom-container')
+			div.classList.add('jump-to-vscode-source-container')
 			const linkA = document.createElement('a')
 			linkA.href = `vscode://file/${fileName}:${lineNumber}:${columnNumber}`
 			linkA.textContent = '跳转VSCode源码'

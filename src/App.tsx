@@ -17,8 +17,7 @@ function App() {
 
 	const AppRouter = createBrowserRouter(defaultRoutes)
 
-	console.log('AppRouter', AppRouter.routes)
-	if (import.meta.env.MODE === 'development') {
+	if (['test', 'development', 'mock'].includes(import.meta.env.MODE)) {
 		useJumpToVscodeSource()
 	}
 
