@@ -1,0 +1,295 @@
+.videoPlayer {
+	position: relative;
+	width: 100%;
+	background-color: #000;
+	aspect-ratio: 16/9;
+}
+
+.video {
+	width: 100%;
+	height: 100%;
+	object-fit: contain;
+}
+
+.controls {
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	background: linear-gradient(transparent, rgba(0, 0, 0, 0.7));
+	padding: 16px;
+	opacity: 0;
+	transition: opacity 0.3s ease;
+}
+
+.controls.visible {
+	opacity: 1;
+}
+
+.progressContainer {
+	width: 100%;
+	margin-bottom: 8px;
+}
+
+.timeProgress {
+	display: flex;
+	align-items: center;
+	margin-bottom: 4px;
+}
+
+.timeDisplay {
+	color: #fff;
+	font-size: 12px;
+}
+
+.sliderContainer {
+	position: relative;
+	height: 36px;
+	padding: 12px 0;
+	cursor: pointer;
+}
+
+.slider {
+	position: relative;
+	height: 4px;
+	background: rgba(255, 255, 255, 0.3);
+	border-radius: 2px;
+}
+
+.slider::-webkit-slider-thumb {
+	-webkit-appearance: none;
+	width: 12px;
+	height: 12px;
+	background: #1890ff;
+	border-radius: 50%;
+	cursor: pointer;
+}
+
+.controlBar {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.leftControls,
+.rightControls {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+}
+
+.controlButton {
+	background: none;
+	border: none;
+	color: #fff;
+	font-size: 20px;
+	padding: 8px;
+	cursor: pointer;
+	transition: opacity 0.3s ease;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.controlButton:hover {
+	opacity: 0.7;
+}
+
+.controlButton.active {
+	color: #1890ff;
+}
+
+/* Volume Control */
+.volumeControlContainer,
+.playbackRateContainer,
+.qualityControlContainer,
+.danmakuControlContainer {
+	position: relative;
+	display: inline-block;
+}
+
+.volumeSlider,
+.playbackRateMenu,
+.qualityMenu,
+.danmakuInput {
+	position: absolute;
+	bottom: 100%;
+	left: 50%;
+	transform: translateX(-50%);
+	background: rgba(28, 28, 28, 0.9);
+	padding: 8px;
+	border-radius: 4px;
+	margin-bottom: 8px;
+	opacity: 0;
+	visibility: hidden;
+	pointer-events: none;
+	transition: opacity 0.2s ease, visibility 0.2s ease;
+}
+
+.volumeControlContainer:hover .volumeSlider,
+.playbackRateContainer:hover .playbackRateMenu,
+.qualityControlContainer:hover .qualityMenu,
+.danmakuControlContainer:hover .danmakuInput {
+	opacity: 1;
+	visibility: visible;
+	pointer-events: auto;
+}
+
+.volumeSlider {
+	width: 24px;
+	height: 100px;
+}
+
+.volumeSlider input[type="range"] {
+	-webkit-appearance: none;
+	width: 100%;
+	height: 100%;
+	background: rgba(255, 255, 255, 0.3);
+	outline: none;
+	writing-mode: bt-lr;
+	-webkit-appearance: slider-vertical;
+}
+
+.volumeSlider input[type="range"]::-webkit-slider-thumb {
+	-webkit-appearance: none;
+	width: 12px;
+	height: 12px;
+	background: #fff;
+	border-radius: 50%;
+	cursor: pointer;
+}
+
+.playbackRateMenu,
+.qualityMenu {
+	min-width: 80px;
+}
+
+.playbackRateOption,
+.qualityOption {
+	display: block;
+	width: 100%;
+	padding: 8px;
+	text-align: center;
+	background: none;
+	border: none;
+	color: #fff;
+	cursor: pointer;
+}
+
+.playbackRateOption:hover,
+.qualityOption:hover {
+	background: rgba(255, 255, 255, 0.1);
+}
+
+.playbackRateOption.active,
+.qualityOption.active {
+	color: #1890ff;
+}
+
+.danmakuInput {
+	width: 200px;
+	display: flex;
+	gap: 8px;
+}
+
+.danmakuInput input {
+	background: rgba(255, 255, 255, 0.1);
+	border: 1px solid rgba(255, 255, 255, 0.2);
+	border-radius: 4px;
+	color: #fff;
+	padding: 4px 8px;
+	outline: none;
+}
+
+.danmakuInput input:focus {
+	border-color: #1890ff;
+}
+
+/* Preview Canvas */
+.previewCanvas {
+	position: absolute;
+	bottom: 100%;
+	transform: translateX(-50%);
+	background: #000;
+	border-radius: 4px;
+	opacity: 0;
+	pointer-events: none;
+	transition: opacity 0.2s ease;
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+	width: 160px;
+}
+
+.previewCanvas.visible {
+	opacity: 1;
+}
+
+/* Center Play Button */
+.centerPlayButton {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+}
+
+.playButton {
+	background: rgba(0, 0, 0, 0.5);
+	border: none;
+	border-radius: 50%;
+	width: 60px;
+	height: 60px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	color: #fff;
+	font-size: 24px;
+	cursor: pointer;
+	transition: all 0.3s ease;
+}
+
+.playButton:hover {
+	background: rgba(0, 0, 0, 0.7);
+	transform: scale(1.1);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+	.controlButton {
+		font-size: 16px;
+		padding: 6px;
+	}
+
+	.playButton {
+		width: 50px;
+		height: 50px;
+		font-size: 20px;
+	}
+
+	.timeDisplay {
+		font-size: 10px;
+	}
+
+	.previewCanvas {
+		width: 120px;
+	}
+}
+
+@media (max-width: 480px) {
+	.controlButton {
+		font-size: 14px;
+		padding: 4px;
+	}
+
+	.playButton {
+		width: 40px;
+		height: 40px;
+		font-size: 16px;
+	}
+
+	.timeDisplay {
+		font-size: 10px;
+	}
+
+	.previewCanvas {
+		width: 100px;
+	}
+}
