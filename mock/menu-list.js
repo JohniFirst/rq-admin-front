@@ -53,7 +53,7 @@ export default [
   {
     "menuOrder": 3,
     "title": "Event Pro",
-    "id": 15,
+    "id": 12,
     "url": "/event-pro",
     "icon": "test",
     "children": [
@@ -83,78 +83,44 @@ export default [
       {
         "menuOrder": 3,
         "title": "Picture Stitching",
-        "id": 11,
+        "id": 10,
         "url": "/event-pro/picture-stitching",
-        "icon": "test",
-        "children": [
-          {
-            "menuOrder": 1,
-            "title": "Css",
-            "id": 10,
-            "url": "/event-pro/picture-stitching/css",
-            "icon": "test"
-          }
-        ]
+        "icon": "test"
       },
       {
         "menuOrder": 4,
         "title": "Video Player",
-        "id": 14,
+        "id": 11,
         "url": "/event-pro/video-player",
-        "icon": "test",
-        "children": [
-          {
-            "menuOrder": 1,
-            "title": "Components",
-            "id": 12,
-            "url": "/event-pro/video-player/components",
-            "icon": "test"
-          },
-          {
-            "menuOrder": 2,
-            "title": "Css",
-            "id": 13,
-            "url": "/event-pro/video-player/css",
-            "icon": "test"
-          }
-        ]
+        "icon": "test"
       }
     ]
   },
   {
     "menuOrder": 4,
     "title": "System",
-    "id": 20,
+    "id": 16,
     "url": "/system",
     "icon": "test",
     "children": [
       {
         "menuOrder": 1,
         "title": "Menu",
-        "id": 17,
+        "id": 13,
         "url": "/system/menu",
-        "icon": "test",
-        "children": [
-          {
-            "menuOrder": 1,
-            "title": "Components",
-            "id": 16,
-            "url": "/system/menu/components",
-            "icon": "test"
-          }
-        ]
+        "icon": "test"
       },
       {
         "menuOrder": 2,
         "title": "Role",
-        "id": 18,
+        "id": 14,
         "url": "/system/role",
         "icon": "test"
       },
       {
         "menuOrder": 3,
         "title": "User",
-        "id": 19,
+        "id": 15,
         "url": "/system/user",
         "icon": "test"
       }

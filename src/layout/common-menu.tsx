@@ -115,13 +115,13 @@ function CommonMenu({ showHeaderOperate = true }: CommonMenuProps) {
 
 	return (
 		<motion.div
-			className='grid grid-cols-[256px_1fr] w-full h-screen bg-gray-50 dark:bg-gray-900'
+			className='grid grid-cols-[auto_1fr] w-full h-screen bg-gray-50 dark:bg-gray-900 overflow-x-hidden'
 			initial='hidden'
 			animate='show'
 			variants={containerVariants}
 		>
 			<motion.aside
-				className='max-h-screen bg-white dark:bg-gray-800 shadow-lg transition-all duration-300'
+				className='w-64 min-w-64 max-h-screen bg-white dark:bg-gray-800 shadow-lg transition-all duration-300'
 				variants={itemVariants}
 			>
 				<motion.div
@@ -150,7 +150,7 @@ function CommonMenu({ showHeaderOperate = true }: CommonMenuProps) {
 			</motion.aside>
 
 			<motion.section
-				className='w-full flex flex-col h-screen col-auto'
+				className='w-full flex flex-col h-screen col-auto overflow-x-hidden'
 				variants={itemVariants}
 			>
 				<motion.header
@@ -172,7 +172,7 @@ function CommonMenu({ showHeaderOperate = true }: CommonMenuProps) {
 				<NavigationBar />
 
 				<motion.main
-					className='bg-gray-50 dark:bg-gray-900 grow p-6 overflow-y-auto w-full'
+					className='bg-gray-50 dark:bg-gray-900 grow p-6 overflow-y-auto overflow-x-hidden w-full'
 					variants={itemVariants}
 					initial={{ opacity: 0, y: 20 }}
 					animate={{ opacity: 1, y: 0 }}

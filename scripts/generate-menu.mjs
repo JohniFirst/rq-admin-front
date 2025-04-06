@@ -42,7 +42,13 @@ function scanDirectory(dir, basePath = "") {
 			fullPath
 		);
 
-		if (stat.isDirectory() && !file.startsWith(".") && !file.startsWith("_")) {
+		if (
+			stat.isDirectory() &&
+			!file.startsWith(".") &&
+			!file.startsWith("_") &&
+			file !== "components" &&
+			file !== "css"
+		) {
 			const url = `${basePath}/${file}`;
 			const children = scanDirectory(fullPath, url);
 
