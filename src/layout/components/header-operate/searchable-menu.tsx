@@ -8,15 +8,17 @@ import {
 } from '@ant-design/icons'
 import { Input, Modal } from 'antd'
 import { AnimatePresence, motion } from 'framer-motion'
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import type { FC } from 'react'
 import system from './css/system.module.css'
 
 const SearchableMenu: FC = () => {
 	const [isModalOpen, setIsModalOpen] = useState(false)
 	const [searchValue, setSearchValue] = useState('')
+	const [selectedIndex, setSelectedIndex] = useState(0)
 	const menuItems = useAppSelector((state) => state.menu)
 	const navigate = useCustomNavigate()
+	const searchResultsRef = useRef<HTMLDivElement>(null)
 
 	useEffect(() => {
 		const handleKeyPress = (event: KeyboardEvent) => {
@@ -29,18 +31,64 @@ const SearchableMenu: FC = () => {
 		return () => document.removeEventListener('keydown', handleKeyPress)
 	}, [])
 
+	useEffect(() => {
+		const handleKeyDown = (event: KeyboardEvent) => {
+			if (!isModalOpen) return
+
+			const filterResult = findMatchingItems(menuItems, searchValue)
+			const flattenedItems = flattenMenuItems(filterResult)
+
+			switch (event.key) {
+				case 'ArrowDown':
+					event.preventDefault()
+					setSelectedIndex((prev) =>
+						prev < flattenedItems.length - 1 ? prev + 1 : prev,
+					)
+					break
+				case 'ArrowUp':
+					event.preventDefault()
+					setSelectedIndex((prev) => (prev > 0 ? prev - 1 : prev))
+					break
+				case 'Enter':
+					event.preventDefault()
+					if (flattenedItems[selectedIndex]) {
+						filterNav(flattenedItems[selectedIndex].key)
+					}
+					break
+				case 'Escape':
+					event.preventDefault()
+					handleCancel()
+					break
+			}
+		}
+
+		document.addEventListener('keydown', handleKeyDown)
+		return () => document.removeEventListener('keydown', handleKeyDown)
+	}, [isModalOpen, searchValue, selectedIndex])
+
+	useEffect(() => {
+		if (searchResultsRef.current) {
+			const selectedElement = searchResultsRef.current.querySelector(
+				`[data-index="${selectedIndex}"]`,
+			)
+			selectedElement?.scrollIntoView({ block: 'nearest', behavior: 'smooth' })
+		}
+	}, [selectedIndex])
+
 	const showModal = () => {
 		setIsModalOpen(true)
+		setSelectedIndex(0)
 	}
 
 	const handleCancel = () => {
 		setIsModalOpen(false)
 		setSearchValue('')
+		setSelectedIndex(0)
 	}
 
 	const handleSearch = (value: string) => {
 		setSearchValue(value)
-		// 实现搜索逻辑
+		setSelectedIndex(0)
 	}
 
 	const findMatchingItems = (arr: MenuItem[], keyword: string): MenuItem[] => {
@@ -61,8 +109,14 @@ const SearchableMenu: FC = () => {
 						})
 					}
 				} else {
-					if (item.label.includes(keyword)) {
-						tempResult.push(item)
+					const searchText = (item.title || item.label || '')
+						.toString()
+						.toLowerCase()
+					if (searchText.includes(keyword.toLowerCase())) {
+						tempResult.push({
+							...item,
+							key: item.url || item.key,
+						})
 					}
 				}
 			}
@@ -73,15 +127,37 @@ const SearchableMenu: FC = () => {
 		return checkLabel(arr)
 	}
 
-	const filterNav = (key: string) => {
-		setIsModalOpen(false)
-		navigate(key)
+	const flattenMenuItems = (items: MenuItem[]): MenuItem[] => {
+		const result: MenuItem[] = []
+		const flatten = (items: MenuItem[]) => {
+			for (const item of items) {
+				if (item.children) {
+					flatten(item.children)
+				} else {
+					result.push(item)
+				}
+			}
+		}
+		flatten(items)
+		return result
 	}
 
-	const FilterResultItem: FC<{ item: MenuItem; indent?: number }> = ({
-		item,
-		indent = 0,
-	}) => {
+	const filterNav = (key: string | { key: string; url?: string }) => {
+		setIsModalOpen(false)
+		let targetKey = typeof key === 'string' ? key : key.key
+		if (typeof key !== 'string' && key.url) {
+			targetKey = key.url
+		}
+		if (targetKey && typeof targetKey === 'string') {
+			navigate(targetKey)
+		}
+	}
+
+	const FilterResultItem: FC<{
+		item: MenuItem
+		indent?: number
+		index: number
+	}> = ({ item, indent = 0, index }) => {
 		if (item.children) {
 			return (
 				<div
@@ -89,32 +165,41 @@ const SearchableMenu: FC = () => {
 					className={system.filterMenuWp}
 					style={{ marginLeft: `${indent * 16}px` }}
 				>
-					<p>{item.label}</p>
-					{item.children.map((child: MenuItem) => (
+					<p>{item.title || item.label}</p>
+					{item.children.map((child: MenuItem, childIndex: number) => (
 						<FilterResultItem
 							key={child.key}
 							item={child}
 							indent={indent + 1}
+							index={index + childIndex + 1}
 						/>
 					))}
 				</div>
 			)
 		}
+		const displayText = (item.title || item.label || '').toString()
 		return (
 			<p
 				key={item.key}
-				className={system.filterMenuItem}
+				className={`${system.filterMenuItem} ${
+					index === selectedIndex ? 'bg-indigo-500 text-white' : ''
+				}`}
 				style={{ marginLeft: `${indent * 16}px` }}
-				onClick={() => filterNav(item.key)}
-				onKeyUp={() => filterNav(item.key)}
+				onClick={() => filterNav(item)}
+				onKeyUp={() => filterNav(item)}
+				data-index={index}
 			>
-				{item.label.split('').map((labelItem: string) => {
+				{displayText.split('').map((char: string, i: number) => {
+					const isCharMatch = searchValue
+						.toLowerCase()
+						.includes(char.toLowerCase())
 					return (
 						<span
-							key={labelItem}
-							style={{ color: searchValue.includes(labelItem) ? 'red' : '' }}
+							key={i}
+							style={{ color: isCharMatch ? 'inherit' : '' }}
+							className={isCharMatch ? 'font-bold' : ''}
 						>
-							{labelItem}
+							{char}
 						</span>
 					)
 				})}
@@ -125,17 +210,17 @@ const SearchableMenu: FC = () => {
 	const content = useMemo(() => {
 		const filterResult = findMatchingItems(menuItems, searchValue)
 		return (
-			<div className='mt-2 min-h-2'>
+			<div className='mt-2 min-h-2' ref={searchResultsRef}>
 				{filterResult.length ? (
-					filterResult.map((item) => {
-						return <FilterResultItem key={item.key} item={item} />
+					filterResult.map((item, index) => {
+						return <FilterResultItem key={item.key} item={item} index={index} />
 					})
 				) : (
 					<p className='my-4 ml-7'>无匹配项</p>
 				)}
 			</div>
 		)
-	}, [searchValue])
+	}, [searchValue, selectedIndex])
 
 	return (
 		<>
@@ -186,6 +271,16 @@ const SearchableMenu: FC = () => {
 				onCancel={handleCancel}
 				className='searchable-menu-modal'
 				width={600}
+				afterOpenChange={(visible) => {
+					if (visible) {
+						setTimeout(() => {
+							const input = document.querySelector(
+								'.searchable-menu-modal input',
+							) as HTMLInputElement
+							input?.focus()
+						}, 100)
+					}
+				}}
 			>
 				<div className='space-y-6'>
 					<div className='relative'>
