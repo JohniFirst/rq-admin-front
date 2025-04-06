@@ -84,21 +84,40 @@ const UserDropdown: React.FC = () => {
 				menu={{
 					items,
 					className:
-						'mt-2 p-1 bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-100 dark:border-gray-700',
+						'mt-2 p-2 bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-100 dark:border-gray-700 min-w-[200px]',
 				}}
 				trigger={['click']}
 				placement='bottomRight'
 			>
-				<div className='flex items-center gap-2 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700 p-2 rounded-lg transition-all duration-300'>
+				<div className='flex items-center gap-3 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700 p-2 rounded-lg transition-all duration-300 group'>
 					<Avatar
 						size='default'
 						src={userAvatar}
 						alt={userName}
-						className='border-2 border-transparent hover:border-indigo-500 transition-all duration-300'
+						className='border-2 border-transparent group-hover:border-indigo-500 transition-all duration-300'
 					/>
-					<span className='text-sm font-medium text-gray-700 dark:text-gray-200'>
-						{userName}
-					</span>
+					<div className='flex flex-col'>
+						<span className='text-sm font-medium text-gray-700 dark:text-gray-200'>
+							{userName}
+						</span>
+						<span className='text-xs text-gray-400 dark:text-gray-500'>
+							点击查看菜单
+						</span>
+					</div>
+					<svg
+						className='w-4 h-4 text-gray-400 dark:text-gray-500 transform group-hover:rotate-180 transition-transform duration-300'
+						fill='none'
+						stroke='currentColor'
+						viewBox='0 0 24 24'
+						xmlns='http://www.w3.org/2000/svg'
+					>
+						<path
+							strokeLinecap='round'
+							strokeLinejoin='round'
+							strokeWidth={2}
+							d='M19 9l-7 7-7-7'
+						/>
+					</svg>
 				</div>
 			</Dropdown>
 
