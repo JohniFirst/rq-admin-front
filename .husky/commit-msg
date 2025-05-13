@@ -1,5 +1,5 @@
-echo "\n"
+echo ""
 echo "husky commit-msg-lint start"
 npx --no -- commitlint --edit ""
 echo "husky commit-msg-lint success"
-echo "\n"
+echo ""
