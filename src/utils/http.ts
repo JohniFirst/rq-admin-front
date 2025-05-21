@@ -7,7 +7,7 @@ import axios, {
 import { generateCSRFToken } from './security'
 
 // 创建 axios 实例
-const http: AxiosInstance = axios.create({
+export const http: AxiosInstance = axios.create({
 	baseURL: import.meta.env.VITE_API_BASE_URL,
 	timeout: 10000,
 	headers: {
