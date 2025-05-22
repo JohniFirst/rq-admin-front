@@ -33,6 +33,12 @@ export const defaultRoutes: RouteObject[] = [
 		],
 	},
 	{
+		path: '/calendar',
+		element: lazyElement(
+			lazy(() => import('@/pages-default/calendar/calendar.tsx')),
+		),
+	},
+	{
 		path: '/',
 		element: lazyElement(lazy(() => import('@/layout/Layout.tsx'))),
 		children: generateRoutes(),
