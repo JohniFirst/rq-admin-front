@@ -1,4 +1,8 @@
-import type { DateSelectArg, EventInput } from '@fullcalendar/core'
+import type {
+	DateSelectArg,
+	EventClickArg,
+	EventInput,
+} from '@fullcalendar/core'
 import zhCnLocale from '@fullcalendar/core/locales/zh-cn'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import interactionPlugin from '@fullcalendar/interaction'
@@ -28,12 +32,14 @@ const Calendar: React.FC = () => {
 		setIsModalVisible(true)
 	}
 
-	const handleEventClick = (info: any) => {
-		setSelectedEvent(info.event)
+	const handleEventClick = (info: EventClickArg) => {
+		setSelectedEvent(
+			Object.assign(info.event, info.event.extendedProps) as EventInput,
+		)
 		setIsDetailModalVisible(true)
 	}
 
-	const handleEventDrop = (info: any) => {
+	const handleEventDrop = (info: EventClickArg) => {
 		const updatedEvents = events.map((event) => {
 			if (event.id === info.event.id) {
 				return {
@@ -43,7 +49,7 @@ const Calendar: React.FC = () => {
 				}
 			}
 			return event
-		})
+		}) as EventInput[]
 		setEvents(updatedEvents)
 		message.success('事件已更新')
 	}

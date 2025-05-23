@@ -44,6 +44,7 @@ export default defineConfig((configEnv: UserConfig): UserConfig => {
 			},
 		},
 		server: {
+			open: true,
 			proxy: {
 				'/api': {
 					target: 'http://localhost:8080',
