@@ -9,26 +9,82 @@ import interactionPlugin from '@fullcalendar/interaction'
 import listPlugin from '@fullcalendar/list'
 import FullCalendar from '@fullcalendar/react'
 import timeGridPlugin from '@fullcalendar/timegrid'
-import { Card, DatePicker, Form, Input, Modal, Tag, message } from 'antd'
+import {
+	Button,
+	Card,
+	DatePicker,
+	Form,
+	Input,
+	Modal,
+	Radio,
+	Space,
+	Tag,
+	message,
+} from 'antd'
 import dayjs from 'dayjs'
 import type React from 'react'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import './calendar.css'
+
+type RepeatType = 'none' | 'daily' | 'weekly' | 'monthly' | 'yearly'
+
+interface EventFormData {
+	title: string
+	startDate: dayjs.Dayjs
+	endDate: dayjs.Dayjs
+	description?: string
+	color: string
+	repeat: RepeatType
+	reminder: boolean
+}
 
 const Calendar: React.FC = () => {
 	const [events, setEvents] = useState<EventInput[]>([])
 	const [isModalVisible, setIsModalVisible] = useState(false)
 	const [isDetailModalVisible, setIsDetailModalVisible] = useState(false)
 	const [selectedEvent, setSelectedEvent] = useState<EventInput | null>(null)
-	const [form] = Form.useForm()
+	const [form] = Form.useForm<EventFormData>()
 	const [_selectedDate, setSelectedDate] = useState<DateSelectArg | null>(null)
+	const [isEditMode, setIsEditMode] = useState(false)
+
+	// 检查今天的提醒
+	useEffect(() => {
+		const today = dayjs().startOf('day')
+		const todayEvents = events.filter((event) => {
+			const eventDate = dayjs(event.start as Date)
+			return eventDate.isSame(today, 'day') && event.extendedProps?.reminder
+		})
+
+		if (todayEvents.length > 0) {
+			Modal.info({
+				title: '今日提醒',
+				content: (
+					<div>
+						<p>今天有以下日程：</p>
+						<ul>
+							{todayEvents.map((event) => (
+								<li key={event.id}>
+									{event.title} - {dayjs(event.start as Date).format('HH:mm')}
+								</li>
+							))}
+						</ul>
+					</div>
+				),
+				okText: '知道了',
+			})
+		}
+	}, [events])
 
 	const handleDateSelect = (selectInfo: DateSelectArg) => {
 		setSelectedDate(selectInfo)
 		form.setFieldsValue({
 			startDate: dayjs(selectInfo.start),
 			endDate: dayjs(selectInfo.end),
+			repeat: 'none',
+			reminder: true,
+			color: '#1890ff',
 		})
+		setIsEditMode(false)
 		setIsModalVisible(true)
 	}
 
@@ -54,22 +110,85 @@ const Calendar: React.FC = () => {
 		message.success('事件已更新')
 	}
 
+	const handleEventResize = (info: EventClickArg) => {
+		const updatedEvents = events.map((event) => {
+			if (event.id === info.event.id) {
+				return {
+					...event,
+					start: info.event.start,
+					end: info.event.end,
+				}
+			}
+			return event
+		}) as EventInput[]
+		setEvents(updatedEvents)
+		message.success('事件时间已调整')
+	}
+
 	const handleSubmit = () => {
 		form.validateFields().then((values) => {
 			const newEvent: EventInput = {
-				id: Date.now().toString(),
+				id: isEditMode ? selectedEvent?.id : Date.now().toString(),
 				title: values.title,
 				start: values.startDate.toDate(),
 				end: values.endDate.toDate(),
 				description: values.description,
-				backgroundColor: values.color || '#1890ff',
-				borderColor: values.color || '#1890ff',
+				backgroundColor: values.color,
+				borderColor: values.color,
+				extendedProps: {
+					repeat: values.repeat,
+					reminder: values.reminder,
+				},
 			}
-			setEvents([...events, newEvent])
+
+			if (isEditMode) {
+				const updatedEvents = events.map((event) =>
+					event.id === newEvent.id ? newEvent : event,
+				)
+				setEvents(updatedEvents)
+				message.success('事件已更新')
+			} else {
+				setEvents([...events, newEvent])
+				message.success('事件已添加')
+			}
+
 			setIsModalVisible(false)
 			form.resetFields()
-			message.success('事件已添加')
 		})
+	}
+
+	const handleEdit = () => {
+		if (selectedEvent) {
+			form.setFieldsValue({
+				title: selectedEvent.title,
+				startDate: dayjs(selectedEvent.start as Date),
+				endDate: dayjs(selectedEvent.end as Date),
+				description: selectedEvent.description,
+				color: selectedEvent.backgroundColor as string,
+				repeat: selectedEvent.extendedProps?.repeat || 'none',
+				reminder: selectedEvent.extendedProps?.reminder || false,
+			})
+			setIsEditMode(true)
+			setIsDetailModalVisible(false)
+			setIsModalVisible(true)
+		}
+	}
+
+	const handleDelete = () => {
+		if (selectedEvent) {
+			Modal.confirm({
+				title: '确认删除',
+				content: '确定要删除这个事件吗？',
+				onOk: () => {
+					const updatedEvents = events.filter(
+						(event) => event.id !== selectedEvent.id,
+					)
+					setEvents(updatedEvents)
+					setIsDetailModalVisible(false)
+					message.success('事件已删除')
+				},
+			})
+		}
 	}
 
 	return (
@@ -92,6 +211,7 @@ const Calendar: React.FC = () => {
 				select={handleDateSelect}
 				eventClick={handleEventClick}
 				eventDrop={handleEventDrop}
+				eventResize={handleEventResize}
 				height='auto'
 				eventTimeFormat={{
 					hour: '2-digit',
@@ -99,16 +219,33 @@ const Calendar: React.FC = () => {
 					meridiem: false,
 					hour12: false,
 				}}
+				eventResizableFromStart={true}
+				eventMinHeight={20}
+				eventMinWidth={20}
+				allDaySlot={true}
+				slotMinTime='00:00:00'
+				slotMaxTime='24:00:00'
+				slotDuration='00:30:00'
+				slotLabelInterval='01:00'
+				expandRows={true}
+				stickyHeaderDates={true}
+				nowIndicator={true}
+				eventOverlap={false}
+				eventConstraint={{
+					startTime: '00:00',
+					endTime: '24:00',
+				}}
 			/>
 
 			<Modal
-				title='添加事件'
+				title={isEditMode ? '编辑事件' : '添加事件'}
 				open={isModalVisible}
 				onOk={handleSubmit}
 				onCancel={() => {
 					setIsModalVisible(false)
 					form.resetFields()
 				}}
+				width={600}
 			>
 				<Form form={form} layout='vertical'>
 					<Form.Item
@@ -131,6 +268,21 @@ const Calendar: React.FC = () => {
 						rules={[{ required: true, message: '请选择结束时间' }]}
 					>
 						<DatePicker showTime />
+					</Form.Item>
+					<Form.Item name='repeat' label='重复'>
+						<Radio.Group>
+							<Radio value='none'>不重复</Radio>
+							<Radio value='daily'>每天</Radio>
+							<Radio value='weekly'>每周</Radio>
+							<Radio value='monthly'>每月</Radio>
+							<Radio value='yearly'>每年</Radio>
+						</Radio.Group>
+					</Form.Item>
+					<Form.Item name='reminder' label='提醒' valuePropName='checked'>
+						<Radio.Group>
+							<Radio value={true}>开启</Radio>
+							<Radio value={false}>关闭</Radio>
+						</Radio.Group>
 					</Form.Item>
 					<Form.Item name='color' label='事件颜色'>
 						<Input type='color' defaultValue='#1890ff' />
@@ -164,11 +316,35 @@ const Calendar: React.FC = () => {
 								{selectedEvent.description}
 							</p>
 						)}
+						<p>
+							<strong>重复：</strong>
+							{selectedEvent.extendedProps?.repeat === 'none'
+								? '不重复'
+								: selectedEvent.extendedProps?.repeat === 'daily'
+									? '每天'
+									: selectedEvent.extendedProps?.repeat === 'weekly'
+										? '每周'
+										: selectedEvent.extendedProps?.repeat === 'monthly'
+											? '每月'
+											: '每年'}
+						</p>
+						<p>
+							<strong>提醒：</strong>
+							{selectedEvent.extendedProps?.reminder ? '开启' : '关闭'}
+						</p>
 						<div className='event-color'>
 							<strong>事件颜色：</strong>
 							<Tag color={selectedEvent.backgroundColor as string}>
 								{selectedEvent.backgroundColor}
 							</Tag>
+						</div>
+						<div className='event-actions'>
+							<Space>
+								<Button onClick={handleEdit}>编辑</Button>
+								<Button danger onClick={handleDelete}>
+									删除
+								</Button>
+							</Space>
 						</div>
 					</div>
 				)}
