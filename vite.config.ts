@@ -4,6 +4,7 @@ import autoprefixer from 'autoprefixer'
 import tailwindcss from 'tailwindcss'
 import { type UserConfig, defineConfig } from 'vite'
 
+// import { visualizer as bundleAnalyzer } from "rollup-plugin-visualizer";
 import bundleAnalyzer from 'rollup-plugin-bundle-analyzer'
 import checker from 'vite-plugin-checker'
 import viteCompression from 'vite-plugin-compression'

@@ -25,8 +25,9 @@ import dayjs from 'dayjs'
 import type React from 'react'
 import { useEffect, useState } from 'react'
 import './calendar.css'
+import { getEventsList } from '@/api/calendar'
 
-type RepeatType = 'none' | 'daily' | 'weekly' | 'monthly' | 'yearly'
+type RepeatType = keyof typeof eventRepeatOptions
 
 interface EventFormData {
 	title: string
@@ -38,11 +39,31 @@ interface EventFormData {
 	reminder: boolean
 }
 
+interface CustomEventInput extends EventInput {
+	daysOfWeek?: number[]
+	startTime?: string
+	endTime?: string
+}
+
+const eventRepeatOptions = {
+	none: '不重复',
+	daily: '每天',
+	weekly: '每周',
+}
+
 const Calendar: React.FC = () => {
-	const [events, setEvents] = useState<EventInput[]>([])
+	const [events, setEvents] = useState<CustomEventInput[]>([
+		{
+			id: '1',
+			title: '测试事件',
+			startTime: '10:30',
+			endTime: '15:30',
+			daysOfWeek: [1, 3, 5],
+		},
+	])
 	const [isModalVisible, setIsModalVisible] = useState(false)
 	const [isDetailModalVisible, setIsDetailModalVisible] = useState(false)
-	const [selectedEvent, setSelectedEvent] = useState<EventInput | null>(null)
+	const [selectedEvent, setSelectedEvent] = useState<CustomEventInput | null>()
 	const [form] = Form.useForm<EventFormData>()
 	const [_selectedDate, setSelectedDate] = useState<DateSelectArg | null>(null)
 	const [isEditMode, setIsEditMode] = useState(false)
@@ -75,6 +96,16 @@ const Calendar: React.FC = () => {
 		}
 	}, [events])
 
+	useEffect(() => {
+		getList()
+	}, [])
+
+	const getList = () => {
+		getEventsList().then((res) => {
+			console.log('events res', res)
+		})
+	}
+
 	const handleDateSelect = (selectInfo: DateSelectArg) => {
 		setSelectedDate(selectInfo)
 		form.setFieldsValue({
@@ -90,7 +121,7 @@ const Calendar: React.FC = () => {
 
 	const handleEventClick = (info: EventClickArg) => {
 		setSelectedEvent(
-			Object.assign(info.event, info.event.extendedProps) as EventInput,
+			Object.assign(info.event, info.event.extendedProps) as CustomEventInput,
 		)
 		setIsDetailModalVisible(true)
 	}
@@ -98,14 +129,15 @@ const Calendar: React.FC = () => {
 	const handleEventDrop = (info: EventClickArg) => {
 		const updatedEvents = events.map((event) => {
 			if (event.id === info.event.id) {
-				return {
+				const updatedEvent: CustomEventInput = {
 					...event,
-					start: info.event.start,
-					end: info.event.end,
+					start: info.event.start?.toISOString(),
+					end: info.event.end?.toISOString(),
 				}
+				return updatedEvent
 			}
 			return event
-		}) as EventInput[]
+		})
 		setEvents(updatedEvents)
 		message.success('事件已更新')
 	}
@@ -113,21 +145,22 @@ const Calendar: React.FC = () => {
 	const handleEventResize = (info: EventClickArg) => {
 		const updatedEvents = events.map((event) => {
 			if (event.id === info.event.id) {
-				return {
+				const updatedEvent: CustomEventInput = {
 					...event,
-					start: info.event.start,
-					end: info.event.end,
+					start: info.event.start?.toISOString(),
+					end: info.event.end?.toISOString(),
 				}
+				return updatedEvent
 			}
 			return event
-		}) as EventInput[]
+		})
 		setEvents(updatedEvents)
 		message.success('事件时间已调整')
 	}
 
 	const handleSubmit = () => {
 		form.validateFields().then((values) => {
-			const newEvent: EventInput = {
+			const newEvent: CustomEventInput = {
 				id: isEditMode ? selectedEvent?.id : Date.now().toString(),
 				title: values.title,
 				start: values.startDate.toDate(),
@@ -135,8 +168,10 @@ const Calendar: React.FC = () => {
 				description: values.description,
 				backgroundColor: values.color,
 				borderColor: values.color,
+				allDay:
+					values.startDate.isSame(values.startDate.startOf('day')) &&
+					values.endDate.isSame(values.endDate.startOf('day')),
 				extendedProps: {
-					repeat: values.repeat,
 					reminder: values.reminder,
 				},
 			}
@@ -223,9 +258,9 @@ const Calendar: React.FC = () => {
 				eventMinHeight={20}
 				eventMinWidth={20}
 				allDaySlot={true}
-				slotMinTime='00:00:00'
-				slotMaxTime='24:00:00'
-				slotDuration='00:30:00'
+				slotMinTime='00:00'
+				slotMaxTime='24:00'
+				slotDuration='00:30'
 				slotLabelInterval='01:00'
 				expandRows={true}
 				stickyHeaderDates={true}
@@ -235,6 +270,9 @@ const Calendar: React.FC = () => {
 					startTime: '00:00',
 					endTime: '24:00',
 				}}
+				eventDisplay='block'
+				eventStartEditable={true}
+				eventDurationEditable={true}
 			/>
 
 			<Modal
@@ -271,11 +309,11 @@ const Calendar: React.FC = () => {
 					</Form.Item>
 					<Form.Item name='repeat' label='重复'>
 						<Radio.Group>
-							<Radio value='none'>不重复</Radio>
-							<Radio value='daily'>每天</Radio>
-							<Radio value='weekly'>每周</Radio>
-							<Radio value='monthly'>每月</Radio>
-							<Radio value='yearly'>每年</Radio>
+							{Object.entries(eventRepeatOptions).map(([key, value]) => (
+								<Radio key={key} value={key}>
+									{value}
+								</Radio>
+							))}
 						</Radio.Group>
 					</Form.Item>
 					<Form.Item name='reminder' label='提醒' valuePropName='checked'>
@@ -297,7 +335,16 @@ const Calendar: React.FC = () => {
 				title='事件详情'
 				open={isDetailModalVisible}
 				onCancel={() => setIsDetailModalVisible(false)}
-				footer={null}
+				footer={
+					<div className='event-actions'>
+						<Space>
+							<Button onClick={handleEdit}>编辑</Button>
+							<Button danger onClick={handleDelete}>
+								删除
+							</Button>
+						</Space>
+					</div>
+				}
 			>
 				{selectedEvent && (
 					<div className='event-detail'>
@@ -318,15 +365,11 @@ const Calendar: React.FC = () => {
 						)}
 						<p>
 							<strong>重复：</strong>
-							{selectedEvent.extendedProps?.repeat === 'none'
-								? '不重复'
-								: selectedEvent.extendedProps?.repeat === 'daily'
-									? '每天'
-									: selectedEvent.extendedProps?.repeat === 'weekly'
-										? '每周'
-										: selectedEvent.extendedProps?.repeat === 'monthly'
-											? '每月'
-											: '每年'}
+							{
+								eventRepeatOptions[
+									(selectedEvent.extendedProps?.repeat as RepeatType) ?? 'none'
+								]
+							}
 						</p>
 						<p>
 							<strong>提醒：</strong>
@@ -337,14 +380,6 @@ const Calendar: React.FC = () => {
 							<Tag color={selectedEvent.backgroundColor as string}>
 								{selectedEvent.backgroundColor}
 							</Tag>
-						</div>
-						<div className='event-actions'>
-							<Space>
-								<Button onClick={handleEdit}>编辑</Button>
-								<Button danger onClick={handleDelete}>
-									删除
-								</Button>
-							</Space>
 						</div>
 					</div>
 				)}

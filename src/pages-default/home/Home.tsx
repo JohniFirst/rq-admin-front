@@ -1,6 +1,7 @@
 import useCustomNavigate from '@/hooks/useCustomNavigate'
 import { motion, useInView } from 'framer-motion'
 import { useRef } from 'react'
+import { NavLink } from 'react-router-dom'
 import home from './css/home.module.css'
 
 // 这种方式添加的是内联样式，没有代码提示，伪类、伪元素无法书写
@@ -97,6 +98,9 @@ function Home() {
 								tailwindcss
 							</a>
 							，熟悉之后使用更方便
+						</li>
+						<li>
+							实现了基于fullcalendar的<NavLink to='/calendar'>日历组件</NavLink>
 						</li>
 					</ol>
 				</AnimatedSection>
