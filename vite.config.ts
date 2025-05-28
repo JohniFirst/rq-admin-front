@@ -28,7 +28,7 @@ export default defineConfig((configEnv: UserConfig): UserConfig => {
 			mode === 'gzip'
 				? viteCompression({
 					// 压缩后删除原文件
-					deleteOriginFile: false,
+					deleteOriginFile: true,
 				})
 				: undefined,
 			mode === 'analyzer' ? bundleAnalyzer({}) : undefined,
