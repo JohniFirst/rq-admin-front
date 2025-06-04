@@ -8,7 +8,7 @@ import NotFound from '@/pages-default/NotFound/NotFound'
 import Calendar from '@/pages-default/calendar/calendar'
 import Home from '@/pages-default/home/Home'
 import LoginForm from '@/pages-default/login-about/login'
-import LoginAbout from '@/pages-default/login-about/login-about'
+import LoginAbout from '@/pages-default/login-about/login-about-wp'
 import RegisterForm from '@/pages-default/login-about/register.tsx'
 
 const lazyElement = (Element: React.LazyExoticComponent<() => JSX.Element>) => (

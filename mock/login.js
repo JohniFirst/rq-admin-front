@@ -2,7 +2,7 @@ import { responseFormat } from "./response-format"
 
 export default [
   {
-    url: '/api/login',
+    url: '/login',
     method: 'post',
     response: ({ query }) => {
       return responseFormat({

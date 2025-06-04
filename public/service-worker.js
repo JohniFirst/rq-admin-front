@@ -4,7 +4,6 @@ self.addEventListener('install', function (event) {
 		caches.open('my-cache-v1')
 			.then(function (cache) {
 				return cache.addAll([
-					'/',
 					'/manifest.json',
 					'/icons/app_icon-192x192.png',
 					'/icons/app_icon-512x512.png',

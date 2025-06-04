@@ -1,7 +1,8 @@
 import { motion } from 'framer-motion'
-import { Outlet } from 'react-router-dom'
+import { NavLink, Outlet } from 'react-router-dom'
 import styled from 'styled-components'
 import { Novatrix } from 'uvcanvas'
+import packageJson from '../../../package.json'
 
 const LoginContainer = styled.section`
   min-height: 100vh;
@@ -77,7 +78,8 @@ export default function LoginAbout() {
 				animate={{ x: 0, opacity: 1 }}
 				transition={{ duration: 0.6 }}
 			>
-				<h1 className='text-5xl font-bold mb-8 text-gray-800'>欢迎回来</h1>
+				<NavLink to='/'>{packageJson.name}</NavLink>
+				<h2 className='text-5xl font-bold mb-8 text-gray-800'>欢迎回来</h2>
 				<p className='text-xl text-gray-600 mb-4'>
 					登录您的账户，开始探索更多精彩内容
 				</p>
