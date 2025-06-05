@@ -91,10 +91,11 @@ const LoginForm = () => {
 	const dispatch = useAppDispatch()
 
 	const handleSubmit = async (values: LoginFormValues) => {
-		const res = await handleLogin(values)
-		console.log('Login Mock Result:', res)
+		await handleLogin(values)
 		sessionStorage.setItem(`${SessionStorageKeys.IS_LOGIN}`, `${IsLogin.YES}`)
 		const menu = await getMenuList()
+		console.log(menu)
+
 		dispatch(updateMenu(menu))
 		setIsLogin(true)
 	}

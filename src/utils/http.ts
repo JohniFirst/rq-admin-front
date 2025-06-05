@@ -1,3 +1,4 @@
+import { message } from 'antd'
 import axios, {
 	type AxiosInstance,
 	type InternalAxiosRequestConfig,
@@ -40,7 +41,13 @@ http.interceptors.request.use(
 // 响应拦截器
 http.interceptors.response.use(
 	(response: AxiosResponse) => {
-		return response.data
+		const { code } = response.data
+
+		if (code !== 200) {
+			message.error(response.data.message)
+			throw new Error(response.data.message)
+		}
+		return response.data.data
 	},
 	(error) => {
 		if (error.response) {

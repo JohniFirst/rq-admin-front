@@ -2,7 +2,7 @@ import { responseFormat } from "./response-format"
 
 export default [
   {
-    url: '/api/menu/list',
+    url: '/menu/list',
     method: 'get',
     response: ({ query }) => {
       return responseFormat([
@@ -92,6 +92,13 @@ export default [
         "title": "Video Player",
         "id": 11,
         "url": "/event-pro/video-player",
+        "icon": "test"
+      },
+      {
+        "menuOrder": 5,
+        "title": "日历组件",
+        "id": 14,
+        "url": "/event-pro/calendar",
         "icon": "test"
       }
     ]

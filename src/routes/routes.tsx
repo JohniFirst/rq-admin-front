@@ -5,7 +5,6 @@ import { generateRoutes } from './dynamic-routes'
 
 import Loading from '@/components/loading'
 import NotFound from '@/pages-default/NotFound/NotFound'
-import Calendar from '@/pages-default/calendar/calendar'
 import Home from '@/pages-default/home/Home'
 import LoginForm from '@/pages-default/login-about/login'
 import LoginAbout from '@/pages-default/login-about/login-about-wp'
@@ -32,10 +31,6 @@ export const defaultRoutes: RouteObject[] = [
 				),
 			},
 		],
-	},
-	{
-		path: '/calendar',
-		element: <Calendar />,
 	},
 	{
 		path: '/',
