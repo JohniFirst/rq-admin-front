@@ -100,6 +100,13 @@ export default [
         "id": 14,
         "url": "/event-pro/calendar",
         "icon": "test"
+      },
+      {
+        "menuOrder": 6,
+        "title": "Markdown 编辑器",
+        "id": 15,
+        "url": "/event-pro/markdown-edit",
+        "icon": "test"
       }
     ]
   },
