@@ -55,6 +55,7 @@
 		"react-redux": "^9.2.0",
 		"react-router-dom": "^6.30.1",
 		"styled-components": "^6.1.18",
+		"tippy.js": "^6.3.7",
 		"uvcanvas": "^0.3.0",
 		"xlsx": "^0.18.5"
 	},

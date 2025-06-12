@@ -2,6 +2,7 @@ import type {
 	DateSelectArg,
 	EventClickArg,
 	EventInput,
+	EventMountArg,
 } from '@fullcalendar/core'
 import zhCnLocale from '@fullcalendar/core/locales/zh-cn'
 import dayGridPlugin from '@fullcalendar/daygrid'
@@ -27,6 +28,10 @@ import type React from 'react'
 import { useEffect, useState } from 'react'
 import './calendar.css'
 import { getEventsList } from '@/api/calendar'
+import tippy from 'tippy.js'
+import 'tippy.js/dist/tippy.css' // optional for styling
+import 'tippy.js/animations/scale.css' // optional for animations
+import 'tippy.js/themes/light.css' // optional for themes
 
 type RepeatType = keyof typeof eventRepeatOptions
 
@@ -285,6 +290,34 @@ const Calendar: React.FC = () => {
 		}
 	}
 
+	function handleEventDidMount(mountArg: EventMountArg): void {
+		const { event, el, view } = mountArg
+		const title = event.title || '无标题'
+		let start = ''
+		if (event.allDay) {
+			const startDate = dayjs(event.start as Date).format('YYYY-MM-DD')
+			const endDate = dayjs(event.end as Date).format('YYYY-MM-DD')
+			start = `${startDate} 至 ${endDate}`
+		} else {
+			const startTime = dayjs(event.start as Date).format('HH:mm')
+			const endTime = dayjs(event.end as Date).format('HH:mm')
+			start = `${startTime} 至 ${endTime}`
+		}
+
+		tippy(el, {
+			content: `
+				<div>
+					<h4>${title}</h4>
+					<p>${start}</p>
+				</div>
+			`,
+			allowHTML: true,
+			theme: 'light',
+			animation: 'scale',
+			placement: view.type === 'dayGridMonth' ? 'auto' : 'left',
+		})
+	}
+
 	return (
 		<Card className='calendar-card'>
 			<FullCalendar
@@ -312,6 +345,7 @@ const Calendar: React.FC = () => {
 				eventClick={handleEventClick}
 				eventDrop={handleEventDrop}
 				eventResize={handleEventResize}
+				eventDidMount={handleEventDidMount}
 				height='auto'
 				eventTimeFormat={{
 					hour: '2-digit',

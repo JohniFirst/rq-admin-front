@@ -183,7 +183,7 @@ class Popover {
 
     const rect = this.currentTarget.getBoundingClientRect();
 
-    // 使用 requestAnimationFrame 确保获取到正确的尺寸
+    // 方案1：使用 requestAnimationFrame 和强制重排
     requestAnimationFrame(() => {
       const popRect = this.popover.getBoundingClientRect();
       const viewportWidth = window.innerWidth;
@@ -229,6 +229,61 @@ class Popover {
       this.popover.style.top = `${top}px`;
       this.popover.style.left = `${left}px`;
     });
+
+    /* 方案2：使用 ResizeObserver（备选方案）
+    const resizeObserver = new ResizeObserver(entries => {
+      for (const entry of entries) {
+        const popRect = entry.contentRect;
+        const viewportWidth = window.innerWidth;
+        const viewportHeight = window.innerHeight;
+
+        let top = 0, left = 0;
+        const spacing = 6;
+
+        // 计算初始位置
+        switch (this.currentPlacement) {
+          case 'bottom':
+            top = rect.bottom + window.scrollY + spacing;
+            left = rect.left + window.scrollX + (rect.width - popRect.width) / 2;
+            break;
+          case 'top':
+            top = rect.top + window.scrollY - popRect.height - spacing;
+            left = rect.left + window.scrollX + (rect.width - popRect.width) / 2;
+            break;
+          case 'left':
+            top = rect.top + window.scrollY + (rect.height - popRect.height) / 2;
+            left = rect.left + window.scrollX - popRect.width - spacing;
+            break;
+          case 'right':
+            top = rect.top + window.scrollY + (rect.height - popRect.height) / 2;
+            left = rect.right + window.scrollX + spacing;
+            break;
+        }
+
+        // 确保不超出视口
+        if (left < window.scrollX) {
+          left = window.scrollX + spacing;
+        } else if (left + popRect.width > window.scrollX + viewportWidth) {
+          left = window.scrollX + viewportWidth - popRect.width - spacing;
+        }
+
+        if (top < window.scrollY) {
+          top = window.scrollY + spacing;
+        } else if (top + popRect.height > window.scrollY + viewportHeight) {
+          top = window.scrollY + viewportHeight - popRect.height - spacing;
+        }
+
+        // 应用位置
+        this.popover.style.top = `${top}px`;
+        this.popover.style.left = `${left}px`;
+
+        // 断开观察
+        resizeObserver.disconnect();
+      }
+    });
+
+    resizeObserver.observe(this.popover);
+    */
   }
 
   show() {
