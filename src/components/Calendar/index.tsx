@@ -8,6 +8,7 @@ import dayGridPlugin from '@fullcalendar/daygrid'
 import interactionPlugin from '@fullcalendar/interaction'
 import listPlugin from '@fullcalendar/list'
 import FullCalendar from '@fullcalendar/react'
+import rrulePlugin from '@fullcalendar/rrule'
 import timeGridPlugin from '@fullcalendar/timegrid'
 import {
 	Button,
@@ -55,10 +56,68 @@ const Calendar: React.FC = () => {
 	const [events, setEvents] = useState<CustomEventInput[]>([
 		{
 			id: '1',
-			title: '测试事件',
-			startTime: '10:30',
-			endTime: '15:30',
-			daysOfWeek: [1, 3, 5],
+			title: '非全天时间不重复测试',
+			start: '2025-06-12T10:00:00',
+			end: '2025-06-12T12:00:00',
+			backgroundColor: '#1890ff',
+			borderColor: '#1890ff',
+			allDay: false,
+			display: 'list-item',
+			extendedProps: {
+				reminder: true,
+				repeat: 'none',
+			},
+		},
+		{
+			id: '2',
+			title: '每周重复事件',
+			start: '2025-06-12T10:00:00',
+			end: '2025-06-12T12:00:00',
+			backgroundColor: '#52c41a',
+			borderColor: '#52c41a',
+			allDay: false,
+			display: 'list-item',
+			rrule: {
+				freq: 'weekly',
+				dtstart: '2025-06-12T10:00:00',
+			},
+			exdate: ['2025-06-19T10:00:00'],
+			extendedProps: {
+				reminder: true,
+				repeat: 'weekly',
+			},
+		},
+		{
+			id: '3',
+			title: '持续事件',
+			start: '2025-06-10T00:00:00',
+			end: '2025-06-12T23:59:59',
+			backgroundColor: '#722ed1',
+			borderColor: '#722ed1',
+			allDay: true,
+			display: 'block',
+			extendedProps: {
+				reminder: true,
+				repeat: 'none',
+			},
+			rrule: {
+				freq: 'weekly',
+				dtstart: '2025-06-10T00:00:00',
+			},
+			duration: { days: 2 },
+		},
+		{
+			title: '循环事件-非全天事件的测试',
+			start: '2025-06-15T09:00:00',
+			end: '2025-06-15T11:00:00',
+			allDay: false,
+			color: 'blue',
+			rrule: {
+				freq: 'weekly',
+				dtstart: '2025-06-15T09:00:00',
+			},
+			exdate: ['2025-06-22T09:00:00'],
+			duration: { hours: 4 },
 		},
 	])
 	const [isModalVisible, setIsModalVisible] = useState(false)
@@ -229,7 +288,13 @@ const Calendar: React.FC = () => {
 	return (
 		<Card className='calendar-card'>
 			<FullCalendar
-				plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin, listPlugin]}
+				plugins={[
+					dayGridPlugin,
+					timeGridPlugin,
+					interactionPlugin,
+					listPlugin,
+					rrulePlugin,
+				]}
 				initialView='dayGridMonth'
 				headerToolbar={{
 					left: 'prev,next today',

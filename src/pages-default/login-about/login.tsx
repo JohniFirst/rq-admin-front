@@ -94,7 +94,6 @@ const LoginForm = () => {
 		await handleLogin(values)
 		sessionStorage.setItem(`${SessionStorageKeys.IS_LOGIN}`, `${IsLogin.YES}`)
 		const menu = await getMenuList()
-		console.log(menu)
 
 		dispatch(updateMenu(menu))
 		setIsLogin(true)
