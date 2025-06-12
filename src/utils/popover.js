@@ -22,10 +22,14 @@ class Popover {
     this.popover.style.borderRadius = '8px';
     this.popover.style.boxShadow = '0 4px 16px rgba(0,0,0,0.12)';
     this.popover.style.zIndex = 1001;
+    this.popover.style.wordBreak = 'break-all';
+    this.popover.style.maxHeight = '30vh';
+    this.popover.style.overflowY = 'auto';
+    this.popover.style.transition = 'all 0.3s ease-in-out';
     document.body.appendChild(this.popover);
 
     this.hideTimer = null;
-    this.targets = new Map(); // 存储所有目标元素及其配置
+    this.targets = new WeakMap(); // 存储所有目标元素及其配置
     this.currentTarget = null;
     this.currentContent = '';
     this.currentPlacement = 'bottom';
