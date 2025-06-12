@@ -15,21 +15,28 @@ class FullScreenManager {
 		return FullScreenManager.instance
 	}
 
-	public toggleFullscreen(e: MouseEvent, isBody = false) {
-		const target = e.currentTarget as HTMLElement
+	public toggleFullscreen(
+		eOrElement?: MouseEvent | HTMLElement,
+		isBody = false,
+	) {
+		let target: HTMLElement | null = null
+		if (eOrElement instanceof HTMLElement) {
+			target = eOrElement
+		} else if (eOrElement && 'currentTarget' in eOrElement) {
+			target = eOrElement.currentTarget as HTMLElement
+		}
 
 		if (this.isFullscreen) {
 			document.exitFullscreen()
 		} else {
 			if (isBody) {
 				document.documentElement.requestFullscreen()
+			} else if (target) {
+				target.requestFullscreen()
 			} else {
-				if (target) {
-					target.requestFullscreen()
-				}
+				document.documentElement.requestFullscreen()
 			}
 		}
-
 		this.isFullscreen = !this.isFullscreen
 	}
 
@@ -62,8 +69,8 @@ export function useFullScreen(isBody = false) {
 		}
 	}, [])
 
-	const toggleFullscreen = (e: MouseEvent) => {
-		FullScreenManager.getInstance().toggleFullscreen(e, isBody)
+	const toggleFullscreen = (eOrElement?: MouseEvent | HTMLElement) => {
+		FullScreenManager.getInstance().toggleFullscreen(eOrElement, isBody)
 	}
 
 	return {
