@@ -6,7 +6,6 @@ import { type UserConfig, defineConfig } from 'vite'
 
 // import { visualizer as bundleAnalyzer } from "rollup-plugin-visualizer";
 import bundleAnalyzer from 'rollup-plugin-bundle-analyzer'
-import checker from 'vite-plugin-checker'
 import viteCompression from 'vite-plugin-compression'
 import { viteMockServe } from 'vite-plugin-mock';
 
@@ -17,9 +16,6 @@ export default defineConfig((configEnv: UserConfig): UserConfig => {
 	return {
 		plugins: [
 			react(),
-			checker({
-				typescript: true,
-			}),
 			viteMockServe({
 				mockPath: path.resolve(__dirname, 'mock'),
 				enable: mode === 'mock',
