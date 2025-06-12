@@ -29,10 +29,14 @@ class Popover {
     document.body.appendChild(this.popover);
 
     this.hideTimer = null;
+    this.showTimer = null;
     this.targets = new WeakMap(); // 存储所有目标元素及其配置
     this.currentTarget = null;
     this.currentContent = '';
     this.currentPlacement = 'bottom';
+    this.isVisible = false;
+    this.minShowTime = 200; // 最小显示时间（毫秒）
+    this.showDelay = 200; // 显示延迟（毫秒）
 
     // 绑定方法
     this.boundShow = this.show.bind(this);
@@ -111,9 +115,41 @@ class Popover {
       const placement = config.placement || this.calculateBestPlacement(target);
       this.setPlacement(placement);
 
-      this.show();
+      // 清除之前的定时器
+      if (this.showTimer) {
+        clearTimeout(this.showTimer);
+      }
+      if (this.hideTimer) {
+        clearTimeout(this.hideTimer);
+      }
+
+      // 设置显示延迟
+      this.showTimer = setTimeout(() => {
+        if (this.currentTarget === target) {
+          this.show();
+        }
+      }, this.showDelay);
     });
-    target.addEventListener('mouseleave', this.boundHide);
+
+    target.addEventListener('mouseleave', () => {
+      // 清除显示定时器
+      if (this.showTimer) {
+        clearTimeout(this.showTimer);
+        this.showTimer = null;
+      }
+
+      // 如果已经显示，设置最小显示时间
+      if (this.isVisible) {
+        const showTime = Date.now() - this.showStartTime;
+        const remainingTime = Math.max(0, this.minShowTime - showTime);
+
+        this.hideTimer = setTimeout(() => {
+          this.hide();
+        }, remainingTime);
+      } else {
+        this.hide();
+      }
+    });
   }
 
   unbindEvents(target) {
@@ -125,66 +161,95 @@ class Popover {
   }
 
   handlePopoverEnter() {
-    clearTimeout(this.hideTimer);
-    this.popover.style.display = 'block';
+    if (this.hideTimer) {
+      clearTimeout(this.hideTimer);
+      this.hideTimer = null;
+    }
   }
 
   handlePopoverLeave() {
-    this.hide();
+    if (this.isVisible) {
+      const showTime = Date.now() - this.showStartTime;
+      const remainingTime = Math.max(0, this.minShowTime - showTime);
+
+      this.hideTimer = setTimeout(() => {
+        this.hide();
+      }, remainingTime);
+    }
   }
 
   positionPopover() {
     if (!this.currentTarget) return;
 
     const rect = this.currentTarget.getBoundingClientRect();
-    const popRect = this.popover.getBoundingClientRect();
-    const viewportWidth = window.innerWidth;
-    const viewportHeight = window.innerHeight;
 
-    let top = 0, left = 0;
-    const spacing = 6;
+    // 使用 requestAnimationFrame 确保获取到正确的尺寸
+    requestAnimationFrame(() => {
+      const popRect = this.popover.getBoundingClientRect();
+      const viewportWidth = window.innerWidth;
+      const viewportHeight = window.innerHeight;
 
-    // 计算初始位置
-    if (this.currentPlacement === 'bottom') {
-      top = rect.bottom + window.scrollY + spacing;
-      left = rect.left + window.scrollX + rect.width / 2 - popRect.width / 2;
-    } else if (this.currentPlacement === 'top') {
-      top = rect.top + window.scrollY - popRect.height - spacing;
-      left = rect.left + window.scrollX + rect.width / 2 - popRect.width / 2;
-    } else if (this.currentPlacement === 'left') {
-      top = rect.top + window.scrollY + rect.height / 2 - popRect.height / 2;
-      left = rect.left + window.scrollX - popRect.width - spacing;
-    } else if (this.currentPlacement === 'right') {
-      top = rect.top + window.scrollY + rect.height / 2 - popRect.height / 2;
-      left = rect.right + window.scrollX + spacing;
-    }
+      let top = 0, left = 0;
+      const spacing = 6;
 
-    // 确保不超出视口
-    if (left < 0) {
-      left = spacing;
-    } else if (left + popRect.width > viewportWidth) {
-      left = viewportWidth - popRect.width - spacing;
-    }
+      // 计算初始位置
+      switch (this.currentPlacement) {
+        case 'bottom':
+          top = rect.bottom + window.scrollY + spacing;
+          left = rect.left + window.scrollX + (rect.width - popRect.width) / 2;
+          break;
+        case 'top':
+          top = rect.top + window.scrollY - popRect.height - spacing;
+          left = rect.left + window.scrollX + (rect.width - popRect.width) / 2;
+          break;
+        case 'left':
+          top = rect.top + window.scrollY + (rect.height - popRect.height) / 2;
+          left = rect.left + window.scrollX - popRect.width - spacing;
+          break;
+        case 'right':
+          top = rect.top + window.scrollY + (rect.height - popRect.height) / 2;
+          left = rect.right + window.scrollX + spacing;
+          break;
+      }
 
-    if (top < window.scrollY) {
-      top = window.scrollY + spacing;
-    } else if (top + popRect.height > window.scrollY + viewportHeight) {
-      top = window.scrollY + viewportHeight - popRect.height - spacing;
-    }
+      // 确保不超出视口
+      if (left < window.scrollX) {
+        left = window.scrollX + spacing;
+      } else if (left + popRect.width > window.scrollX + viewportWidth) {
+        left = window.scrollX + viewportWidth - popRect.width - spacing;
+      }
 
-    this.popover.style.top = `${top}px`;
-    this.popover.style.left = `${left}px`;
+      if (top < window.scrollY) {
+        top = window.scrollY + spacing;
+      } else if (top + popRect.height > window.scrollY + viewportHeight) {
+        top = window.scrollY + viewportHeight - popRect.height - spacing;
+      }
+
+      // 应用位置
+      this.popover.style.top = `${top}px`;
+      this.popover.style.left = `${left}px`;
+    });
   }
 
   show() {
-    clearTimeout(this.hideTimer);
+    if (this.hideTimer) {
+      clearTimeout(this.hideTimer);
+      this.hideTimer = null;
+    }
     this.popover.style.display = 'block';
     this.positionPopover();
+    this.isVisible = true;
+    this.showStartTime = Date.now();
   }
 
   hide() {
+    if (this.showTimer) {
+      clearTimeout(this.showTimer);
+      this.showTimer = null;
+    }
     this.hideTimer = setTimeout(() => {
       this.popover.style.display = 'none';
+      this.isVisible = false;
     }, 120);
   }
 
