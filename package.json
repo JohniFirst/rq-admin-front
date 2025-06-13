@@ -14,6 +14,7 @@
 		"update": "pnpm update",
 		"reinstall": "npx rimraf node_modules && pnpm install",
 		"prepare": "husky",
+		"preinstall": "npx only-allow pnpm",
 		"generate:menu": "node scripts/generate-menu.mjs"
 	},
 	"dependencies": {
