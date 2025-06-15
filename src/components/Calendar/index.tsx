@@ -6,7 +6,7 @@ import type {
 } from '@fullcalendar/core'
 import zhCnLocale from '@fullcalendar/core/locales/zh-cn'
 import dayGridPlugin from '@fullcalendar/daygrid'
-import interactionPlugin from '@fullcalendar/interaction'
+import interactionPlugin, { DateClickArg } from '@fullcalendar/interaction'
 import listPlugin from '@fullcalendar/list'
 import FullCalendar from '@fullcalendar/react'
 import rrulePlugin from '@fullcalendar/rrule'
@@ -67,7 +67,6 @@ const Calendar: React.FC = () => {
 			backgroundColor: '#1890ff',
 			borderColor: '#1890ff',
 			allDay: false,
-			display: 'list-item',
 			extendedProps: {
 				reminder: true,
 				repeat: 'none',
@@ -81,10 +80,12 @@ const Calendar: React.FC = () => {
 			backgroundColor: '#52c41a',
 			borderColor: '#52c41a',
 			allDay: false,
-			display: 'list-item',
 			rrule: {
 				freq: 'weekly',
 				dtstart: '2025-06-12T10:00:00',
+				count: 5,
+				// interval: 2,
+				bymonthday: [1],
 			},
 			exdate: ['2025-06-19T10:00:00'],
 			extendedProps: {
@@ -100,7 +101,6 @@ const Calendar: React.FC = () => {
 			backgroundColor: '#722ed1',
 			borderColor: '#722ed1',
 			allDay: true,
-			display: 'block',
 			extendedProps: {
 				reminder: true,
 				repeat: 'none',
@@ -114,7 +114,7 @@ const Calendar: React.FC = () => {
 		{
 			title: '循环事件-非全天事件的测试',
 			start: '2025-06-15T09:00:00',
-			end: '2025-06-15T11:00:00',
+			end: '2025-06-15T13:00:00',
 			allDay: false,
 			color: 'blue',
 			rrule: {
@@ -367,9 +367,8 @@ const Calendar: React.FC = () => {
 				eventOverlap={false}
 				eventConstraint={{
 					startTime: '00:00',
-					endTime: '24:00',
+					endTime: '23:59',
 				}}
-				eventDisplay='block'
 				eventStartEditable={true}
 				eventDurationEditable={true}
 			/>

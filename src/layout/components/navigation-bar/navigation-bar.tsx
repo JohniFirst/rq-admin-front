@@ -7,8 +7,10 @@ import {
 	DoubleLeftOutlined,
 	DoubleRightOutlined,
 	FilterOutlined,
+	LeftOutlined,
 	PicCenterOutlined,
 	PushpinOutlined,
+	RightOutlined,
 } from '@ant-design/icons'
 import {
 	DndContext,
@@ -26,6 +28,7 @@ import {
 import { CSS } from '@dnd-kit/utilities'
 import { Dropdown, type MenuProps, Modal } from 'antd'
 import { cloneDeep } from 'lodash-es'
+import React from 'react'
 import { useLocation } from 'react-router-dom'
 
 const contextMenu: MenuProps['items'] = [
@@ -64,10 +67,27 @@ function NavigationBar() {
 	const location = useLocation()
 	const navgation = useCustomNavigate()
 	const navItem = useAppSelector((state) => state.systemInfo.navItem)
+	const scrollContainerRef = React.useRef<HTMLUListElement>(null)
 
 	const dispatch = useAppDispatch()
 	const setNavItem = (navItem: NavItem[]) => {
 		dispatch(setNavItemAction(navItem))
+	}
+
+	const handleScroll = (direction: 'left' | 'right') => {
+		if (scrollContainerRef.current) {
+			const scrollAmount = 200 // 每次滚动的像素
+			const currentScroll = scrollContainerRef.current.scrollLeft
+			const newScroll =
+				direction === 'left'
+					? currentScroll - scrollAmount
+					: currentScroll + scrollAmount
+
+			scrollContainerRef.current.scrollTo({
+				left: newScroll,
+				behavior: 'smooth',
+			})
+		}
 	}
 
 	/**
@@ -223,6 +243,13 @@ function NavigationBar() {
 
 	return (
 		<nav className='flex items-center px-4 py-2 bg-white border-b border-gray-200'>
+			<button
+				type='button'
+				onClick={() => handleScroll('left')}
+				className='p-1 hover:bg-gray-100 rounded-md transition-colors'
+			>
+				<LeftOutlined />
+			</button>
 			<DndContext
 				sensors={[sensor]}
 				collisionDetection={closestCenter}
@@ -236,7 +263,10 @@ function NavigationBar() {
 						menu={{ items: contextMenu, onClick: handleMenuClick }}
 						trigger={['contextMenu']}
 					>
-						<ul className='flex items-center gap-2 overflow-x-auto'>
+						<ul
+							ref={scrollContainerRef}
+							className='flex items-center gap-2 overflow-x-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]'
+						>
 							{navItem.map((item) => (
 								<DraggableTabNode key={item.key} item={item} />
 							))}
@@ -244,6 +274,13 @@ function NavigationBar() {
 					</Dropdown>
 				</SortableContext>
 			</DndContext>
+			<button
+				type='button'
+				onClick={() => handleScroll('right')}
+				className='p-1 hover:bg-gray-100 rounded-md transition-colors'
+			>
+				<RightOutlined />
+			</button>
 		</nav>
 	)
 }
