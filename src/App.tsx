@@ -13,7 +13,9 @@ import {
 
 function App() {
 	const dispatch = useAppDispatch()
-	const AppRouter = createBrowserRouter(defaultRoutes)
+	const AppRouter = createBrowserRouter(defaultRoutes, {
+		basename: '/rq-admin-front',
+	})
 
 	if (['test', 'development', 'mock'].includes(import.meta.env.MODE)) {
 		useJumpToVscodeSource()

@@ -18,7 +18,7 @@
 		"preinstall": "npx only-allow pnpm",
 		"generate:menu": "node scripts/generate-menu.mjs",
 		"predeploy": "npm run build",
-    "deploy": "gh-pages -d build"
+    "deploy": "gh-pages -d dist"
 	},
 	"dependencies": {
 		"@ant-design/icons": "^5.6.1",

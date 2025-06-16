@@ -14,6 +14,7 @@ export default defineConfig((configEnv: UserConfig): UserConfig => {
 	const { mode } = configEnv
 
 	return {
+		base: '/rq-admin-front',
 		plugins: [
 			react(),
 			viteMockServe({
@@ -52,7 +53,6 @@ export default defineConfig((configEnv: UserConfig): UserConfig => {
 		},
 		build: {
 			cssCodeSplit: false,
-			outDir: 'build',
 			rollupOptions: {
 				output: {
 					entryFileNames: 'js/[name].js',
