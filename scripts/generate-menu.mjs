@@ -75,7 +75,7 @@ function generateMenu() {
 
 export default [
   {
-    url: '/api/menu/list',
+    url: '/menu/list',
     method: 'get',
     response: ({ query }) => {
       return responseFormat(${JSON.stringify(menu, null, 2)})

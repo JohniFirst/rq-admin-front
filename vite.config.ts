@@ -52,6 +52,7 @@ export default defineConfig((configEnv: UserConfig): UserConfig => {
 		},
 		build: {
 			cssCodeSplit: false,
+			outDir: 'build',
 			rollupOptions: {
 				output: {
 					entryFileNames: 'js/[name].js',
