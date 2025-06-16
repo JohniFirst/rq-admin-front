@@ -1,1 +1,1 @@
-const s="/img/share.jpg";export{s};
+const r="/rq-admin-front/img/share.jpg";export{r as s};
