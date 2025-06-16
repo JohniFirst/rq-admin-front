@@ -1,0 +1,13 @@
+#!/usr/bin/env sh
+
+# 这里的代码相当于定义变量
+RED='\033[31m'
+GREEN='\033[32m'
+BOLD='\033[1m'
+RESET='\033[0m\n'
+
+printf "\n"
+printf "${RED}【开始对暂存区代码进行格式化校验】${RESET}"
+npx lint-staged
+printf "${BOLD}【暂存区代码校验成功】${RESET}"
+printf "\n"

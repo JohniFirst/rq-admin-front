@@ -1,0 +1,13 @@
+html,body,p,h1,ul,h2,h3,
+h4,dl,dt,dd {
+	margin: 0;
+	padding: 0;
+}
+
+ol {
+	margin: 0;
+}
+
+ul > li {
+	list-style-type: none;
+}
