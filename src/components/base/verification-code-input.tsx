@@ -1,4 +1,5 @@
-import { Col, Form, Image, Input, Row } from 'antd'
+import SquareInputBox from '@/components/square-input-box/square-input-box'
+import { Col, Form, Image, Row } from 'antd'
 import { type SetStateAction, useState } from 'react'
 
 /**
@@ -11,10 +12,13 @@ function VerificationCodeInput() {
 	const [code, setCode] = useState('')
 	const [imageCodeUrl] = useState('https://example.com/imageCode.jpg') // 假设这是图片验证码的 URL
 
-	const handleCodeChange = (e: {
-		target: { value: SetStateAction<string> }
-	}) => {
-		setCode(e.target.value)
+	const handleCodeChange = (value: string) => {
+		setCode(value)
+	}
+
+	const handleCodeComplete = (value: string) => {
+		console.log('验证码输入完成:', value)
+		// 这里可以添加自动提交逻辑
 	}
 
 	return (
@@ -22,14 +26,16 @@ function VerificationCodeInput() {
 			name='verificationCode'
 			rules={[{ required: true, message: '请输入验证码' }]}
 		>
-			<Row>
+			<Row gutter={16} align='middle'>
 				<Col span={16}>
-					<Input
-						type='text'
-						placeholder='请输入验证码'
-						maxLength={6}
-						onChange={handleCodeChange}
+					<SquareInputBox
+						length={6}
+						type='number'
 						value={code}
+						onChange={handleCodeChange}
+						onComplete={handleCodeComplete}
+						autoFocus
+						placeholder='请输入验证码'
 					/>
 				</Col>
 				<Col span={8}>
