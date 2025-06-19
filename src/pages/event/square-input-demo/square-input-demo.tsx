@@ -16,10 +16,10 @@ const SquareInputDemo: React.FC = () => {
 	const [code8, setCode8] = useState('')
 
 	// 配置状态
-	const [length, setLength] = useState(6)
-	const [size, setSize] = useState(48)
-	const [gap, setGap] = useState(8)
-	const [borderRadius, setBorderRadius] = useState(8)
+	const [length, setLength] = useState<number>(6)
+	const [size, setSize] = useState<number>(48)
+	const [gap, setGap] = useState<number>(8)
+	const [borderRadius, setBorderRadius] = useState<number>(8)
 	const [type, setType] = useState<'text' | 'number' | 'password'>('text')
 	const [disabled, setDisabled] = useState(false)
 	const [autoFocus, setAutoFocus] = useState(false)
@@ -174,7 +174,7 @@ const SquareInputDemo: React.FC = () => {
 								min={1}
 								max={10}
 								value={length}
-								onChange={setLength}
+								onChange={(v) => setLength(v ?? 0)}
 								className='w-full'
 							/>
 						</div>
@@ -187,7 +187,7 @@ const SquareInputDemo: React.FC = () => {
 								min={32}
 								max={80}
 								value={size}
-								onChange={setSize}
+								onChange={(v) => setSize(v ?? 0)}
 								className='w-full'
 							/>
 						</div>
@@ -198,7 +198,7 @@ const SquareInputDemo: React.FC = () => {
 								min={0}
 								max={20}
 								value={gap}
-								onChange={setGap}
+								onChange={(v) => setGap(v ?? 0)}
 								className='w-full'
 							/>
 						</div>
@@ -209,7 +209,7 @@ const SquareInputDemo: React.FC = () => {
 								min={0}
 								max={20}
 								value={borderRadius}
-								onChange={setBorderRadius}
+								onChange={(v) => setBorderRadius(v ?? 0)}
 								className='w-full'
 							/>
 						</div>

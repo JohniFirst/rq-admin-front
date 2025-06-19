@@ -1,6 +1,6 @@
 import SquareInputBox from '@/components/square-input-box/square-input-box'
 import { Col, Form, Image, Row } from 'antd'
-import { type SetStateAction, useState } from 'react'
+import { useState } from 'react'
 
 /**
  * Renders a form item for verification code input with an image code.
