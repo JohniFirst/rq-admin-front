@@ -92,7 +92,6 @@
 	},
 	"lint-staged": {
 		"*.{ts,d.ts,tsx,.json}": [
-			"pnpm run types",
 			"biome check --write --no-errors-on-unmatched"
 		]
 	}
