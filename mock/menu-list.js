@@ -16,7 +16,7 @@ export default [
   {
     "menuOrder": 2,
     "title": "Event",
-    "id": 7,
+    "id": 8,
     "url": "/event",
     "icon": "test",
     "children": [
@@ -36,22 +36,29 @@ export default [
       },
       {
         "menuOrder": 3,
-        "title": "Square Input Demo",
+        "title": "Context Menu Demo",
         "id": 4,
-        "url": "/event/square-input-demo",
+        "url": "/event/context-menu-demo",
         "icon": "test"
       },
       {
         "menuOrder": 4,
-        "title": "Table",
+        "title": "Square Input Demo",
         "id": 5,
-        "url": "/event/table",
+        "url": "/event/square-input-demo",
         "icon": "test"
       },
       {
         "menuOrder": 5,
-        "title": "Table Frontend",
+        "title": "Table",
         "id": 6,
+        "url": "/event/table",
+        "icon": "test"
+      },
+      {
+        "menuOrder": 6,
+        "title": "Table Frontend",
+        "id": 7,
         "url": "/event/table-frontend",
         "icon": "test"
       }
@@ -60,21 +67,21 @@ export default [
   {
     "menuOrder": 3,
     "title": "Event Pro",
-    "id": 15,
+    "id": 16,
     "url": "/event-pro",
     "icon": "test",
     "children": [
       {
         "menuOrder": 1,
         "title": "Animate",
-        "id": 9,
+        "id": 10,
         "url": "/event-pro/animate",
         "icon": "test",
         "children": [
           {
             "menuOrder": 1,
             "title": "Share Animation",
-            "id": 8,
+            "id": 9,
             "url": "/event-pro/animate/share-animation",
             "icon": "test"
           }
@@ -83,35 +90,35 @@ export default [
       {
         "menuOrder": 2,
         "title": "Calendar",
-        "id": 10,
+        "id": 11,
         "url": "/event-pro/calendar",
         "icon": "test"
       },
       {
         "menuOrder": 3,
         "title": "Danmu",
-        "id": 11,
+        "id": 12,
         "url": "/event-pro/danmu",
         "icon": "test"
       },
       {
         "menuOrder": 4,
         "title": "Markdown Edit",
-        "id": 12,
+        "id": 13,
         "url": "/event-pro/markdown-edit",
         "icon": "test"
       },
       {
         "menuOrder": 5,
         "title": "Picture Stitching",
-        "id": 13,
+        "id": 14,
         "url": "/event-pro/picture-stitching",
         "icon": "test"
       },
       {
         "menuOrder": 6,
         "title": "Video Player",
-        "id": 14,
+        "id": 15,
         "url": "/event-pro/video-player",
         "icon": "test"
       }
@@ -120,28 +127,28 @@ export default [
   {
     "menuOrder": 4,
     "title": "System",
-    "id": 19,
+    "id": 20,
     "url": "/system",
     "icon": "test",
     "children": [
       {
         "menuOrder": 1,
         "title": "Menu",
-        "id": 16,
+        "id": 17,
         "url": "/system/menu",
         "icon": "test"
       },
       {
         "menuOrder": 2,
         "title": "Role",
-        "id": 17,
+        "id": 18,
         "url": "/system/role",
         "icon": "test"
       },
       {
         "menuOrder": 3,
         "title": "User",
-        "id": 18,
+        "id": 19,
         "url": "/system/user",
         "icon": "test"
       }
