@@ -111,16 +111,22 @@ const Calendar: React.FC = () => {
 
 			const apiEvents = res // 兼容直接返回数组和data字段
 			const parsedEvents = apiEvents.map((item: any) => {
-				let parsed = {}
+				let parsed: any = {}
 				try {
 					parsed = JSON.parse(item.event)
 				} catch {}
+				const repeat = parsed && typeof parsed === 'object' && 'repeat' in parsed ? (parsed.repeat ?? 'none') : 'none'
+				// 如果 repeat 为 'none'，移除 rrule 字段，防止无效 freq
+				if (repeat === 'none' && parsed.rrule) {
+					delete parsed.rrule
+				}
 				return {
 					...parsed,
 					id: item.id,
 					start: item.start,
 					end: item.end,
 					title: item.title,
+					repeat,
 				}
 			})
 			setEvents(parsedEvents)
