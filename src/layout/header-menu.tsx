@@ -68,12 +68,16 @@ function HeaderMenu({ showHeaderOperate = true }: HeaderMenuProps) {
 		return { selectedKey, openKeys }
 	}
 
-	const [selectedKey, setSelectedKey] = useState([''])
+	const [selectedKey, setSelectedKey] = useState<string[]>([])
 
 	useEffect(() => {
 		const result = findSelectedAndOpenKeys(menus, location.pathname)
-		setSelectedKey([result.selectedKey])
-	}, [location])
+		if (result.selectedKey) {
+			setSelectedKey([result.selectedKey])
+		} else {
+			setSelectedKey([])
+		}
+	}, [location.pathname, menus])
 
 	return (
 		<section className='w-full flex flex-col h-screen col-auto'>
