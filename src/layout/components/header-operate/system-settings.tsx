@@ -8,7 +8,11 @@ import { useEffect, useState } from 'react'
 
 import { LayoutModeEnum } from '@/enums/system'
 import { useAppDispatch, useAppSelector } from '@/store/hooks'
-import { setTheme, setlayoutMode } from '@/store/slice/system-info'
+import {
+	setShowNavigationBar,
+	setTheme,
+	setlayoutMode,
+} from '@/store/slice/system-info'
 import ThemeConfig from './theme-config'
 
 const layoutModeArr = [
@@ -38,6 +42,9 @@ const SystemSettings: React.FC = () => {
 
 	const layoutMode = useAppSelector((state) => state.systemInfo.layoutMode)
 	const currentTheme = useAppSelector((state) => state.systemInfo.theme)
+	const showNavigationBar = useAppSelector(
+		(state) => state.systemInfo.showNavigationBar,
+	)
 	const dispatch = useAppDispatch()
 
 	useEffect(() => {
@@ -201,6 +208,18 @@ const SystemSettings: React.FC = () => {
 							其他设置
 						</h4>
 						<div className='space-y-4'>
+							<div className='flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-800 rounded-lg'>
+								<span className='text-gray-600 dark:text-gray-400'>
+									显示应用内导航组件
+								</span>
+								<Switch
+									checked={showNavigationBar}
+									onChange={(checked) =>
+										dispatch(setShowNavigationBar(checked))
+									}
+									className='bg-gray-300'
+								/>
+							</div>
 							<div className='flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-800 rounded-lg'>
 								<span className='text-gray-600 dark:text-gray-400'>
 									开启页面动画

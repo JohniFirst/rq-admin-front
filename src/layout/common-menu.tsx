@@ -65,6 +65,9 @@ function CommonMenu({ showHeaderOperate = true }: CommonMenuProps) {
 	const location = useLocation()
 	const [selectedKey, setSelectedKey] = useState([''])
 	const [openKeys, setOpenKeys] = useState<string[]>([])
+	const showNavigationBar = useAppSelector(
+		(state) => state.systemInfo.showNavigationBar,
+	)
 
 	// 找到当前选中项和需要展开的项
 	const findSelectedAndOpenKeys = (items: MenuItem[], currentPath: string) => {
@@ -169,7 +172,7 @@ function CommonMenu({ showHeaderOperate = true }: CommonMenuProps) {
 					{showHeaderOperate && <HeaderOperate />}
 				</motion.header>
 
-				<NavigationBar />
+				{showNavigationBar && <NavigationBar />}
 
 				<motion.main
 					className='bg-gray-50 dark:bg-gray-900 grow p-6 overflow-y-auto overflow-x-hidden w-full'

@@ -22,6 +22,9 @@ function DrawerMenu({ showHeaderOperate = true }: DrawerMenuProps) {
 	const navigate = useCustomNavigate()
 	const dispatch = useAppDispatch()
 	const menus = useAppSelector((state) => state.menu)
+	const showNavigationBar = useAppSelector(
+		(state) => state.systemInfo.showNavigationBar,
+	)
 	const [topActiveMenu, setTopActiveMenu] = useState<MenuItem>(menus[0])
 
 	const onClick: MenuProps['onClick'] = (e) => {
@@ -129,7 +132,7 @@ function DrawerMenu({ showHeaderOperate = true }: DrawerMenuProps) {
 						{showHeaderOperate && <HeaderOperate />}
 					</header>
 
-					<NavigationBar />
+					{showNavigationBar && <NavigationBar />}
 
 					<main className='bg-gray-50 dark:bg-black grow p-4 overflow-y-auto w-full'>
 						<Outlet />

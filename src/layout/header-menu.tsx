@@ -20,6 +20,9 @@ function HeaderMenu({ showHeaderOperate = true }: HeaderMenuProps) {
 	const navigate = useCustomNavigate()
 	const dispatch = useAppDispatch()
 	const menus = useAppSelector((state) => state.menu)
+	const showNavigationBar = useAppSelector(
+		(state) => state.systemInfo.showNavigationBar,
+	)
 
 	const onClick: MenuProps['onClick'] = (e) => {
 		navigate(e.key)
@@ -85,7 +88,7 @@ function HeaderMenu({ showHeaderOperate = true }: HeaderMenuProps) {
 				{showHeaderOperate && <HeaderOperate />}
 			</header>
 
-			<NavigationBar />
+			{showNavigationBar && <NavigationBar />}
 
 			<main className='bg-gray-50 dark:bg-black grow p-4 overflow-y-auto w-full'>
 				<Outlet />

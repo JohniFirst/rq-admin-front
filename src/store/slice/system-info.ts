@@ -14,6 +14,7 @@ type SystemInfoState = {
 	theme: string
 	customThemes: ThemeConfig[]
 	navItem: NavItem[]
+	showNavigationBar?: boolean // 新增字段
 }
 
 // 定义一个异步函数来获取初始数据
@@ -22,19 +23,23 @@ export const fetchInitialData = async () => {
 	const navItem = (JSON.parse(res || '[]') as NavItem[]) || []
 
 	const SYSTEM_INFO = await forage.getItem<string>(ForageEnums.SYSTEM_INFO)
-	const localSystemInfo = JSON.parse(SYSTEM_INFO || '{}') as LocalSystemInfo
+	const localSystemInfo = JSON.parse(SYSTEM_INFO || '{}') as LocalSystemInfo & {
+		showNavigationBar?: boolean
+	}
 	// 更新html的类来改变主题
 	const theme = localSystemInfo?.theme || 'default-light'
 	document.documentElement.className = theme
 	const layoutMode = localStorage.getItem(
 		LocalStorageKeys.LAYOUT_MODE,
 	) as LayoutModeEnum
+	const showNavigationBar = localSystemInfo?.showNavigationBar ?? true
 
 	return {
 		layoutMode: layoutMode ?? LayoutModeEnum.COMMON_MENU,
 		theme,
 		customThemes: [],
 		navItem,
+		showNavigationBar,
 	} satisfies SystemInfoState
 }
 
@@ -43,6 +48,7 @@ const initialState: SystemInfoState = {
 	theme: 'default-light',
 	customThemes: [],
 	navItem: [],
+	showNavigationBar: true,
 }
 
 export const systemInfoSlice = createSlice({
@@ -98,6 +104,14 @@ export const systemInfoSlice = createSlice({
 		setlayoutMode: (state, action: PayloadAction<LayoutModeEnum>) => {
 			state.layoutMode = action.payload
 		},
+		setShowNavigationBar: (state, action: PayloadAction<boolean>) => {
+			state.showNavigationBar = action.payload
+			const copyState = JSON.parse(
+				JSON.stringify(state),
+			) as Partial<SystemInfoState>
+			delete copyState.navItem
+			forage.setItem(ForageEnums.SYSTEM_INFO, JSON.stringify(copyState))
+		},
 		addCustomTheme: (state, action: PayloadAction<ThemeConfig>) => {
 			state.customThemes.push(action.payload)
 		},
@@ -133,6 +147,7 @@ export const {
 	updateCustomTheme,
 	deleteCustomTheme,
 	importCustomThemes,
+	setShowNavigationBar,
 } = systemInfoSlice.actions
 
 // selectors 等其他代码可以使用导入的 `RootState` 类型
