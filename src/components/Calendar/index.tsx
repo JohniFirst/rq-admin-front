@@ -17,7 +17,7 @@ import 'tippy.js/dist/tippy.css' // optional for styling
 import 'tippy.js/animations/scale.css' // optional for animations
 import 'tippy.js/themes/light.css' // optional for themes
 import DetailModal from './detail-modal'
-import EventModal from './event-modal'
+import EventModal, { type EventFormData } from './event-modal'
 
 const eventRepeatOptions = {
 	none: '不重复',
@@ -31,21 +31,6 @@ const eventRepeatOptions = {
 }
 
 export type RepeatType = keyof typeof eventRepeatOptions
-
-interface EventFormData {
-	title: string
-	startDate: dayjs.Dayjs
-	endDate: dayjs.Dayjs
-	description?: string
-	color: string
-	repeat: RepeatType
-	reminder: boolean
-	interval?: number // 重复间隔
-	byweekday?: number[] // 周几
-	bymonthday?: number[] // 月几号
-	count?: number // 重复次数
-	until?: dayjs.Dayjs // 截止日期
-}
 
 interface CustomEventInput extends EventInput {
 	daysOfWeek?: number[]
@@ -66,7 +51,6 @@ const Calendar: React.FC = () => {
 	const [form] = Form.useForm<EventFormData>()
 	const [_selectedDate, setSelectedDate] = useState<DateSelectArg | null>(null)
 	const [isEditMode, setIsEditMode] = useState(false)
-	const [selectedOccurrenceDate, setSelectedOccurrenceDate] = useState<Date | undefined>(undefined)
 
 	// 检查今天的提醒
 	useEffect(() => {
@@ -107,24 +91,19 @@ const Calendar: React.FC = () => {
 				year: now.year(),
 				month: now.month() + 1,
 			})
-			console.log('接口返回的数据', res)
+			const parsedEvents = res.map((item: any) => {
+				const parsed = JSON.parse(item.event)
 
-			const apiEvents = res // 兼容直接返回数组和data字段
-			const parsedEvents = apiEvents.map((item: any) => {
-				let parsed: any = {}
-				try {
-					parsed = JSON.parse(item.event)
-				} catch {}
-				const repeat = parsed && typeof parsed === 'object' && 'repeat' in parsed ? (parsed.repeat ?? 'none') : 'none'
-				// 如果 repeat 为 'none'，移除 rrule 字段，防止无效 freq
-				if (repeat === 'none' && parsed.rrule) {
+				if (!parsed.rrule?.freq) {
 					delete parsed.rrule
 				}
+
 				parsed.id = item.id
 				return parsed
 			})
 			setEvents(parsedEvents)
 		} catch (e) {
+			console.error('获取日历事件失败', e)
 			setEvents([])
 		}
 	}
@@ -134,7 +113,6 @@ const Calendar: React.FC = () => {
 		form.setFieldsValue({
 			startDate: dayjs(selectInfo.start),
 			endDate: dayjs(selectInfo.end),
-			repeat: 'none',
 			reminder: true,
 			color: '#1890ff',
 		})
@@ -145,7 +123,6 @@ const Calendar: React.FC = () => {
 	const handleEventClick = (info: EventClickArg) => {
 		// 这里假设 info.event.start 是 occurrence 的实际发生时间
 		setSelectedEvent(Object.assign(info.event, info.event.extendedProps) as CustomEventInput)
-		setSelectedOccurrenceDate(info.event.start ? new Date(info.event.start) : undefined)
 		setIsDetailModalVisible(true)
 	}
 
@@ -157,7 +134,6 @@ const Calendar: React.FC = () => {
 				endDate: dayjs(selectedEvent.end as Date),
 				description: selectedEvent.description,
 				color: selectedEvent.backgroundColor as string,
-				repeat: selectedEvent.extendedProps?.repeat || 'none',
 				reminder: selectedEvent.extendedProps?.reminder || false,
 			})
 			setIsEditMode(true)
@@ -218,44 +194,6 @@ const Calendar: React.FC = () => {
 		handleEventDrop(info as unknown as EventDropArg)
 	}
 
-	const handleDeleteEvent = (mode: 'single' | 'all' | 'future', occurrenceDate?: Date) => {
-		if (!selectedEvent) return
-		if (mode === 'all') {
-			setEvents(events.filter((e) => e.id !== selectedEvent.id))
-			message.success('事件已删除')
-		} else if (mode === 'single' && occurrenceDate) {
-			// 单次删除，加入 exdate
-			const updatedEvents = events.map((e) => {
-				if (e.id === selectedEvent.id) {
-					const exdate = Array.isArray(e.exdate) ? [...e.exdate] : e.exdate ? [e.exdate] : []
-					return {
-						...e,
-						exdate: [...exdate, dayjs(occurrenceDate).toISOString()],
-					}
-				}
-				return e
-			})
-			setEvents(updatedEvents)
-			message.success('本次已删除')
-		} else if (mode === 'future' && occurrenceDate) {
-			// 本次及后续，调整 rrule.until
-			const updatedEvents = events.map((e) => {
-				if (e.id === selectedEvent.id && typeof e.rrule === 'object' && e.rrule !== null) {
-					const rruleObj = { ...e.rrule } as Record<string, any>
-					rruleObj.until = dayjs(occurrenceDate).subtract(1, 'day').toISOString()
-					return {
-						...e,
-						rrule: rruleObj,
-					}
-				}
-				return e
-			})
-			setEvents(updatedEvents)
-			message.success('本次及后续已删除')
-		}
-		setIsDetailModalVisible(false)
-	}
-
 	return (
 		<Card className='calendar-card'>
 			<FullCalendar
@@ -304,7 +242,6 @@ const Calendar: React.FC = () => {
 				open={isModalVisible}
 				isEditMode={isEditMode}
 				form={form}
-				eventRepeatOptions={eventRepeatOptions}
 				selectedEvent={selectedEvent}
 				onCancel={() => {
 					setIsModalVisible(false)
@@ -314,12 +251,9 @@ const Calendar: React.FC = () => {
 
 			<DetailModal
 				event={selectedEvent}
-				eventRepeatOptions={eventRepeatOptions}
 				open={isDetailModalVisible}
 				onEdit={handleDetailEdit}
 				onCancel={() => setIsDetailModalVisible(false)}
-				occurrenceDate={selectedOccurrenceDate}
-				onDelete={handleDeleteEvent}
 			/>
 		</Card>
 	)

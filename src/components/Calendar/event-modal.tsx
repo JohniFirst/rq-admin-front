@@ -1,4 +1,4 @@
-import { addEvents } from '@/api/calendar'
+import { addEvents, editEvents } from '@/api/calendar'
 import {
 	Card,
 	Checkbox,
@@ -18,7 +18,7 @@ import type { FormInstance } from 'antd/es/form'
 import dayjs from 'dayjs'
 import type React from 'react'
 import { useEffect } from 'react'
-import type { RepeatType } from './index'
+import { RRule } from 'rrule'
 
 export interface EventFormData {
 	title: string
@@ -26,7 +26,7 @@ export interface EventFormData {
 	endDate: dayjs.Dayjs
 	description?: string
 	color: string
-	repeat: RepeatType
+	freq?: number | null // 新增freq字段，代表重复类型
 	reminder: boolean
 	interval?: number // 重复间隔
 	byweekday?: number[] // 周几
@@ -40,7 +40,6 @@ interface EventModalProps {
 	open: boolean
 	isEditMode: boolean
 	form: FormInstance<EventFormData>
-	eventRepeatOptions: Record<string, string>
 	selectedEvent?: any
 	onCancel: () => void
 }
@@ -55,14 +54,16 @@ const weekdayOptions = [
 	{ label: '周六', value: 6 },
 ]
 
-const EventModal: React.FC<EventModalProps> = ({
-	open,
-	isEditMode,
-	form,
-	eventRepeatOptions,
-	selectedEvent,
-	onCancel,
-}) => {
+// 只保留RRule的枚举，不再定义eventRepeatOptions
+export const eventRepeatOptions = [
+	{ label: '不重复', value: null },
+	{ label: '每天', value: RRule.DAILY },
+	{ label: '每周', value: RRule.WEEKLY },
+	{ label: '每月', value: RRule.MONTHLY },
+	{ label: '每年', value: RRule.YEARLY },
+]
+
+const EventModal: React.FC<EventModalProps> = ({ open, isEditMode, form, selectedEvent, onCancel }) => {
 	useEffect(() => {
 		if (open && isEditMode && selectedEvent) {
 			form.setFieldsValue({
@@ -71,16 +72,17 @@ const EventModal: React.FC<EventModalProps> = ({
 				endDate: dayjs(selectedEvent.end),
 				description: selectedEvent.description,
 				color: selectedEvent.backgroundColor,
-				repeat: selectedEvent.extendedProps?.repeat || 'none',
+				freq: typeof selectedEvent.rrule?.freq === 'number' ? selectedEvent.rrule.freq : null,
 				reminder: selectedEvent.extendedProps?.reminder || false,
 			})
 		}
 		if (open && !isEditMode) {
+			form.setFieldsValue({ freq: null })
 			form.resetFields()
 		}
 	}, [open, isEditMode, selectedEvent, form])
 
-	const repeatType = Form.useWatch('repeat', form) || 'none'
+	const repeatType = Form.useWatch('freq', form) // 用freq字段
 	const untilType = Form.useWatch('untilType', form) || 'none'
 
 	const handleOk = () => {
@@ -88,38 +90,28 @@ const EventModal: React.FC<EventModalProps> = ({
 			.validateFields()
 			.then(async (values) => {
 				let rrule: any = undefined
-				if (values.repeat && values.repeat !== 'none') {
-					// freq 必须是 rrule 支持的字符串
-					const freq =
-						values.repeat === 'daily'
-							? 'DAILY'
-							: values.repeat === 'weekly'
-								? 'WEEKLY'
-								: values.repeat === 'monthly'
-									? 'MONTHLY'
-									: values.repeat === 'yearly'
-										? 'YEARLY'
-										: undefined
-					if (freq) {
-						rrule = {
-							freq,
-							dtstart: values.startDate,
-							interval: values.interval || 1,
-						}
-						if (values.repeat === 'weekly' && values.byweekday) {
-							rrule.byweekday = values.byweekday
-						}
-						if (values.repeat === 'monthly' && values.bymonthday) {
-							rrule.bymonthday = values.bymonthday
-						}
-						if (values.untilType === 'count' && values.count) {
-							rrule.count = values.count
-						}
-						if (values.untilType === 'until' && values.until) {
-							rrule.until = values.until.toDate()
-						}
+				if (values.freq != null) {
+					rrule = {
+						freq: values.freq,
+						dtstart: values.startDate,
+						interval: values.interval || 1,
 					}
+					if (values.freq === RRule.WEEKLY && values.byweekday) {
+						rrule.byweekday = values.byweekday
+					}
+					if (values.freq === RRule.MONTHLY && values.bymonthday) {
+						rrule.bymonthday = values.bymonthday
+					}
+					if (values.untilType === 'count' && values.count) {
+						rrule.count = values.count
+					}
+					if (values.untilType === 'until' && values.until) {
+						rrule.until = values.until.toDate()
+					}
+					// 自动加上duration字段
+					rrule.duration = values.endDate.diff(values.startDate, 'second') * 1000
 				}
+
 				const newEvent = {
 					title: values.title,
 					start: values.startDate,
@@ -132,12 +124,18 @@ const EventModal: React.FC<EventModalProps> = ({
 						values.endDate.isSame(values.endDate.startOf('day')),
 					extendedProps: {
 						reminder: values.reminder,
-						repeat: values.repeat,
 					},
 					rrule,
 				}
+
 				try {
-					await addEvents({ event: JSON.stringify(newEvent) })
+					if (isEditMode && selectedEvent && selectedEvent.id) {
+						// @ts-ignore
+						newEvent.id = selectedEvent.id
+						await editEvents({ event: JSON.stringify(newEvent) })
+					} else {
+						await addEvents({ event: JSON.stringify(newEvent) })
+					}
 
 					onCancel()
 					form.resetFields()
@@ -160,9 +158,8 @@ const EventModal: React.FC<EventModalProps> = ({
 				form.resetFields()
 			}}
 			width={700}
-			bodyStyle={{ padding: 0 }}
 		>
-			<Card bordered={false} bodyStyle={{ padding: 24 }}>
+			<Card styles={{ body: { padding: 24 } }}>
 				<Form form={form} layout='vertical'>
 					<Divider orientation='left'>基础信息</Divider>
 					<Row gutter={16}>
@@ -204,17 +201,17 @@ const EventModal: React.FC<EventModalProps> = ({
 					<Divider orientation='left'>重复设置</Divider>
 					<Row gutter={16}>
 						<Col span={12}>
-							<Form.Item name='repeat' label='重复'>
+							<Form.Item name='freq' label='重复'>
 								<Radio.Group>
-									{Object.entries(eventRepeatOptions).map(([key, value]) => (
-										<Radio key={key} value={key}>
-											{value}
+									{eventRepeatOptions.map((opt) => (
+										<Radio key={String(opt.value)} value={opt.value}>
+											{opt.label}
 										</Radio>
 									))}
 								</Radio.Group>
 							</Form.Item>
 						</Col>
-						{repeatType !== 'none' && (
+						{repeatType !== null && (
 							<Col span={12}>
 								<Form.Item name='interval' label='重复间隔'>
 									<InputNumber min={1} defaultValue={1} addonAfter='次' style={{ width: '100%' }} />
@@ -222,12 +219,12 @@ const EventModal: React.FC<EventModalProps> = ({
 							</Col>
 						)}
 					</Row>
-					{repeatType === 'weekly' && (
+					{repeatType === RRule.WEEKLY && (
 						<Form.Item name='byweekday' label='每周哪几天'>
 							<Checkbox.Group options={weekdayOptions} />
 						</Form.Item>
 					)}
-					{repeatType === 'monthly' && (
+					{repeatType === RRule.MONTHLY && (
 						<Form.Item name='bymonthday' label='每月哪几天'>
 							<Select mode='multiple' style={{ width: '100%' }} placeholder='选择日期(1-31)'>
 								{Array.from({ length: 31 }, (_, i) => (
@@ -238,7 +235,7 @@ const EventModal: React.FC<EventModalProps> = ({
 							</Select>
 						</Form.Item>
 					)}
-					{repeatType !== 'none' && (
+					{repeatType !== null && (
 						<Row gutter={16}>
 							<Col span={12}>
 								<Form.Item name='untilType' label='截止方式' initialValue='none'>
@@ -279,10 +276,3 @@ const EventModal: React.FC<EventModalProps> = ({
 }
 
 export default EventModal
-
-// 删除交互设计建议：
-// 在 DetailModal 中，若为重复事件，删除按钮弹窗应有选项：
-// “仅删除本次” => 将 occurrence 日期加入 exdate
-// “删除全部” => 删除整个事件
-// “本次及后续” => rrule.until 设为 occurrence 前一天
-// 可通过 props 传递 occurrence 日期和删除回调，具体实现见 DetailModal 设计

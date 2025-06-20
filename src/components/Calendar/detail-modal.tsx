@@ -1,27 +1,15 @@
 import { Modal as AntdModal, Button, Modal, Space, Tag, message } from 'antd'
 import type React from 'react'
+import { eventRepeatOptions } from './event-modal'
 
 interface DetailModalProps {
 	event: any
-	eventRepeatOptions: Record<string, string>
 	open: boolean
 	onEdit: () => void
 	onCancel: () => void
-	// occurrenceDate: 当前 occurrence 的日期（如为单次删除需传递）
-	occurrenceDate?: Date
-	// onDelete: (mode: 'single' | 'all' | 'future', occurrenceDate?: Date) => void
-	onDelete?: (mode: 'single' | 'all' | 'future', occurrenceDate?: Date) => void
 }
 
-const DetailModal: React.FC<DetailModalProps> = ({
-	event,
-	eventRepeatOptions,
-	open,
-	onEdit,
-	onCancel,
-	occurrenceDate,
-	onDelete,
-}) => {
+const DetailModal: React.FC<DetailModalProps> = ({ event, open, onEdit, onCancel }) => {
 	const handleEdit = () => {
 		onEdit()
 	}
@@ -48,7 +36,6 @@ const DetailModal: React.FC<DetailModalProps> = ({
 				okText: '仅删除本次',
 				cancelText: '取消',
 				onOk: () => {
-					if (typeof onDelete === 'function') onDelete('single', occurrenceDate)
 					onCancel()
 				},
 				onCancel: () => {},
@@ -56,7 +43,6 @@ const DetailModal: React.FC<DetailModalProps> = ({
 					<Button
 						key='single'
 						onClick={() => {
-							if (typeof onDelete === 'function') onDelete('single', occurrenceDate)
 							onCancel()
 						}}
 					>
@@ -65,7 +51,6 @@ const DetailModal: React.FC<DetailModalProps> = ({
 					<Button
 						key='future'
 						onClick={() => {
-							if (typeof onDelete === 'function') onDelete('future', occurrenceDate)
 							onCancel()
 						}}
 					>
@@ -75,7 +60,6 @@ const DetailModal: React.FC<DetailModalProps> = ({
 						key='all'
 						danger
 						onClick={() => {
-							if (typeof onDelete === 'function') onDelete('all')
 							onCancel()
 						}}
 					>
@@ -88,13 +72,13 @@ const DetailModal: React.FC<DetailModalProps> = ({
 				title: '确认删除',
 				content: '确定要删除这个事件吗？',
 				onOk: () => {
-					if (typeof onDelete === 'function') onDelete('all')
 					message.success('事件已删除')
 					onCancel()
 				},
 			})
 		}
 	}
+
 	return (
 		<Modal
 			title='事件详情'
@@ -113,24 +97,24 @@ const DetailModal: React.FC<DetailModalProps> = ({
 		>
 			{event && (
 				<div className='event-detail'>
-					<h3>{event.title}</h3>
+					<h3>{event.title || ''}</h3>
 					<p>
 						<strong>开始时间：</strong>
-						{event.start?.toLocaleString()}
+						{event.start ? event.start.toLocaleString() : ''}
 					</p>
 					<p>
 						<strong>结束时间：</strong>
-						{event.end?.toLocaleString()}
+						{event.end ? event.end.toLocaleString() : ''}
 					</p>
 					{event.description && (
 						<p>
 							<strong>描述：</strong>
-							{event.description}
+							{event.description || ''}
 						</p>
 					)}
 					<p>
 						<strong>重复：</strong>
-						{eventRepeatOptions[event.extendedProps?.repeat ?? 'none']}
+						{eventRepeatOptions[event.extendedProps?.repeat ?? 'none']?.label || '不重复'}
 					</p>
 					<p>
 						<strong>提醒：</strong>
@@ -138,7 +122,7 @@ const DetailModal: React.FC<DetailModalProps> = ({
 					</p>
 					<div className='event-color'>
 						<strong>事件颜色：</strong>
-						<Tag color={event.backgroundColor as string}>{event.backgroundColor}</Tag>
+						<Tag color={event.backgroundColor || '#000'}>{event.backgroundColor || ''}</Tag>
 					</div>
 				</div>
 			)}
@@ -147,7 +131,3 @@ const DetailModal: React.FC<DetailModalProps> = ({
 }
 
 export default DetailModal
-// 父组件 onDelete 处理建议：
-// - mode === 'single'：将 occurrenceDate 加入 exdate
-// - mode === 'all'：直接删除事件
-// - mode === 'future'：将 rrule.until 设为 occurrenceDate 前一天
