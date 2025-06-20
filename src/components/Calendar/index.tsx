@@ -11,18 +11,7 @@ import listPlugin from '@fullcalendar/list'
 import FullCalendar from '@fullcalendar/react'
 import rrulePlugin from '@fullcalendar/rrule'
 import timeGridPlugin from '@fullcalendar/timegrid'
-import {
-	Button,
-	Card,
-	DatePicker,
-	Form,
-	Input,
-	Modal,
-	Radio,
-	Space,
-	Tag,
-	message,
-} from 'antd'
+import { Card, Form, Modal, message } from 'antd'
 import dayjs from 'dayjs'
 import type React from 'react'
 import { useEffect, useState } from 'react'
@@ -32,8 +21,21 @@ import tippy from 'tippy.js'
 import 'tippy.js/dist/tippy.css' // optional for styling
 import 'tippy.js/animations/scale.css' // optional for animations
 import 'tippy.js/themes/light.css' // optional for themes
+import DetailModal from './detail-modal'
+import EventModal from './event-modal'
 
-type RepeatType = keyof typeof eventRepeatOptions
+const eventRepeatOptions = {
+	none: '不重复',
+	daily: '每天',
+	weekly: '每周',
+	monthly: '每月',
+	yearly: '每年',
+	hourly: '每小时',
+	minutely: '每分钟',
+	secondly: '每秒',
+}
+
+export type RepeatType = keyof typeof eventRepeatOptions
 
 interface EventFormData {
 	title: string
@@ -43,18 +45,22 @@ interface EventFormData {
 	color: string
 	repeat: RepeatType
 	reminder: boolean
+	interval?: number // 重复间隔
+	byweekday?: number[] // 周几
+	bymonthday?: number[] // 月几号
+	count?: number // 重复次数
+	until?: dayjs.Dayjs // 截止日期
 }
 
 interface CustomEventInput extends EventInput {
 	daysOfWeek?: number[]
 	startTime?: string
 	endTime?: string
-}
-
-const eventRepeatOptions = {
-	none: '不重复',
-	daily: '每天',
-	weekly: '每周',
+	interval?: number
+	byweekday?: number[]
+	bymonthday?: number[]
+	count?: number
+	until?: string
 }
 
 const Calendar: React.FC = () => {
@@ -131,6 +137,9 @@ const Calendar: React.FC = () => {
 	const [form] = Form.useForm<EventFormData>()
 	const [_selectedDate, setSelectedDate] = useState<DateSelectArg | null>(null)
 	const [isEditMode, setIsEditMode] = useState(false)
+	const [selectedOccurrenceDate, setSelectedOccurrenceDate] = useState<
+		Date | undefined
+	>(undefined)
 
 	// 检查今天的提醒
 	useEffect(() => {
@@ -184,12 +193,62 @@ const Calendar: React.FC = () => {
 	}
 
 	const handleEventClick = (info: EventClickArg) => {
+		// 这里假设 info.event.start 是 occurrence 的实际发生时间
 		setSelectedEvent(
 			Object.assign(info.event, info.event.extendedProps) as CustomEventInput,
+		)
+		setSelectedOccurrenceDate(
+			info.event.start ? new Date(info.event.start) : undefined,
 		)
 		setIsDetailModalVisible(true)
 	}
 
+	const handleDetailEdit = () => {
+		if (selectedEvent) {
+			form.setFieldsValue({
+				title: selectedEvent.title,
+				startDate: dayjs(selectedEvent.start as Date),
+				endDate: dayjs(selectedEvent.end as Date),
+				description: selectedEvent.description,
+				color: selectedEvent.backgroundColor as string,
+				repeat: selectedEvent.extendedProps?.repeat || 'none',
+				reminder: selectedEvent.extendedProps?.reminder || false,
+			})
+			setIsEditMode(true)
+			setIsDetailModalVisible(false)
+			setIsModalVisible(true)
+		}
+	}
+
+	function handleEventDidMount(mountArg: EventMountArg): void {
+		const { event, el, view } = mountArg
+		const title = event.title || '无标题'
+		let start = ''
+		if (event.allDay) {
+			const startDate = dayjs(event.start as Date).format('YYYY-MM-DD')
+			const endDate = dayjs(event.end as Date).format('YYYY-MM-DD')
+			start = `${startDate} 至 ${endDate}`
+		} else {
+			const startTime = dayjs(event.start as Date).format('HH:mm')
+			const endTime = dayjs(event.end as Date).format('HH:mm')
+			start = `${startTime} 至 ${endTime}`
+		}
+
+		tippy(el, {
+			content: `
+				<div>
+					<h4>${title}</h4>
+					<p>${start}</p>
+				</div>
+			`,
+			allowHTML: true,
+			theme: 'light',
+			animation: 'scale',
+			placement: view.type === 'dayGridMonth' ? 'auto' : 'left',
+		})
+	}
+
+	// 拖拽和缩放事件依然在主组件处理
 	const handleEventDrop = (info: EventClickArg) => {
 		const updatedEvents = events.map((event) => {
 			if (event.id === info.event.id) {
@@ -222,100 +281,55 @@ const Calendar: React.FC = () => {
 		message.success('事件时间已调整')
 	}
 
-	const handleSubmit = () => {
-		form.validateFields().then((values) => {
-			const newEvent: CustomEventInput = {
-				id: isEditMode ? selectedEvent?.id : Date.now().toString(),
-				title: values.title,
-				start: values.startDate.toDate(),
-				end: values.endDate.toDate(),
-				description: values.description,
-				backgroundColor: values.color,
-				borderColor: values.color,
-				allDay:
-					values.startDate.isSame(values.startDate.startOf('day')) &&
-					values.endDate.isSame(values.endDate.startOf('day')),
-				extendedProps: {
-					reminder: values.reminder,
-				},
-			}
-
-			if (isEditMode) {
-				const updatedEvents = events.map((event) =>
-					event.id === newEvent.id ? newEvent : event,
-				)
-				setEvents(updatedEvents)
-				message.success('事件已更新')
-			} else {
-				setEvents([...events, newEvent])
-				message.success('事件已添加')
-			}
-
-			setIsModalVisible(false)
-			form.resetFields()
-		})
-	}
-
-	const handleEdit = () => {
-		if (selectedEvent) {
-			form.setFieldsValue({
-				title: selectedEvent.title,
-				startDate: dayjs(selectedEvent.start as Date),
-				endDate: dayjs(selectedEvent.end as Date),
-				description: selectedEvent.description,
-				color: selectedEvent.backgroundColor as string,
-				repeat: selectedEvent.extendedProps?.repeat || 'none',
-				reminder: selectedEvent.extendedProps?.reminder || false,
+	const handleDeleteEvent = (
+		mode: 'single' | 'all' | 'future',
+		occurrenceDate?: Date,
+	) => {
+		if (!selectedEvent) return
+		if (mode === 'all') {
+			setEvents(events.filter((e) => e.id !== selectedEvent.id))
+			message.success('事件已删除')
+		} else if (mode === 'single' && occurrenceDate) {
+			// 单次删除，加入 exdate
+			const updatedEvents = events.map((e) => {
+				if (e.id === selectedEvent.id) {
+					const exdate = Array.isArray(e.exdate)
+						? [...e.exdate]
+						: e.exdate
+							? [e.exdate]
+							: []
+					return {
+						...e,
+						exdate: [...exdate, dayjs(occurrenceDate).toISOString()],
+					}
+				}
+				return e
 			})
-			setIsEditMode(true)
-			setIsDetailModalVisible(false)
-			setIsModalVisible(true)
-		}
-	}
-
-	const handleDelete = () => {
-		if (selectedEvent) {
-			Modal.confirm({
-				title: '确认删除',
-				content: '确定要删除这个事件吗？',
-				onOk: () => {
-					const updatedEvents = events.filter(
-						(event) => event.id !== selectedEvent.id,
-					)
-					setEvents(updatedEvents)
-					setIsDetailModalVisible(false)
-					message.success('事件已删除')
-				},
+			setEvents(updatedEvents)
+			message.success('本次已删除')
+		} else if (mode === 'future' && occurrenceDate) {
+			// 本次及后续，调整 rrule.until
+			const updatedEvents = events.map((e) => {
+				if (
+					e.id === selectedEvent.id &&
+					typeof e.rrule === 'object' &&
+					e.rrule !== null
+				) {
+					const rruleObj = { ...e.rrule } as Record<string, any>
+					rruleObj.until = dayjs(occurrenceDate)
+						.subtract(1, 'day')
+						.toISOString()
+					return {
+						...e,
+						rrule: rruleObj,
+					}
+				}
+				return e
 			})
+			setEvents(updatedEvents)
+			message.success('本次及后续已删除')
 		}
-	}
-
-	function handleEventDidMount(mountArg: EventMountArg): void {
-		const { event, el, view } = mountArg
-		const title = event.title || '无标题'
-		let start = ''
-		if (event.allDay) {
-			const startDate = dayjs(event.start as Date).format('YYYY-MM-DD')
-			const endDate = dayjs(event.end as Date).format('YYYY-MM-DD')
-			start = `${startDate} 至 ${endDate}`
-		} else {
-			const startTime = dayjs(event.start as Date).format('HH:mm')
-			const endTime = dayjs(event.end as Date).format('HH:mm')
-			start = `${startTime} 至 ${endTime}`
-		}
-
-		tippy(el, {
-			content: `
-				<div>
-					<h4>${title}</h4>
-					<p>${start}</p>
-				</div>
-			`,
-			allowHTML: true,
-			theme: 'light',
-			animation: 'scale',
-			placement: view.type === 'dayGridMonth' ? 'auto' : 'left',
-		})
+		setIsDetailModalVisible(false)
 	}
 
 	return (
@@ -373,115 +387,29 @@ const Calendar: React.FC = () => {
 				eventDurationEditable={true}
 			/>
 
-			<Modal
-				title={isEditMode ? '编辑事件' : '添加事件'}
+			<EventModal
 				open={isModalVisible}
-				onOk={handleSubmit}
+				isEditMode={isEditMode}
+				form={form}
+				eventRepeatOptions={eventRepeatOptions}
+				events={events}
+				setEvents={setEvents}
+				selectedEvent={selectedEvent}
 				onCancel={() => {
 					setIsModalVisible(false)
 					form.resetFields()
 				}}
-				width={600}
-			>
-				<Form form={form} layout='vertical'>
-					<Form.Item
-						name='title'
-						label='标题'
-						rules={[{ required: true, message: '请输入事件标题' }]}
-					>
-						<Input />
-					</Form.Item>
-					<Form.Item
-						name='startDate'
-						label='开始时间'
-						rules={[{ required: true, message: '请选择开始时间' }]}
-					>
-						<DatePicker showTime />
-					</Form.Item>
-					<Form.Item
-						name='endDate'
-						label='结束时间'
-						rules={[{ required: true, message: '请选择结束时间' }]}
-					>
-						<DatePicker showTime />
-					</Form.Item>
-					<Form.Item name='repeat' label='重复'>
-						<Radio.Group>
-							{Object.entries(eventRepeatOptions).map(([key, value]) => (
-								<Radio key={key} value={key}>
-									{value}
-								</Radio>
-							))}
-						</Radio.Group>
-					</Form.Item>
-					<Form.Item name='reminder' label='提醒' valuePropName='checked'>
-						<Radio.Group>
-							<Radio value={true}>开启</Radio>
-							<Radio value={false}>关闭</Radio>
-						</Radio.Group>
-					</Form.Item>
-					<Form.Item name='color' label='事件颜色'>
-						<Input type='color' defaultValue='#1890ff' />
-					</Form.Item>
-					<Form.Item name='description' label='描述'>
-						<Input.TextArea />
-					</Form.Item>
-				</Form>
-			</Modal>
+			/>
 
-			<Modal
-				title='事件详情'
+			<DetailModal
+				event={selectedEvent}
+				eventRepeatOptions={eventRepeatOptions}
 				open={isDetailModalVisible}
+				onEdit={handleDetailEdit}
 				onCancel={() => setIsDetailModalVisible(false)}
-				footer={
-					<div className='event-actions'>
-						<Space>
-							<Button onClick={handleEdit}>编辑</Button>
-							<Button danger onClick={handleDelete}>
-								删除
-							</Button>
-						</Space>
-					</div>
-				}
-			>
-				{selectedEvent && (
-					<div className='event-detail'>
-						<h3>{selectedEvent.title}</h3>
-						<p>
-							<strong>开始时间：</strong>
-							{selectedEvent.start?.toLocaleString()}
-						</p>
-						<p>
-							<strong>结束时间：</strong>
-							{selectedEvent.end?.toLocaleString()}
-						</p>
-						{selectedEvent.description && (
-							<p>
-								<strong>描述：</strong>
-								{selectedEvent.description}
-							</p>
-						)}
-						<p>
-							<strong>重复：</strong>
-							{
-								eventRepeatOptions[
-									(selectedEvent.extendedProps?.repeat as RepeatType) ?? 'none'
-								]
-							}
-						</p>
-						<p>
-							<strong>提醒：</strong>
-							{selectedEvent.extendedProps?.reminder ? '开启' : '关闭'}
-						</p>
-						<div className='event-color'>
-							<strong>事件颜色：</strong>
-							<Tag color={selectedEvent.backgroundColor as string}>
-								{selectedEvent.backgroundColor}
-							</Tag>
-						</div>
-					</div>
-				)}
-			</Modal>
+				occurrenceDate={selectedOccurrenceDate}
+				onDelete={handleDeleteEvent}
+			/>
 		</Card>
 	)
 }
