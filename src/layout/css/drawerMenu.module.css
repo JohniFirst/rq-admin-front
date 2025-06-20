@@ -1,22 +1,35 @@
+/* 只保留结构和动画，颜色全部用 theme.css 变量 */
 .topLevelMenu {
-	width: 76px;
 	text-align: center;
 	cursor: pointer;
+	background: var(--color-surface);
+	box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.04);
+	padding: 12px 0;
+	transition: background 0.3s;
 }
 
 .topLevelMenu li {
 	overflow: hidden;
 	text-overflow: ellipsis;
 	white-space: nowrap;
-	padding: 6px 0;
-	font-size: 14px;
+	font-size: 15px;
+	color: var(--color-text);
+	margin: 0 8px 12px 8px;
+	padding: 12px 16px;
 }
 
-.topLevelMenu li:not(:last-child) {
-	margin-bottom: 12px;
+.topLevelMenu li:last-child {
+	margin-bottom: 0;
+}
+
+.topLevelMenu li:hover:not(.activeTopMenu) {
+	background: var(--color-surface-hover);
+	color: var(--color-primary);
 }
 
 .activeTopMenu {
-	color: white;
-	background-color: var(--theme-color);
+	color: var(--color-primary-contrast, #fff);
+	background: var(--color-primary);
+	box-shadow: 0 2px 8px 0 rgba(37, 99, 235, 0.10);
+	border-radius: 12px;
 }

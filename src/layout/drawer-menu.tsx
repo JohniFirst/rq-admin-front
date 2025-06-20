@@ -87,23 +87,29 @@ function DrawerMenu({ showHeaderOperate = true }: DrawerMenuProps) {
 
 	return (
 		<>
-			<div className='grid grid-cols-[auto_1fr] w-full h-screen'>
+			<div className='grid grid-cols-[auto_1fr] w-full h-screen bg-[var(--color-background)] dark:bg-[var(--color-background)]'>
 				<aside className='max-h-screen flex'>
-					<ul className={drawer.topLevelMenu}>
+					<ul
+						className={drawer.topLevelMenu + ' transition-colors duration-300'}
+					>
 						{menus.map((item) => {
 							return (
 								<li
-									className={`${
-										topActiveMenu.key === item.key
-											? `${drawer.activeTopMenu}`
-											: ''
-									}`}
+									className={`select-none cursor-pointer ${drawer.topLevelMenu} ${topActiveMenu.key === item.key ? drawer.activeTopMenu : ''} transition-colors duration-200`}
 									key={item.key}
 									onClick={() => setTopActiveMenu(item)}
 									onKeyUp={() => setTopActiveMenu(item)}
+									style={{
+										color:
+											topActiveMenu.key === item.key
+												? 'var(--color-primary-contrast, #fff)'
+												: 'var(--color-text)',
+									}}
 								>
-									{item.icon}
-									<p>{item.label}</p>
+									<span className='text-xl mb-1'>{item.icon}</span>
+									<p className='text-xs font-medium tracking-wide'>
+										{item.label}
+									</p>
 								</li>
 							)
 						})}
@@ -111,9 +117,9 @@ function DrawerMenu({ showHeaderOperate = true }: DrawerMenuProps) {
 
 					{topActiveMenu.children ? (
 						<Menu
-							className='max-h-full overflow-y-auto'
+							className='max-h-full overflow-y-auto rounded-xl shadow bg-[var(--color-surface)] dark:bg-[var(--color-surface)] transition-colors duration-300'
 							onClick={onClick}
-							style={{ width: 180 }}
+							style={{ width: 180, background: 'var(--color-surface)' }}
 							selectedKeys={selectedKey}
 							openKeys={openKeys}
 							onOpenChange={onOpenChange}
