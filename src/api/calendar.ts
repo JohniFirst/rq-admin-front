@@ -1,8 +1,19 @@
 import { http } from '@/utils/http'
 
-/** 获取日程列表 */
-export function getEventsList(): Promise<CloudAlbumItem[]> {
-	return http.post('/event/list', { test: '注意，我修改参数了哦' })
+type CalendarListParams = {
+	year: number
+	month: number
+	event?: string
+}
+
+/** 查询某年某月的所有日历事件 */
+export function getEventsList(params: CalendarListParams) {
+	return http.get('/event/calendar', { params })
+}
+
+/** 编辑/新增日历事件 */
+export function handleEvents(data: { event: string }) {
+	return http.post('/event/calendar', { data })
 }
 
 /** 添加日程 */

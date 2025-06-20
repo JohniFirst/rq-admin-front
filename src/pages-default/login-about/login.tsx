@@ -121,8 +121,8 @@ const LoginForm = () => {
 				onFinish={handleSubmit}
 				initialValues={{
 					remember: true,
-					username: 'zhangsan',
-					password: '2',
+					username: 'lisi',
+					password: '12345678',
 					verificationCode: '1',
 				}}
 				layout='vertical'

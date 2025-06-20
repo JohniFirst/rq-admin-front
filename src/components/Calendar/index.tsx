@@ -16,7 +16,7 @@ import dayjs from 'dayjs'
 import type React from 'react'
 import { useEffect, useState } from 'react'
 import './calendar.css'
-import { getEventsList } from '@/api/calendar'
+// import { getEventsList } from '@/api/calendar'
 import tippy from 'tippy.js'
 import 'tippy.js/dist/tippy.css' // optional for styling
 import 'tippy.js/animations/scale.css' // optional for animations
@@ -174,9 +174,9 @@ const Calendar: React.FC = () => {
 	}, [])
 
 	const getList = () => {
-		getEventsList().then((res) => {
-			console.log('events res', res)
-		})
+		// getEventsList().then((res) => {
+		// 	console.log('events res', res)
+		// })
 	}
 
 	const handleDateSelect = (selectInfo: DateSelectArg) => {

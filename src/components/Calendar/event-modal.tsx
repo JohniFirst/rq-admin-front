@@ -1,3 +1,4 @@
+import { handleEvents } from '@/api/calendar'
 import {
 	Card,
 	Checkbox,
@@ -90,7 +91,7 @@ const EventModal: React.FC<EventModalProps> = ({
 	const handleOk = () => {
 		form
 			.validateFields()
-			.then((values) => {
+			.then(async (values) => {
 				// 组装 rrule
 				let rrule: any = undefined
 				if (values.repeat !== 'none') {
@@ -129,18 +130,23 @@ const EventModal: React.FC<EventModalProps> = ({
 					},
 					rrule,
 				}
-				if (isEditMode) {
-					const updated = events.map((event) =>
-						event.id === newEvent.id ? newEvent : event,
-					)
-					setEvents(updated)
-					message.success('事件已更新')
-				} else {
-					setEvents([...events, newEvent])
-					message.success('事件已添加')
+				try {
+					await handleEvents({ event: JSON.stringify(newEvent) })
+					if (isEditMode) {
+						const updated = events.map((event) =>
+							event.id === newEvent.id ? newEvent : event,
+						)
+						setEvents(updated)
+						message.success('事件已更新')
+					} else {
+						setEvents([...events, newEvent])
+						message.success('事件已添加')
+					}
+					onCancel()
+					form.resetFields()
+				} catch (e) {
+					message.error('提交到后台失败')
 				}
-				onCancel()
-				form.resetFields()
 			})
 			.catch(() => {
 				message.error('请完善表单信息')
