@@ -1,8 +1,9 @@
 import { presetThemes } from '@/config/preset-themes'
-import { ForageEnums, LocalStorageKeys } from '@/enums/localforage.ts'
+import { ForageEnums } from '@/enums/localforage.ts'
 import { LayoutModeEnum } from '@/enums/system'
 import { forage } from '@/utils/localforage.ts'
 import { type PayloadAction, type Slice, createSlice } from '@reduxjs/toolkit'
+import cloneDeep from 'lodash-es/cloneDeep'
 import type { RootState } from '../store.ts'
 
 type LocalSystemInfo = {
@@ -25,17 +26,16 @@ export const fetchInitialData = async () => {
 	const SYSTEM_INFO = await forage.getItem<string>(ForageEnums.SYSTEM_INFO)
 	const localSystemInfo = JSON.parse(SYSTEM_INFO || '{}') as LocalSystemInfo & {
 		showNavigationBar?: boolean
+		layoutMode?: LayoutModeEnum
 	}
 	// 更新html的类来改变主题
 	const theme = localSystemInfo?.theme || 'default-light'
 	document.documentElement.className = theme
-	const layoutMode = localStorage.getItem(
-		LocalStorageKeys.LAYOUT_MODE,
-	) as LayoutModeEnum
+	const layoutMode = localSystemInfo?.layoutMode ?? LayoutModeEnum.COMMON_MENU
 	const showNavigationBar = localSystemInfo?.showNavigationBar ?? true
 
 	return {
-		layoutMode: layoutMode ?? LayoutModeEnum.COMMON_MENU,
+		layoutMode,
 		theme,
 		customThemes: [],
 		navItem,
@@ -89,9 +89,7 @@ export const systemInfoSlice = createSlice({
 		setTheme: (state, action: PayloadAction<string>) => {
 			state.theme = action.payload
 			document.documentElement.className = state.theme
-			const copyState = JSON.parse(
-				JSON.stringify(state),
-			) as Partial<SystemInfoState>
+			const copyState = cloneDeep(state) as Partial<SystemInfoState>
 			delete copyState.navItem
 			forage.setItem(ForageEnums.SYSTEM_INFO, JSON.stringify(copyState))
 		},
@@ -103,12 +101,13 @@ export const systemInfoSlice = createSlice({
 		 */
 		setlayoutMode: (state, action: PayloadAction<LayoutModeEnum>) => {
 			state.layoutMode = action.payload
+			const copyState = cloneDeep(state) as Partial<SystemInfoState>
+			delete copyState.navItem
+			forage.setItem(ForageEnums.SYSTEM_INFO, JSON.stringify(copyState))
 		},
 		setShowNavigationBar: (state, action: PayloadAction<boolean>) => {
 			state.showNavigationBar = action.payload
-			const copyState = JSON.parse(
-				JSON.stringify(state),
-			) as Partial<SystemInfoState>
+			const copyState = cloneDeep(state) as Partial<SystemInfoState>
 			delete copyState.navItem
 			forage.setItem(ForageEnums.SYSTEM_INFO, JSON.stringify(copyState))
 		},
