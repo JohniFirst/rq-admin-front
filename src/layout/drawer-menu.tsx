@@ -1,6 +1,6 @@
 import useCustomNavigate from '@/hooks/useCustomNavigate'
 import { useAppDispatch, useAppSelector } from '@/store/hooks'
-import { pushNavItemAction } from '@/store/slice/system-info.ts'
+// import { pushNavItemAction } from '@/store/slice/system-info.ts'
 import { Popover } from 'antd'
 import { useEffect, useState } from 'react'
 import { Link, Outlet, useLocation } from 'react-router-dom'
@@ -13,7 +13,7 @@ import {
 	MenuFoldOutlined,
 	MenuUnfoldOutlined,
 } from '@ant-design/icons'
-import type { MenuProps } from 'antd'
+// import type { MenuProps } from 'antd'
 
 interface DrawerMenuProps {
 	showHeaderOperate?: boolean
@@ -60,19 +60,19 @@ function DrawerMenu({ showHeaderOperate = true }: DrawerMenuProps) {
 		if (current) setTopActiveMenu(current)
 	}, [location, menus])
 
-	const onClick: MenuProps['onClick'] = (e) => {
-		navigate(e.key)
+	// const onClick: MenuProps['onClick'] = (e) => {
+	// 	navigate(e.key)
 
-		dispatch(
-			pushNavItemAction({
-				key: e.key,
-				// @ts-ignore
-				label: e.item.props.title,
-				active: true,
-				fixed: false,
-			}),
-		)
-	}
+	// 	dispatch(
+	// 		pushNavItemAction({
+	// 			key: e.key,
+	// 			// @ts-ignore
+	// 			label: e.item.props.title,
+	// 			active: true,
+	// 			fixed: false,
+	// 		}),
+	// 	)
+	// }
 
 	// 找到当前选中项和需要展开的项
 	const findSelectedAndOpenKeys = (items: MenuItem[], currentPath: string) => {
@@ -103,7 +103,7 @@ function DrawerMenu({ showHeaderOperate = true }: DrawerMenuProps) {
 	}
 
 	const [selectedKey, setSelectedKey] = useState([''])
-	const [openKeys, setOpenKeys] = useState<string[]>([])
+	const [_openKeys, setOpenKeys] = useState<string[]>([])
 
 	useEffect(() => {
 		const result = findSelectedAndOpenKeys(menus, location.pathname)
@@ -111,10 +111,10 @@ function DrawerMenu({ showHeaderOperate = true }: DrawerMenuProps) {
 		setOpenKeys(result.openKeys)
 	}, [location])
 
-	const onOpenChange = (keys: string[]) => {
-		// 更新展开的菜单项
-		setOpenKeys(keys)
-	}
+	// const onOpenChange = (keys: string[]) => {
+	// 	// 更新展开的菜单项
+	// 	setOpenKeys(keys)
+	// }
 
 	// 递归渲染多级菜单项，children 以 Popover 方式展示
 	function RecursiveMenuItem({ item, selectedKey, navigate, drawer }: any) {
