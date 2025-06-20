@@ -21,9 +21,14 @@ export function getEventsList(params: CalendarListParams): Promise<CalendarEvent
 	return http.get('/event/calendar', { params })
 }
 
-/** 编辑/新增日历事件 */
-export function handleEvents(data: { event: string }) {
+/** 新增日历事件 */
+export function addEvents(data: { event: string }) {
 	return http.post('/event/calendar', data)
+}
+
+/** 编辑日历事件 */
+export function editEvents(data: { event: string }) {
+	return http.put('/event/calendar', data)
 }
 
 /** 添加日程 */

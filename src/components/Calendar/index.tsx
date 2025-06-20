@@ -1,7 +1,7 @@
-import type { DateSelectArg, EventClickArg, EventInput, EventMountArg } from '@fullcalendar/core'
+import type { DateSelectArg, EventClickArg, EventDropArg, EventInput, EventMountArg } from '@fullcalendar/core'
 import zhCnLocale from '@fullcalendar/core/locales/zh-cn'
 import dayGridPlugin from '@fullcalendar/daygrid'
-import interactionPlugin from '@fullcalendar/interaction'
+import interactionPlugin, { type EventResizeDoneArg } from '@fullcalendar/interaction'
 import listPlugin from '@fullcalendar/list'
 import FullCalendar from '@fullcalendar/react'
 import rrulePlugin from '@fullcalendar/rrule'
@@ -11,7 +11,7 @@ import dayjs from 'dayjs'
 import type React from 'react'
 import { useEffect, useState } from 'react'
 import './calendar.css'
-import { getEventsList } from '@/api/calendar'
+import { editEvents, getEventsList } from '@/api/calendar'
 import tippy from 'tippy.js'
 import 'tippy.js/dist/tippy.css' // optional for styling
 import 'tippy.js/animations/scale.css' // optional for animations
@@ -120,14 +120,8 @@ const Calendar: React.FC = () => {
 				if (repeat === 'none' && parsed.rrule) {
 					delete parsed.rrule
 				}
-				return {
-					...parsed,
-					id: item.id,
-					start: item.start,
-					end: item.end,
-					title: item.title,
-					repeat,
-				}
+				parsed.id = item.id
+				return parsed
 			})
 			setEvents(parsedEvents)
 		} catch (e) {
@@ -201,36 +195,27 @@ const Calendar: React.FC = () => {
 	}
 
 	// 拖拽和缩放事件依然在主组件处理
-	const handleEventDrop = (info: EventClickArg) => {
-		const updatedEvents = events.map((event) => {
-			if (event.id === info.event.id) {
-				const updatedEvent: CustomEventInput = {
-					...event,
-					start: info.event.start?.toISOString(),
-					end: info.event.end?.toISOString(),
-				}
-				return updatedEvent
+	const handleEventDrop = async (info: EventDropArg) => {
+		try {
+			const eventObj = events.find((e) => Number(e.id) === Number(info.event.id))
+			if (!eventObj) throw new Error('事件未找到')
+			const updatedEvent = {
+				...eventObj,
+				start: info.event.start,
+				end: info.event.end,
 			}
-			return event
-		})
-		setEvents(updatedEvents)
-		message.success('事件已更新')
+			await editEvents({ event: JSON.stringify(updatedEvent) })
+			await getList()
+			message.success('事件已更新')
+		} catch (error) {
+			console.log('事件更新失败', error)
+
+			message.error('事件更新失败')
+		}
 	}
 
-	const handleEventResize = (info: EventClickArg) => {
-		const updatedEvents = events.map((event) => {
-			if (event.id === info.event.id) {
-				const updatedEvent: CustomEventInput = {
-					...event,
-					start: info.event.start?.toISOString(),
-					end: info.event.end?.toISOString(),
-				}
-				return updatedEvent
-			}
-			return event
-		})
-		setEvents(updatedEvents)
-		message.success('事件时间已调整')
+	const handleEventResize = async (info: EventResizeDoneArg) => {
+		handleEventDrop(info as unknown as EventDropArg)
 	}
 
 	const handleDeleteEvent = (mode: 'single' | 'all' | 'future', occurrenceDate?: Date) => {
@@ -311,11 +296,6 @@ const Calendar: React.FC = () => {
 				expandRows={true}
 				stickyHeaderDates={true}
 				nowIndicator={true}
-				eventOverlap={false}
-				eventConstraint={{
-					startTime: '00:00',
-					endTime: '23:59',
-				}}
 				eventStartEditable={true}
 				eventDurationEditable={true}
 			/>
@@ -325,8 +305,6 @@ const Calendar: React.FC = () => {
 				isEditMode={isEditMode}
 				form={form}
 				eventRepeatOptions={eventRepeatOptions}
-				events={events}
-				setEvents={setEvents}
 				selectedEvent={selectedEvent}
 				onCancel={() => {
 					setIsModalVisible(false)

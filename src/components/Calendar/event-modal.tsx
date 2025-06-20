@@ -1,4 +1,4 @@
-import { handleEvents } from '@/api/calendar'
+import { addEvents } from '@/api/calendar'
 import {
 	Card,
 	Checkbox,
@@ -15,7 +15,6 @@ import {
 	message,
 } from 'antd'
 import type { FormInstance } from 'antd/es/form'
-import { format } from 'date-fns'
 import dayjs from 'dayjs'
 import type React from 'react'
 import { useEffect } from 'react'
@@ -42,8 +41,6 @@ interface EventModalProps {
 	isEditMode: boolean
 	form: FormInstance<EventFormData>
 	eventRepeatOptions: Record<string, string>
-	events: any[]
-	setEvents: (events: any[]) => void
 	selectedEvent?: any
 	onCancel: () => void
 }
@@ -63,8 +60,6 @@ const EventModal: React.FC<EventModalProps> = ({
 	isEditMode,
 	form,
 	eventRepeatOptions,
-	events,
-	setEvents,
 	selectedEvent,
 	onCancel,
 }) => {
@@ -108,7 +103,7 @@ const EventModal: React.FC<EventModalProps> = ({
 					if (freq) {
 						rrule = {
 							freq,
-							dtstart: format(values.startDate.toDate(), 'yyyy-MM-dd HH:mm:ss'),
+							dtstart: values.startDate,
 							interval: values.interval || 1,
 						}
 						if (values.repeat === 'weekly' && values.byweekday) {
@@ -121,15 +116,14 @@ const EventModal: React.FC<EventModalProps> = ({
 							rrule.count = values.count
 						}
 						if (values.untilType === 'until' && values.until) {
-							rrule.until = format(values.until.toDate(), 'yyyy-MM-dd HH:mm:ss')
+							rrule.until = values.until.toDate()
 						}
 					}
 				}
 				const newEvent = {
-					id: isEditMode ? selectedEvent?.id : Date.now().toString(),
 					title: values.title,
-					start: format(values.startDate.toDate(), 'yyyy-MM-dd HH:mm:ss'),
-					end: format(values.endDate.toDate(), 'yyyy-MM-dd HH:mm:ss'),
+					start: values.startDate,
+					end: values.endDate,
 					description: values.description,
 					backgroundColor: values.color,
 					borderColor: values.color,
@@ -143,15 +137,8 @@ const EventModal: React.FC<EventModalProps> = ({
 					rrule,
 				}
 				try {
-					await handleEvents({ event: JSON.stringify(newEvent) })
-					if (isEditMode) {
-						const updated = events.map((event) => (event.id === newEvent.id ? newEvent : event))
-						setEvents(updated)
-						message.success('事件已更新')
-					} else {
-						setEvents([...events, newEvent])
-						message.success('事件已添加')
-					}
+					await addEvents({ event: JSON.stringify(newEvent) })
+
 					onCancel()
 					form.resetFields()
 				} catch (e) {
