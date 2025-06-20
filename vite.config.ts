@@ -1,13 +1,11 @@
 import path from 'node:path'
+import tailwindcss from '@tailwindcss/vite'
 import react from '@vitejs/plugin-react-swc'
-import autoprefixer from 'autoprefixer'
-import tailwindcss from 'tailwindcss'
-import { type UserConfig, defineConfig } from 'vite'
-
 // import { visualizer as bundleAnalyzer } from "rollup-plugin-visualizer";
 import bundleAnalyzer from 'rollup-plugin-bundle-analyzer'
+import { defineConfig, type UserConfig } from 'vite'
 import viteCompression from 'vite-plugin-compression'
-import { viteMockServe } from 'vite-plugin-mock';
+import { viteMockServe } from 'vite-plugin-mock'
 
 // https://vitejs.dev/config/
 export default defineConfig((configEnv: UserConfig): UserConfig => {
@@ -17,6 +15,7 @@ export default defineConfig((configEnv: UserConfig): UserConfig => {
 		base: '/rq-admin-front',
 		plugins: [
 			react(),
+			tailwindcss(),
 			viteMockServe({
 				mockPath: path.resolve(__dirname, 'mock'),
 				enable: mode === 'mock',
@@ -24,9 +23,9 @@ export default defineConfig((configEnv: UserConfig): UserConfig => {
 			// 开启gzip压缩
 			mode === 'gzip'
 				? viteCompression({
-					// 压缩后删除原文件
-					deleteOriginFile: true,
-				})
+						// 压缩后删除原文件
+						deleteOriginFile: true,
+					})
 				: undefined,
 			mode === 'analyzer' ? bundleAnalyzer({}) : undefined,
 		],
@@ -34,11 +33,6 @@ export default defineConfig((configEnv: UserConfig): UserConfig => {
 			alias: {
 				'@': path.resolve(__dirname, './src'),
 				types: path.resolve(__dirname, './types'),
-			},
-		},
-		css: {
-			postcss: {
-				plugins: [tailwindcss(), autoprefixer()],
 			},
 		},
 		server: {
