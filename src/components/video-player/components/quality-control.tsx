@@ -9,19 +9,13 @@ interface QualityControlProps {
 
 const qualityOptions = ['auto', '1080P', '720P', '480P']
 
-const QualityControl: React.FC<QualityControlProps> = ({
-	currentQuality,
-	onQualityChange,
-}) => {
+const QualityControl: React.FC<QualityControlProps> = ({ currentQuality, onQualityChange }) => {
 	const [isOpen, setIsOpen] = useState(false)
 	const containerRef = useRef<HTMLDivElement>(null)
 
 	useEffect(() => {
 		const handleClickOutside = (event: MouseEvent) => {
-			if (
-				containerRef.current &&
-				!containerRef.current.contains(event.target as Node)
-			) {
+			if (containerRef.current && !containerRef.current.contains(event.target as Node)) {
 				setIsOpen(false)
 			}
 		}
@@ -53,9 +47,7 @@ const QualityControl: React.FC<QualityControlProps> = ({
 						<button
 							type='button'
 							key={quality}
-							className={`${styles.qualityOption} ${
-								quality === currentQuality ? styles.active : ''
-							}`}
+							className={`${styles.qualityOption} ${quality === currentQuality ? styles.active : ''}`}
 							onClick={() => {
 								onQualityChange(quality)
 								setIsOpen(false)

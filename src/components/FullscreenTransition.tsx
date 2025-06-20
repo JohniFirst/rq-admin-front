@@ -14,8 +14,7 @@ const FullscreenTransition = ({ children }: FullscreenTransitionProps) => {
 		}
 
 		document.addEventListener('fullscreenchange', handleFullscreenChange)
-		return () =>
-			document.removeEventListener('fullscreenchange', handleFullscreenChange)
+		return () => document.removeEventListener('fullscreenchange', handleFullscreenChange)
 	}, [])
 
 	return (

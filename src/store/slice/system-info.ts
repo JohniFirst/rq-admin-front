@@ -115,17 +115,13 @@ export const systemInfoSlice = createSlice({
 			state.customThemes.push(action.payload)
 		},
 		updateCustomTheme: (state, action: PayloadAction<ThemeConfig>) => {
-			const index = state.customThemes.findIndex(
-				(theme) => theme.id === action.payload.id,
-			)
+			const index = state.customThemes.findIndex((theme) => theme.id === action.payload.id)
 			if (index !== -1) {
 				state.customThemes[index] = action.payload
 			}
 		},
 		deleteCustomTheme: (state, action: PayloadAction<string>) => {
-			state.customThemes = state.customThemes.filter(
-				(theme) => theme.id !== action.payload,
-			)
+			state.customThemes = state.customThemes.filter((theme) => theme.id !== action.payload)
 			if (state.theme === action.payload) {
 				state.theme = 'default-light'
 			}

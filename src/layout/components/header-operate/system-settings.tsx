@@ -8,11 +8,7 @@ import { useEffect, useState } from 'react'
 
 import { LayoutModeEnum } from '@/enums/system'
 import { useAppDispatch, useAppSelector } from '@/store/hooks'
-import {
-	setShowNavigationBar,
-	setTheme,
-	setlayoutMode,
-} from '@/store/slice/system-info'
+import { setShowNavigationBar, setTheme, setlayoutMode } from '@/store/slice/system-info'
 import ThemeConfig from './theme-config'
 
 const layoutModeArr = [
@@ -42,9 +38,7 @@ const SystemSettings: React.FC = () => {
 
 	const layoutMode = useAppSelector((state) => state.systemInfo.layoutMode)
 	const currentTheme = useAppSelector((state) => state.systemInfo.theme)
-	const showNavigationBar = useAppSelector(
-		(state) => state.systemInfo.showNavigationBar,
-	)
+	const showNavigationBar = useAppSelector((state) => state.systemInfo.showNavigationBar)
 	const dispatch = useAppDispatch()
 
 	useEffect(() => {
@@ -138,11 +132,7 @@ const SystemSettings: React.FC = () => {
 			</motion.div>
 
 			<Drawer
-				title={
-					<h3 className='text-lg font-semibold text-gray-800 dark:text-gray-200'>
-						系统设置
-					</h3>
-				}
+				title={<h3 className='text-lg font-semibold text-gray-800 dark:text-gray-200'>系统设置</h3>}
 				placement='right'
 				onClose={onClose}
 				open={open}
@@ -157,19 +147,12 @@ const SystemSettings: React.FC = () => {
 			>
 				<div className='space-y-8'>
 					<section>
-						<h4 className='text-base font-medium text-gray-700 dark:text-gray-300 mb-4'>
-							主题配置
-						</h4>
-						<ThemeConfig
-							currentTheme={currentTheme}
-							onThemeChange={handleThemeChange}
-						/>
+						<h4 className='text-base font-medium text-gray-700 dark:text-gray-300 mb-4'>主题配置</h4>
+						<ThemeConfig currentTheme={currentTheme} onThemeChange={handleThemeChange} />
 					</section>
 
 					<section>
-						<h4 className='text-base font-medium text-gray-700 dark:text-gray-300 mb-4'>
-							导航菜单布局
-						</h4>
+						<h4 className='text-base font-medium text-gray-700 dark:text-gray-300 mb-4'>导航菜单布局</h4>
 						<div className='grid grid-cols-3 gap-4'>
 							{layoutModeArr.map((item) => (
 								<div
@@ -190,9 +173,7 @@ const SystemSettings: React.FC = () => {
 										alt={item.title}
 										className='w-full h-auto rounded transition-transform duration-300 hover:scale-105'
 									/>
-									<p className='text-center text-sm mt-2 text-gray-600 dark:text-gray-400'>
-										{item.title}
-									</p>
+									<p className='text-center text-sm mt-2 text-gray-600 dark:text-gray-400'>{item.title}</p>
 									{layoutMode === item.value && (
 										<div className='absolute -top-1 -right-1 w-4 h-4 bg-indigo-500 rounded-full flex items-center justify-center'>
 											<div className='w-2 h-2 bg-white rounded-full' />
@@ -204,32 +185,22 @@ const SystemSettings: React.FC = () => {
 					</section>
 
 					<section>
-						<h4 className='text-base font-medium text-gray-700 dark:text-gray-300 mb-4'>
-							其他设置
-						</h4>
+						<h4 className='text-base font-medium text-gray-700 dark:text-gray-300 mb-4'>其他设置</h4>
 						<div className='space-y-4'>
 							<div className='flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-800 rounded-lg'>
-								<span className='text-gray-600 dark:text-gray-400'>
-									显示应用内导航组件
-								</span>
+								<span className='text-gray-600 dark:text-gray-400'>显示应用内导航组件</span>
 								<Switch
 									checked={showNavigationBar}
-									onChange={(checked) =>
-										dispatch(setShowNavigationBar(checked))
-									}
+									onChange={(checked) => dispatch(setShowNavigationBar(checked))}
 									className='bg-gray-300'
 								/>
 							</div>
 							<div className='flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-800 rounded-lg'>
-								<span className='text-gray-600 dark:text-gray-400'>
-									开启页面动画
-								</span>
+								<span className='text-gray-600 dark:text-gray-400'>开启页面动画</span>
 								<Switch defaultChecked className='bg-gray-300' />
 							</div>
 							<div className='flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-800 rounded-lg'>
-								<span className='text-gray-600 dark:text-gray-400'>
-									显示页面切换进度条
-								</span>
+								<span className='text-gray-600 dark:text-gray-400'>显示页面切换进度条</span>
 								<Switch defaultChecked className='bg-gray-300' />
 							</div>
 						</div>

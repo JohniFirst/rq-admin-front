@@ -64,9 +64,7 @@ const SquareInputDemo: React.FC = () => {
 
 	return (
 		<div className='p-6 space-y-6'>
-			<h1 className='text-2xl font-bold text-gray-800 mb-6'>
-				验证码输入框组件演示
-			</h1>
+			<h1 className='text-2xl font-bold text-gray-800 mb-6'>验证码输入框组件演示</h1>
 
 			{/* 基础用法 */}
 			<Card title='基础用法' className='mb-6'>
@@ -142,9 +140,7 @@ const SquareInputDemo: React.FC = () => {
 			<Card title='状态演示' className='mb-6'>
 				<Space direction='vertical' size='large' className='w-full'>
 					<div>
-						<h3 className='text-lg font-medium mb-3'>
-							错误状态 (输入123456为正确)
-						</h3>
+						<h3 className='text-lg font-medium mb-3'>错误状态 (输入123456为正确)</h3>
 						<SquareInputBox
 							value={code6}
 							onChange={(value) => {
@@ -170,37 +166,17 @@ const SquareInputDemo: React.FC = () => {
 					<div className='space-y-4'>
 						<div>
 							<span className='block text-sm font-medium mb-2'>验证码长度</span>
-							<InputNumber
-								min={1}
-								max={10}
-								value={length}
-								onChange={(v) => setLength(v ?? 0)}
-								className='w-full'
-							/>
+							<InputNumber min={1} max={10} value={length} onChange={(v) => setLength(v ?? 0)} className='w-full' />
 						</div>
 
 						<div>
-							<span className='block text-sm font-medium mb-2'>
-								输入框大小 (px)
-							</span>
-							<InputNumber
-								min={32}
-								max={80}
-								value={size}
-								onChange={(v) => setSize(v ?? 0)}
-								className='w-full'
-							/>
+							<span className='block text-sm font-medium mb-2'>输入框大小 (px)</span>
+							<InputNumber min={32} max={80} value={size} onChange={(v) => setSize(v ?? 0)} className='w-full' />
 						</div>
 
 						<div>
 							<span className='block text-sm font-medium mb-2'>间距 (px)</span>
-							<InputNumber
-								min={0}
-								max={20}
-								value={gap}
-								onChange={(v) => setGap(v ?? 0)}
-								className='w-full'
-							/>
+							<InputNumber min={0} max={20} value={gap} onChange={(v) => setGap(v ?? 0)} className='w-full' />
 						</div>
 
 						<div>

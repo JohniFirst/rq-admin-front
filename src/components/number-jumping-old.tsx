@@ -7,12 +7,7 @@ interface NumberJumpingProps {
 	className?: string
 }
 
-function NumberJumping({
-	startValue = 0,
-	endValue,
-	duration = 300,
-	className,
-}: NumberJumpingProps) {
+function NumberJumping({ startValue = 0, endValue, duration = 300, className }: NumberJumpingProps) {
 	const [currentValue, setCurrentValue] = useState(startValue)
 
 	const animationFrameRef = useRef<number | null>(null)
@@ -23,8 +18,7 @@ function NumberJumping({
 		const animate = () => {
 			if (elapsedTime < duration) {
 				// 调整非线性的增量计算方式，实现更明显的先快后慢
-				const increment =
-					(endValue - startValue) * Math.sqrt(elapsedTime / duration)
+				const increment = (endValue - startValue) * Math.sqrt(elapsedTime / duration)
 				setCurrentValue((prevValue) => prevValue + increment)
 				elapsedTime += 10
 				animationFrameRef.current = requestAnimationFrame(animate)

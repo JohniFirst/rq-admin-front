@@ -10,9 +10,7 @@ export const getClientXY = (e: MouseEvent | TouchEvent) => {
 
 export const isInRange = (
 	rule: Rule,
-	rect:
-		| { left: number; top: number; width: number; height: number }
-		| undefined,
+	rect: { left: number; top: number; width: number; height: number } | undefined,
 	scrollContainer: HTMLElement | null,
 	boxRect: { top: number; left: number; width: number; height: number },
 	boxRef: React.MutableRefObject<HTMLDivElement | null>,
@@ -25,24 +23,13 @@ export const isInRange = (
 		return false
 	}
 
-	const {
-		left: rectLeft,
-		top: rectTop,
-		width: rectWidth,
-		height: rectHeight,
-	} = rect
+	const { left: rectLeft, top: rectTop, width: rectWidth, height: rectHeight } = rect
 
-	const { top: containerTop, left: containerLeft } =
-		scrollContainer.getBoundingClientRect()
+	const { top: containerTop, left: containerLeft } = scrollContainer.getBoundingClientRect()
 	const scrollLeft = scrollContainer.scrollLeft
 	const scrollTop = scrollContainer.scrollTop
 
-	const {
-		top: boxTop,
-		left: boxLeft,
-		width: boxWidth,
-		height: boxHeight,
-	} = boxRect
+	const { top: boxTop, left: boxLeft, width: boxWidth, height: boxHeight } = boxRect
 
 	if (rule === 'collision') {
 		return (

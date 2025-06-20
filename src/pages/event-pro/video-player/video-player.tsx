@@ -9,15 +9,13 @@ const VideoPlayerPage: React.FC = () => {
 			key: '1',
 			title: '长视频示例 (20分钟)',
 			url: 'https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4',
-			poster:
-				'https://storage.googleapis.com/gtv-videos-bucket/sample/images/ForBiggerFun.jpg',
+			poster: 'https://storage.googleapis.com/gtv-videos-bucket/sample/images/ForBiggerFun.jpg',
 		},
 		{
 			key: '2',
 			title: '另一个长视频示例 (25分钟)',
 			url: 'https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyrides.mp4',
-			poster:
-				'https://storage.googleapis.com/gtv-videos-bucket/sample/images/ForBiggerJoyrides.jpg',
+			poster: 'https://storage.googleapis.com/gtv-videos-bucket/sample/images/ForBiggerJoyrides.jpg',
 		},
 	]
 
@@ -43,12 +41,7 @@ const VideoPlayerPage: React.FC = () => {
 						label: video.title,
 						children: (
 							<div className='my-4'>
-								<VideoPlayer
-									src={video.url}
-									poster={video.poster}
-									width='100%'
-									height='auto'
-								/>
+								<VideoPlayer src={video.url} poster={video.poster} width='100%' height='auto' />
 							</div>
 						),
 					}))}

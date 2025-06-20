@@ -26,9 +26,7 @@ export const defaultRoutes: RouteObject[] = [
 			{ path: 'new', element: <RegisterForm /> },
 			{
 				path: 'forgot-password',
-				element: lazyElement(
-					lazy(() => import('@/pages-default/login-about/forgot-password.tsx')),
-				),
+				element: lazyElement(lazy(() => import('@/pages-default/login-about/forgot-password.tsx'))),
 			},
 		],
 	},

@@ -148,19 +148,13 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
 		} else if (e.code === 'ArrowLeft') {
 			e.preventDefault()
 			if (videoRef.current) {
-				videoRef.current.currentTime = Math.max(
-					0,
-					videoRef.current.currentTime - 5,
-				)
+				videoRef.current.currentTime = Math.max(0, videoRef.current.currentTime - 5)
 				showToast('快退 5 秒')
 			}
 		} else if (e.code === 'ArrowRight') {
 			e.preventDefault()
 			if (videoRef.current) {
-				videoRef.current.currentTime = Math.min(
-					videoRef.current.duration,
-					videoRef.current.currentTime + 5,
-				)
+				videoRef.current.currentTime = Math.min(videoRef.current.duration, videoRef.current.currentTime + 5)
 				showToast('快进 5 秒')
 			}
 		} else if (e.code === 'ArrowUp') {
@@ -251,22 +245,12 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
 				onLoadedMetadata={handleLoadedMetadata}
 			>
 				{captions.map((caption, index) => (
-					<track
-						key={index}
-						kind='captions'
-						src={caption.src}
-						label={caption.label}
-						srcLang={caption.srcLang}
-					/>
+					<track key={index} kind='captions' src={caption.src} label={caption.label} srcLang={caption.srcLang} />
 				))}
 			</video>
 			{showPlayIcon && !isPlaying && !isDragging && (
 				<div className={styles.centerPlayButton} onClick={togglePlay}>
-					<button
-						type='button'
-						className={styles.playButton}
-						aria-label={isPlaying ? 'Pause' : 'Play'}
-					>
+					<button type='button' className={styles.playButton} aria-label={isPlaying ? 'Pause' : 'Play'}>
 						{isPlaying ? '⏸' : '▶'}
 					</button>
 				</div>
@@ -301,16 +285,9 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
 						/>
 					</div>
 					<div className={styles.rightControls}>
-						<PlaybackRateControl
-							playbackRate={playbackRate}
-							onPlaybackRateChange={handlePlaybackRateChange}
-						/>
+						<PlaybackRateControl playbackRate={playbackRate} onPlaybackRateChange={handlePlaybackRateChange} />
 						<QualityControl currentQuality='auto' onQualityChange={() => {}} />
-						<DanmakuControl
-							isEnabled={false}
-							onToggle={() => {}}
-							onSend={() => {}}
-						/>
+						<DanmakuControl isEnabled={false} onToggle={() => {}} onSend={() => {}} />
 						<button
 							type='button'
 							className={styles.controlButton}

@@ -27,15 +27,10 @@ function Dashboard() {
 		<div className='grid grid-cols-8 gap-4'>
 			{/* 进店人数 */}
 			<li className='custom-container flex xl:col-span-2 md:col-span-3 sm:col-span-4'>
-				<UserOutlined
-					style={{ fontSize: '50px', color: '#ff5500', width: '70px' }}
-				/>
+				<UserOutlined style={{ fontSize: '50px', color: '#ff5500', width: '70px' }} />
 				<div className='flex-1'>
 					<p>进店人数/人次</p>
-					<p
-						className='text-2xl my-2 flex justify-between'
-						style={{ color: 'red' }}
-					>
+					<p className='text-2xl my-2 flex justify-between' style={{ color: 'red' }}>
 						<NumberJumping endValue={5000} />
 						<CaretUpOutlined style={{ color: 'red' }} />
 					</p>
@@ -45,15 +40,10 @@ function Dashboard() {
 
 			{/* 销售额 */}
 			<li className='custom-container flex xl:col-span-2 md:col-span-3 sm:col-span-4'>
-				<StrikethroughOutlined
-					style={{ fontSize: '50px', color: 'red', width: '70px' }}
-				/>
+				<StrikethroughOutlined style={{ fontSize: '50px', color: 'red', width: '70px' }} />
 				<div className='flex-1'>
 					<p>销售额/元</p>
-					<p
-						className='text-2xl my-2 flex justify-between'
-						style={{ color: 'red' }}
-					>
+					<p className='text-2xl my-2 flex justify-between' style={{ color: 'red' }}>
 						<NumberJumping endValue={98748780.56} />
 						<CaretDownOutlined style={{ color: 'green' }} />
 					</p>
@@ -63,15 +53,10 @@ function Dashboard() {
 
 			{/* 经营目标 */}
 			<li className='custom-container flex xl:col-span-2 md:col-span-3 sm:col-span-4'>
-				<PieChartOutlined
-					style={{ fontSize: '50px', color: '#9dffa7', width: '70px' }}
-				/>
+				<PieChartOutlined style={{ fontSize: '50px', color: '#9dffa7', width: '70px' }} />
 				<div className='flex-1'>
 					<p>经营目标/完成率</p>
-					<p
-						className='text-2xl my-2 flex justify-between'
-						style={{ color: 'red' }}
-					>
+					<p className='text-2xl my-2 flex justify-between' style={{ color: 'red' }}>
 						<span>
 							<NumberJumping endValue={66} />%
 						</span>
@@ -83,15 +68,10 @@ function Dashboard() {
 
 			{/* 当月利润 */}
 			<li className='custom-container flex xl:col-span-2 md:col-span-3 sm:col-span-4'>
-				<BankOutlined
-					style={{ fontSize: '50px', color: '#307dff', width: '70px' }}
-				/>
+				<BankOutlined style={{ fontSize: '50px', color: '#307dff', width: '70px' }} />
 				<div className='flex-1'>
 					<p>当月利润/元</p>
-					<p
-						className='text-2xl my-2 flex justify-between'
-						style={{ color: 'red' }}
-					>
+					<p className='text-2xl my-2 flex justify-between' style={{ color: 'red' }}>
 						<NumberJumping endValue={56456.98} />
 						<CaretUpOutlined style={{ color: 'red' }} />
 					</p>

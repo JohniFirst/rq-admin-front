@@ -41,9 +41,7 @@ function createRoute(path: string): RouteObject {
 	return {
 		path: routePath,
 		// key: name,
-		element: lazyElement(
-			LazyElement as React.LazyExoticComponent<() => JSX.Element>,
-		),
+		element: lazyElement(LazyElement as React.LazyExoticComponent<() => JSX.Element>),
 	}
 }
 

@@ -187,15 +187,7 @@ const SquareInputBox: React.FC<SquareInputBoxProps> = ({
 				setFocusedIndex(newValue.length)
 			}
 		},
-		[
-			disabled,
-			length,
-			type,
-			onChange,
-			onComplete,
-			inputValue,
-			lastCompletedLength,
-		],
+		[disabled, length, type, onChange, onComplete, inputValue, lastCompletedLength],
 	)
 
 	// 处理点击事件
@@ -262,16 +254,10 @@ const SquareInputBox: React.FC<SquareInputBoxProps> = ({
 					onClick={() => handleClick(i)}
 					style={{
 						borderColor: isFocused ? '#1890ff' : undefined,
-						boxShadow: isFocused
-							? '0 0 0 2px rgba(24, 144, 255, 0.2)'
-							: undefined,
+						boxShadow: isFocused ? '0 0 0 2px rgba(24, 144, 255, 0.2)' : undefined,
 					}}
 				>
-					<DisplayInput
-						$size={size}
-						$borderRadius={borderRadius}
-						$disabled={disabled}
-					>
+					<DisplayInput $size={size} $borderRadius={borderRadius} $disabled={disabled}>
 						{type === 'password' ? (char ? '●' : '') : char}
 					</DisplayInput>
 				</InputWrapper>,
@@ -281,13 +267,7 @@ const SquareInputBox: React.FC<SquareInputBoxProps> = ({
 	}
 
 	return (
-		<Container
-			ref={containerRef}
-			$size={size}
-			$gap={gap}
-			$length={length}
-			className={className}
-		>
+		<Container ref={containerRef} $size={size} $gap={gap} $length={length} className={className}>
 			{renderInputs()}
 			<HiddenInput
 				ref={hiddenInputRef}

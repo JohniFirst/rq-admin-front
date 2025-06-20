@@ -11,9 +11,7 @@ export function handleLogin(data: LoginFormValues): Promise<null> {
 }
 
 /** 忘记密码 */
-export function handleForgotPassword(
-	data: ForgotPasswordFormValues,
-): Promise<null> {
+export function handleForgotPassword(data: ForgotPasswordFormValues): Promise<null> {
 	return http.post('/forgot-password', data)
 }
 
@@ -51,9 +49,7 @@ export function getMenuList(): Promise<any> {
 }
 
 /** 菜单列表不带角色信息 */
-export function getMenuListWithoutRole(): Promise<
-	MenuApiWithoutRoleResponse[]
-> {
+export function getMenuListWithoutRole(): Promise<MenuApiWithoutRoleResponse[]> {
 	return http.get('/menu/without-role')
 }
 

@@ -15,10 +15,7 @@ class FullScreenManager {
 		return FullScreenManager.instance
 	}
 
-	public toggleFullscreen(
-		eOrElement?: MouseEvent | HTMLElement,
-		isBody = false,
-	) {
+	public toggleFullscreen(eOrElement?: MouseEvent | HTMLElement, isBody = false) {
 		let target: HTMLElement | null = null
 		if (eOrElement instanceof HTMLElement) {
 			target = eOrElement
@@ -52,9 +49,7 @@ class FullScreenManager {
  * @return {{isFullscreen: boolean, toggleFullscreen: function}} An object containing the full screen state and toggle function.
  */
 export function useFullScreen(isBody = false) {
-	const [isFullscreen, setIsFullscreen] = useState(
-		FullScreenManager.getInstance().getIsFullscreen(),
-	)
+	const [isFullscreen, setIsFullscreen] = useState(FullScreenManager.getInstance().getIsFullscreen())
 
 	useEffect(() => {
 		// 监听全屏变化事件

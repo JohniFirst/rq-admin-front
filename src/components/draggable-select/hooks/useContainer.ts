@@ -2,9 +2,7 @@ import { useEffect, useState } from 'react'
 
 const defaultGetContainer = () => document.body
 
-export const getPortalContainer = (
-	getContainer: () => HTMLElement = defaultGetContainer,
-) => {
+export const getPortalContainer = (getContainer: () => HTMLElement = defaultGetContainer) => {
 	if (typeof window !== 'undefined') {
 		return getContainer()
 	}
@@ -12,9 +10,7 @@ export const getPortalContainer = (
 }
 
 export default function useContainer(getContainer?: () => HTMLElement) {
-	const [container, setContainer] = useState(() =>
-		getPortalContainer(getContainer),
-	)
+	const [container, setContainer] = useState(() => getPortalContainer(getContainer))
 
 	useEffect(() => {
 		setContainer(getPortalContainer(getContainer))

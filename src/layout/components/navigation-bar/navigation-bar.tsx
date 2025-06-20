@@ -12,19 +12,9 @@ import {
 	PushpinOutlined,
 	RightOutlined,
 } from '@ant-design/icons'
-import {
-	DndContext,
-	PointerSensor,
-	closestCenter,
-	useSensor,
-} from '@dnd-kit/core'
+import { DndContext, PointerSensor, closestCenter, useSensor } from '@dnd-kit/core'
 import type { DragEndEvent } from '@dnd-kit/core'
-import {
-	SortableContext,
-	arrayMove,
-	horizontalListSortingStrategy,
-	useSortable,
-} from '@dnd-kit/sortable'
+import { SortableContext, arrayMove, horizontalListSortingStrategy, useSortable } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
 import { Dropdown, type MenuProps, Modal } from 'antd'
 import { cloneDeep } from 'lodash-es'
@@ -78,10 +68,7 @@ function NavigationBar() {
 		if (scrollContainerRef.current) {
 			const scrollAmount = 200 // 每次滚动的像素
 			const currentScroll = scrollContainerRef.current.scrollLeft
-			const newScroll =
-				direction === 'left'
-					? currentScroll - scrollAmount
-					: currentScroll + scrollAmount
+			const newScroll = direction === 'left' ? currentScroll - scrollAmount : currentScroll + scrollAmount
 
 			scrollContainerRef.current.scrollTo({
 				left: newScroll,
@@ -97,9 +84,7 @@ function NavigationBar() {
 	 * @return {void} This function does not return anything.
 	 */
 	const handleMenuClick: MenuProps['onClick'] = (e) => {
-		const clickIndex = navItem.findIndex(
-			(item) => item.key === currentClickTarget.key,
-		)
+		const clickIndex = navItem.findIndex((item) => item.key === currentClickTarget.key)
 		let newNavItem: NavItem[] = []
 
 		switch (e.key) {
@@ -130,11 +115,7 @@ function NavigationBar() {
 				break
 
 			case ContextMenuKey.CLOSE_OTHERS:
-				setNavItem(
-					navItem.filter(
-						(item) => item.key === currentClickTarget.key || item.fixed,
-					),
-				)
+				setNavItem(navItem.filter((item) => item.key === currentClickTarget.key || item.fixed))
 				break
 
 			default:
@@ -153,10 +134,7 @@ function NavigationBar() {
 	 * @param {NavItem} item - The navigation item to be closed.
 	 * @return {void} This function does not return anything.
 	 */
-	const closeCurrentNav = async (
-		e: React.MouseEvent<HTMLElement, MouseEvent>,
-		item: NavItem,
-	) => {
+	const closeCurrentNav = async (e: React.MouseEvent<HTMLElement, MouseEvent>, item: NavItem) => {
 		e.stopPropagation()
 
 		if (item.fixed) {
@@ -193,8 +171,7 @@ function NavigationBar() {
 	}
 
 	const DraggableTabNode = ({ item }: { item: NavItem }) => {
-		const { transform, transition, setNodeRef, attributes, listeners } =
-			useSortable({ id: item.key })
+		const { transform, transition, setNodeRef, attributes, listeners } = useSortable({ id: item.key })
 
 		const style: React.CSSProperties = {
 			transform: CSS.Translate.toString(transform),
@@ -214,11 +191,7 @@ function NavigationBar() {
 				className={`
           group relative flex items-center gap-2 px-3 py-1.5 rounded-md cursor-pointer select-none
           transition-all duration-200 ease-in-out bg-white
-          ${
-						isActive
-							? 'text-primary font-medium border-b-2 border-primary'
-							: 'text-gray-600 hover:bg-gray-50'
-					}
+          ${isActive ? 'text-primary font-medium border-b-2 border-primary' : 'text-gray-600 hover:bg-gray-50'}
         `}
 				onClick={() => navgation(item.key)}
 				onContextMenu={() => (currentClickTarget = item)}
@@ -229,11 +202,7 @@ function NavigationBar() {
 					className={`
             ml-1 text-xs p-1 rounded hover:rounded-full
             transition-all duration-200
-            ${
-							isActive
-								? 'text-primary hover:bg-primary/10'
-								: 'text-gray-400 hover:text-gray-600 hover:bg-gray-200'
-						}
+            ${isActive ? 'text-primary hover:bg-primary/10' : 'text-gray-400 hover:text-gray-600 hover:bg-gray-200'}
           `}
 					onClick={(e) => closeCurrentNav(e, item)}
 				/>
@@ -250,19 +219,9 @@ function NavigationBar() {
 			>
 				<LeftOutlined />
 			</button>
-			<DndContext
-				sensors={[sensor]}
-				collisionDetection={closestCenter}
-				onDragEnd={onDragEnd}
-			>
-				<SortableContext
-					items={navItem.map((i) => i.key)}
-					strategy={horizontalListSortingStrategy}
-				>
-					<Dropdown
-						menu={{ items: contextMenu, onClick: handleMenuClick }}
-						trigger={['contextMenu']}
-					>
+			<DndContext sensors={[sensor]} collisionDetection={closestCenter} onDragEnd={onDragEnd}>
+				<SortableContext items={navItem.map((i) => i.key)} strategy={horizontalListSortingStrategy}>
+					<Dropdown menu={{ items: contextMenu, onClick: handleMenuClick }} trigger={['contextMenu']}>
 						<ul
 							ref={scrollContainerRef}
 							className='flex items-center gap-2 overflow-x-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]'

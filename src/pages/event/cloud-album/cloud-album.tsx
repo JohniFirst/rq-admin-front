@@ -23,9 +23,7 @@ const CloudAlbum = () => {
 	// 新增相册的弹窗是否显示
 	const [newAlbumModalVisible, setNewAlbumModalVisible] = useState(false)
 
-	const [defaultActive, setDefaultActive] = useState<CloudAlbumItemType>(
-		CloudAlbumItemType.ALL,
-	)
+	const [defaultActive, setDefaultActive] = useState<CloudAlbumItemType>(CloudAlbumItemType.ALL)
 
 	const loadMoreData = async () => {
 		if (loading) {
@@ -110,11 +108,7 @@ const CloudAlbum = () => {
 						</div>
 					</li>
 
-					<li
-						className='h-36 cursor-pointer hover:bg-slate-100 rounded-xl'
-						onClick={addNewAlbum}
-						onKeyUp={addNewAlbum}
-					>
+					<li className='h-36 cursor-pointer hover:bg-slate-100 rounded-xl' onClick={addNewAlbum} onKeyUp={addNewAlbum}>
 						<img src={albumAdd} alt='相册封面' />
 					</li>
 				</ul>
@@ -140,32 +134,16 @@ const CloudAlbum = () => {
 						</Form>
 					)}
 				>
-					<Form.Item<NewAlbumFormItems>
-						name='cover'
-						label='封面'
-						rules={[{ required: true, message: '请上传' }]}
-					>
+					<Form.Item<NewAlbumFormItems> name='cover' label='封面' rules={[{ required: true, message: '请上传' }]}>
 						<Input placeholder='选择相册封面' />
 					</Form.Item>
 
-					<Form.Item<NewAlbumFormItems>
-						name='name'
-						label='相册名称'
-						rules={[{ required: true, message: '请输入' }]}
-					>
-						<Input
-							placeholder='最长10个字符'
-							maxLength={10}
-							allowClear
-							showCount
-						/>
+					<Form.Item<NewAlbumFormItems> name='name' label='相册名称' rules={[{ required: true, message: '请输入' }]}>
+						<Input placeholder='最长10个字符' maxLength={10} allowClear showCount />
 					</Form.Item>
 
 					<Form.Item<NewAlbumFormItems> name='description' label='相册描述'>
-						<Input.TextArea
-							placeholder='这里面都放的是什么类型的照片'
-							showCount
-						/>
+						<Input.TextArea placeholder='这里面都放的是什么类型的照片' showCount />
 					</Form.Item>
 
 					<Form.Item<NewAlbumFormItems>
@@ -202,9 +180,7 @@ const CloudAlbum = () => {
 			>
 				<motion.p
 					className={`cursor-pointer ${
-						defaultActive === CloudAlbumItemType.ALL
-							? 'text-blue-500 border-b-2 border-blue-500'
-							: ''
+						defaultActive === CloudAlbumItemType.ALL ? 'text-blue-500 border-b-2 border-blue-500' : ''
 					}`}
 					onClick={() => setDefaultActive(CloudAlbumItemType.ALL)}
 					onKeyUp={() => setDefaultActive(CloudAlbumItemType.ALL)}
@@ -214,9 +190,7 @@ const CloudAlbum = () => {
 				</motion.p>
 				<motion.p
 					className={`cursor-pointer ${
-						defaultActive === CloudAlbumItemType.ALBUM
-							? 'text-blue-500 border-b-2 border-blue-500'
-							: ''
+						defaultActive === CloudAlbumItemType.ALBUM ? 'text-blue-500 border-b-2 border-blue-500' : ''
 					}`}
 					onClick={() => setDefaultActive(CloudAlbumItemType.ALBUM)}
 					onKeyUp={() => setDefaultActive(CloudAlbumItemType.ALBUM)}
@@ -232,11 +206,7 @@ const CloudAlbum = () => {
 				exit={{ opacity: 0, x: 50 }}
 				transition={{ duration: 0.3 }}
 			>
-				{defaultActive === CloudAlbumItemType.ALL ? (
-					<AllCloudImage />
-				) : (
-					<AlbumPage />
-				)}
+				{defaultActive === CloudAlbumItemType.ALL ? <AllCloudImage /> : <AlbumPage />}
 			</motion.div>
 		</div>
 	)

@@ -10,11 +10,7 @@ import HeaderOperate from './components/header-operate'
 import NavigationBar from './components/navigation-bar/navigation-bar'
 import drawer from './css/drawerMenu.module.css'
 
-import {
-	HomeOutlined,
-	MenuFoldOutlined,
-	MenuUnfoldOutlined,
-} from '@ant-design/icons'
+import { HomeOutlined, MenuFoldOutlined, MenuUnfoldOutlined } from '@ant-design/icons'
 // import type { MenuProps } from 'antd'
 
 interface DrawerMenuProps {
@@ -28,9 +24,7 @@ function DrawerMenu({ showHeaderOperate = true }: DrawerMenuProps) {
 	const navigate = useCustomNavigate()
 	// const dispatch = useAppDispatch()
 	const menus = useAppSelector((state) => state.menu)
-	const showNavigationBar = useAppSelector(
-		(state) => state.systemInfo.showNavigationBar,
-	)
+	const showNavigationBar = useAppSelector((state) => state.systemInfo.showNavigationBar)
 	const [topActiveMenu, setTopActiveMenu] = useState<MenuItem>(menus[0])
 	const [menuVisible, setMenuVisible] = useState(true)
 
@@ -39,17 +33,12 @@ function DrawerMenu({ showHeaderOperate = true }: DrawerMenuProps) {
 	// 根据当前路由自动设置高亮的顶级菜单
 	useEffect(() => {
 		// 遍历所有菜单，找到包含当前路由的顶级菜单
-		const findTopMenu = (
-			items: MenuItem[],
-			path: string,
-		): MenuItem | undefined => {
+		const findTopMenu = (items: MenuItem[], path: string): MenuItem | undefined => {
 			for (const item of items) {
 				if (item.key === path) return item
 				if (item.children) {
 					// @ts-ignore
-					if (
-						item.children.some((child: { key: string }) => child.key === path)
-					) {
+					if (item.children.some((child: { key: string }) => child.key === path)) {
 						return item
 					}
 					const found = findTopMenu(item.children, path)
@@ -86,10 +75,7 @@ function DrawerMenu({ showHeaderOperate = true }: DrawerMenuProps) {
 				if (item && Object.keys(item).includes('children')) {
 					// @ts-ignore
 					const children = item.children
-					if (
-						Array.isArray(children) &&
-						children.some((child: { key: string }) => child.key === currentPath)
-					) {
+					if (Array.isArray(children) && children.some((child: { key: string }) => child.key === currentPath)) {
 						selectedKey = currentPath
 						openKeys.push(item.key as string)
 					}
@@ -141,9 +127,7 @@ function DrawerMenu({ showHeaderOperate = true }: DrawerMenuProps) {
 				key={item.key}
 				className={`select-none cursor-pointer px-3 py-1 rounded mb-1 ${isActive ? drawer.activeTopMenu : ''}`}
 				style={{
-					color: isActive
-						? 'var(--color-primary-contrast, #fff)'
-						: 'var(--color-text)',
+					color: isActive ? 'var(--color-primary-contrast, #fff)' : 'var(--color-text)',
 					background: isActive ? 'var(--color-primary)' : 'transparent',
 				}}
 				onClick={(e) => {
@@ -182,15 +166,9 @@ function DrawerMenu({ showHeaderOperate = true }: DrawerMenuProps) {
 			<div className='grid grid-cols-[auto_1fr] w-full h-screen bg-[var(--color-background)] dark:bg-[var(--color-background)]'>
 				{menuVisible && (
 					<aside className='max-h-screen flex'>
-						<ul
-							className={
-								drawer.topLevelMenu + ' transition-colors duration-300'
-							}
-						>
+						<ul className={drawer.topLevelMenu + ' transition-colors duration-300'}>
 							{menus.map((item) => {
-								const isActive =
-									topActiveMenu.key === item.key ||
-									selectedKey.includes(item.key)
+								const isActive = topActiveMenu.key === item.key || selectedKey.includes(item.key)
 								return (
 									<li
 										className={`select-none cursor-pointer ${drawer.topLevelMenu} ${isActive ? drawer.activeTopMenu : ''} transition-colors duration-200`}
@@ -198,15 +176,11 @@ function DrawerMenu({ showHeaderOperate = true }: DrawerMenuProps) {
 										onClick={() => setTopActiveMenu(item)}
 										onKeyUp={() => setTopActiveMenu(item)}
 										style={{
-											color: isActive
-												? 'var(--color-primary-contrast, #fff)'
-												: 'var(--color-text)',
+											color: isActive ? 'var(--color-primary-contrast, #fff)' : 'var(--color-text)',
 										}}
 									>
 										<span className='text-xl mb-1'>{item.icon}</span>
-										<p className='text-xs font-medium tracking-wide'>
-											{item.label}
-										</p>
+										<p className='text-xs font-medium tracking-wide'>{item.label}</p>
 									</li>
 								)
 							})}
@@ -238,11 +212,7 @@ function DrawerMenu({ showHeaderOperate = true }: DrawerMenuProps) {
 				<section className='w-full flex flex-col h-screen col-auto'>
 					<header className='flex justify-between items-center p-4'>
 						<div className='flex items-center gap-2'>
-							<button
-								type='button'
-								onClick={() => setMenuVisible((v) => !v)}
-								className='text-xl'
-							>
+							<button type='button' onClick={() => setMenuVisible((v) => !v)} className='text-xl'>
 								{menuVisible ? <MenuFoldOutlined /> : <MenuUnfoldOutlined />}
 							</button>
 							<Link to={'/dashboard'}>

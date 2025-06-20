@@ -11,8 +11,7 @@ const FullScreen = () => {
 		}
 
 		document.addEventListener('fullscreenchange', handleFullscreenChange)
-		return () =>
-			document.removeEventListener('fullscreenchange', handleFullscreenChange)
+		return () => document.removeEventListener('fullscreenchange', handleFullscreenChange)
 	}, [])
 
 	const toggleFullscreen = async () => {

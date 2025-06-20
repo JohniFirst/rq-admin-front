@@ -1,11 +1,6 @@
 import useCustomNavigate from '@/hooks/useCustomNavigate'
 import { useAppSelector } from '@/store/hooks'
-import {
-	DownOutlined,
-	EnterOutlined,
-	SearchOutlined,
-	UpOutlined,
-} from '@ant-design/icons'
+import { DownOutlined, EnterOutlined, SearchOutlined, UpOutlined } from '@ant-design/icons'
 import { Input, Modal } from 'antd'
 import { AnimatePresence, motion } from 'framer-motion'
 import { useEffect, useMemo, useRef, useState } from 'react'
@@ -41,9 +36,7 @@ const SearchableMenu: FC = () => {
 			switch (event.key) {
 				case 'ArrowDown':
 					event.preventDefault()
-					setSelectedIndex((prev) =>
-						prev < flattenedItems.length - 1 ? prev + 1 : prev,
-					)
+					setSelectedIndex((prev) => (prev < flattenedItems.length - 1 ? prev + 1 : prev))
 					break
 				case 'ArrowUp':
 					event.preventDefault()
@@ -68,9 +61,7 @@ const SearchableMenu: FC = () => {
 
 	useEffect(() => {
 		if (searchResultsRef.current) {
-			const selectedElement = searchResultsRef.current.querySelector(
-				`[data-index="${selectedIndex}"]`,
-			)
+			const selectedElement = searchResultsRef.current.querySelector(`[data-index="${selectedIndex}"]`)
 			selectedElement?.scrollIntoView({ block: 'nearest', behavior: 'smooth' })
 		}
 	}, [selectedIndex])
@@ -109,9 +100,7 @@ const SearchableMenu: FC = () => {
 						})
 					}
 				} else {
-					const searchText = (item.title || item.label || '')
-						.toString()
-						.toLowerCase()
+					const searchText = (item.title || item.label || '').toString().toLowerCase()
 					if (searchText.includes(keyword.toLowerCase())) {
 						tempResult.push({
 							...item,
@@ -160,19 +149,10 @@ const SearchableMenu: FC = () => {
 	}> = ({ item, indent = 0, index }) => {
 		if (item.children) {
 			return (
-				<div
-					key={item.key}
-					className={system.filterMenuWp}
-					style={{ marginLeft: `${indent * 16}px` }}
-				>
+				<div key={item.key} className={system.filterMenuWp} style={{ marginLeft: `${indent * 16}px` }}>
 					<p>{item.title || item.label}</p>
 					{item.children.map((child: MenuItem, childIndex: number) => (
-						<FilterResultItem
-							key={child.key}
-							item={child}
-							indent={indent + 1}
-							index={index + childIndex + 1}
-						/>
+						<FilterResultItem key={child.key} item={child} indent={indent + 1} index={index + childIndex + 1} />
 					))}
 				</div>
 			)
@@ -181,24 +161,16 @@ const SearchableMenu: FC = () => {
 		return (
 			<p
 				key={item.key}
-				className={`${system.filterMenuItem} ${
-					index === selectedIndex ? 'bg-indigo-500 text-white' : ''
-				}`}
+				className={`${system.filterMenuItem} ${index === selectedIndex ? 'bg-indigo-500 text-white' : ''}`}
 				style={{ marginLeft: `${indent * 16}px` }}
 				onClick={() => filterNav(item)}
 				onKeyUp={() => filterNav(item)}
 				data-index={index}
 			>
 				{displayText.split('').map((char: string, i: number) => {
-					const isCharMatch = searchValue
-						.toLowerCase()
-						.includes(char.toLowerCase())
+					const isCharMatch = searchValue.toLowerCase().includes(char.toLowerCase())
 					return (
-						<span
-							key={i}
-							style={{ color: isCharMatch ? 'inherit' : '' }}
-							className={isCharMatch ? 'font-bold' : ''}
-						>
+						<span key={i} style={{ color: isCharMatch ? 'inherit' : '' }} className={isCharMatch ? 'font-bold' : ''}>
 							{char}
 						</span>
 					)
@@ -224,12 +196,7 @@ const SearchableMenu: FC = () => {
 
 	return (
 		<>
-			<motion.div
-				className='cursor-pointer'
-				whileHover={{ scale: 1.1 }}
-				whileTap={{ scale: 0.95 }}
-				onClick={showModal}
-			>
+			<motion.div className='cursor-pointer' whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.95 }} onClick={showModal}>
 				<SearchOutlined className='text-xl text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors duration-300' />
 			</motion.div>
 
@@ -237,9 +204,7 @@ const SearchableMenu: FC = () => {
 				title={
 					<div className='flex items-center gap-3'>
 						<SearchOutlined className='text-xl text-indigo-600' />
-						<span className='text-lg font-semibold text-gray-800 dark:text-gray-200'>
-							菜单搜索
-						</span>
+						<span className='text-lg font-semibold text-gray-800 dark:text-gray-200'>菜单搜索</span>
 					</div>
 				}
 				open={isModalOpen}
@@ -261,9 +226,7 @@ const SearchableMenu: FC = () => {
 							选择
 						</p>
 						<p className='flex items-center gap-2'>
-							<span className='px-2 py-1 bg-gray-100 dark:bg-gray-700 rounded'>
-								ESC
-							</span>
+							<span className='px-2 py-1 bg-gray-100 dark:bg-gray-700 rounded'>ESC</span>
 							退出
 						</p>
 					</div>
@@ -274,9 +237,7 @@ const SearchableMenu: FC = () => {
 				afterOpenChange={(visible) => {
 					if (visible) {
 						setTimeout(() => {
-							const input = document.querySelector(
-								'.searchable-menu-modal input',
-							) as HTMLInputElement
+							const input = document.querySelector('.searchable-menu-modal input') as HTMLInputElement
 							input?.focus()
 						}, 100)
 					}
@@ -302,9 +263,7 @@ const SearchableMenu: FC = () => {
 								exit={{ opacity: 0, y: 20 }}
 								className='space-y-2'
 							>
-								<div className='text-sm text-gray-500 dark:text-gray-400 mb-4'>
-									搜索结果
-								</div>
+								<div className='text-sm text-gray-500 dark:text-gray-400 mb-4'>搜索结果</div>
 								{content}
 							</motion.div>
 						)}

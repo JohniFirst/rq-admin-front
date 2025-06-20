@@ -82,17 +82,10 @@ function PictureStitching() {
 				<div className='max-w-[400px] border-2' ref={imgWrapper}>
 					{srcList.map((src) => (
 						<div className='relative' key={src}>
-							<img
-								className='img-tocopy'
-								src={src}
-								alt='上传的图片'
-								width='100%'
-							/>
+							<img className='img-tocopy' src={src} alt='上传的图片' width='100%' />
 							<DeleteOutlined
 								className='img-del-btn'
-								onClick={() =>
-									setSrcList(srcList.filter((item) => item !== src))
-								}
+								onClick={() => setSrcList(srcList.filter((item) => item !== src))}
 							/>
 						</div>
 					))}

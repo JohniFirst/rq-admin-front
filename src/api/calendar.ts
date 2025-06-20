@@ -17,9 +17,7 @@ type CalendarListParams = {
 }
 
 /** 查询某年某月的所有日历事件 */
-export function getEventsList(
-	params: CalendarListParams,
-): Promise<CalendarEventApiItem[]> {
+export function getEventsList(params: CalendarListParams): Promise<CalendarEventApiItem[]> {
 	return http.get('/event/calendar', { params })
 }
 

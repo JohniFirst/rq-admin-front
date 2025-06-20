@@ -8,10 +8,7 @@ import * as XLSX from 'xlsx'
  * @param {string} fileName - The name of the Excel file. Default is "your_file_name.xlsx".
  * @return {void} No return value, exports data to a file instead.
  */
-export function exportToExcel(
-	{ headers, data }: ExcelData,
-	fileName = 'your_file_name.xlsx',
-) {
+export function exportToExcel({ headers, data }: ExcelData, fileName = 'your_file_name.xlsx') {
 	const worksheet = XLSX.utils.aoa_to_sheet([headers, ...data])
 	// 设置表头样式
 	worksheet.A1.s = {

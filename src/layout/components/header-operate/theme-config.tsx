@@ -17,10 +17,7 @@ interface ThemeConfigProps {
 	onThemeChange: (themeId: string) => void
 }
 
-const ThemeConfig: React.FC<ThemeConfigProps> = ({
-	currentTheme,
-	onThemeChange,
-}) => {
+const ThemeConfig: React.FC<ThemeConfigProps> = ({ currentTheme, onThemeChange }) => {
 	const [customThemes, setCustomThemes] = useState<CustomTheme[]>([])
 	const [showCreateModal, setShowCreateModal] = useState(false)
 	const [editingTheme, setEditingTheme] = useState<CustomTheme | null>(null)
@@ -87,18 +84,12 @@ const ThemeConfig: React.FC<ThemeConfigProps> = ({
 				key={theme.id}
 				className={`
           relative p-4 rounded-lg cursor-pointer transition-all duration-300
-          ${
-						isActive
-							? 'ring-2 ring-primary bg-primary/5'
-							: 'hover:bg-gray-50 dark:hover:bg-gray-800'
-					}
+          ${isActive ? 'ring-2 ring-primary bg-primary/5' : 'hover:bg-gray-50 dark:hover:bg-gray-800'}
         `}
 				onClick={() => handleThemeSelect(theme)}
 			>
 				<div className='flex items-center justify-between mb-3'>
-					<span className='font-medium text-gray-900 dark:text-gray-100'>
-						{theme.name}
-					</span>
+					<span className='font-medium text-gray-900 dark:text-gray-100'>{theme.name}</span>
 					{isActive && <CheckOutlined className='text-primary text-lg' />}
 				</div>
 
@@ -106,12 +97,7 @@ const ThemeConfig: React.FC<ThemeConfigProps> = ({
 					{Object.entries(theme.colors)
 						.slice(0, 5)
 						.map(([key, color]) => (
-							<div
-								key={key}
-								className='w-6 h-6 rounded-full'
-								style={{ backgroundColor: color }}
-								title={key}
-							/>
+							<div key={key} className='w-6 h-6 rounded-full' style={{ backgroundColor: color }} title={key} />
 						))}
 				</div>
 
@@ -155,23 +141,13 @@ const ThemeConfig: React.FC<ThemeConfigProps> = ({
 		<div className='space-y-4'>
 			<div className='flex justify-between items-center'>
 				<div className='space-x-2'>
-					<Button
-						type='primary'
-						icon={<PlusOutlined />}
-						onClick={handleCreateTheme}
-					>
+					<Button type='primary' icon={<PlusOutlined />} onClick={handleCreateTheme}>
 						新建主题
 					</Button>
 					<Button icon={<UploadOutlined />} onClick={handleImportClick}>
 						导入主题
 					</Button>
-					<input
-						type='file'
-						ref={fileInputRef}
-						className='hidden'
-						accept='.json'
-						onChange={handleFileImport}
-					/>
+					<input type='file' ref={fileInputRef} className='hidden' accept='.json' onChange={handleFileImport} />
 				</div>
 			</div>
 
@@ -180,11 +156,7 @@ const ThemeConfig: React.FC<ThemeConfigProps> = ({
 					{
 						key: 'preset',
 						label: '预设主题',
-						children: (
-							<div className='grid grid-cols-2 gap-4'>
-								{presetThemes.map(renderThemeCard)}
-							</div>
-						),
+						children: <div className='grid grid-cols-2 gap-4'>{presetThemes.map(renderThemeCard)}</div>,
 					},
 					{
 						key: 'custom',
@@ -194,9 +166,7 @@ const ThemeConfig: React.FC<ThemeConfigProps> = ({
 								{customThemes.length > 0 ? (
 									customThemes.map(renderThemeCard)
 								) : (
-									<div className='col-span-2 text-center py-8 text-gray-500'>
-										暂无自定义主题，点击"新建主题"创建
-									</div>
+									<div className='col-span-2 text-center py-8 text-gray-500'>暂无自定义主题，点击"新建主题"创建</div>
 								)}
 							</div>
 						),
@@ -210,11 +180,7 @@ const ThemeConfig: React.FC<ThemeConfigProps> = ({
 				onCancel={() => setShowCreateModal(false)}
 				onSave={(theme) => {
 					if (editingTheme) {
-						setCustomThemes(
-							customThemes.map((t) =>
-								t.id === theme.id ? { ...theme, updatedAt: Date.now() } : t,
-							),
-						)
+						setCustomThemes(customThemes.map((t) => (t.id === theme.id ? { ...theme, updatedAt: Date.now() } : t)))
 					} else {
 						setCustomThemes([
 							...customThemes,
@@ -242,16 +208,9 @@ interface ThemeEditModalProps {
 	onSave: (theme: CustomTheme) => void
 }
 
-const ThemeEditModal: React.FC<ThemeEditModalProps> = ({
-	open,
-	editingTheme,
-	onCancel,
-	onSave,
-}) => {
+const ThemeEditModal: React.FC<ThemeEditModalProps> = ({ open, editingTheme, onCancel, onSave }) => {
 	const [name, setName] = useState(editingTheme?.name || '')
-	const [colors, setColors] = useState<ThemeColors>(
-		editingTheme?.colors || presetThemes[0].colors,
-	)
+	const [colors, setColors] = useState<ThemeColors>(editingTheme?.colors || presetThemes[0].colors)
 	const [isDark, setIsDark] = useState(editingTheme?.isDark || false)
 
 	const handleSave = () => {
@@ -272,41 +231,20 @@ const ThemeEditModal: React.FC<ThemeEditModalProps> = ({
 	}
 
 	return (
-		<Modal
-			open={open}
-			title={editingTheme ? '编辑主题' : '新建主题'}
-			onCancel={onCancel}
-			onOk={handleSave}
-			width={640}
-		>
+		<Modal open={open} title={editingTheme ? '编辑主题' : '新建主题'} onCancel={onCancel} onOk={handleSave} width={640}>
 			<div className='space-y-6 py-4'>
 				<div>
-					<p className='block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2'>
-						主题名称
-					</p>
-					<Input
-						value={name}
-						onChange={(e) => setName(e.target.value)}
-						placeholder='请输入主题名称'
-					/>
+					<p className='block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2'>主题名称</p>
+					<Input value={name} onChange={(e) => setName(e.target.value)} placeholder='请输入主题名称' />
 				</div>
 
 				<div>
-					<p className='block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2'>
-						主题颜色
-					</p>
+					<p className='block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2'>主题颜色</p>
 					<div className='grid grid-cols-2 gap-4'>
 						{Object.entries(colors).map(([key, color]) => (
 							<div key={key} className='flex items-center space-x-2'>
-								<span className='text-sm text-gray-600 dark:text-gray-400 w-20'>
-									{key}
-								</span>
-								<ColorPicker
-									value={color}
-									onChange={(color) =>
-										setColors({ ...colors, [key]: color.toHexString() })
-									}
-								/>
+								<span className='text-sm text-gray-600 dark:text-gray-400 w-20'>{key}</span>
+								<ColorPicker value={color} onChange={(color) => setColors({ ...colors, [key]: color.toHexString() })} />
 								<span className='text-xs text-gray-400'>{color}</span>
 							</div>
 						))}
@@ -314,9 +252,7 @@ const ThemeEditModal: React.FC<ThemeEditModalProps> = ({
 				</div>
 
 				<div className='flex items-center space-x-2'>
-					<span className='text-sm text-gray-600 dark:text-gray-400'>
-						深色主题
-					</span>
+					<span className='text-sm text-gray-600 dark:text-gray-400'>深色主题</span>
 					<Switch checked={isDark} onChange={setIsDark} />
 				</div>
 			</div>

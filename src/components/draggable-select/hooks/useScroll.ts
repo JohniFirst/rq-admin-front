@@ -46,19 +46,12 @@ export default function useScroll() {
 		cancelRightRaf()
 	}
 
-	const smoothScroll = (
-		e: MouseEvent | TouchEvent,
-		_container: HTMLElement,
-	) => {
-		const container =
-			_container === document.body ? document.documentElement : _container
+	const smoothScroll = (e: MouseEvent | TouchEvent, _container: HTMLElement) => {
+		const container = _container === document.body ? document.documentElement : _container
 		const { clientX, clientY } = getClientXY(e)
 
 		// top
-		if (
-			clientY - EDGE_OFFSET <= 0 ||
-			clientY <= container.getBoundingClientRect().top
-		) {
+		if (clientY - EDGE_OFFSET <= 0 || clientY <= container.getBoundingClientRect().top) {
 			if (!topRaf.current) {
 				const callback = () => {
 					if (container.scrollTop > 0) {
@@ -75,16 +68,10 @@ export default function useScroll() {
 		}
 
 		// bottom
-		if (
-			clientY + EDGE_OFFSET >= window.innerHeight ||
-			clientY >= container.getBoundingClientRect().bottom
-		) {
+		if (clientY + EDGE_OFFSET >= window.innerHeight || clientY >= container.getBoundingClientRect().bottom) {
 			if (!bottomRaf.current) {
 				const callback = () => {
-					if (
-						container.scrollTop <
-						container.scrollHeight - container.clientHeight
-					) {
+					if (container.scrollTop < container.scrollHeight - container.clientHeight) {
 						bottomRaf.current = requestAnimationFrame(() => {
 							container.scrollTop += SCROLL_STEP
 							callback()
@@ -98,10 +85,7 @@ export default function useScroll() {
 		}
 
 		// left
-		if (
-			clientX - EDGE_OFFSET <= 0 ||
-			clientX <= container.getBoundingClientRect().left
-		) {
+		if (clientX - EDGE_OFFSET <= 0 || clientX <= container.getBoundingClientRect().left) {
 			if (!leftRaf.current) {
 				const callback = () => {
 					if (container.scrollLeft > 0) {
@@ -118,16 +102,10 @@ export default function useScroll() {
 		}
 
 		// right
-		if (
-			clientX + EDGE_OFFSET >= window.innerWidth ||
-			clientX >= container.getBoundingClientRect().right
-		) {
+		if (clientX + EDGE_OFFSET >= window.innerWidth || clientX >= container.getBoundingClientRect().right) {
 			if (!rightRaf.current) {
 				const callback = () => {
-					if (
-						container.scrollLeft <
-						container.scrollWidth - container.clientWidth
-					) {
+					if (container.scrollLeft < container.scrollWidth - container.clientWidth) {
 						rightRaf.current = requestAnimationFrame(() => {
 							container.scrollLeft += SCROLL_STEP
 							callback()

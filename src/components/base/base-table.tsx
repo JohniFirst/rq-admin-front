@@ -1,21 +1,6 @@
 import { exportToExcel } from '@/utils/export-to-excel'
-import {
-	DownloadOutlined,
-	PrinterOutlined,
-	ReloadOutlined,
-	SettingOutlined,
-} from '@ant-design/icons'
-import {
-	Button,
-	Col,
-	Form,
-	Input,
-	Modal,
-	Row,
-	Space,
-	Table,
-	Tooltip,
-} from 'antd'
+import { DownloadOutlined, PrinterOutlined, ReloadOutlined, SettingOutlined } from '@ant-design/icons'
+import { Button, Col, Form, Input, Modal, Row, Space, Table, Tooltip } from 'antd'
 import type { FormProps, TablePaginationConfig, TableProps } from 'antd'
 import { format } from 'date-fns'
 import { useEffect, useState } from 'react'
@@ -117,11 +102,7 @@ const BaseTable = <T extends object>({
 			>
 				<Row gutter={searchProps.gutter}>
 					<Col span={6}>
-						<Form.Item
-							label='角色名'
-							name='roleName'
-							rules={[{ required: true, message: '请输入角色名' }]}
-						>
+						<Form.Item label='角色名' name='roleName' rules={[{ required: true, message: '请输入角色名' }]}>
 							<Input />
 						</Form.Item>
 					</Col>
@@ -150,10 +131,7 @@ const BaseTable = <T extends object>({
 						</Button>
 
 						<Tooltip title='导出Excel'>
-							<DownloadOutlined
-								className='cursor-pointer hover:text-red-500'
-								onClick={handleExport}
-							/>
+							<DownloadOutlined className='cursor-pointer hover:text-red-500' onClick={handleExport} />
 						</Tooltip>
 
 						<Tooltip title='打印'>

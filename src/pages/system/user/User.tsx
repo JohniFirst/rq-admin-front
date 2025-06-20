@@ -53,17 +53,12 @@ function User() {
 			title: '是否启用',
 			dataIndex: 'isEnabled',
 			key: 'isEnabled',
-			render: (value, record: UserListRes) => (
-				<IsEnabled value={value} record={record} />
-			),
+			render: (value, record: UserListRes) => <IsEnabled value={value} record={record} />,
 		},
 	]
 
 	/** 用户是否启用 */
-	const IsEnabled: FC<{ value: boolean; record: UserListRes }> = ({
-		value,
-		record,
-	}) => {
+	const IsEnabled: FC<{ value: boolean; record: UserListRes }> = ({ value, record }) => {
 		const toogleUserEnable = async (checked: boolean) => {
 			await updateUserIsEnabled({ id: record.id, isEnabled: checked ? 1 : 0 })
 		}
@@ -78,12 +73,7 @@ function User() {
 		)
 	}
 
-	return (
-		<BaseTable<UserListRes>
-			tableProps={{ columns, dataSource }}
-			getTableData={getTableData}
-		/>
-	)
+	return <BaseTable<UserListRes> tableProps={{ columns, dataSource }} getTableData={getTableData} />
 }
 
 export default User

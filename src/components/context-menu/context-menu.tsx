@@ -14,11 +14,7 @@ export interface ContextMenuProps {
 	menuClassName?: string
 }
 
-const ContextMenu: React.FC<ContextMenuProps> = ({
-	menu,
-	children,
-	menuClassName,
-}) => {
+const ContextMenu: React.FC<ContextMenuProps> = ({ menu, children, menuClassName }) => {
 	const [visible, setVisible] = useState(false)
 	const [position, setPosition] = useState({ x: 0, y: 0 })
 	const menuRef = useRef<HTMLDivElement>(null)

@@ -22,10 +22,7 @@ function VerificationCodeInput() {
 	}
 
 	return (
-		<Form.Item
-			name='verificationCode'
-			rules={[{ required: true, message: '请输入验证码' }]}
-		>
+		<Form.Item name='verificationCode' rules={[{ required: true, message: '请输入验证码' }]}>
 			<Row gutter={16} align='middle'>
 				<Col span={16}>
 					<SquareInputBox

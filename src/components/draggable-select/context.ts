@@ -3,10 +3,7 @@ import React, { useContext } from 'react'
 export type Rule =
 	| 'collision'
 	| 'inclusion'
-	| ((
-			boxElement: HTMLDivElement,
-			boxPosition: { left: number; top: number; width: number; height: number },
-	  ) => boolean)
+	| ((boxElement: HTMLDivElement, boxPosition: { left: number; top: number; width: number; height: number }) => boolean)
 
 export type UnmountItemsInfoType<T> = Map<
 	T,
@@ -38,9 +35,7 @@ interface ISelectableContext<T> {
 	compareFn: (a: T, b: T) => boolean
 }
 
-export const SelectableContext = React.createContext<ISelectableContext<any>>(
-	{} as ISelectableContext<any>,
-)
+export const SelectableContext = React.createContext<ISelectableContext<any>>({} as ISelectableContext<any>)
 
 export const useSelectableContext = () => {
 	const context = useContext(SelectableContext)

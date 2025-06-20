@@ -56,8 +56,7 @@ const DetailModal: React.FC<DetailModalProps> = ({
 					<Button
 						key='single'
 						onClick={() => {
-							if (typeof onDelete === 'function')
-								onDelete('single', occurrenceDate)
+							if (typeof onDelete === 'function') onDelete('single', occurrenceDate)
 							onCancel()
 						}}
 					>
@@ -66,8 +65,7 @@ const DetailModal: React.FC<DetailModalProps> = ({
 					<Button
 						key='future'
 						onClick={() => {
-							if (typeof onDelete === 'function')
-								onDelete('future', occurrenceDate)
+							if (typeof onDelete === 'function') onDelete('future', occurrenceDate)
 							onCancel()
 						}}
 					>
@@ -140,9 +138,7 @@ const DetailModal: React.FC<DetailModalProps> = ({
 					</p>
 					<div className='event-color'>
 						<strong>事件颜色：</strong>
-						<Tag color={event.backgroundColor as string}>
-							{event.backgroundColor}
-						</Tag>
+						<Tag color={event.backgroundColor as string}>{event.backgroundColor}</Tag>
 					</div>
 				</div>
 			)}

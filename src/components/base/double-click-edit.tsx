@@ -14,11 +14,7 @@ type DoubleClickEditProps = {
  * @prop value 需要编辑的文字
  * @prop editFinished 编辑结束的回调函数，参数为编辑后的文字
  */
-const DoubleClickEdit: React.FC<DoubleClickEditProps> = ({
-	inputProps,
-	value,
-	editFinished,
-}) => {
+const DoubleClickEdit: React.FC<DoubleClickEditProps> = ({ inputProps, value, editFinished }) => {
 	const inputRef = useRef<InputRef>(null)
 	const [isEditing, setIsEditing] = React.useState(false)
 
@@ -47,15 +43,7 @@ const DoubleClickEdit: React.FC<DoubleClickEditProps> = ({
 	}
 
 	if (isEditing) {
-		return (
-			<Input
-				ref={inputRef}
-				defaultValue={value}
-				onBlur={saveEdit}
-				onPressEnter={enterSave}
-				{...inputProps}
-			/>
-		)
+		return <Input ref={inputRef} defaultValue={value} onBlur={saveEdit} onPressEnter={enterSave} {...inputProps} />
 	}
 
 	return (

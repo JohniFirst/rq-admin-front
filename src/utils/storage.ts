@@ -1,7 +1,6 @@
 import { decryptData, encryptData } from './security'
 
-const ENCRYPTION_KEY =
-	import.meta.env.VITE_STORAGE_ENCRYPTION_KEY || 'default-key'
+const ENCRYPTION_KEY = import.meta.env.VITE_STORAGE_ENCRYPTION_KEY || 'default-key'
 
 // 安全的本地存储
 export const secureStorage = {

@@ -146,9 +146,7 @@ const EventModal: React.FC<EventModalProps> = ({
 				try {
 					await handleEvents({ event: JSON.stringify(newEvent) })
 					if (isEditMode) {
-						const updated = events.map((event) =>
-							event.id === newEvent.id ? newEvent : event,
-						)
+						const updated = events.map((event) => (event.id === newEvent.id ? newEvent : event))
 						setEvents(updated)
 						message.success('事件已更新')
 					} else {
@@ -183,11 +181,7 @@ const EventModal: React.FC<EventModalProps> = ({
 					<Divider orientation='left'>基础信息</Divider>
 					<Row gutter={16}>
 						<Col span={12}>
-							<Form.Item
-								name='title'
-								label='标题'
-								rules={[{ required: true, message: '请输入事件标题' }]}
-							>
+							<Form.Item name='title' label='标题' rules={[{ required: true, message: '请输入事件标题' }]}>
 								<Input placeholder='如：团队例会' />
 							</Form.Item>
 						</Col>
@@ -208,33 +202,18 @@ const EventModal: React.FC<EventModalProps> = ({
 					</Row>
 					<Row gutter={16}>
 						<Col span={12}>
-							<Form.Item
-								name='startDate'
-								label='开始时间'
-								rules={[{ required: true, message: '请选择开始时间' }]}
-							>
+							<Form.Item name='startDate' label='开始时间' rules={[{ required: true, message: '请选择开始时间' }]}>
 								<DatePicker showTime style={{ width: '100%' }} />
 							</Form.Item>
 						</Col>
 						<Col span={12}>
-							<Form.Item
-								name='endDate'
-								label='结束时间'
-								rules={[{ required: true, message: '请选择结束时间' }]}
-							>
+							<Form.Item name='endDate' label='结束时间' rules={[{ required: true, message: '请选择结束时间' }]}>
 								<DatePicker showTime style={{ width: '100%' }} />
 							</Form.Item>
 						</Col>
 					</Row>
-					<Form.Item
-						name='description'
-						label='描述'
-						rules={[{ required: true, message: '请输入事件描述' }]}
-					>
-						<Input.TextArea
-							placeholder='可填写详细说明'
-							autoSize={{ minRows: 2, maxRows: 4 }}
-						/>
+					<Form.Item name='description' label='描述' rules={[{ required: true, message: '请输入事件描述' }]}>
+						<Input.TextArea placeholder='可填写详细说明' autoSize={{ minRows: 2, maxRows: 4 }} />
 					</Form.Item>
 					<Divider orientation='left'>重复设置</Divider>
 					<Row gutter={16}>
@@ -252,12 +231,7 @@ const EventModal: React.FC<EventModalProps> = ({
 						{repeatType !== 'none' && (
 							<Col span={12}>
 								<Form.Item name='interval' label='重复间隔'>
-									<InputNumber
-										min={1}
-										defaultValue={1}
-										addonAfter='次'
-										style={{ width: '100%' }}
-									/>
+									<InputNumber min={1} defaultValue={1} addonAfter='次' style={{ width: '100%' }} />
 								</Form.Item>
 							</Col>
 						)}
@@ -269,11 +243,7 @@ const EventModal: React.FC<EventModalProps> = ({
 					)}
 					{repeatType === 'monthly' && (
 						<Form.Item name='bymonthday' label='每月哪几天'>
-							<Select
-								mode='multiple'
-								style={{ width: '100%' }}
-								placeholder='选择日期(1-31)'
-							>
+							<Select mode='multiple' style={{ width: '100%' }} placeholder='选择日期(1-31)'>
 								{Array.from({ length: 31 }, (_, i) => (
 									<Select.Option key={i + 1} value={i + 1}>
 										{i + 1}
@@ -285,11 +255,7 @@ const EventModal: React.FC<EventModalProps> = ({
 					{repeatType !== 'none' && (
 						<Row gutter={16}>
 							<Col span={12}>
-								<Form.Item
-									name='untilType'
-									label='截止方式'
-									initialValue='none'
-								>
+								<Form.Item name='untilType' label='截止方式' initialValue='none'>
 									<Radio.Group>
 										<Radio value='none'>无限</Radio>
 										<Radio value='count'>按次数</Radio>

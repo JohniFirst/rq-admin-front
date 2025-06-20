@@ -40,14 +40,11 @@ export function useJumpToVscodeSource() {
 					return
 				}
 
-				return (
-					target._debugSource ?? getDebugSource(target._debugOwner, depth + 1)
-				)
+				return target._debugSource ?? getDebugSource(target._debugOwner, depth + 1)
 			}
 
 			const { _debugOwner, _debugSource } = sourceTarget
-			const source =
-				_debugSource || (_debugOwner && getDebugSource(_debugOwner))
+			const source = _debugSource || (_debugOwner && getDebugSource(_debugOwner))
 
 			if (!source) {
 				return
@@ -62,10 +59,8 @@ export function useJumpToVscodeSource() {
 			div.appendChild(linkA)
 			document.body.appendChild(div)
 			// 获取视口的宽度和高度
-			const viewportWidth =
-				window.innerWidth || document.documentElement.clientWidth
-			const viewportHeight =
-				window.innerHeight || document.documentElement.clientHeight
+			const viewportWidth = window.innerWidth || document.documentElement.clientWidth
+			const viewportHeight = window.innerHeight || document.documentElement.clientHeight
 
 			const { width, height } = div.getBoundingClientRect()
 			const { clientX, clientY } = event

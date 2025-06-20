@@ -77,16 +77,9 @@ function Selectable<T>(
 
 	const top = Math.max(0, Math.min(startCoords.y, moveCoords.y))
 	const left = Math.max(0, Math.min(startCoords.x, moveCoords.x))
-	const width = isDragging
-		? Math.abs(startCoords.x - Math.max(0, moveCoords.x))
-		: 0
-	const height = isDragging
-		? Math.abs(startCoords.y - Math.max(0, moveCoords.y))
-		: 0
-	const boxPosition = useMemo(
-		() => ({ top, left, width, height }),
-		[top, left, width, height],
-	)
+	const width = isDragging ? Math.abs(startCoords.x - Math.max(0, moveCoords.x)) : 0
+	const height = isDragging ? Math.abs(startCoords.y - Math.max(0, moveCoords.y)) : 0
+	const boxPosition = useMemo(() => ({ top, left, width, height }), [top, left, width, height])
 
 	const virtual = !!items
 
@@ -111,12 +104,8 @@ function Selectable<T>(
 							{
 								width: info.rect.width,
 								height: info.rect.height,
-								top:
-									info.rect.top + info.scrollTop - scrollInfo.current.scrollTop,
-								left:
-									info.rect.left +
-									info.scrollLeft -
-									scrollInfo.current.scrollLeft,
+								top: info.rect.top + info.scrollTop - scrollInfo.current.scrollTop,
+								left: info.rect.left + info.scrollLeft - scrollInfo.current.scrollLeft,
 							},
 							scrollContainer,
 							boxPosition,
@@ -125,9 +114,7 @@ function Selectable<T>(
 						if (inRange && !info.disabled) {
 							selectingValue.current.push(item)
 						} else {
-							selectingValue.current = selectingValue.current.filter(
-								(i) => !compareFn(i, item),
-							)
+							selectingValue.current = selectingValue.current.filter((i) => !compareFn(i, item))
 						}
 					}
 				})
@@ -175,14 +162,8 @@ function Selectable<T>(
 				const { clientX, clientY } = getClientXY(e)
 				moveClient.current = { x: clientX, y: clientY }
 				const { left, top } = scrollContainer.getBoundingClientRect()
-				const x = Math.min(
-					clientX - left + scrollContainer.scrollLeft,
-					scrollContainer.scrollWidth,
-				)
-				const y = Math.min(
-					clientY - top + scrollContainer.scrollTop,
-					scrollContainer.scrollHeight,
-				)
+				const x = Math.min(clientX - left + scrollContainer.scrollLeft, scrollContainer.scrollWidth)
+				const y = Math.min(clientY - top + scrollContainer.scrollTop, scrollContainer.scrollHeight)
 				setMoveCoords({
 					x,
 					y,
@@ -202,13 +183,9 @@ function Selectable<T>(
 					// https://github.com/linxianxi/react-selectable-box/issues/5
 					if (shouldDraggingStart && (boxWidth > 1 || boxHeight > 1)) {
 						setIsDragging(true)
-						scrollContainerOriginPosition =
-							getComputedStyle(scrollContainer).position
+						scrollContainerOriginPosition = getComputedStyle(scrollContainer).position
 						// default position in browser is `static`
-						if (
-							scrollContainer !== document.body &&
-							scrollContainerOriginPosition === 'static'
-						) {
+						if (scrollContainer !== document.body && scrollContainerOriginPosition === 'static') {
 							scrollContainer.style.position = 'relative'
 						}
 						handleStart(e)
@@ -217,8 +194,7 @@ function Selectable<T>(
 			}
 		}
 
-		const scrollListenerElement =
-			scrollContainer === document.body ? document : scrollContainer
+		const scrollListenerElement = scrollContainer === document.body ? document : scrollContainer
 
 		const onScroll = (e: Event) => {
 			const target = e.target as HTMLElement
@@ -230,9 +206,7 @@ function Selectable<T>(
 			if (isDraggingRef.current && scrollContainer) {
 				const containerRect = scrollContainer.getBoundingClientRect()
 				const x = Math.min(
-					moveClient.current.x -
-						containerRect.left +
-						scrollContainer.scrollLeft,
+					moveClient.current.x - containerRect.left + scrollContainer.scrollLeft,
 					scrollContainer.scrollWidth,
 				)
 				const y = Math.min(

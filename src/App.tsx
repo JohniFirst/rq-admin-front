@@ -6,10 +6,7 @@ import { RouterProvider, createBrowserRouter } from 'react-router-dom'
 import ThemeProvider from './layout/components/theme-provider'
 import { defaultRoutes } from './routes/routes'
 import { useAppDispatch } from './store/hooks'
-import {
-	fetchInitialData,
-	initSystemInfoState,
-} from './store/slice/system-info'
+import { fetchInitialData, initSystemInfoState } from './store/slice/system-info'
 
 function App() {
 	const dispatch = useAppDispatch()

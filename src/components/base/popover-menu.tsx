@@ -5,10 +5,7 @@ import type { FC } from 'react'
 // import LucideIcon from '../lucide-icon'
 
 // 弹出式菜单
-const PopoverMenu: FC<{ values: unknown; modal: HookAPI }> = ({
-	values,
-	modal,
-}) => {
+const PopoverMenu: FC<{ values: unknown; modal: HookAPI }> = ({ values, modal }) => {
 	const Content = () => {
 		return (
 			<div className='p-0'>

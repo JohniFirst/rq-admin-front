@@ -9,19 +9,13 @@ interface PlaybackRateControlProps {
 
 const playbackRateOptions = [0.5, 0.75, 1.0, 1.25, 1.5, 2.0] as const
 
-const PlaybackRateControl: React.FC<PlaybackRateControlProps> = ({
-	playbackRate,
-	onPlaybackRateChange,
-}) => {
+const PlaybackRateControl: React.FC<PlaybackRateControlProps> = ({ playbackRate, onPlaybackRateChange }) => {
 	const [isOpen, setIsOpen] = useState(false)
 	const containerRef = useRef<HTMLDivElement>(null)
 
 	useEffect(() => {
 		const handleClickOutside = (event: MouseEvent) => {
-			if (
-				containerRef.current &&
-				!containerRef.current.contains(event.target as Node)
-			) {
+			if (containerRef.current && !containerRef.current.contains(event.target as Node)) {
 				setIsOpen(false)
 			}
 		}
@@ -53,9 +47,7 @@ const PlaybackRateControl: React.FC<PlaybackRateControlProps> = ({
 						<button
 							key={rate}
 							type='button'
-							className={`${styles.playbackRateOption} ${
-								rate === playbackRate ? styles.active : ''
-							}`}
+							className={`${styles.playbackRateOption} ${rate === playbackRate ? styles.active : ''}`}
 							onClick={() => {
 								onPlaybackRateChange(rate)
 								setIsOpen(false)

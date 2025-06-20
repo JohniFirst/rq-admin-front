@@ -36,12 +36,7 @@ function Role() {
 		setDataSource(res)
 	}
 
-	return (
-		<BaseTable<RoleListRes>
-			tableProps={{ columns, dataSource }}
-			getTableData={testGetTableData}
-		/>
-	)
+	return <BaseTable<RoleListRes> tableProps={{ columns, dataSource }} getTableData={testGetTableData} />
 }
 
 export default Role

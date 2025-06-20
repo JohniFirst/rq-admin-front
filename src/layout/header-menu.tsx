@@ -20,9 +20,7 @@ function HeaderMenu({ showHeaderOperate = true }: HeaderMenuProps) {
 	const navigate = useCustomNavigate()
 	const dispatch = useAppDispatch()
 	const menus = useAppSelector((state) => state.menu)
-	const showNavigationBar = useAppSelector(
-		(state) => state.systemInfo.showNavigationBar,
-	)
+	const showNavigationBar = useAppSelector((state) => state.systemInfo.showNavigationBar)
 
 	const onClick: MenuProps['onClick'] = (e) => {
 		navigate(e.key)
@@ -50,10 +48,7 @@ function HeaderMenu({ showHeaderOperate = true }: HeaderMenuProps) {
 				if (item && Object.keys(item).includes('children')) {
 					// @ts-ignore
 					const children = item.children
-					if (
-						Array.isArray(children) &&
-						children.some((child: { key: string }) => child.key === currentPath)
-					) {
+					if (Array.isArray(children) && children.some((child: { key: string }) => child.key === currentPath)) {
 						selectedKey = currentPath
 						openKeys.push(item.key as string)
 					}
@@ -82,12 +77,7 @@ function HeaderMenu({ showHeaderOperate = true }: HeaderMenuProps) {
 	return (
 		<section className='w-full flex flex-col h-screen col-auto'>
 			<header className='flex justify-between items-center p-4'>
-				<Menu
-					mode='horizontal'
-					onClick={onClick}
-					selectedKeys={selectedKey}
-					items={menus}
-				/>
+				<Menu mode='horizontal' onClick={onClick} selectedKeys={selectedKey} items={menus} />
 
 				{showHeaderOperate && <HeaderOperate />}
 			</header>

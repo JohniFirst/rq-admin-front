@@ -3,11 +3,7 @@ import { useInViewport } from '@/hooks/useInViewport.ts'
 import { Segmented } from 'antd'
 import type { EChartsOption } from 'echarts'
 import { PieChart } from 'echarts/charts'
-import {
-	LegendComponent,
-	TitleComponent,
-	TooltipComponent,
-} from 'echarts/components'
+import { LegendComponent, TitleComponent, TooltipComponent } from 'echarts/components'
 import * as echarts from 'echarts/core'
 import { LabelLayout, UniversalTransition } from 'echarts/features'
 import { CanvasRenderer } from 'echarts/renderers'

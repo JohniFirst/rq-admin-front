@@ -1,9 +1,4 @@
-import type {
-	DateSelectArg,
-	EventClickArg,
-	EventInput,
-	EventMountArg,
-} from '@fullcalendar/core'
+import type { DateSelectArg, EventClickArg, EventInput, EventMountArg } from '@fullcalendar/core'
 import zhCnLocale from '@fullcalendar/core/locales/zh-cn'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import interactionPlugin from '@fullcalendar/interaction'
@@ -71,9 +66,7 @@ const Calendar: React.FC = () => {
 	const [form] = Form.useForm<EventFormData>()
 	const [_selectedDate, setSelectedDate] = useState<DateSelectArg | null>(null)
 	const [isEditMode, setIsEditMode] = useState(false)
-	const [selectedOccurrenceDate, setSelectedOccurrenceDate] = useState<
-		Date | undefined
-	>(undefined)
+	const [selectedOccurrenceDate, setSelectedOccurrenceDate] = useState<Date | undefined>(undefined)
 
 	// 检查今天的提醒
 	useEffect(() => {
@@ -151,12 +144,8 @@ const Calendar: React.FC = () => {
 
 	const handleEventClick = (info: EventClickArg) => {
 		// 这里假设 info.event.start 是 occurrence 的实际发生时间
-		setSelectedEvent(
-			Object.assign(info.event, info.event.extendedProps) as CustomEventInput,
-		)
-		setSelectedOccurrenceDate(
-			info.event.start ? new Date(info.event.start) : undefined,
-		)
+		setSelectedEvent(Object.assign(info.event, info.event.extendedProps) as CustomEventInput)
+		setSelectedOccurrenceDate(info.event.start ? new Date(info.event.start) : undefined)
 		setIsDetailModalVisible(true)
 	}
 
@@ -238,10 +227,7 @@ const Calendar: React.FC = () => {
 		message.success('事件时间已调整')
 	}
 
-	const handleDeleteEvent = (
-		mode: 'single' | 'all' | 'future',
-		occurrenceDate?: Date,
-	) => {
+	const handleDeleteEvent = (mode: 'single' | 'all' | 'future', occurrenceDate?: Date) => {
 		if (!selectedEvent) return
 		if (mode === 'all') {
 			setEvents(events.filter((e) => e.id !== selectedEvent.id))
@@ -250,11 +236,7 @@ const Calendar: React.FC = () => {
 			// 单次删除，加入 exdate
 			const updatedEvents = events.map((e) => {
 				if (e.id === selectedEvent.id) {
-					const exdate = Array.isArray(e.exdate)
-						? [...e.exdate]
-						: e.exdate
-							? [e.exdate]
-							: []
+					const exdate = Array.isArray(e.exdate) ? [...e.exdate] : e.exdate ? [e.exdate] : []
 					return {
 						...e,
 						exdate: [...exdate, dayjs(occurrenceDate).toISOString()],
@@ -267,15 +249,9 @@ const Calendar: React.FC = () => {
 		} else if (mode === 'future' && occurrenceDate) {
 			// 本次及后续，调整 rrule.until
 			const updatedEvents = events.map((e) => {
-				if (
-					e.id === selectedEvent.id &&
-					typeof e.rrule === 'object' &&
-					e.rrule !== null
-				) {
+				if (e.id === selectedEvent.id && typeof e.rrule === 'object' && e.rrule !== null) {
 					const rruleObj = { ...e.rrule } as Record<string, any>
-					rruleObj.until = dayjs(occurrenceDate)
-						.subtract(1, 'day')
-						.toISOString()
+					rruleObj.until = dayjs(occurrenceDate).subtract(1, 'day').toISOString()
 					return {
 						...e,
 						rrule: rruleObj,
@@ -292,13 +268,7 @@ const Calendar: React.FC = () => {
 	return (
 		<Card className='calendar-card'>
 			<FullCalendar
-				plugins={[
-					dayGridPlugin,
-					timeGridPlugin,
-					interactionPlugin,
-					listPlugin,
-					rrulePlugin,
-				]}
+				plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin, listPlugin, rrulePlugin]}
 				initialView='dayGridMonth'
 				headerToolbar={{
 					left: 'prev,next today',

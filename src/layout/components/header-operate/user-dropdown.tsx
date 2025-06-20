@@ -2,11 +2,7 @@ import { IsLogin, SessionStorageKeys } from '@/enums/localforage'
 import useCustomNavigate from '@/hooks/useCustomNavigate'
 import { useAppDispatch } from '@/store/hooks'
 import { resetMenu } from '@/store/slice/menu-slice'
-import {
-	EyeInvisibleOutlined,
-	LogoutOutlined,
-	UserOutlined,
-} from '@ant-design/icons'
+import { EyeInvisibleOutlined, LogoutOutlined, UserOutlined } from '@ant-design/icons'
 import { Avatar, Dropdown, type MenuProps } from 'antd'
 import type React from 'react'
 import { useEffect, useState } from 'react'
@@ -40,11 +36,7 @@ const UserDropdown: React.FC = () => {
 		{
 			key: 'userInfo',
 			icon: <UserOutlined className='text-blue-500' />,
-			label: (
-				<span className='text-gray-700 dark:text-gray-200 font-medium'>
-					个人信息
-				</span>
-			),
+			label: <span className='text-gray-700 dark:text-gray-200 font-medium'>个人信息</span>,
 			onClick: () => {
 				setShowUserInfoModal(true)
 			},
@@ -52,11 +44,7 @@ const UserDropdown: React.FC = () => {
 		{
 			key: 'resetPassword',
 			icon: <EyeInvisibleOutlined className='text-purple-500' />,
-			label: (
-				<span className='text-gray-700 dark:text-gray-200 font-medium'>
-					修改密码
-				</span>
-			),
+			label: <span className='text-gray-700 dark:text-gray-200 font-medium'>修改密码</span>,
 			onClick: () => {
 				setShowPasswordModal(true)
 			},
@@ -67,11 +55,7 @@ const UserDropdown: React.FC = () => {
 		{
 			key: 'logout',
 			icon: <LogoutOutlined className='text-red-500' />,
-			label: (
-				<span className='text-gray-700 dark:text-gray-200 font-medium'>
-					退出登录
-				</span>
-			),
+			label: <span className='text-gray-700 dark:text-gray-200 font-medium'>退出登录</span>,
 			onClick: () => {
 				setShowLogoutModal(true)
 			},
@@ -97,12 +81,8 @@ const UserDropdown: React.FC = () => {
 						className='border-2 border-transparent group-hover:border-indigo-500 transition-all duration-300'
 					/>
 					<div className='flex flex-col'>
-						<span className='text-sm font-medium text-gray-700 dark:text-gray-200'>
-							{userName}
-						</span>
-						<span className='text-xs text-gray-400 dark:text-gray-500'>
-							点击查看菜单
-						</span>
+						<span className='text-sm font-medium text-gray-700 dark:text-gray-200'>{userName}</span>
+						<span className='text-xs text-gray-400 dark:text-gray-500'>点击查看菜单</span>
 					</div>
 					<svg
 						className='w-4 h-4 text-gray-400 dark:text-gray-500 transform group-hover:rotate-180 transition-transform duration-300'
@@ -111,12 +91,7 @@ const UserDropdown: React.FC = () => {
 						viewBox='0 0 24 24'
 						xmlns='http://www.w3.org/2000/svg'
 					>
-						<path
-							strokeLinecap='round'
-							strokeLinejoin='round'
-							strokeWidth={2}
-							d='M19 9l-7 7-7-7'
-						/>
+						<path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M19 9l-7 7-7-7' />
 					</svg>
 				</div>
 			</Dropdown>
@@ -131,16 +106,9 @@ const UserDropdown: React.FC = () => {
 				}}
 			/>
 
-			<ChangePasswordModal
-				open={showPasswordModal}
-				onCancel={() => setShowPasswordModal(false)}
-			/>
+			<ChangePasswordModal open={showPasswordModal} onCancel={() => setShowPasswordModal(false)} />
 
-			<LogoutConfirmModal
-				open={showLogoutModal}
-				onCancel={() => setShowLogoutModal(false)}
-				onConfirm={handleLogout}
-			/>
+			<LogoutConfirmModal open={showLogoutModal} onCancel={() => setShowLogoutModal(false)} onConfirm={handleLogout} />
 		</>
 	)
 }

@@ -8,12 +8,7 @@ class DanmuStyle {
 	x: number
 	y: number
 
-	constructor(
-		text: string,
-		speed: number,
-		color: string,
-		canvas: HTMLCanvasElement,
-	) {
+	constructor(text: string, speed: number, color: string, canvas: HTMLCanvasElement) {
 		this.text = text
 		this.speed = speed
 		this.color = color

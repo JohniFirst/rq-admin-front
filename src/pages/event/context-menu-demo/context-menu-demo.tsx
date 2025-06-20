@@ -1,6 +1,4 @@
-import ContextMenu, {
-	type ContextMenuItem,
-} from '@/components/context-menu/context-menu'
+import ContextMenu, { type ContextMenuItem } from '@/components/context-menu/context-menu'
 import { Button } from 'antd'
 import type React from 'react'
 

@@ -77,25 +77,12 @@ const RegisterForm = () => {
 
 	return (
 		<>
-			<FormTitle
-				initial={{ y: -20, opacity: 0 }}
-				animate={{ y: 0, opacity: 1 }}
-				transition={{ duration: 0.5 }}
-			>
+			<FormTitle initial={{ y: -20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ duration: 0.5 }}>
 				创建账号
 			</FormTitle>
 
-			<Form
-				form={form}
-				name='registerForm'
-				onFinish={handleSubmit}
-				layout='vertical'
-				size='large'
-			>
-				<StyledFormItem
-					name='username'
-					rules={[{ required: true, message: '请输入您的用户名！' }]}
-				>
+			<Form form={form} name='registerForm' onFinish={handleSubmit} layout='vertical' size='large'>
+				<StyledFormItem name='username' rules={[{ required: true, message: '请输入您的用户名！' }]}>
 					<Input prefix={<UserOutlined />} placeholder='请输入用户名' />
 				</StyledFormItem>
 
@@ -117,10 +104,7 @@ const RegisterForm = () => {
 						{ max: 24, message: '密码长度不能大于24位！' },
 					]}
 				>
-					<Input.Password
-						prefix={<LockOutlined />}
-						placeholder='请输入8-24位字母、数字组合密码'
-					/>
+					<Input.Password prefix={<LockOutlined />} placeholder='请输入8-24位字母、数字组合密码' />
 				</StyledFormItem>
 
 				<StyledFormItem
@@ -138,19 +122,11 @@ const RegisterForm = () => {
 						}),
 					]}
 				>
-					<Input.Password
-						prefix={<LockOutlined />}
-						placeholder='请再次输入密码'
-					/>
+					<Input.Password prefix={<LockOutlined />} placeholder='请再次输入密码' />
 				</StyledFormItem>
 
 				<Form.Item>
-					<StyledButton
-						type='primary'
-						htmlType='submit'
-						block
-						className='bg-indigo-600 hover:bg-indigo-700'
-					>
+					<StyledButton type='primary' htmlType='submit' block className='bg-indigo-600 hover:bg-indigo-700'>
 						立即注册
 					</StyledButton>
 				</Form.Item>

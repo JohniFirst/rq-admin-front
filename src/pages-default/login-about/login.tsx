@@ -107,11 +107,7 @@ const LoginForm = () => {
 
 	return (
 		<>
-			<FormTitle
-				initial={{ y: -20, opacity: 0 }}
-				animate={{ y: 0, opacity: 1 }}
-				transition={{ duration: 0.5 }}
-			>
+			<FormTitle initial={{ y: -20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ duration: 0.5 }}>
 				欢迎登录
 			</FormTitle>
 
@@ -128,21 +124,12 @@ const LoginForm = () => {
 				layout='vertical'
 				size='large'
 			>
-				<StyledFormItem
-					name='username'
-					rules={[{ required: true, message: '请输入您的用户名！' }]}
-				>
+				<StyledFormItem name='username' rules={[{ required: true, message: '请输入您的用户名！' }]}>
 					<Input prefix={<UserOutlined />} placeholder='请输入用户名' />
 				</StyledFormItem>
 
-				<StyledFormItem
-					name='password'
-					rules={[{ required: true, message: '请输入您的密码！' }]}
-				>
-					<Input.Password
-						prefix={<LockOutlined />}
-						placeholder='请输入8-24位字母、数字组合密码'
-					/>
+				<StyledFormItem name='password' rules={[{ required: true, message: '请输入您的密码！' }]}>
+					<Input.Password prefix={<LockOutlined />} placeholder='请输入8-24位字母、数字组合密码' />
 				</StyledFormItem>
 
 				<VerificationCodeInput />
@@ -155,12 +142,7 @@ const LoginForm = () => {
 				</RememberMeWrapper>
 
 				<Form.Item>
-					<StyledButton
-						type='primary'
-						htmlType='submit'
-						block
-						className='bg-indigo-600 hover:bg-indigo-700'
-					>
+					<StyledButton type='primary' htmlType='submit' block className='bg-indigo-600 hover:bg-indigo-700'>
 						登 录
 					</StyledButton>
 				</Form.Item>

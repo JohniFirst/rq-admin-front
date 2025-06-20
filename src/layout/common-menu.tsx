@@ -65,9 +65,7 @@ function CommonMenu({ showHeaderOperate = true }: CommonMenuProps) {
 	const location = useLocation()
 	const [selectedKey, setSelectedKey] = useState([''])
 	const [openKeys, setOpenKeys] = useState<string[]>([])
-	const showNavigationBar = useAppSelector(
-		(state) => state.systemInfo.showNavigationBar,
-	)
+	const showNavigationBar = useAppSelector((state) => state.systemInfo.showNavigationBar)
 
 	// 找到当前选中项和需要展开的项
 	const findSelectedAndOpenKeys = (items: MenuItem[], currentPath: string) => {
@@ -127,10 +125,7 @@ function CommonMenu({ showHeaderOperate = true }: CommonMenuProps) {
 				className='w-64 min-w-64 max-h-screen bg-white dark:bg-gray-800 shadow-lg transition-all duration-300'
 				variants={itemVariants}
 			>
-				<motion.div
-					className='p-4 border-b border-gray-100 dark:border-gray-700'
-					variants={itemVariants}
-				>
+				<motion.div className='p-4 border-b border-gray-100 dark:border-gray-700' variants={itemVariants}>
 					<motion.h1
 						className='text-xl font-bold text-gray-800 dark:text-white hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors duration-300'
 						whileHover={{ scale: 1.05 }}
@@ -152,10 +147,7 @@ function CommonMenu({ showHeaderOperate = true }: CommonMenuProps) {
 				/>
 			</motion.aside>
 
-			<motion.section
-				className='w-full flex flex-col h-screen col-auto overflow-x-hidden'
-				variants={itemVariants}
-			>
+			<motion.section className='w-full flex flex-col h-screen col-auto overflow-x-hidden' variants={itemVariants}>
 				<motion.header
 					className='flex justify-between items-center px-6 py-4 bg-white dark:bg-gray-800 shadow-sm z-10'
 					variants={itemVariants}

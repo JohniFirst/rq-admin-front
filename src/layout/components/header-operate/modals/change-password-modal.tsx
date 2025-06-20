@@ -8,10 +8,7 @@ interface ChangePasswordModalProps {
 	onCancel: () => void
 }
 
-const ChangePasswordModal: React.FC<ChangePasswordModalProps> = ({
-	open,
-	onCancel,
-}) => {
+const ChangePasswordModal: React.FC<ChangePasswordModalProps> = ({ open, onCancel }) => {
 	const [form] = Form.useForm()
 	const [loading, setLoading] = useState(false)
 
@@ -34,11 +31,7 @@ const ChangePasswordModal: React.FC<ChangePasswordModalProps> = ({
 	return (
 		<Modal
 			open={open}
-			title={
-				<div className='text-xl font-semibold text-gray-800 dark:text-gray-100'>
-					修改密码
-				</div>
-			}
+			title={<div className='text-xl font-semibold text-gray-800 dark:text-gray-100'>修改密码</div>}
 			onCancel={onCancel}
 			onOk={handleSubmit}
 			okText='确认修改'
@@ -48,8 +41,7 @@ const ChangePasswordModal: React.FC<ChangePasswordModalProps> = ({
 			width={480}
 			centered
 			okButtonProps={{
-				className:
-					'bg-blue-500 hover:bg-blue-600 border-blue-500 hover:border-blue-600',
+				className: 'bg-blue-500 hover:bg-blue-600 border-blue-500 hover:border-blue-600',
 			}}
 			cancelButtonProps={{
 				className: 'hover:bg-gray-100 dark:hover:bg-gray-700',
@@ -61,9 +53,7 @@ const ChangePasswordModal: React.FC<ChangePasswordModalProps> = ({
 			<Form form={form} layout='vertical' className='px-2'>
 				<Form.Item
 					name='oldPassword'
-					label={
-						<span className='text-gray-700 dark:text-gray-300'>当前密码</span>
-					}
+					label={<span className='text-gray-700 dark:text-gray-300'>当前密码</span>}
 					rules={[{ required: true, message: '请输入当前密码' }]}
 				>
 					<Input.Password
@@ -75,9 +65,7 @@ const ChangePasswordModal: React.FC<ChangePasswordModalProps> = ({
 
 				<Form.Item
 					name='newPassword'
-					label={
-						<span className='text-gray-700 dark:text-gray-300'>新密码</span>
-					}
+					label={<span className='text-gray-700 dark:text-gray-300'>新密码</span>}
 					rules={[
 						{ required: true, message: '请输入新密码' },
 						{ min: 6, message: '密码长度不能小于6位' },
@@ -101,9 +89,7 @@ const ChangePasswordModal: React.FC<ChangePasswordModalProps> = ({
 
 				<Form.Item
 					name='confirmPassword'
-					label={
-						<span className='text-gray-700 dark:text-gray-300'>确认新密码</span>
-					}
+					label={<span className='text-gray-700 dark:text-gray-300'>确认新密码</span>}
 					dependencies={['newPassword']}
 					rules={[
 						{ required: true, message: '请确认新密码' },

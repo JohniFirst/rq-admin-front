@@ -9,9 +9,7 @@ interface MessageNotificationProps {
 
 type MessageNotificationTab = 'unread' | 'read'
 
-const MessageNotification: React.FC<MessageNotificationProps> = ({
-	unreadMessages,
-}) => {
+const MessageNotification: React.FC<MessageNotificationProps> = ({ unreadMessages }) => {
 	const [activeTab, setActiveTab] = useState<MessageNotificationTab>('unread')
 
 	const handleTabChange = (key: string) => {
@@ -29,9 +27,7 @@ const MessageNotification: React.FC<MessageNotificationProps> = ({
 				<span className='flex items-center gap-2'>
 					<span className='text-red-500'>未读消息</span>
 					{unreadMessages > 0 && (
-						<span className='px-2 py-0.5 text-xs bg-red-100 text-red-500 rounded-full'>
-							{unreadMessages}
-						</span>
+						<span className='px-2 py-0.5 text-xs bg-red-100 text-red-500 rounded-full'>{unreadMessages}</span>
 					)}
 				</span>
 			),
@@ -46,15 +42,9 @@ const MessageNotification: React.FC<MessageNotificationProps> = ({
 								<div className='flex items-start gap-4'>
 									<div className='w-3 h-3 mt-2 rounded-full bg-blue-500' />
 									<div className='flex-1'>
-										<h4 className='text-base font-medium text-gray-800 dark:text-gray-200'>
-											系统通知
-										</h4>
-										<p className='text-sm text-gray-500 dark:text-gray-400 mt-2'>
-											这是一条未读的系统通知消息示例
-										</p>
-										<span className='text-xs text-gray-400 dark:text-gray-500 mt-3 block'>
-											2分钟前
-										</span>
+										<h4 className='text-base font-medium text-gray-800 dark:text-gray-200'>系统通知</h4>
+										<p className='text-sm text-gray-500 dark:text-gray-400 mt-2'>这是一条未读的系统通知消息示例</p>
+										<span className='text-xs text-gray-400 dark:text-gray-500 mt-3 block'>2分钟前</span>
 									</div>
 								</div>
 							</div>
@@ -83,15 +73,9 @@ const MessageNotification: React.FC<MessageNotificationProps> = ({
 							<div className='flex items-start gap-4'>
 								<div className='w-3 h-3 mt-2 rounded-full bg-gray-400' />
 								<div className='flex-1'>
-									<h4 className='text-base font-medium text-gray-800 dark:text-gray-200'>
-										系统通知
-									</h4>
-									<p className='text-sm text-gray-500 dark:text-gray-400 mt-2'>
-										这是一条已读的系统通知消息示例
-									</p>
-									<span className='text-xs text-gray-400 dark:text-gray-500 mt-3 block'>
-										2天前
-									</span>
+									<h4 className='text-base font-medium text-gray-800 dark:text-gray-200'>系统通知</h4>
+									<p className='text-sm text-gray-500 dark:text-gray-400 mt-2'>这是一条已读的系统通知消息示例</p>
+									<span className='text-xs text-gray-400 dark:text-gray-500 mt-3 block'>2天前</span>
 								</div>
 							</div>
 						</div>
@@ -104,20 +88,9 @@ const MessageNotification: React.FC<MessageNotificationProps> = ({
 	return (
 		<div>
 			<Popover
-				title={
-					<h3 className='text-xl font-semibold text-gray-800 dark:text-gray-200 mb-4'>
-						消息中心
-					</h3>
-				}
+				title={<h3 className='text-xl font-semibold text-gray-800 dark:text-gray-200 mb-4'>消息中心</h3>}
 				trigger='click'
-				content={
-					<Tabs
-						className='w-[480px]'
-						defaultActiveKey={activeTab}
-						items={items}
-						onChange={handleTabChange}
-					/>
-				}
+				content={<Tabs className='w-[480px]' defaultActiveKey={activeTab} items={items} onChange={handleTabChange} />}
 				placement='bottomRight'
 				overlayClassName='notification-popover'
 			>

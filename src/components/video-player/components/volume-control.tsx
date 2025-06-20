@@ -9,21 +9,13 @@ interface VolumeControlProps {
 	onMuteToggle: () => void
 }
 
-const VolumeControl: React.FC<VolumeControlProps> = ({
-	volume,
-	isMuted,
-	onVolumeChange,
-	onMuteToggle,
-}) => {
+const VolumeControl: React.FC<VolumeControlProps> = ({ volume, isMuted, onVolumeChange, onMuteToggle }) => {
 	const [isOpen, setIsOpen] = useState(false)
 	const containerRef = useRef<HTMLDivElement>(null)
 
 	useEffect(() => {
 		const handleClickOutside = (event: MouseEvent) => {
-			if (
-				containerRef.current &&
-				!containerRef.current.contains(event.target as Node)
-			) {
+			if (containerRef.current && !containerRef.current.contains(event.target as Node)) {
 				setIsOpen(false)
 			}
 		}

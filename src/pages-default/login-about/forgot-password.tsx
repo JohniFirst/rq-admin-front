@@ -80,25 +80,13 @@ const ForgotPassword = () => {
 
 	return (
 		<>
-			<FormTitle
-				initial={{ y: -20, opacity: 0 }}
-				animate={{ y: 0, opacity: 1 }}
-				transition={{ duration: 0.5 }}
-			>
+			<FormTitle initial={{ y: -20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ duration: 0.5 }}>
 				找回密码
 			</FormTitle>
 
-			<FormDescription>
-				请输入您的注册邮箱，我们将向您发送重置密码的链接。
-			</FormDescription>
+			<FormDescription>请输入您的注册邮箱，我们将向您发送重置密码的链接。</FormDescription>
 
-			<Form
-				form={form}
-				name='forgotPasswordForm'
-				onFinish={handleSubmit}
-				layout='vertical'
-				size='large'
-			>
+			<Form form={form} name='forgotPasswordForm' onFinish={handleSubmit} layout='vertical' size='large'>
 				<StyledFormItem
 					name='email'
 					rules={[
@@ -110,12 +98,7 @@ const ForgotPassword = () => {
 				</StyledFormItem>
 
 				<Form.Item>
-					<StyledButton
-						type='primary'
-						htmlType='submit'
-						block
-						className='bg-indigo-600 hover:bg-indigo-700'
-					>
+					<StyledButton type='primary' htmlType='submit' block className='bg-indigo-600 hover:bg-indigo-700'>
 						发送重置链接
 					</StyledButton>
 				</Form.Item>

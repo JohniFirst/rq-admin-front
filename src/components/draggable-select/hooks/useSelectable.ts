@@ -1,10 +1,4 @@
-import {
-	useCallback,
-	useEffect,
-	useLayoutEffect,
-	useRef,
-	useState,
-} from 'react'
+import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { type Rule, useSelectableContext } from '../context'
 import { isInRange } from '../utils'
 import useUpdateEffect from './useUpdateEffect'
@@ -15,11 +9,7 @@ interface UseSelectableProps<T> {
 	rule?: Rule
 }
 
-export default function useSelectable<T>({
-	value,
-	disabled,
-	rule = 'collision',
-}: UseSelectableProps<T>) {
+export default function useSelectable<T>({ value, disabled, rule = 'collision' }: UseSelectableProps<T>) {
 	const {
 		mode,
 		scrollContainer,
@@ -40,26 +30,16 @@ export default function useSelectable<T>({
 	const [inRange, setInRange] = useState(false)
 
 	useEffect(() => {
-		setInRange(
-			isInRange(
-				rule,
-				node.current?.getBoundingClientRect(),
-				scrollContainer,
-				boxPosition,
-				boxRef,
-			),
-		)
+		setInRange(isInRange(rule, node.current?.getBoundingClientRect(), scrollContainer, boxPosition, boxRef))
 	}, [rule, scrollContainer, boxPosition])
 
 	const isSelected = contextValue.some((i) => compareFn(i, value))
 
 	const isSelecting = isDragging && !disabled && inRange
 
-	const isRemoving =
-		isSelecting && isSelected && (mode === 'remove' || mode === 'reverse')
+	const isRemoving = isSelecting && isSelected && (mode === 'remove' || mode === 'reverse')
 
-	const isAdding =
-		isSelecting && !isSelected && (mode === 'add' || mode === 'reverse')
+	const isAdding = isSelecting && !isSelected && (mode === 'add' || mode === 'reverse')
 
 	const setNodeRef = useCallback((ref: HTMLElement | null) => {
 		node.current = ref
@@ -79,9 +59,7 @@ export default function useSelectable<T>({
 			if (isSelecting) {
 				selectingValue.current.push(value)
 			} else {
-				selectingValue.current = selectingValue.current.filter(
-					(i) => !compareFn(i, value),
-				)
+				selectingValue.current = selectingValue.current.filter((i) => !compareFn(i, value))
 			}
 		}
 	}, [isSelecting])

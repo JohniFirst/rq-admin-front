@@ -25,9 +25,7 @@ const ProgressBar: React.FC<ProgressBarProps> = ({
 	const [previewTime, setPreviewTime] = useState(0)
 	const [isDragging, setIsDragging] = useState(false)
 	const [videoAspectRatio, setVideoAspectRatio] = useState(16 / 9)
-	const [previewVideo, setPreviewVideo] = useState<HTMLVideoElement | null>(
-		null,
-	)
+	const [previewVideo, setPreviewVideo] = useState<HTMLVideoElement | null>(null)
 
 	const formatTime = (time: number | undefined) => {
 		if (time === undefined) return '0:00'
@@ -160,9 +158,7 @@ const ProgressBar: React.FC<ProgressBarProps> = ({
 			</div>
 			<canvas
 				ref={previewCanvasRef}
-				className={`${styles.previewCanvas} ${
-					isPreviewVisible ? styles.visible : ''
-				}`}
+				className={`${styles.previewCanvas} ${isPreviewVisible ? styles.visible : ''}`}
 				style={{
 					left: `${(previewTime / duration) * 100}%`,
 					border: 'none',

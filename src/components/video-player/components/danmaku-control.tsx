@@ -8,21 +8,14 @@ interface DanmakuControlProps {
 	onSend: (text: string) => void
 }
 
-const DanmakuControl: React.FC<DanmakuControlProps> = ({
-	isEnabled,
-	onToggle,
-	onSend,
-}) => {
+const DanmakuControl: React.FC<DanmakuControlProps> = ({ isEnabled, onToggle, onSend }) => {
 	const [isOpen, setIsOpen] = useState(false)
 	const [text, setText] = useState('')
 	const containerRef = useRef<HTMLDivElement>(null)
 
 	useEffect(() => {
 		const handleClickOutside = (event: MouseEvent) => {
-			if (
-				containerRef.current &&
-				!containerRef.current.contains(event.target as Node)
-			) {
+			if (containerRef.current && !containerRef.current.contains(event.target as Node)) {
 				setIsOpen(false)
 			}
 		}
@@ -72,12 +65,7 @@ const DanmakuControl: React.FC<DanmakuControlProps> = ({
 						placeholder='输入弹幕内容'
 						className={styles.danmakuInput}
 					/>
-					<button
-						type='button'
-						onClick={handleSend}
-						className={styles.danmakuSendButton}
-						disabled={!text.trim()}
-					>
+					<button type='button' onClick={handleSend} className={styles.danmakuSendButton} disabled={!text.trim()}>
 						发送
 					</button>
 				</div>

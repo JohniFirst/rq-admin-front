@@ -1,10 +1,5 @@
 import { message } from 'antd'
-import axios, {
-	type AxiosInstance,
-	type InternalAxiosRequestConfig,
-	type AxiosResponse,
-	AxiosHeaders,
-} from 'axios'
+import axios, { type AxiosInstance, type InternalAxiosRequestConfig, type AxiosResponse, AxiosHeaders } from 'axios'
 import { generateCSRFToken } from './security'
 
 // 创建 axios 实例

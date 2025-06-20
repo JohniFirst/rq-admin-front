@@ -73,16 +73,10 @@ export default function LoginAbout() {
 				<Novatrix />
 			</BackgroundCanvas>
 
-			<LeftPanel
-				initial={{ x: -100, opacity: 0 }}
-				animate={{ x: 0, opacity: 1 }}
-				transition={{ duration: 0.6 }}
-			>
+			<LeftPanel initial={{ x: -100, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ duration: 0.6 }}>
 				<NavLink to='/'>{packageJson.name}</NavLink>
 				<h2 className='text-5xl font-bold mb-8 text-gray-800'>欢迎回来</h2>
-				<p className='text-xl text-gray-600 mb-4'>
-					登录您的账户，开始探索更多精彩内容
-				</p>
+				<p className='text-xl text-gray-600 mb-4'>登录您的账户，开始探索更多精彩内容</p>
 				<div className='flex flex-col gap-4'>
 					<div className='flex items-center gap-4'>
 						<div className='w-12 h-12 rounded-full bg-blue-100 flex items-center justify-center'>
@@ -104,9 +98,7 @@ export default function LoginAbout() {
 						</div>
 						<div>
 							<h3 className='font-semibold text-gray-800'>安全可靠</h3>
-							<p className='text-gray-600'>
-								采用先进的加密技术，保护您的数据安全
-							</p>
+							<p className='text-gray-600'>采用先进的加密技术，保护您的数据安全</p>
 						</div>
 					</div>
 					<div className='flex items-center gap-4'>
@@ -120,12 +112,7 @@ export default function LoginAbout() {
 								aria-label='高效便捷图标'
 							>
 								<title>高效便捷图标</title>
-								<path
-									strokeLinecap='round'
-									strokeLinejoin='round'
-									strokeWidth='2'
-									d='M13 10V3L4 14h7v7l9-11h-7z'
-								/>
+								<path strokeLinecap='round' strokeLinejoin='round' strokeWidth='2' d='M13 10V3L4 14h7v7l9-11h-7z' />
 							</svg>
 						</div>
 						<div>
@@ -136,11 +123,7 @@ export default function LoginAbout() {
 				</div>
 			</LeftPanel>
 
-			<RightPanel
-				initial={{ x: 100, opacity: 0 }}
-				animate={{ x: 0, opacity: 1 }}
-				transition={{ duration: 0.6 }}
-			>
+			<RightPanel initial={{ x: 100, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ duration: 0.6 }}>
 				<FormWrapper
 					initial={{ y: 20, opacity: 0 }}
 					animate={{ y: 0, opacity: 1 }}

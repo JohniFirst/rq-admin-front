@@ -30,22 +30,14 @@ const MenuAddForm = () => {
 				</Col>
 
 				<Col span={12}>
-					<Form.Item<MenuAddFormFields>
-						label='角色'
-						name='roles'
-						rules={[{ required: true, message: '请选择角色' }]}
-					>
+					<Form.Item<MenuAddFormFields> label='角色' name='roles' rules={[{ required: true, message: '请选择角色' }]}>
 						<Select
 							mode='multiple'
 							allowClear
 							showSearch
 							options={rolesList}
 							placeholder='请选择角色'
-							filterOption={(input, option) =>
-								(option?.label ?? '')
-									.toLowerCase()
-									.includes(input.toLowerCase())
-							}
+							filterOption={(input, option) => (option?.label ?? '').toLowerCase().includes(input.toLowerCase())}
 						/>
 					</Form.Item>
 				</Col>
@@ -56,9 +48,7 @@ const MenuAddForm = () => {
 					allowClear
 					showSearch
 					placeholder='请输入路由'
-					filterOption={(input, option) =>
-						(option?.label ?? '').toLowerCase().includes(input.toLowerCase())
-					}
+					filterOption={(input, option) => (option?.label ?? '').toLowerCase().includes(input.toLowerCase())}
 					options={menuUrls}
 				/>
 			</Form.Item>

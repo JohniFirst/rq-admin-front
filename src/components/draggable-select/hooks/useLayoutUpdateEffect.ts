@@ -1,12 +1,8 @@
 import React from 'react'
 
-const useInternalLayoutEffect =
-	typeof window !== 'undefined' ? React.useLayoutEffect : React.useEffect
+const useInternalLayoutEffect = typeof window !== 'undefined' ? React.useLayoutEffect : React.useEffect
 
-const useLayoutEffect = (
-	callback: (mount: boolean) => void,
-	deps?: React.DependencyList,
-) => {
+const useLayoutEffect = (callback: (mount: boolean) => void, deps?: React.DependencyList) => {
 	const firstMountRef = React.useRef(true)
 
 	useInternalLayoutEffect(() => {

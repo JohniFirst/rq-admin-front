@@ -12,9 +12,7 @@ import { type MutableRefObject, useEffect, useState } from 'react'
  * @return {[boolean, IntersectionObserverEntry | null]} A tuple containing the
  *   `isInViewport` boolean and the `entry` object.
  */
-export function useInViewport(
-	ref: MutableRefObject<null>,
-): [boolean, IntersectionObserverEntry | null] {
+export function useInViewport(ref: MutableRefObject<null>): [boolean, IntersectionObserverEntry | null] {
 	const [isInViewport, setIsInViewport] = useState(false)
 	const [entry, setEntry] = useState<IntersectionObserverEntry | null>(null)
 
