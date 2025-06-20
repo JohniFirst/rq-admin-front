@@ -1,14 +1,13 @@
-import { Suspense, lazy } from 'react'
-import type { RouteObject } from 'react-router-dom'
+import { lazy, Suspense } from 'react'
 import type { JSX } from 'react/jsx-runtime'
-import { generateRoutes } from './dynamic-routes'
-
+import type { RouteObject } from 'react-router-dom'
 import Loading from '@/components/loading'
-import NotFound from '@/pages-default/NotFound/NotFound'
 import Home from '@/pages-default/home/Home'
 import LoginForm from '@/pages-default/login-about/login'
 import LoginAbout from '@/pages-default/login-about/login-about-wp'
 import RegisterForm from '@/pages-default/login-about/register.tsx'
+import NotFound from '@/pages-default/NotFound/NotFound'
+import { generateRoutes } from './dynamic-routes'
 
 const lazyElement = (Element: React.LazyExoticComponent<() => JSX.Element>) => (
 	<Suspense fallback={<Loading />}>

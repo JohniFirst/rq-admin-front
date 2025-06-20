@@ -1,10 +1,10 @@
+import { AnimatePresence, motion } from 'framer-motion'
+import { useEffect } from 'react'
 import { getMenuList } from '@/api/system-api'
 import FullscreenTransition from '@/components/FullscreenTransition'
 import { LayoutModeEnum } from '@/enums/system'
 import { useAppDispatch, useAppSelector } from '@/store/hooks'
 import { updateMenu } from '@/store/slice/menu-slice'
-import { AnimatePresence, motion } from 'framer-motion'
-import { useEffect } from 'react'
 import CommonMenu from './common-menu'
 import SystemSettings from './components/header-operate/system-settings'
 import DrawerMenu from './drawer-menu'
@@ -18,7 +18,7 @@ const layoutVariants = {
 		y: 0,
 		transition: {
 			duration: 0.4,
-			ease: [0.4, 0, 0.2, 1],
+			ease: [0.42, 0, 0.58, 1] as [number, number, number, number],
 		},
 	},
 	exit: {
@@ -27,7 +27,7 @@ const layoutVariants = {
 		y: 20,
 		transition: {
 			duration: 0.3,
-			ease: [0.4, 0, 1, 1],
+			ease: [0.42, 0, 0.58, 1] as [number, number, number, number],
 		},
 	},
 }

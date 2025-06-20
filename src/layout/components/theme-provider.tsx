@@ -1,7 +1,7 @@
-import { useAppSelector } from '@/store/hooks'
-import { selectCurrentTheme } from '@/store/slice/system-info'
 import type { FC, ReactNode } from 'react'
 import { useEffect } from 'react'
+import { useAppSelector } from '@/store/hooks'
+import { selectCurrentTheme } from '@/store/slice/system-info'
 
 interface ThemeProviderProps {
 	children: ReactNode

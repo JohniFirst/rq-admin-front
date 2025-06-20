@@ -1,6 +1,6 @@
 import { EditOutlined } from '@ant-design/icons'
 import { Input, type InputProps, type InputRef } from 'antd'
-import React, { useRef, type RefAttributes, useEffect } from 'react'
+import React, { type RefAttributes, useEffect, useRef } from 'react'
 
 type DoubleClickEditProps = {
 	inputProps?: InputProps & RefAttributes<InputRef>

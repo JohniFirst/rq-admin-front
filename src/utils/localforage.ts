@@ -1,5 +1,5 @@
-import type { ForageKeys } from '@/enums/localforage'
 import localforage from 'localforage'
+import type { ForageKeys } from '@/enums/localforage'
 
 class Forage {
 	/**

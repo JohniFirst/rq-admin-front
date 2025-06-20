@@ -1,13 +1,13 @@
-import { responseFormat } from "./response-format"
+import { responseFormat } from './response-format'
 
 export default [
-  {
-    url: '/login',
-    method: 'post',
-    response: ({ query }) => {
-      return responseFormat({
-        name: '123123123',
-      })
-    },
-  },
+	{
+		url: '/login',
+		method: 'post',
+		response: ({ query }) => {
+			return responseFormat({
+				name: '123123123',
+			})
+		},
+	},
 ]

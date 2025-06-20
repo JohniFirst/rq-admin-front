@@ -1,13 +1,12 @@
 import type React from 'react'
 import { useCallback, useEffect, useRef, useState } from 'react'
-import styles from './video-player.module.css'
-
 import DanmakuControl from './components/danmaku-control'
 import PlaybackRateControl from './components/playback-rate-control'
 import ProgressBar from './components/progress-bar'
 import QualityControl from './components/quality-control'
 // 导入子组件
 import VolumeControl from './components/volume-control'
+import styles from './video-player.module.css'
 
 interface VideoPlayerProps {
 	src: string

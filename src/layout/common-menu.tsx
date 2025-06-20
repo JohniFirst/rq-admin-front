@@ -1,14 +1,14 @@
+import { HomeOutlined } from '@ant-design/icons'
+// import LucideIcon, { type LucideIconType } from '@/components/lucide-icon'
+import type { MenuProps } from 'antd'
+import { Menu } from 'antd'
+import { motion } from 'framer-motion'
+import { useEffect, useState } from 'react'
+import { Link, Outlet, useLocation } from 'react-router-dom'
 import useCustomNavigate from '@/hooks/useCustomNavigate'
 import { useAppDispatch, useAppSelector } from '@/store/hooks'
 import { selectCurrentTheme } from '@/store/slice/system-info'
 import { pushNavItemAction } from '@/store/slice/system-info.ts'
-import { HomeOutlined } from '@ant-design/icons'
-import { Menu } from 'antd'
-// import LucideIcon, { type LucideIconType } from '@/components/lucide-icon'
-import type { MenuProps } from 'antd'
-import { motion } from 'framer-motion'
-import { useEffect, useState } from 'react'
-import { Link, Outlet, useLocation } from 'react-router-dom'
 import HeaderOperate from './components/header-operate'
 import NavigationBar from './components/navigation-bar/navigation-bar'
 
@@ -45,7 +45,7 @@ const itemVariants = {
 		opacity: 1,
 		x: 0,
 		transition: {
-			type: 'spring',
+			type: 'spring' as const,
 			stiffness: 300,
 			damping: 24,
 		},

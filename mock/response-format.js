@@ -1,6 +1,6 @@
 export function responseFormat(data) {
-  return {
-    code: 200,
-    data
-  }
+	return {
+		code: 200,
+		data,
+	}
 }

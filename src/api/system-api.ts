@@ -21,10 +21,7 @@ export function getAllUserList(data: unknown): Promise<UserListRes[]> {
 }
 
 /** 用户启用/禁用 */
-export function updateUserIsEnabled(data: {
-	id: number
-	isEnabled: 0 | 1
-}): Promise<UserListRes[]> {
+export function updateUserIsEnabled(data: { id: number; isEnabled: 0 | 1 }): Promise<UserListRes[]> {
 	return http.put('/user/update', data)
 }
 

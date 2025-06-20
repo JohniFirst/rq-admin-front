@@ -1,7 +1,3 @@
-import { ContextMenuKey } from '@/enums/system'
-import useCustomNavigate from '@/hooks/useCustomNavigate'
-import { useAppDispatch, useAppSelector } from '@/store/hooks'
-import { setNavItemAction } from '@/store/slice/system-info.ts'
 import {
 	CloseOutlined,
 	DoubleLeftOutlined,
@@ -12,14 +8,18 @@ import {
 	PushpinOutlined,
 	RightOutlined,
 } from '@ant-design/icons'
-import { DndContext, PointerSensor, closestCenter, useSensor } from '@dnd-kit/core'
 import type { DragEndEvent } from '@dnd-kit/core'
-import { SortableContext, arrayMove, horizontalListSortingStrategy, useSortable } from '@dnd-kit/sortable'
+import { closestCenter, DndContext, PointerSensor, useSensor } from '@dnd-kit/core'
+import { arrayMove, horizontalListSortingStrategy, SortableContext, useSortable } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
 import { Dropdown, type MenuProps, Modal } from 'antd'
 import { cloneDeep } from 'lodash-es'
 import React from 'react'
 import { useLocation } from 'react-router-dom'
+import { ContextMenuKey } from '@/enums/system'
+import useCustomNavigate from '@/hooks/useCustomNavigate'
+import { useAppDispatch, useAppSelector } from '@/store/hooks'
+import { setNavItemAction } from '@/store/slice/system-info.ts'
 
 const contextMenu: MenuProps['items'] = [
 	{

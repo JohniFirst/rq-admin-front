@@ -11,8 +11,8 @@ import dayjs from 'dayjs'
 import type React from 'react'
 import { useEffect, useState } from 'react'
 import './calendar.css'
-import { editEvents, getEventsList } from '@/api/calendar'
 import tippy from 'tippy.js'
+import { editEvents, getEventsList } from '@/api/calendar'
 import 'tippy.js/dist/tippy.css' // optional for styling
 import 'tippy.js/animations/scale.css' // optional for animations
 import 'tippy.js/themes/light.css' // optional for themes

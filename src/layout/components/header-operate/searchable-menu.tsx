@@ -1,10 +1,10 @@
-import useCustomNavigate from '@/hooks/useCustomNavigate'
-import { useAppSelector } from '@/store/hooks'
 import { DownOutlined, EnterOutlined, SearchOutlined, UpOutlined } from '@ant-design/icons'
 import { Input, Modal } from 'antd'
 import { AnimatePresence, motion } from 'framer-motion'
-import { useEffect, useMemo, useRef, useState } from 'react'
 import type { FC } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
+import useCustomNavigate from '@/hooks/useCustomNavigate'
+import { useAppSelector } from '@/store/hooks'
 import system from './css/system.module.css'
 
 const SearchableMenu: FC = () => {

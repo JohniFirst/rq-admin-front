@@ -1,4 +1,3 @@
-import { addEvents, editEvents } from '@/api/calendar'
 import {
 	Card,
 	Checkbox,
@@ -9,16 +8,17 @@ import {
 	Input,
 	InputNumber,
 	Modal,
+	message,
 	Radio,
 	Row,
 	Select,
-	message,
 } from 'antd'
 import type { FormInstance } from 'antd/es/form'
 import dayjs from 'dayjs'
 import type React from 'react'
 import { useEffect } from 'react'
 import { RRule } from 'rrule'
+import { addEvents, editEvents } from '@/api/calendar'
 
 export interface EventFormData {
 	title: string
@@ -89,7 +89,7 @@ const EventModal: React.FC<EventModalProps> = ({ open, isEditMode, form, selecte
 		form
 			.validateFields()
 			.then(async (values) => {
-				let rrule: any = undefined
+				let rrule: any
 				if (values.freq != null) {
 					rrule = {
 						freq: values.freq,

@@ -1,9 +1,9 @@
-import { handleRegister } from '@/api/system-api'
 import { LockOutlined, MailOutlined, UserOutlined } from '@ant-design/icons'
 import { Button, Form, Input } from 'antd'
 import { motion } from 'framer-motion'
 import { NavLink, useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
+import { handleRegister } from '@/api/system-api'
 
 const FormTitle = styled(motion.h2)`
   font-size: 2rem;

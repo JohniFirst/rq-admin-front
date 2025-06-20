@@ -1,4 +1,4 @@
-import { Modal as AntdModal, Button, Modal, Space, Tag, message } from 'antd'
+import { Modal as AntdModal, Button, Modal, message, Space, Tag } from 'antd'
 import type React from 'react'
 import { eventRepeatOptions } from './event-modal'
 

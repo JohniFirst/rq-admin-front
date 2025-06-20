@@ -1,7 +1,7 @@
-import { getAllUserList, updateUserIsEnabled } from '@/api/system-api'
-import BaseTable from '@/components/base/base-table'
 import { Switch, type TableProps } from 'antd'
 import { type FC, useState } from 'react'
+import { getAllUserList, updateUserIsEnabled } from '@/api/system-api'
+import BaseTable from '@/components/base/base-table'
 
 /** 当前所有用户列表 */
 function User() {
