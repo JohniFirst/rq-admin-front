@@ -1,5 +1,7 @@
+import { ForageEnums } from '@/enums/localforage'
 import useCustomNavigate from '@/hooks/useCustomNavigate'
-import { useAppDispatch, useAppSelector } from '@/store/hooks'
+import { useAppSelector } from '@/store/hooks'
+import { forage } from '@/utils/localforage'
 // import { pushNavItemAction } from '@/store/slice/system-info.ts'
 import { Popover } from 'antd'
 import { useEffect, useState } from 'react'
@@ -24,7 +26,7 @@ interface DrawerMenuProps {
  */
 function DrawerMenu({ showHeaderOperate = true }: DrawerMenuProps) {
 	const navigate = useCustomNavigate()
-	const dispatch = useAppDispatch()
+	// const dispatch = useAppDispatch()
 	const menus = useAppSelector((state) => state.menu)
 	const showNavigationBar = useAppSelector(
 		(state) => state.systemInfo.showNavigationBar,
@@ -161,6 +163,19 @@ function DrawerMenu({ showHeaderOperate = true }: DrawerMenuProps) {
 			li
 		)
 	}
+
+	// 初始化时从forage读取menuVisible
+	useEffect(() => {
+		forage.getItem<boolean>(ForageEnums.DRAWER_MENU_VISIBLE).then((v) => {
+			if (typeof v === 'boolean') setMenuVisible(v)
+			if (typeof v === 'string') setMenuVisible(v === 'true')
+		})
+	}, [])
+
+	// menuVisible变化时持久化
+	useEffect(() => {
+		forage.setItem(ForageEnums.DRAWER_MENU_VISIBLE, String(menuVisible))
+	}, [menuVisible])
 
 	return (
 		<>

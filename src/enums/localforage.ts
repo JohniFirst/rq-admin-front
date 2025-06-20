@@ -3,6 +3,8 @@ export enum ForageEnums {
 	APP_HISTORY = 'APP_HISTORY',
 	// 系统信息
 	SYSTEM_INFO = 'SYSTEM_INFO',
+	// 抽屉菜单显示隐藏
+	DRAWER_MENU_VISIBLE = 'DRAWER_MENU_VISIBLE',
 }
 
 export enum LocalStorageKeys {
