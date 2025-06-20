@@ -16,7 +16,7 @@ import dayjs from 'dayjs'
 import type React from 'react'
 import { useEffect, useState } from 'react'
 import './calendar.css'
-// import { getEventsList } from '@/api/calendar'
+import { getEventsList } from '@/api/calendar'
 import tippy from 'tippy.js'
 import 'tippy.js/dist/tippy.css' // optional for styling
 import 'tippy.js/animations/scale.css' // optional for animations
@@ -64,73 +64,7 @@ interface CustomEventInput extends EventInput {
 }
 
 const Calendar: React.FC = () => {
-	const [events, setEvents] = useState<CustomEventInput[]>([
-		{
-			id: '1',
-			title: '非全天时间不重复测试',
-			start: '2025-06-12T10:00:00',
-			end: '2025-06-12T12:00:00',
-			backgroundColor: '#1890ff',
-			borderColor: '#1890ff',
-			allDay: false,
-			extendedProps: {
-				reminder: true,
-				repeat: 'none',
-			},
-		},
-		{
-			id: '2',
-			title: '每周重复事件',
-			start: '2025-06-12T10:00:00',
-			end: '2025-06-12T12:00:00',
-			backgroundColor: '#52c41a',
-			borderColor: '#52c41a',
-			allDay: false,
-			rrule: {
-				freq: 'weekly',
-				dtstart: '2025-06-12T10:00:00',
-				count: 5,
-				// interval: 2,
-				bymonthday: [1],
-			},
-			exdate: ['2025-06-19T10:00:00'],
-			extendedProps: {
-				reminder: true,
-				repeat: 'weekly',
-			},
-		},
-		{
-			id: '3',
-			title: '持续事件',
-			start: '2025-06-10T00:00:00',
-			end: '2025-06-12T23:59:59',
-			backgroundColor: '#722ed1',
-			borderColor: '#722ed1',
-			allDay: true,
-			extendedProps: {
-				reminder: true,
-				repeat: 'none',
-			},
-			rrule: {
-				freq: 'weekly',
-				dtstart: '2025-06-10T00:00:00',
-			},
-			duration: { days: 2 },
-		},
-		{
-			title: '循环事件-非全天事件的测试',
-			start: '2025-06-15T09:00:00',
-			end: '2025-06-15T13:00:00',
-			allDay: false,
-			color: 'blue',
-			rrule: {
-				freq: 'weekly',
-				dtstart: '2025-06-15T09:00:00',
-			},
-			exdate: ['2025-06-22T09:00:00'],
-			duration: { hours: 4 },
-		},
-	])
+	const [events, setEvents] = useState<CustomEventInput[]>([])
 	const [isModalVisible, setIsModalVisible] = useState(false)
 	const [isDetailModalVisible, setIsDetailModalVisible] = useState(false)
 	const [selectedEvent, setSelectedEvent] = useState<CustomEventInput | null>()
@@ -173,10 +107,33 @@ const Calendar: React.FC = () => {
 		getList()
 	}, [])
 
-	const getList = () => {
-		// getEventsList().then((res) => {
-		// 	console.log('events res', res)
-		// })
+	const getList = async () => {
+		try {
+			const now = dayjs()
+			const res = await getEventsList({
+				year: now.year(),
+				month: now.month() + 1,
+			})
+			console.log('接口返回的数据', res)
+
+			const apiEvents = res // 兼容直接返回数组和data字段
+			const parsedEvents = apiEvents.map((item: any) => {
+				let parsed = {}
+				try {
+					parsed = JSON.parse(item.event)
+				} catch {}
+				return {
+					...parsed,
+					id: item.id,
+					start: item.start,
+					end: item.end,
+					title: item.title,
+				}
+			})
+			setEvents(parsedEvents)
+		} catch (e) {
+			setEvents([])
+		}
 	}
 
 	const handleDateSelect = (selectInfo: DateSelectArg) => {

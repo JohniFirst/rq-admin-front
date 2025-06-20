@@ -16,6 +16,7 @@ import {
 	message,
 } from 'antd'
 import type { FormInstance } from 'antd/es/form'
+import { format } from 'date-fns'
 import dayjs from 'dayjs'
 import type React from 'react'
 import { useEffect } from 'react'
@@ -92,32 +93,44 @@ const EventModal: React.FC<EventModalProps> = ({
 		form
 			.validateFields()
 			.then(async (values) => {
-				// 组装 rrule
 				let rrule: any = undefined
-				if (values.repeat !== 'none') {
-					rrule = {
-						freq: values.repeat,
-						dtstart: values.startDate.toISOString(),
-						interval: values.interval || 1,
-					}
-					if (values.repeat === 'weekly' && values.byweekday) {
-						rrule.byweekday = values.byweekday
-					}
-					if (values.repeat === 'monthly' && values.bymonthday) {
-						rrule.bymonthday = values.bymonthday
-					}
-					if (values.untilType === 'count' && values.count) {
-						rrule.count = values.count
-					}
-					if (values.untilType === 'until' && values.until) {
-						rrule.until = values.until.toISOString()
+				if (values.repeat && values.repeat !== 'none') {
+					// freq 必须是 rrule 支持的字符串
+					const freq =
+						values.repeat === 'daily'
+							? 'DAILY'
+							: values.repeat === 'weekly'
+								? 'WEEKLY'
+								: values.repeat === 'monthly'
+									? 'MONTHLY'
+									: values.repeat === 'yearly'
+										? 'YEARLY'
+										: undefined
+					if (freq) {
+						rrule = {
+							freq,
+							dtstart: format(values.startDate.toDate(), 'yyyy-MM-dd HH:mm:ss'),
+							interval: values.interval || 1,
+						}
+						if (values.repeat === 'weekly' && values.byweekday) {
+							rrule.byweekday = values.byweekday
+						}
+						if (values.repeat === 'monthly' && values.bymonthday) {
+							rrule.bymonthday = values.bymonthday
+						}
+						if (values.untilType === 'count' && values.count) {
+							rrule.count = values.count
+						}
+						if (values.untilType === 'until' && values.until) {
+							rrule.until = format(values.until.toDate(), 'yyyy-MM-dd HH:mm:ss')
+						}
 					}
 				}
 				const newEvent = {
 					id: isEditMode ? selectedEvent?.id : Date.now().toString(),
 					title: values.title,
-					start: values.startDate.toDate(),
-					end: values.endDate.toDate(),
+					start: format(values.startDate.toDate(), 'yyyy-MM-dd HH:mm:ss'),
+					end: format(values.endDate.toDate(), 'yyyy-MM-dd HH:mm:ss'),
 					description: values.description,
 					backgroundColor: values.color,
 					borderColor: values.color,
