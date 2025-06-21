@@ -1,12 +1,18 @@
+import { useJumpToVscodeSource } from '@/hooks/useJumpToVscodeSource'
 import { ConfigProvider } from 'antd'
+import locale from 'antd/locale/zh_CN'
+import dayjs from 'dayjs'
 import { AnimatePresence } from 'framer-motion'
 import { useEffect } from 'react'
-import { createBrowserRouter, RouterProvider } from 'react-router-dom'
-import { useJumpToVscodeSource } from '@/hooks/useJumpToVscodeSource'
+import { RouterProvider, createBrowserRouter } from 'react-router-dom'
 import ThemeProvider from './layout/components/theme-provider'
 import { defaultRoutes } from './routes/routes'
 import { useAppDispatch } from './store/hooks'
 import { fetchInitialData, initSystemInfoState } from './store/slice/system-info'
+
+import 'dayjs/locale/zh-cn'
+
+dayjs.locale('zh-cn')
 
 function App() {
 	const dispatch = useAppDispatch()
@@ -29,7 +35,7 @@ function App() {
 
 	return (
 		<ThemeProvider>
-			<ConfigProvider>
+			<ConfigProvider locale={locale}>
 				<AnimatePresence mode='wait' initial={false}>
 					<RouterProvider router={AppRouter} />
 				</AnimatePresence>

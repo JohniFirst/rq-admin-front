@@ -1,24 +1,25 @@
+import { addEvents, editEvents } from '@/api/calendar'
 import {
+	Alert,
 	Card,
 	Checkbox,
 	Col,
 	DatePicker,
-	Divider,
 	Form,
 	Input,
 	InputNumber,
 	Modal,
-	message,
-	Radio,
 	Row,
 	Select,
+	Switch,
+	message,
 } from 'antd'
+import zhCN from 'antd/es/date-picker/locale/zh_CN'
 import type { FormInstance } from 'antd/es/form'
 import dayjs from 'dayjs'
 import type React from 'react'
 import { useEffect } from 'react'
 import { RRule } from 'rrule'
-import { addEvents, editEvents } from '@/api/calendar'
 
 export interface EventFormData {
 	title: string
@@ -161,7 +162,8 @@ const EventModal: React.FC<EventModalProps> = ({ open, isEditMode, form, selecte
 		>
 			<Card styles={{ body: { padding: 24 } }}>
 				<Form form={form} layout='vertical'>
-					<Divider orientation='left'>基础信息</Divider>
+					{/* 更明显的分隔线，用 Alert 替换 Divider */}
+					<Alert message='基础信息' type='info' showIcon style={{ marginBottom: 16 }} />
 					<Row gutter={16}>
 						<Col span={12}>
 							<Form.Item name='title' label='标题' rules={[{ required: true, message: '请输入事件标题' }]}>
@@ -170,45 +172,36 @@ const EventModal: React.FC<EventModalProps> = ({ open, isEditMode, form, selecte
 						</Col>
 						<Col span={12}>
 							<Form.Item name='color' label='事件颜色'>
-								<Input
-									type='color'
-									style={{
-										width: 60,
-										height: 32,
-										padding: 0,
-										border: 'none',
-										background: 'none',
-									}}
-								/>
+								<Input type='color' />
 							</Form.Item>
 						</Col>
 					</Row>
 					<Row gutter={16}>
 						<Col span={12}>
 							<Form.Item name='startDate' label='开始时间' rules={[{ required: true, message: '请选择开始时间' }]}>
-								<DatePicker showTime style={{ width: '100%' }} />
+								<DatePicker showTime style={{ width: '100%' }} locale={zhCN} />
 							</Form.Item>
 						</Col>
 						<Col span={12}>
 							<Form.Item name='endDate' label='结束时间' rules={[{ required: true, message: '请选择结束时间' }]}>
-								<DatePicker showTime style={{ width: '100%' }} />
+								<DatePicker showTime style={{ width: '100%' }} locale={zhCN} />
 							</Form.Item>
 						</Col>
 					</Row>
 					<Form.Item name='description' label='描述' rules={[{ required: true, message: '请输入事件描述' }]}>
 						<Input.TextArea placeholder='可填写详细说明' autoSize={{ minRows: 2, maxRows: 4 }} />
 					</Form.Item>
-					<Divider orientation='left'>重复设置</Divider>
+					<Alert message='重复设置' type='info' showIcon style={{ margin: '24px 0 16px 0' }} />
 					<Row gutter={16}>
 						<Col span={12}>
-							<Form.Item name='freq' label='重复'>
-								<Radio.Group>
+							<Form.Item name='freq' label='重复' initialValue={null}>
+								<Select allowClear placeholder='请选择重复类型'>
 									{eventRepeatOptions.map((opt) => (
-										<Radio key={String(opt.value)} value={opt.value}>
+										<Select.Option key={String(opt.value)} value={opt.value}>
 											{opt.label}
-										</Radio>
+										</Select.Option>
 									))}
-								</Radio.Group>
+								</Select>
 							</Form.Item>
 						</Col>
 						{repeatType !== null && (
@@ -225,25 +218,21 @@ const EventModal: React.FC<EventModalProps> = ({ open, isEditMode, form, selecte
 						</Form.Item>
 					)}
 					{repeatType === RRule.MONTHLY && (
-						<Form.Item name='bymonthday' label='每月哪几天'>
-							<Select mode='multiple' style={{ width: '100%' }} placeholder='选择日期(1-31)'>
-								{Array.from({ length: 31 }, (_, i) => (
-									<Select.Option key={i + 1} value={i + 1}>
-										{i + 1}
-									</Select.Option>
-								))}
-							</Select>
-						</Form.Item>
+						<Col span={12}>
+							<Form.Item name='bymonthday' label='每月哪几天'>
+								<DatePicker multiple maxTagCount='responsive' defaultValue={[dayjs('2000-01-01')]} />
+							</Form.Item>
+						</Col>
 					)}
 					{repeatType !== null && (
 						<Row gutter={16}>
 							<Col span={12}>
 								<Form.Item name='untilType' label='截止方式' initialValue='none'>
-									<Radio.Group>
-										<Radio value='none'>无限</Radio>
-										<Radio value='count'>按次数</Radio>
-										<Radio value='until'>按日期</Radio>
-									</Radio.Group>
+									<Select>
+										<Select.Option value='none'>无限</Select.Option>
+										<Select.Option value='count'>按次数</Select.Option>
+										<Select.Option value='until'>按日期</Select.Option>
+									</Select>
 								</Form.Item>
 							</Col>
 							{untilType === 'count' && (
@@ -256,18 +245,15 @@ const EventModal: React.FC<EventModalProps> = ({ open, isEditMode, form, selecte
 							{untilType === 'until' && (
 								<Col span={12}>
 									<Form.Item name='until' label='截止日期'>
-										<DatePicker showTime style={{ width: '100%' }} />
+										<DatePicker showTime style={{ width: '100%' }} locale={zhCN} />
 									</Form.Item>
 								</Col>
 							)}
 						</Row>
 					)}
-					<Divider orientation='left'>提醒设置</Divider>
+					<Alert message='提醒设置' type='info' showIcon style={{ margin: '24px 0 16px 0' }} />
 					<Form.Item name='reminder' label='提醒' valuePropName='checked'>
-						<Radio.Group>
-							<Radio value={true}>开启</Radio>
-							<Radio value={false}>关闭</Radio>
-						</Radio.Group>
+						<Switch checkedChildren='开启' unCheckedChildren='关闭' />
 					</Form.Item>
 				</Form>
 			</Card>

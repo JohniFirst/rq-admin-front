@@ -11,8 +11,8 @@ import dayjs from 'dayjs'
 import type React from 'react'
 import { useEffect, useState } from 'react'
 import './calendar.css'
-import tippy from 'tippy.js'
 import { editEvents, getEventsList } from '@/api/calendar'
+import tippy from 'tippy.js'
 import 'tippy.js/dist/tippy.css' // optional for styling
 import 'tippy.js/animations/scale.css' // optional for animations
 import 'tippy.js/themes/light.css' // optional for themes
@@ -195,7 +195,7 @@ const Calendar: React.FC = () => {
 	}
 
 	return (
-		<Card  className='calendar-card'>
+		<Card className='calendar-card'>
 			<FullCalendar
 				plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin, listPlugin, rrulePlugin]}
 				initialView='dayGridMonth'
@@ -208,7 +208,6 @@ const Calendar: React.FC = () => {
 				editable={true}
 				selectable={true}
 				selectMirror={true}
-				dayMaxEvents={true}
 				weekends={true}
 				events={events}
 				select={handleDateSelect}
