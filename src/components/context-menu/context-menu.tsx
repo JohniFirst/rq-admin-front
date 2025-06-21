@@ -1,5 +1,6 @@
 import type React from 'react'
 import { useEffect, useRef, useState } from 'react'
+import styled from 'styled-components'
 
 export interface ContextMenuItem {
 	label: string
@@ -13,6 +14,34 @@ export interface ContextMenuProps {
 	children: React.ReactNode
 	menuClassName?: string
 }
+
+const DivWp = styled.div<{position?: { x: number; y: number }}>`
+	position: fixed;
+	top: ${(props) => props.position?.y || 0}px;
+	left: ${(props) => props.position?.x || 0}px;
+	background: #fff;
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+	border-radius: 4px;
+	z-index: 9999;
+	min-width: 120px;
+	padding: 4px;
+`
+
+const ContextMenuItemStyled = styled.div<{ disabled?: boolean }>`
+	padding: 6px 16px;
+	cursor: ${(props) => (props.disabled ? 'not-allowed' : 'pointer')};
+	color: ${(props) => (props.disabled ? '#aaa' : '#333')};
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	user-select: none;
+	&:hover {
+		background-color: ${(props) => (props.disabled ? 'transparent' : '#f0f0f0')};
+	}
+	&.disabled {
+		cursor: not-allowed;
+	}
+`
 
 const ContextMenu: React.FC<ContextMenuProps> = ({ menu, children, menuClassName }) => {
 	const [visible, setVisible] = useState(false)
@@ -43,34 +72,16 @@ const ContextMenu: React.FC<ContextMenuProps> = ({ menu, children, menuClassName
 		<div style={{ display: 'inline-block' }} onContextMenu={handleContextMenu}>
 			{children}
 			{visible && (
-				<div
+				<DivWp
 					ref={menuRef}
 					className={menuClassName || 'custom-context-menu'}
-					style={{
-						position: 'fixed',
-						top: position.y,
-						left: position.x,
-						background: '#fff',
-						boxShadow: '0 2px 8px rgba(0,0,0,0.15)',
-						borderRadius: 4,
-						zIndex: 9999,
-						minWidth: 120,
-						padding: 4,
-					}}
+					position={position}
 				>
 					{menu.map((item, idx) => (
-						<div
+						<ContextMenuItemStyled
 							key={idx}
 							className={`context-menu-item${item.disabled ? ' disabled' : ''}`}
-							style={{
-								padding: '6px 16px',
-								cursor: item.disabled ? 'not-allowed' : 'pointer',
-								color: item.disabled ? '#aaa' : '#333',
-								display: 'flex',
-								alignItems: 'center',
-								gap: 8,
-								userSelect: 'none',
-							}}
+							disabled={item.disabled}
 							onClick={() => {
 								if (!item.disabled) {
 									item.onClick()
@@ -80,9 +91,9 @@ const ContextMenu: React.FC<ContextMenuProps> = ({ menu, children, menuClassName
 						>
 							{item.icon && <span style={{ marginRight: 8 }}>{item.icon}</span>}
 							{item.label}
-						</div>
+						</ContextMenuItemStyled>
 					))}
-				</div>
+				</DivWp>
 			)}
 		</div>
 	)
