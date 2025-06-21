@@ -49,7 +49,6 @@ const Calendar: React.FC = () => {
 	const [isDetailModalVisible, setIsDetailModalVisible] = useState(false)
 	const [selectedEvent, setSelectedEvent] = useState<CustomEventInput | null>()
 	const [form] = Form.useForm<EventFormData>()
-	const [_selectedDate, setSelectedDate] = useState<DateSelectArg | null>(null)
 	const [isEditMode, setIsEditMode] = useState(false)
 
 	// 检查今天的提醒
@@ -109,19 +108,13 @@ const Calendar: React.FC = () => {
 	}
 
 	const handleDateSelect = (selectInfo: DateSelectArg) => {
-		setSelectedDate(selectInfo)
-		form.setFieldsValue({
-			startDate: dayjs(selectInfo.start),
-			endDate: dayjs(selectInfo.end),
-			reminder: true,
-			color: '#1890ff',
-		})
+		setSelectedEvent(selectInfo)
+
 		setIsEditMode(false)
 		setIsModalVisible(true)
 	}
 
 	const handleEventClick = (info: EventClickArg) => {
-		// 这里假设 info.event.start 是 occurrence 的实际发生时间
 		setSelectedEvent(Object.assign(info.event, info.event.extendedProps) as CustomEventInput)
 		setIsDetailModalVisible(true)
 	}
@@ -130,8 +123,8 @@ const Calendar: React.FC = () => {
 		if (selectedEvent) {
 			form.setFieldsValue({
 				title: selectedEvent.title,
-				startDate: dayjs(selectedEvent.start as Date),
-				endDate: dayjs(selectedEvent.end as Date),
+				start: dayjs(selectedEvent.start as Date),
+				end: dayjs(selectedEvent.end as Date),
 				description: selectedEvent.description,
 				color: selectedEvent.backgroundColor as string,
 				reminder: selectedEvent.extendedProps?.reminder || false,
@@ -190,7 +183,7 @@ const Calendar: React.FC = () => {
 		}
 	}
 
-	const handleEventResize = async (info: EventResizeDoneArg) => {
+	const handleEventResize = (info: EventResizeDoneArg) => {
 		handleEventDrop(info as unknown as EventDropArg)
 	}
 
@@ -227,7 +220,6 @@ const Calendar: React.FC = () => {
 			<EventModal
 				open={isModalVisible}
 				isEditMode={isEditMode}
-				form={form}
 				selectedEvent={selectedEvent}
 				onCancel={() => {
 					setIsModalVisible(false)
