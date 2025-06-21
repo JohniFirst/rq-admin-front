@@ -65,7 +65,7 @@ function Home() {
 						<li>实现了瀑布流显示的图片上传管理</li>
 						<li>云相册实现了相册概念</li>
 						<li>
-							动画系统利用&nbsp;
+							动画系统利用
 							<a
 								className='underline text-blue-600 hover:text-blue-800'
 								target='_blank'
@@ -74,10 +74,10 @@ function Home() {
 							>
 								Framer Motion
 							</a>
-							&nbsp; 实现，动画效果自然流畅
+							 实现，动画效果自然流畅
 						</li>
 						<li>
-							css使用&nbsp;
+							css使用
 							<a
 								className='underline text-blue-600 hover:text-blue-800'
 								target='_blank'
@@ -89,7 +89,7 @@ function Home() {
 							，熟悉之后使用更方便
 						</li>
 						<li>
-							实现了基于fullcalendar的<NavLink to='/calendar'>日历组件</NavLink>
+							实现了基于fullcalendar的<NavLink to='/event-pro/calendar'>日历组件</NavLink>
 						</li>
 					</ol>
 				</AnimatedSection>

@@ -195,7 +195,7 @@ const Calendar: React.FC = () => {
 	}
 
 	return (
-		<Card className='calendar-card'>
+		<Card  className='calendar-card'>
 			<FullCalendar
 				plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin, listPlugin, rrulePlugin]}
 				initialView='dayGridMonth'
@@ -216,23 +216,10 @@ const Calendar: React.FC = () => {
 				eventDrop={handleEventDrop}
 				eventResize={handleEventResize}
 				eventDidMount={handleEventDidMount}
-				height='auto'
-				eventTimeFormat={{
-					hour: '2-digit',
-					minute: '2-digit',
-					meridiem: false,
-					hour12: false,
-				}}
+				height={700}
 				eventResizableFromStart={true}
-				eventMinHeight={20}
-				eventMinWidth={20}
 				allDaySlot={true}
-				slotMinTime='00:00'
-				slotMaxTime='24:00'
-				slotDuration='00:30'
-				slotLabelInterval='01:00'
 				expandRows={true}
-				stickyHeaderDates={true}
 				nowIndicator={true}
 				eventStartEditable={true}
 				eventDurationEditable={true}
