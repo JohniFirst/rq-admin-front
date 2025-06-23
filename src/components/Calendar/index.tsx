@@ -6,7 +6,7 @@ import listPlugin from '@fullcalendar/list'
 import FullCalendar from '@fullcalendar/react'
 import rrulePlugin from '@fullcalendar/rrule'
 import timeGridPlugin from '@fullcalendar/timegrid'
-import { Card, Form, Modal, message } from 'antd'
+import { Card, Modal, message } from 'antd'
 import dayjs from 'dayjs'
 import type React from 'react'
 import { useEffect, useState } from 'react'
@@ -17,7 +17,7 @@ import 'tippy.js/dist/tippy.css' // optional for styling
 import 'tippy.js/animations/scale.css' // optional for animations
 import 'tippy.js/themes/light.css' // optional for themes
 import DetailModal from './detail-modal'
-import EventModal, { type EventFormData } from './event-modal'
+import EventModal from './event-modal'
 
 const eventRepeatOptions = {
 	none: '不重复',
@@ -85,11 +85,11 @@ const Calendar: React.FC = () => {
 	const getList = async () => {
 		try {
 			const now = dayjs()
+
 			const res = await getEventsList({
 				year: now.year(),
 				month: now.month() + 1,
 			})
-			console.log('获取日历事件', res)
 
 			const parsedEvents = res.map((item: any) => {
 				const parsed = JSON.parse(item.event)
@@ -101,6 +101,8 @@ const Calendar: React.FC = () => {
 				parsed.id = item.id
 				return parsed
 			})
+
+			console.log('获取到的日历事件', parsedEvents)
 			setEvents(parsedEvents)
 		} catch (e) {
 			console.error('获取日历事件失败', e)

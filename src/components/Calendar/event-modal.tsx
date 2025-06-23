@@ -15,6 +15,7 @@ import {
 	Switch,
 	message,
 } from 'antd'
+import type { Color } from 'antd/es/color-picker'
 import zhCN from 'antd/es/date-picker/locale/zh_CN'
 import dayjs from 'dayjs'
 import type React from 'react'
@@ -22,12 +23,14 @@ import { useEffect } from 'react'
 import { RRule } from 'rrule'
 
 export interface EventFormData {
+	id?: string
 	title: string
 	start: dayjs.Dayjs
 	end: dayjs.Dayjs
 	description?: string
-	color: string
+	color: Color | string
 	reminder: boolean
+	allDay: boolean
 	rrule?: {
 		freq?: number | null // 新增freq字段，代表重复类型
 		interval?: number // 重复间隔
@@ -70,15 +73,18 @@ const EventModal: React.FC<EventModalProps> = ({ open, isEditMode, selectedEvent
 
 	useEffect(() => {
 		if (open && selectedEvent) {
+			console.log('selectedEvent', selectedEvent)
 			form.setFieldsValue({
 				title: selectedEvent.title,
 				start: dayjs(selectedEvent.start),
 				end: dayjs(selectedEvent.end),
+				color: selectedEvent.color || '#1890ff', // 默认颜色
 				description: selectedEvent.description,
 				reminder: selectedEvent.extendedProps?.reminder || false,
 				rrule: selectedEvent.rrule || { freq: null, interval: 1 },
 			})
 		}
+
 		// else if (open && !isEditMode) {
 		// 	form.setFieldsValue({
 		// 		rrule: { freq: null, interval: 1 },
@@ -95,50 +101,26 @@ const EventModal: React.FC<EventModalProps> = ({ open, isEditMode, selectedEvent
 		form
 			.validateFields()
 			.then(async (values) => {
-				let rruleObj: any = undefined
-				if (values.rrule && values.rrule.freq !== null) {
-					rruleObj = {
-						freq: values.rrule.freq,
-						dtstart: values.start,
-						interval: values.rrule.interval || 1,
-					}
-					if (values.rrule.freq === RRule.WEEKLY && values.rrule.byweekday) {
-						rruleObj.byweekday = values.rrule.byweekday
-					}
-					if (values.rrule.freq === RRule.MONTHLY && values.rrule.bymonthday) {
-						rruleObj.bymonthday = values.rrule.bymonthday
-					}
-					if (values.untilType === 'count' && values.rrule.count) {
-						rruleObj.count = values.rrule.count
-					}
-					if (values.untilType === 'until' && values.rrule.until) {
-						rruleObj.until = values.rrule.until.toDate()
-					}
-					// 自动加上duration字段
-					rruleObj.duration = values.end.diff(values.start, 'second') * 1000
+				// 确保颜色是字符串格式
+				if (typeof values.color !== 'string') {
+					values.color = values.color.toHexString() as string
 				}
 
-				const newEvent = {
-					title: values.title,
-					start: values.start,
-					end: values.end,
-					description: values.description,
-					backgroundColor: values.color,
-					borderColor: values.color,
-					allDay: values.start.isSame(values.start.startOf('day')) && values.end.isSame(values.end.startOf('day')),
-					extendedProps: {
-						reminder: values.reminder,
-					},
-					rrule: rruleObj,
+				// 判断是否是全天事件
+				if (values.start && values.end) {
+					const start = dayjs(values.start)
+					const end = dayjs(values.end)
+
+					// 如果开始时间和结束时间是同一天且没有时间部分，则设置为全天事件
+					values.allDay = !start.isSame(end, 'day')
 				}
 
 				try {
 					if (isEditMode && selectedEvent && selectedEvent.id) {
-						// @ts-ignore
-						newEvent.id = selectedEvent.id
-						await editEvents({ event: JSON.stringify(newEvent) })
+						values.id = selectedEvent.id
+						await editEvents({ event: JSON.stringify(values) })
 					} else {
-						await addEvents({ event: JSON.stringify(newEvent) })
+						await addEvents({ event: JSON.stringify(values) })
 					}
 
 					message.success(isEditMode ? '事件编辑成功' : '事件添加成功')
@@ -149,7 +131,8 @@ const EventModal: React.FC<EventModalProps> = ({ open, isEditMode, selectedEvent
 					message.error('提交到后台失败')
 				}
 			})
-			.catch(() => {
+			.catch((e) => {
+				console.log('表单提交失败', e)
 				message.error('请完善表单信息')
 			})
 	}
@@ -189,7 +172,7 @@ const EventModal: React.FC<EventModalProps> = ({ open, isEditMode, selectedEvent
 						</Col>
 						<Col span={12}>
 							<Form.Item name='color' label='事件颜色'>
-								<ColorPicker defaultValue={'#1890ff'} />
+								<ColorPicker defaultValue={'#1890ff'} format='hex' />
 							</Form.Item>
 						</Col>
 						<Col span={12}>
