@@ -1,15 +1,23 @@
+import useCustomNavigate from '@/hooks/useCustomNavigate'
+import { useAppDispatch, useAppSelector } from '@/store/hooks'
+import { pushNavItemAction } from '@/store/slice/system-info.ts'
 import type { MenuProps } from 'antd'
 import { Menu } from 'antd'
 import { useEffect, useState } from 'react'
 import { Outlet, useLocation } from 'react-router-dom'
-import useCustomNavigate from '@/hooks/useCustomNavigate'
-import { useAppDispatch, useAppSelector } from '@/store/hooks'
-import { pushNavItemAction } from '@/store/slice/system-info.ts'
 import HeaderOperate from './components/header-operate'
 import NavigationBar from './components/navigation-bar/navigation-bar'
 
 interface HeaderMenuProps {
 	showHeaderOperate?: boolean
+}
+
+// 定义兼容 antd MenuItem 的类型
+interface MenuItem {
+	key: string
+	label?: React.ReactNode
+	children?: MenuItem[]
+	[key: string]: any
 }
 
 /**
@@ -18,7 +26,8 @@ interface HeaderMenuProps {
 function HeaderMenu({ showHeaderOperate = true }: HeaderMenuProps) {
 	const navigate = useCustomNavigate()
 	const dispatch = useAppDispatch()
-	const menus = useAppSelector((state) => state.menu)
+	const menusRaw = useAppSelector((state) => state.menu)
+	const menus: MenuItem[] = Array.isArray(menusRaw) ? menusRaw : []
 	const showNavigationBar = useAppSelector((state) => state.systemInfo.showNavigationBar)
 
 	const onClick: MenuProps['onClick'] = (e) => {
@@ -42,17 +51,16 @@ function HeaderMenu({ showHeaderOperate = true }: HeaderMenuProps) {
 		let selectedKey = ''
 		const openKeys: string[] = []
 
-		const findKeys = (items: MenuItem[]) => {
+		const findKeys = (items: MenuItem[] = []) => {
 			for (const item of items) {
-				if (item && Object.keys(item).includes('children')) {
-					// @ts-ignore
-					const children = item.children
-					if (Array.isArray(children) && children.some((child: { key: string }) => child.key === currentPath)) {
+				if (!item) continue
+				if ('children' in item && Array.isArray(item.children)) {
+					if (item.children.some((child: MenuItem) => child && child.key === currentPath)) {
 						selectedKey = currentPath
-						openKeys.push(item.key as string)
+						if (item.key) openKeys.push(item.key as string)
 					}
-					findKeys(children)
-				} else if (item?.key === currentPath) {
+					findKeys(item.children)
+				} else if (item.key === currentPath) {
 					selectedKey = currentPath
 				}
 			}

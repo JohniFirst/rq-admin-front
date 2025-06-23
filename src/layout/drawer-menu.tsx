@@ -1,12 +1,12 @@
+import { ForageEnums } from '@/enums/localforage'
+import useCustomNavigate from '@/hooks/useCustomNavigate'
+import { useAppSelector } from '@/store/hooks'
+import { forage } from '@/utils/localforage'
 import { HomeOutlined, MenuFoldOutlined, MenuUnfoldOutlined } from '@ant-design/icons'
 // import { pushNavItemAction } from '@/store/slice/system-info.ts'
 import { Popover } from 'antd'
 import { useEffect, useState } from 'react'
 import { Link, Outlet, useLocation } from 'react-router-dom'
-import { ForageEnums } from '@/enums/localforage'
-import useCustomNavigate from '@/hooks/useCustomNavigate'
-import { useAppSelector } from '@/store/hooks'
-import { forage } from '@/utils/localforage'
 import HeaderOperate from './components/header-operate'
 import NavigationBar from './components/navigation-bar/navigation-bar'
 import drawer from './css/drawerMenu.module.css'
@@ -23,7 +23,8 @@ interface DrawerMenuProps {
 function DrawerMenu({ showHeaderOperate = true }: DrawerMenuProps) {
 	const navigate = useCustomNavigate()
 	// const dispatch = useAppDispatch()
-	const menus = useAppSelector((state) => state.menu)
+	const menusRaw = useAppSelector((state) => state.menu)
+	const menus: MenuItem[] = Array.isArray(menusRaw) ? menusRaw : []
 	const showNavigationBar = useAppSelector((state) => state.systemInfo.showNavigationBar)
 	const [topActiveMenu, setTopActiveMenu] = useState<MenuItem>(menus[0])
 	const [menuVisible, setMenuVisible] = useState(true)
@@ -36,9 +37,8 @@ function DrawerMenu({ showHeaderOperate = true }: DrawerMenuProps) {
 		const findTopMenu = (items: MenuItem[], path: string): MenuItem | undefined => {
 			for (const item of items) {
 				if (item.key === path) return item
-				if (item.children) {
-					// @ts-ignore
-					if (item.children.some((child: { key: string }) => child.key === path)) {
+				if (Array.isArray(item.children)) {
+					if (item.children.some((child: MenuItem) => child.key === path)) {
 						return item
 					}
 					const found = findTopMenu(item.children, path)
@@ -70,17 +70,16 @@ function DrawerMenu({ showHeaderOperate = true }: DrawerMenuProps) {
 		let selectedKey = ''
 		const openKeys: string[] = []
 
-		const findKeys = (items: MenuItem[]) => {
+		const findKeys = (items: MenuItem[] = []) => {
 			for (const item of items) {
-				if (item && Object.keys(item).includes('children')) {
-					// @ts-ignore
-					const children = item.children
-					if (Array.isArray(children) && children.some((child: { key: string }) => child.key === currentPath)) {
+				if (!item) continue
+				if ('children' in item && Array.isArray(item.children)) {
+					if (item.children.some((child: MenuItem) => child && child.key === currentPath)) {
 						selectedKey = currentPath
-						openKeys.push(item.key as string)
+						if (item.key) openKeys.push(item.key as string)
 					}
-					findKeys(children)
-				} else if (item?.key === currentPath) {
+					findKeys(item.children)
+				} else if (item.key === currentPath) {
 					selectedKey = currentPath
 				}
 			}
@@ -97,7 +96,7 @@ function DrawerMenu({ showHeaderOperate = true }: DrawerMenuProps) {
 		const result = findSelectedAndOpenKeys(menus, location.pathname)
 		setSelectedKey([result.selectedKey])
 		setOpenKeys(result.openKeys)
-	}, [location])
+	}, [location, menus])
 
 	// const onOpenChange = (keys: string[]) => {
 	// 	// 更新展开的菜单项
