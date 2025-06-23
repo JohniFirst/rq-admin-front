@@ -75,17 +75,16 @@ const EventModal: React.FC<EventModalProps> = ({ open, isEditMode, selectedEvent
 				start: dayjs(selectedEvent.start),
 				end: dayjs(selectedEvent.end),
 				description: selectedEvent.description,
-				// color: selectedEvent.color,
 				reminder: selectedEvent.extendedProps?.reminder || false,
 				rrule: selectedEvent.rrule || { freq: null, interval: 1 },
 			})
-		} else if (open && !isEditMode) {
-			// form.resetFields()
-			form.setFieldsValue({
-				rrule: { freq: null, interval: 1 },
-				reminder: false,
-			})
 		}
+		// else if (open && !isEditMode) {
+		// 	form.setFieldsValue({
+		// 		rrule: { freq: null, interval: 1 },
+		// 		reminder: false,
+		// 	})
+		// }
 	}, [open, isEditMode, selectedEvent, form])
 
 	const rrule = Form.useWatch('rrule', form) || {}
@@ -141,6 +140,8 @@ const EventModal: React.FC<EventModalProps> = ({ open, isEditMode, selectedEvent
 					} else {
 						await addEvents({ event: JSON.stringify(newEvent) })
 					}
+
+					message.success(isEditMode ? '事件编辑成功' : '事件添加成功')
 
 					onCancel()
 					form.resetFields()

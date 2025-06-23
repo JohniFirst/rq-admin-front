@@ -48,7 +48,6 @@ const Calendar: React.FC = () => {
 	const [isModalVisible, setIsModalVisible] = useState(false)
 	const [isDetailModalVisible, setIsDetailModalVisible] = useState(false)
 	const [selectedEvent, setSelectedEvent] = useState<CustomEventInput | null>()
-	const [form] = Form.useForm<EventFormData>()
 	const [isEditMode, setIsEditMode] = useState(false)
 
 	// 检查今天的提醒
@@ -90,6 +89,8 @@ const Calendar: React.FC = () => {
 				year: now.year(),
 				month: now.month() + 1,
 			})
+			console.log('获取日历事件', res)
+
 			const parsedEvents = res.map((item: any) => {
 				const parsed = JSON.parse(item.event)
 
@@ -121,14 +122,6 @@ const Calendar: React.FC = () => {
 
 	const handleDetailEdit = () => {
 		if (selectedEvent) {
-			form.setFieldsValue({
-				title: selectedEvent.title,
-				start: dayjs(selectedEvent.start as Date),
-				end: dayjs(selectedEvent.end as Date),
-				description: selectedEvent.description,
-				color: selectedEvent.backgroundColor as string,
-				reminder: selectedEvent.extendedProps?.reminder || false,
-			})
 			setIsEditMode(true)
 			setIsDetailModalVisible(false)
 			setIsModalVisible(true)
@@ -222,8 +215,8 @@ const Calendar: React.FC = () => {
 				isEditMode={isEditMode}
 				selectedEvent={selectedEvent}
 				onCancel={() => {
+					getList()
 					setIsModalVisible(false)
-					form.resetFields()
 				}}
 			/>
 
@@ -231,7 +224,10 @@ const Calendar: React.FC = () => {
 				event={selectedEvent}
 				open={isDetailModalVisible}
 				onEdit={handleDetailEdit}
-				onCancel={() => setIsDetailModalVisible(false)}
+				onCancel={() => {
+					getList()
+					setIsDetailModalVisible(false)
+				}}
 			/>
 		</Card>
 	)

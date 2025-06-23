@@ -31,7 +31,7 @@ export function editEvents(data: { event: string }) {
 	return http.put('/event/calendar', data)
 }
 
-/** 添加日程 */
-export function addEvent(data: any): Promise<CloudAlbumItem[]> {
-	return http.post('/event/add', data)
+/** 删除日历事件 */
+export function deleteEvents(id: number): Promise<void> {
+	return http.delete('/event/calendar/' + id)
 }

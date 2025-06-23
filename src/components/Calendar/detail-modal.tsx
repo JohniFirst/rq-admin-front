@@ -1,4 +1,5 @@
-import { Modal as AntdModal, Button, Modal, message, Space, Tag } from 'antd'
+import { deleteEvents } from '@/api/calendar'
+import { Modal as AntdModal, Button, Modal, Space, Tag, message } from 'antd'
 import type React from 'react'
 import { eventRepeatOptions } from './event-modal'
 
@@ -13,6 +14,20 @@ const DetailModal: React.FC<DetailModalProps> = ({ event, open, onEdit, onCancel
 	const handleEdit = () => {
 		onEdit()
 	}
+
+	const deleteEvent = async () => {
+		try {
+			// 没有响应体
+			await deleteEvents(event.id)
+
+			message.success('删除成功')
+
+			onCancel()
+		} catch (error) {
+			throw new Error(error as string)
+		}
+	}
+
 	const handleDelete = () => {
 		if (event.rrule) {
 			AntdModal.confirm({
@@ -72,8 +87,7 @@ const DetailModal: React.FC<DetailModalProps> = ({ event, open, onEdit, onCancel
 				title: '确认删除',
 				content: '确定要删除这个事件吗？',
 				onOk: () => {
-					message.success('事件已删除')
-					onCancel()
+					deleteEvent()
 				},
 			})
 		}

@@ -78,24 +78,4 @@ http.interceptors.response.use(
 	},
 )
 
-// 封装 GET 请求
-export const get = <T>(url: string, params?: any): Promise<T> => {
-	return http.get(url, { params })
-}
-
-// 封装 POST 请求
-export const post = <T>(url: string, data?: any): Promise<T> => {
-	return http.post(url, data)
-}
-
-// 封装 PUT 请求
-export const put = <T>(url: string, data?: any): Promise<T> => {
-	return http.put(url, data)
-}
-
-// 封装 DELETE 请求
-export const del = <T>(url: string): Promise<T> => {
-	return http.delete(url)
-}
-
 export default http
