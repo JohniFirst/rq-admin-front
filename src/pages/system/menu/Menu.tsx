@@ -1,8 +1,8 @@
-import { addMenu, getMenuList } from '@/api/system-api'
+import { addMenu, editMenu, getMenuList } from '@/api/system-api'
 import BaseDraggableTable from '@/components/base/base-draggable-table'
 import PopoverMenu from '@/components/base/popover-menu'
 import LucideIcon, { type LucideIconType } from '@/components/lucide-icon'
-import { Modal, type TableProps } from 'antd'
+import { Form, Modal, type TableProps } from 'antd'
 import { useEffect, useState } from 'react'
 import MenuAddForm from './components/menu-add-form'
 
@@ -63,10 +63,21 @@ const Menu = () => {
 
 	// 在 Menu 组件内添加编辑逻辑
 	const [editRecord, setEditRecord] = useState<MenuApiResponse | null>(null)
+	const [isEditModalOpen, setIsEditModalOpen] = useState(false)
+	const [editForm] = Form.useForm()
+
 	const handleEdit = (record: MenuApiResponse) => {
 		setEditRecord(record)
-		// 这里可以弹出编辑表单Modal，或设置表单初始值等
-		// 例如 setIsEditModalOpen(true)
+		editForm.setFieldsValue(record)
+		setIsEditModalOpen(true)
+	}
+
+	const handleEditSubmit = async () => {
+		const values = await editForm.validateFields()
+		await editMenu({ ...(editRecord || {}), ...values })
+		setIsEditModalOpen(false)
+		setEditRecord(null)
+		await refreshMenuList()
 	}
 
 	// 在 Menu 组件内添加刷新方法
@@ -99,6 +110,16 @@ const Menu = () => {
 					AddForm: MenuAddForm,
 				}}
 			/>
+			<Modal
+				title='编辑菜单'
+				open={isEditModalOpen}
+				onCancel={() => setIsEditModalOpen(false)}
+				onOk={handleEditSubmit}
+				okText='保存'
+				cancelText='取消'
+			>
+				<MenuAddForm form={editForm} initialValues={editRecord} />
+			</Modal>
 		</>
 	)
 }

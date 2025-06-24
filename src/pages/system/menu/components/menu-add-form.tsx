@@ -4,14 +4,17 @@ import { Col, Form, Input, InputNumber, Row, Select } from 'antd'
 import { useEffect, useState } from 'react'
 
 /** 新增菜单的表单 */
-const MenuAddForm = () => {
+const MenuAddForm = ({ form, initialValues }: { form?: any; initialValues?: any } = {}) => {
 	const [rolesList, setRolesList] = useState<SelectOptions[]>([])
 	const [parentMenuOptions, setParentMenuOptions] = useState<SelectOptions[]>([])
 
 	useEffect(() => {
 		getRoleList()
 		getParentMenuOptions()
-	}, [])
+		if (form && initialValues) {
+			form.setFieldsValue(initialValues)
+		}
+	}, [form, initialValues])
 
 	const getRoleList = async () => {
 		const res = await getRoleEnumList()
@@ -38,7 +41,7 @@ const MenuAddForm = () => {
 	}
 
 	return (
-		<>
+		<Form form={form} initialValues={initialValues} layout='vertical'>
 			<Row>
 				<Col span={12}>
 					<Form.Item<MenuAddFormFields>
@@ -109,7 +112,7 @@ const MenuAddForm = () => {
 					</Form.Item>
 				</Col>
 			</Row>
-		</>
+		</Form>
 	)
 }
 
