@@ -1,19 +1,22 @@
 import { MoreOutlined } from '@ant-design/icons'
-import { Button, message, Popover } from 'antd'
+import { Button, Popover, message } from 'antd'
 import type { HookAPI } from 'antd/es/modal/useModal'
 import type { FC } from 'react'
+
+import { delMenu } from '@/api/system-api'
 
 // import LucideIcon from '../lucide-icon'
 
 // 弹出式菜单
-type PopoverMenuProps = { values: unknown; modal: HookAPI }
+type PopoverMenuProps = { values: any; modal: HookAPI; onEdit?: (record: any) => void; onRefresh?: () => void }
 
-const Content: FC<PopoverMenuProps> = ({ values, modal }) => {
+const Content: FC<PopoverMenuProps> = ({ values, modal, onEdit, onRefresh }) => {
 	return (
 		<div className='p-0'>
 			<Button
 				type='text'
 				// icon={<LucideIcon size={16} name='file-pen-line' />}
+				onClick={() => onEdit?.(values)}
 			>
 				修 改
 			</Button>
@@ -33,10 +36,9 @@ const Content: FC<PopoverMenuProps> = ({ values, modal }) => {
 
 					if (!confirmed) return
 
-					// TODO 删除操作的函数
-					console.log(values)
-
+					await delMenu(values.id)
 					message.success('删除成功')
+					onRefresh?.()
 				}}
 			>
 				删 除
@@ -45,9 +47,14 @@ const Content: FC<PopoverMenuProps> = ({ values, modal }) => {
 	)
 }
 
-const PopoverMenu: FC<PopoverMenuProps> = ({ values, modal }) => {
+const PopoverMenu: FC<PopoverMenuProps> = ({ values, modal, onEdit, onRefresh }) => {
 	return (
-		<Popover placement='left' trigger='click' title={null} content={<Content values={values} modal={modal} />}>
+		<Popover
+			placement='left'
+			trigger='click'
+			title={null}
+			content={<Content values={values} modal={modal} onEdit={onEdit} onRefresh={onRefresh} />}
+		>
 			<Button type='text' shape='circle' icon={<MoreOutlined />} />
 		</Popover>
 	)

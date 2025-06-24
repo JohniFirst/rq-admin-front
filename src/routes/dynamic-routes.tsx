@@ -1,5 +1,5 @@
 import type { BaseOptionType } from 'antd/es/select'
-import { lazy, Suspense } from 'react'
+import { Suspense, lazy } from 'react'
 import type { RouteObject } from 'react-router-dom'
 
 const dynamicFiles = import.meta.glob(['../pages/**/*.tsx'])
@@ -63,4 +63,22 @@ export function generateRoutes() {
 	return dynamicRoutes
 }
 
-export const menuUrls: BaseOptionType[] = []
+// 自动生成 menuUrls，包含所有页面路由
+export const menuUrls = Object.keys(dynamicFiles)
+	.filter((path) => !path.includes('components'))
+	.map((path) => {
+		let routePath = path.replace(/(\.\.\/pages|\.tsx)/g, '').toLowerCase()
+		const fileNames = routePath.split('/')
+		if (fileNames[fileNames.length - 1] === fileNames[fileNames.length - 2]) {
+			fileNames.pop()
+			routePath = fileNames.join('/')
+		}
+		const dynamicPartMatches = path.match(/\[([^\[\]]+)\]/g)
+		if (dynamicPartMatches) {
+			for (const match of dynamicPartMatches) {
+				const dynamicValue = match.slice(1, -1)
+				routePath = routePath.replace(`[${dynamicValue}]`, `/:${dynamicValue}`)
+			}
+		}
+		return { label: routePath, value: routePath }
+	})

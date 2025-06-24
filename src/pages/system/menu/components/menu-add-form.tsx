@@ -1,14 +1,16 @@
+import { getMenuList, getRoleEnumList } from '@/api/system-api'
+import { menuUrls } from '@/routes/dynamic-routes'
 import { Col, Form, Input, InputNumber, Row, Select } from 'antd'
 import { useEffect, useState } from 'react'
-import { getRoleEnumList } from '@/api/system-api'
-import { menuUrls } from '@/routes/dynamic-routes'
 
 /** 新增菜单的表单 */
 const MenuAddForm = () => {
 	const [rolesList, setRolesList] = useState<SelectOptions[]>([])
+	const [parentMenuOptions, setParentMenuOptions] = useState<SelectOptions[]>([])
 
 	useEffect(() => {
 		getRoleList()
+		getParentMenuOptions()
 	}, [])
 
 	const getRoleList = async () => {
@@ -16,6 +18,25 @@ const MenuAddForm = () => {
 
 		setRolesList(res)
 	}
+
+	const getParentMenuOptions = async () => {
+		const res = await getMenuList()
+		if (Array.isArray(res)) {
+			setParentMenuOptions(res.map((item: any) => ({ label: item.title, value: item.id })))
+		} else if (res?.data && Array.isArray(res.data)) {
+			setParentMenuOptions(res.data.map((item: any) => ({ label: item.title, value: item.id })))
+		}
+	}
+
+	const getMenuUrlOptions = () => {
+		if (Array.isArray(menuUrls) && menuUrls.length > 0) {
+			return menuUrls.map(
+				(url) => (typeof url === 'string' ? { label: url, value: url } : url), // 如果 menuUrls 已经是 {label, value} 结构
+			)
+		}
+		return []
+	}
+
 	return (
 		<>
 			<Row>
@@ -30,7 +51,7 @@ const MenuAddForm = () => {
 				</Col>
 
 				<Col span={12}>
-					<Form.Item<MenuAddFormFields> label='角色' name='roles' rules={[{ required: true, message: '请选择角色' }]}>
+					<Form.Item<MenuAddFormFields> label='角色' name='roles' rules={[{ required: false, message: '请选择角色' }]}>
 						<Select
 							mode='multiple'
 							allowClear
@@ -49,7 +70,7 @@ const MenuAddForm = () => {
 					showSearch
 					placeholder='请输入路由'
 					filterOption={(input, option) => (option?.label ?? '').toLowerCase().includes(input.toLowerCase())}
-					options={menuUrls}
+					options={getMenuUrlOptions()}
 				/>
 			</Form.Item>
 
@@ -71,8 +92,14 @@ const MenuAddForm = () => {
 
 			<Row>
 				<Col span={12}>
-					<Form.Item<MenuAddFormFields> label='父级菜单ID' name='parent'>
-						<InputNumber className='w-full' placeholder='一级菜单可以不填' />
+					<Form.Item<MenuAddFormFields> label='父级菜单' name='parent'>
+						<Select
+							allowClear
+							showSearch
+							placeholder='请选择父级菜单（一级菜单可不选）'
+							options={parentMenuOptions}
+							filterOption={(input, option) => (option?.label ?? '').toLowerCase().includes(input.toLowerCase())}
+						/>
 					</Form.Item>
 				</Col>
 

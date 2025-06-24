@@ -55,6 +55,11 @@ export function addMenu(data: MenuAddFormFields): Promise<null> {
 	return http.post('/menu-add', data)
 }
 
+/** 编辑菜单 */
+export function editMenu(data: MenuAddFormFields) {
+	return http.put('/menu-update', data)
+}
+
 /** 删除菜单 */
 export function delMenu(id: number) {
 	return http.delete('/menu/' + id)
