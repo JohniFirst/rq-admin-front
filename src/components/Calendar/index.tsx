@@ -11,11 +11,12 @@ import dayjs from 'dayjs'
 import type React from 'react'
 import { useEffect, useState } from 'react'
 import './calendar.css'
-import { editEvents, getEventsList } from '@/api/calendar'
+import { type CalendarListParams, editEvents, getEventsList } from '@/api/calendar'
 import tippy from 'tippy.js'
 import 'tippy.js/dist/tippy.css' // optional for styling
 import 'tippy.js/animations/scale.css' // optional for animations
 import 'tippy.js/themes/light.css' // optional for themes
+import { set } from 'date-fns'
 import DetailModal from './detail-modal'
 import EventModal from './event-modal'
 
@@ -49,6 +50,8 @@ const Calendar: React.FC = () => {
 	const [isDetailModalVisible, setIsDetailModalVisible] = useState(false)
 	const [selectedEvent, setSelectedEvent] = useState<CustomEventInput | null>()
 	const [isEditMode, setIsEditMode] = useState(false)
+	const [start, setStart] = useState<string>('') // 当前日历的开始时间
+	const [end, setEnd] = useState<string>('') // 当前日历的结束时间
 
 	// 检查今天的提醒
 	useEffect(() => {
@@ -78,19 +81,10 @@ const Calendar: React.FC = () => {
 		}
 	}, [events])
 
-	useEffect(() => {
-		getList()
-	}, [])
-
-	const getList = async () => {
+	// getList 直接用 CalendarListParams 作为参数
+	const getList = async (params: CalendarListParams) => {
 		try {
-			const now = dayjs()
-
-			const res = await getEventsList({
-				year: now.year(),
-				month: now.month() + 1,
-			})
-
+			const res = await getEventsList(params)
 			const parsedEvents = res.map((item: any) => {
 				const parsed = JSON.parse(item.event)
 
@@ -168,12 +162,14 @@ const Calendar: React.FC = () => {
 				start: info.event.start,
 				end: info.event.end,
 			}
+
 			await editEvents({ event: JSON.stringify(updatedEvent) })
-			await getList()
+
+			await getList({ start, end })
+
 			message.success('事件已更新')
 		} catch (error) {
 			console.log('事件更新失败', error)
-
 			message.error('事件更新失败')
 		}
 	}
@@ -210,6 +206,12 @@ const Calendar: React.FC = () => {
 				nowIndicator={true}
 				eventStartEditable={true}
 				eventDurationEditable={true}
+				datesSet={(arg) => {
+					const { start, end } = arg
+					setStart(start.toISOString())
+					setEnd(end.toISOString())
+					getList({ start: start.toISOString(), end: end.toISOString() })
+				}}
 			/>
 
 			<EventModal
@@ -217,8 +219,11 @@ const Calendar: React.FC = () => {
 				isEditMode={isEditMode}
 				selectedEvent={selectedEvent}
 				onCancel={() => {
-					getList()
+					getList({ start, end })
 					setIsModalVisible(false)
+				}}
+				onSuccess={() => {
+					getList({ start, end })
 				}}
 			/>
 
@@ -227,7 +232,7 @@ const Calendar: React.FC = () => {
 				open={isDetailModalVisible}
 				onEdit={handleDetailEdit}
 				onCancel={() => {
-					getList()
+					// getList({ start, end })
 					setIsDetailModalVisible(false)
 				}}
 			/>

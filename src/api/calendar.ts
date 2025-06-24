@@ -10,9 +10,9 @@ export interface CalendarEventApiItem {
 	updatedAt: string
 }
 
-type CalendarListParams = {
-	year: number
-	month: number
+export type CalendarListParams = {
+	start: string
+	end: string
 	event?: string
 }
 

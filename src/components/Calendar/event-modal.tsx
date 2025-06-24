@@ -16,7 +16,6 @@ import {
 	message,
 } from 'antd'
 import type { Color } from 'antd/es/color-picker'
-import zhCN from 'antd/es/date-picker/locale/zh_CN'
 import dayjs from 'dayjs'
 import type React from 'react'
 import { useEffect } from 'react'
@@ -25,19 +24,20 @@ import { RRule } from 'rrule'
 export interface EventFormData {
 	id?: string
 	title: string
-	start: dayjs.Dayjs
-	end: dayjs.Dayjs
+	start: dayjs.Dayjs | string
+	end: dayjs.Dayjs | string
 	description?: string
 	color: Color | string
 	reminder: boolean
 	allDay: boolean
+	duration?: string // 持续时间，单位为分钟
 	rrule?: {
 		freq?: number | null // 新增freq字段，代表重复类型
 		interval?: number // 重复间隔
 		byweekday?: number[] // 周几
 		bymonthday?: number[] // 月几号
 		count?: number // 重复次数
-		until?: dayjs.Dayjs // 截止日期
+		until?: dayjs.Dayjs | string // 截止日期
 	}
 	untilType?: 'none' | 'count' | 'until' // 截止方式
 }
@@ -47,16 +47,17 @@ interface EventModalProps {
 	isEditMode: boolean
 	selectedEvent?: any
 	onCancel: () => void
+	onSuccess?: () => void // 新增：操作成功后的回调
 }
 
 const weekdayOptions = [
-	{ label: '周日', value: 0 },
-	{ label: '周一', value: 1 },
-	{ label: '周二', value: 2 },
-	{ label: '周三', value: 3 },
-	{ label: '周四', value: 4 },
-	{ label: '周五', value: 5 },
-	{ label: '周六', value: 6 },
+	{ label: '周日', value: RRule.SU },
+	{ label: '周一', value: RRule.MO },
+	{ label: '周二', value: RRule.TU },
+	{ label: '周三', value: RRule.WE },
+	{ label: '周四', value: RRule.TH },
+	{ label: '周五', value: RRule.FR },
+	{ label: '周六', value: RRule.SA },
 ]
 
 // 只保留RRule的枚举，不再定义eventRepeatOptions
@@ -68,7 +69,14 @@ export const eventRepeatOptions = [
 	{ label: '每年', value: RRule.YEARLY },
 ]
 
-const EventModal: React.FC<EventModalProps> = ({ open, isEditMode, selectedEvent, onCancel }) => {
+const convertToString = (value: dayjs.Dayjs | string): string => {
+	if (dayjs.isDayjs(value)) {
+		return value.toISOString()
+	}
+	return value
+}
+
+const EventModal: React.FC<EventModalProps> = ({ open, isEditMode, selectedEvent, onCancel, onSuccess }) => {
 	const [form] = Form.useForm<EventFormData>()
 
 	useEffect(() => {
@@ -95,7 +103,6 @@ const EventModal: React.FC<EventModalProps> = ({ open, isEditMode, selectedEvent
 
 	const rrule = Form.useWatch('rrule', form) || {}
 	const repeatType = rrule.freq
-	const untilType = form.getFieldValue('untilType') || 'none'
 
 	const handleOk = () => {
 		form
@@ -106,13 +113,26 @@ const EventModal: React.FC<EventModalProps> = ({ open, isEditMode, selectedEvent
 					values.color = values.color.toHexString() as string
 				}
 
-				// 判断是否是全天事件
 				if (values.start && values.end) {
 					const start = dayjs(values.start)
 					const end = dayjs(values.end)
 
+					if (end.isBefore(start)) {
+						message.error('结束时间不能早于开始时间')
+						return
+					}
+
 					// 如果开始时间和结束时间是同一天且没有时间部分，则设置为全天事件
 					values.allDay = !start.isSame(end, 'day')
+					// 计算duration
+					values.duration = `PT${end.diff(start, 'minute')}M` // 计算持续时间，单位为分钟
+				}
+
+				// 提交到后台的数据要满足fullcalendar的要求
+				values.start = convertToString(values.start)
+				values.end = convertToString(values.end)
+				if (values.rrule?.until) {
+					values.rrule.until = convertToString(values.rrule.until)
 				}
 
 				try {
@@ -127,12 +147,12 @@ const EventModal: React.FC<EventModalProps> = ({ open, isEditMode, selectedEvent
 
 					onCancel()
 					form.resetFields()
+					if (onSuccess) onSuccess() // 新增：操作成功后回调
 				} catch (e) {
 					message.error('提交到后台失败')
 				}
 			})
-			.catch((e) => {
-				console.log('表单提交失败', e)
+			.catch(() => {
 				message.error('请完善表单信息')
 			})
 	}
@@ -203,6 +223,7 @@ const EventModal: React.FC<EventModalProps> = ({ open, isEditMode, selectedEvent
 								</Select>
 							</Form.Item>
 						</Col>
+
 						{repeatType != null && (
 							<Col span={12}>
 								<Form.Item name={['rrule', 'interval']} label='重复间隔'>
@@ -210,42 +231,73 @@ const EventModal: React.FC<EventModalProps> = ({ open, isEditMode, selectedEvent
 								</Form.Item>
 							</Col>
 						)}
+
+						{repeatType === RRule.WEEKLY && (
+							<Form.Item name={['rrule', 'byweekday']} label='每周哪几天'>
+								<Checkbox.Group options={weekdayOptions} />
+							</Form.Item>
+						)}
+
+						{repeatType === RRule.MONTHLY && (
+							<Col span={12}>
+								<Form.Item name={['rrule', 'bymonthday']} label='每月哪几天'>
+									<Select
+										mode='multiple'
+										style={{ width: '100%' }}
+										placeholder='选择日期(1-31)'
+										optionLabelProp='label'
+									>
+										{Array.from({ length: 31 }, (_, i) => (
+											<Select.Option key={i + 1} value={i + 1} label={i + 1}>
+												<span style={{ fontWeight: 600, color: '#d46b08' }}>{i + 1}号</span>
+											</Select.Option>
+										))}
+									</Select>
+								</Form.Item>
+							</Col>
+						)}
 					</Row>
-					{repeatType === RRule.WEEKLY && (
-						<Form.Item name={['rrule', 'byweekday']} label='每周哪几天'>
-							<Checkbox.Group options={weekdayOptions} />
-						</Form.Item>
-					)}
-					{repeatType === RRule.MONTHLY && (
-						<Form.Item name={['rrule', 'bymonthday']} label='每月哪几天'>
-							<Select mode='multiple' style={{ width: '100%' }} placeholder='选择日期(1-31)' optionLabelProp='label'>
-								{Array.from({ length: 31 }, (_, i) => (
-									<Select.Option key={i + 1} value={i + 1} label={i + 1}>
-										<span style={{ fontWeight: 600, color: '#d46b08' }}>{i + 1}号</span>
-									</Select.Option>
-								))}
-							</Select>
-						</Form.Item>
-					)}
-					{repeatType != null && (
-						<Form.Item name='untilType' label='截止方式'>
-							<Select>
-								<Select.Option value='none'>无限</Select.Option>
-								<Select.Option value='count'>按次数</Select.Option>
-								<Select.Option value='until'>按日期</Select.Option>
-							</Select>
-						</Form.Item>
-					)}
-					{repeatType != null && untilType === 'count' && (
-						<Form.Item name={['rrule', 'count']} label='重复次数'>
-							<InputNumber min={1} style={{ width: '100%' }} />
-						</Form.Item>
-					)}
-					{repeatType != null && untilType === 'until' && (
-						<Form.Item name={['rrule', 'until']} label='截止日期'>
-							<DatePicker showTime style={{ width: '100%' }} locale={zhCN} />
-						</Form.Item>
-					)}
+
+					<Row gutter={16}>
+						{repeatType != null && (
+							<Col span={12}>
+								<Form.Item name='untilType' label='截止方式'>
+									<Select>
+										<Select.Option value='none'>无限</Select.Option>
+										<Select.Option value='count'>按次数</Select.Option>
+										<Select.Option value='until'>按日期</Select.Option>
+									</Select>
+								</Form.Item>
+							</Col>
+						)}
+
+						{/* 用 shouldUpdate 保证切换时表单项能及时更新 */}
+						{repeatType != null && (
+							<Form.Item shouldUpdate={(prev, curr) => prev.untilType !== curr.untilType} noStyle>
+								{() => {
+									const untilType = form.getFieldValue('untilType') || 'none'
+									return (
+										<>
+											{untilType === 'count' && (
+												<Col span={12}>
+													<Form.Item name={['rrule', 'count']} label='重复次数'>
+														<InputNumber min={1} style={{ width: '100%' }} />
+													</Form.Item>
+												</Col>
+											)}
+											{untilType === 'until' && (
+												<Col span={12}>
+													<Form.Item name={['rrule', 'until']} label='截止日期'>
+														<DatePicker showTime style={{ width: '100%' }} />
+													</Form.Item>
+												</Col>
+											)}
+										</>
+									)
+								}}
+							</Form.Item>
+						)}
+					</Row>
 
 					<Alert message='提醒设置' type='info' showIcon style={{ margin: '24px 0 16px 0' }} />
 					<Row gutter={16}>
