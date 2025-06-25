@@ -1,3 +1,4 @@
+import type { GetUserListParams, UserList } from '@/pages/system/user/User'
 import { http } from '@/utils/http'
 
 /** 注册 */
@@ -16,7 +17,7 @@ export function handleForgotPassword(data: ForgotPasswordFormValues): Promise<nu
 }
 
 /** 所有用户列表 */
-export function getAllUserList(data: unknown): Promise<UserListRes[]> {
+export function getAllUserList(data: GetUserListParams): Promise<DefaultPagination<UserList>> {
 	return http.post('/user/list', data)
 }
 

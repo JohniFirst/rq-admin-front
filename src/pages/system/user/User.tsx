@@ -1,18 +1,42 @@
-import { Button, message, Switch, type TableProps } from 'antd'
+import { Button, message, Switch, Table, type TableProps } from 'antd'
 import { type FC, useEffect, useState } from 'react'
 import { getAllUserList, updateUserIsEnabled } from '@/api/system-api'
-import BaseTable from '@/components/base/base-table'
+
+export type GetUserListParams = {
+	pageNumber?: number
+	pageSize?: number
+}
+
+export type UserList = {
+	id: number
+	isEnabled: 0 | 1
+	nickname: string
+	avator: string
+	username: string
+	phone: string
+	email: string
+	departmentId: number
+	roleId: number
+}
 
 /** 当前所有用户列表 */
 function User() {
-	const [dataSource, setDataSource] = useState<UserListRes[]>([])
+	const [dataSource, setDataSource] = useState<UserList[]>([])
 	const [loading, setLoading] = useState(false)
+	const [current, setCurrent] = useState(0)
+	const [pageSize, setPageSize] = useState(10)
 
-	const getTableData: GetTableData = async (searchParams = {}) => {
+	useEffect(() => {
+		getTableData({ pageNumber: current, pageSize })
+	}, [current, pageSize])
+
+	const getTableData = async (searchParams: GetUserListParams) => {
 		setLoading(true)
 		try {
 			const res = await getAllUserList(searchParams)
-			setDataSource(res)
+			console.log('获取用户列表', res)
+
+			setDataSource(res.content)
 		} catch (_e) {
 			message.error('获取用户列表失败')
 		} finally {
@@ -25,7 +49,7 @@ function User() {
 	}
 
 	/** 用户是否启用 */
-	const IsEnabled: FC<{ value: boolean; record: UserListRes }> = ({ value, record }) => {
+	const IsEnabled: FC<{ value: boolean; record: UserList }> = ({ value, record }) => {
 		const toogleUserEnable = async (checked: boolean) => {
 			try {
 				await updateUserIsEnabled({ id: record.id, isEnabled: checked ? 1 : 0 })
@@ -39,7 +63,7 @@ function User() {
 		return <Switch value={value} checkedChildren='启用' unCheckedChildren='禁用' onChange={toogleUserEnable} />
 	}
 
-	const columns: TableProps<UserListRes>['columns'] = [
+	const columns: TableProps<UserList>['columns'] = [
 		{
 			title: '昵称',
 			dataIndex: 'nickname',
@@ -79,22 +103,23 @@ function User() {
 			title: '是否启用',
 			dataIndex: 'isEnabled',
 			key: 'isEnabled',
-			render: (value, record: UserListRes) => <IsEnabled value={value} record={record} />,
+			render: (value, record: UserList) => <IsEnabled value={value} record={record} />,
 		},
 	]
 
-	// 页面初始化拉取数据
-	useEffect(() => {
-		getTableData({})
-	}, [])
-
 	return (
-		<div>
-			<Button onClick={handleRefresh} style={{ marginBottom: 16 }}>
-				刷新
-			</Button>
-			<BaseTable<UserListRes> tableProps={{ columns, dataSource, loading }} getTableData={getTableData} />
-		</div>
+		<>
+			<Table
+				rowKey={'id'}
+				loading={loading}
+				dataSource={dataSource}
+				columns={columns}
+				onChange={(pagination) => {
+					setCurrent(pagination.current as number)
+					setPageSize(pagination.pageSize as number)
+				}}
+			/>
+		</>
 	)
 }
 

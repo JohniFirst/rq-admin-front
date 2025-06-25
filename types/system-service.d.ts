@@ -7,6 +7,13 @@ type RegisterFormValues = LoginFormValues & {
 	// email: string
 }
 
+type DefaultPagination<T> = {
+	content: T[]
+	totalElements: number
+	totalPages: number
+	size: number
+}
+
 type GlobalResponse<T> = {
 	code: 200 | 500
 	message: string
