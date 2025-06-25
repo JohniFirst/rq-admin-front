@@ -1,4 +1,3 @@
-import { useInViewport } from '@/hooks/useInViewport.ts'
 import type { EChartsOption } from 'echarts'
 import { BarChart, LineChart } from 'echarts/charts'
 import {
@@ -13,6 +12,7 @@ import * as echarts from 'echarts/core'
 import { LabelLayout, UniversalTransition } from 'echarts/features'
 import { CanvasRenderer } from 'echarts/renderers'
 import { useEffect, useRef } from 'react'
+import { useInViewport } from '@/hooks/useInViewport.ts'
 
 echarts.use([
 	TitleComponent,

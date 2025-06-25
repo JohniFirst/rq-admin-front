@@ -1,7 +1,7 @@
-import { getMenuList, getRoleEnumList } from '@/api/system-api'
-import { menuUrls } from '@/routes/dynamic-routes'
 import { Col, Form, Input, InputNumber, Row, Select } from 'antd'
 import { useEffect, useState } from 'react'
+import { getMenuList, getRoleEnumList } from '@/api/system-api'
+import { menuUrls } from '@/routes/dynamic-routes'
 
 /** 新增菜单的表单 */
 const MenuAddForm = ({ form, initialValues }: { form?: any; initialValues?: any } = {}) => {

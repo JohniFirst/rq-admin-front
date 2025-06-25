@@ -1,10 +1,10 @@
-import useCustomNavigate from '@/hooks/useCustomNavigate'
-import { useAppDispatch, useAppSelector } from '@/store/hooks'
-import { pushNavItemAction } from '@/store/slice/system-info.ts'
 import type { MenuProps } from 'antd'
 import { Menu } from 'antd'
 import { useEffect, useState } from 'react'
 import { Outlet, useLocation } from 'react-router-dom'
+import useCustomNavigate from '@/hooks/useCustomNavigate'
+import { useAppDispatch, useAppSelector } from '@/store/hooks'
+import { pushNavItemAction } from '@/store/slice/system-info.ts'
 import HeaderOperate from './components/header-operate'
 import NavigationBar from './components/navigation-bar/navigation-bar'
 

@@ -1,7 +1,7 @@
+import { Button, message, Switch, type TableProps } from 'antd'
+import { type FC, useEffect, useState } from 'react'
 import { getAllUserList, updateUserIsEnabled } from '@/api/system-api'
 import BaseTable from '@/components/base/base-table'
-import { Button, Switch, type TableProps, message } from 'antd'
-import { type FC, useEffect, useState } from 'react'
 
 /** 当前所有用户列表 */
 function User() {
@@ -13,7 +13,7 @@ function User() {
 		try {
 			const res = await getAllUserList(searchParams)
 			setDataSource(res)
-		} catch (e) {
+		} catch (_e) {
 			message.error('获取用户列表失败')
 		} finally {
 			setLoading(false)

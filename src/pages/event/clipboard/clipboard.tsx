@@ -1,5 +1,5 @@
-import { useCopyToClipboard } from '@/hooks/useCopyToClipboard'
 import styled from 'styled-components'
+import { useCopyToClipboard } from '@/hooks/useCopyToClipboard'
 
 const CopyWrapper = styled.div`
   width: 100%;

@@ -1,6 +1,6 @@
+import type { FC } from 'react'
 import notFound from '@/assets/svgs/system/not-found.svg'
 import useCustomNavigate from '@/hooks/useCustomNavigate'
-import type { FC } from 'react'
 
 const NotFound: FC = () => {
 	const navigate = useCustomNavigate()

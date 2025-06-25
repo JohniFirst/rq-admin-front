@@ -1,5 +1,5 @@
-import BaseTable from '@/components/base/base-table'
 import { Button, Space, type TableProps, Tag } from 'antd'
+import BaseTable from '@/components/base/base-table'
 
 interface DataType {
 	key: string

@@ -1,8 +1,8 @@
-import { getAllRoleList } from '@/api/system-api.ts'
-import BaseTable from '@/components/base/base-table.tsx'
 import type { TableProps } from 'antd'
 import { Button } from 'antd'
 import { useState } from 'react'
+import { getAllRoleList } from '@/api/system-api.ts'
+import BaseTable from '@/components/base/base-table.tsx'
 
 function Role() {
 	const [dataSource, setDataSource] = useState<RoleListRes[]>([])

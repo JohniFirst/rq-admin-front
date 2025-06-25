@@ -1,4 +1,3 @@
-import { presetThemes } from '@/config/preset-themes'
 import {
 	CheckOutlined,
 	DeleteOutlined,
@@ -7,10 +6,11 @@ import {
 	PlusOutlined,
 	UploadOutlined,
 } from '@ant-design/icons'
-import { Button, ColorPicker, Input, Modal, Switch, Tabs, message } from 'antd'
+import { Button, ColorPicker, Input, Modal, message, Switch, Tabs } from 'antd'
 import { saveAs } from 'file-saver'
 import type React from 'react'
 import { useRef, useState } from 'react'
+import { presetThemes } from '@/config/preset-themes'
 
 interface ThemeConfigProps {
 	currentTheme: string
@@ -67,7 +67,7 @@ const ThemeConfig: React.FC<ThemeConfigProps> = ({ currentTheme, onThemeChange }
 				}
 				setCustomThemes([...customThemes, { ...theme, isCustom: true }])
 				message.success('主题导入成功')
-			} catch (error) {
+			} catch (_error) {
 				message.error('主题文件格式错误')
 			}
 		}

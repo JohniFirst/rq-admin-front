@@ -1,4 +1,3 @@
-import { addEvents, editEvents } from '@/api/calendar'
 import {
 	Alert,
 	Card,
@@ -10,16 +9,17 @@ import {
 	Input,
 	InputNumber,
 	Modal,
+	message,
 	Row,
 	Select,
 	Switch,
-	message,
 } from 'antd'
 import type { Color } from 'antd/es/color-picker'
 import dayjs from 'dayjs'
 import type React from 'react'
 import { useEffect } from 'react'
 import { RRule } from 'rrule'
+import { addEvents, editEvents } from '@/api/calendar'
 
 export interface EventFormData {
 	id?: string
@@ -148,7 +148,7 @@ const EventModal: React.FC<EventModalProps> = ({ open, isEditMode, selectedEvent
 					onCancel()
 					form.resetFields()
 					if (onSuccess) onSuccess() // 新增：操作成功后回调
-				} catch (e) {
+				} catch (_e) {
 					message.error('提交到后台失败')
 				}
 			})

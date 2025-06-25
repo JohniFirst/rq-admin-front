@@ -1,15 +1,15 @@
-import { getMenuList, handleLogin } from '@/api/system-api'
-import VerificationCodeInput from '@/components/base/verification-code-input'
-import { IsLogin, SessionStorageKeys } from '@/enums/localforage'
-import useCustomNavigate from '@/hooks/useCustomNavigate'
-import { useAppDispatch } from '@/store/hooks'
-import { updateMenu } from '@/store/slice/menu-slice'
 import { LockOutlined, UserOutlined } from '@ant-design/icons'
 import { Button, Checkbox, Form, Input } from 'antd'
 import { motion } from 'framer-motion'
 import { useEffect, useState } from 'react'
 import { NavLink } from 'react-router-dom'
 import styled from 'styled-components'
+import { getMenuList, handleLogin } from '@/api/system-api'
+import VerificationCodeInput from '@/components/base/verification-code-input'
+import { IsLogin, SessionStorageKeys } from '@/enums/localforage'
+import useCustomNavigate from '@/hooks/useCustomNavigate'
+import { useAppDispatch } from '@/store/hooks'
+import { updateMenu } from '@/store/slice/menu-slice'
 
 // import JSEncrypt from "jsencrypt";
 

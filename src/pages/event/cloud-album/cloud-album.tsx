@@ -1,13 +1,12 @@
-import { getUploadImageList } from '@/api/api-event'
-import albumAdd from '@/assets/svgs/system/album-add.svg'
-import albumCover from '@/assets/svgs/system/album-cover.svg'
-import UploadCloudAlbum from '@/components/upload-cloud-album'
 import { Divider, Form, Image, Input, Modal, Skeleton, Switch } from 'antd'
 import { motion } from 'framer-motion'
 import { useEffect, useState } from 'react'
 import InfiniteScroll from 'react-infinite-scroll-component'
-
+import { getUploadImageList } from '@/api/api-event'
+import albumAdd from '@/assets/svgs/system/album-add.svg'
+import albumCover from '@/assets/svgs/system/album-cover.svg'
 import DoubleClickEdit from '@/components/base/double-click-edit'
+import UploadCloudAlbum from '@/components/upload-cloud-album'
 import { AlbumNameMaxLength } from '@/config/constants'
 
 enum CloudAlbumItemType {

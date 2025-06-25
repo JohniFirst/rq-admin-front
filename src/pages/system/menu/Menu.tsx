@@ -1,9 +1,9 @@
+import { Form, Modal, type TableProps } from 'antd'
+import { useEffect, useState } from 'react'
 import { addMenu, editMenu, getMenuList } from '@/api/system-api'
 import BaseDraggableTable from '@/components/base/base-draggable-table'
 import PopoverMenu from '@/components/base/popover-menu'
 import LucideIcon, { type LucideIconType } from '@/components/lucide-icon'
-import { Form, Modal, type TableProps } from 'antd'
-import { useEffect, useState } from 'react'
 import MenuAddForm from './components/menu-add-form'
 
 const Menu = () => {

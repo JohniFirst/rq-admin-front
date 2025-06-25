@@ -1,6 +1,6 @@
-import { deleteEvents } from '@/api/calendar'
-import { Modal as AntdModal, Button, Modal, Space, Tag, message } from 'antd'
+import { Modal as AntdModal, Button, Modal, message, Space, Tag } from 'antd'
 import type React from 'react'
+import { deleteEvents } from '@/api/calendar'
 import { eventRepeatOptions } from './event-modal'
 
 interface DetailModalProps {

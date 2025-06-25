@@ -1,4 +1,4 @@
-import { type PayloadAction, type Slice, createSlice } from '@reduxjs/toolkit'
+import { createSlice, type PayloadAction, type Slice } from '@reduxjs/toolkit'
 
 const initialState: MenuItem[] = []
 
@@ -16,7 +16,7 @@ export function sortMenu(menuList: MenuApiResponse[]) {
 // 递归将 title 转 label
 function convertMenuTitleToLabel(menuList: any[]): any[] {
 	return menuList.map((item: any) => {
-		const { menuOrder, ...rest } = item
+		const { ...rest } = item
 		const newItem: any = { ...rest, label: item.title, key: item.url }
 		// 如果 icon 不是合法 React 元素，则去掉 icon 字段
 		if (typeof newItem.icon === 'string') {

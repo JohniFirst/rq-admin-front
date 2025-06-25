@@ -1,4 +1,4 @@
-import { Suspense, lazy } from 'react'
+import { lazy, Suspense } from 'react'
 import type { RouteObject } from 'react-router-dom'
 
 const dynamicFiles = import.meta.glob(['../pages/**/*.tsx'])
@@ -72,7 +72,7 @@ export const menuUrls = Object.keys(dynamicFiles)
 			fileNames.pop()
 			routePath = fileNames.join('/')
 		}
-		const dynamicPartMatches = path.match(/\[([^\[\]]+)\]/g)
+		const dynamicPartMatches = path.match(/\[([^[\]]+)\]/g)
 		if (dynamicPartMatches) {
 			for (const match of dynamicPartMatches) {
 				const dynamicValue = match.slice(1, -1)

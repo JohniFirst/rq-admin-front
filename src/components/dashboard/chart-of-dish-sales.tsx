@@ -1,10 +1,10 @@
-import { echartsColors } from '@/enums/echartsColors.ts'
 import type { EChartsOption } from 'echarts'
 import { BarChart } from 'echarts/charts'
 import { GridComponent, LegendComponent } from 'echarts/components'
 import * as echarts from 'echarts/core'
 import { CanvasRenderer } from 'echarts/renderers'
 import { useEffect, useRef } from 'react'
+import { echartsColors } from '@/enums/echartsColors.ts'
 
 echarts.use([GridComponent, LegendComponent, BarChart, CanvasRenderer])
 
