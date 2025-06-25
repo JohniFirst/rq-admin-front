@@ -87,16 +87,13 @@ const InputWrapper = styled.div<{
 
 const HiddenInput = styled.input`
   position: absolute;
-  top: 0;
   left: 0;
-  width: 100%;
-  height: 100%;
+  top: 0;
+  width: 1px;
+  height: 1px;
   opacity: 0;
-  cursor: pointer;
-  border: none;
-  outline: none;
-  background: transparent;
-  font-size: 0;
+  z-index: -1;
+  pointer-events: none;
 `
 
 const DisplayInput = styled.div<{
@@ -271,7 +268,7 @@ const SquareInputBox: React.FC<SquareInputBoxProps> = ({
 			{renderInputs()}
 			<HiddenInput
 				ref={hiddenInputRef}
-				type={type}
+				type='text'
 				value={inputValue}
 				onChange={handleInputChange}
 				onKeyDown={handleKeyDown}

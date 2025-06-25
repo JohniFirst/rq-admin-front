@@ -234,7 +234,7 @@ const SquareInputDemo: React.FC = () => {
 						borderRadius={borderRadius}
 						type={type}
 						disabled={disabled}
-						autoFocus={autoFocus}
+						autoFocus={false}
 						error={error}
 						success={success}
 						value={code7}
@@ -260,7 +260,7 @@ const SquareInputDemo: React.FC = () => {
 									handleComplete(value, '手机验证码')
 									message.info('正在验证验证码...')
 								}}
-								autoFocus
+								autoFocus={false}
 							/>
 							<Button type='primary'>发送验证码</Button>
 						</div>
