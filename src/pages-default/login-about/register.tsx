@@ -1,9 +1,10 @@
 import { LockOutlined, MailOutlined, UserOutlined } from '@ant-design/icons'
-import { Button, Form, Input } from 'antd'
-import { motion } from 'framer-motion'
+import { Button, Form, Input, message } from 'antd'
+import { m, motion } from 'framer-motion'
 import { NavLink, useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
 import { handleRegister } from '@/api/system-api'
+import { UserList } from '@/pages/system/user/User'
 
 const FormTitle = styled(motion.h2)`
   font-size: 2rem;
@@ -21,6 +22,11 @@ const StyledFormItem = styled(Form.Item)`
     border-radius: 8px;
     border: 1px solid #e5e7eb;
     transition: all 0.3s ease;
+
+		.ant-input-prefix {
+			margin-right: 10px;
+			display: inline-block;
+		}
 
     &:hover,
     &:focus {
@@ -68,10 +74,17 @@ const LinkText = styled(NavLink)`
 
 const RegisterForm = () => {
 	const [form] = Form.useForm<RegisterFormValues>()
+	const [messageApi] = message.useMessage()
+
 	const navigate = useNavigate()
 
 	const handleSubmit = async (values: RegisterFormValues) => {
+		console.log('提交的值:', values)
+
 		await handleRegister(values)
+
+		messageApi.success('注册成功！请登录。')
+
 		navigate('/login')
 	}
 
@@ -81,9 +94,23 @@ const RegisterForm = () => {
 				创建账号
 			</FormTitle>
 
-			<Form form={form} name='registerForm' onFinish={handleSubmit} layout='vertical' size='large'>
+			<Form<RegisterFormValues> form={form} name='registerForm' onFinish={handleSubmit} layout='vertical' size='large'>
 				<StyledFormItem name='username' rules={[{ required: true, message: '请输入您的用户名！' }]}>
-					<Input prefix={<UserOutlined />} placeholder='请输入用户名' />
+					<Input prefix={<UserOutlined />} placeholder='请输入用户名' autoComplete='off' />
+				</StyledFormItem>
+
+				<StyledFormItem name='nickname' rules={[{ required: true, message: '请输入您的昵称！' }]}>
+					<Input prefix={<UserOutlined />} placeholder='请输入昵称' />
+				</StyledFormItem>
+
+				<StyledFormItem
+					name='phone'
+					rules={[
+						{ required: true, message: '请输入您的手机号！' },
+						{ pattern: /^1[3-9]\d{9}$/, message: '手机号格式不正确！' },
+					]}
+				>
+					<Input maxLength={11} prefix={<UserOutlined />} placeholder='请输入手机号' />
 				</StyledFormItem>
 
 				<StyledFormItem
@@ -104,7 +131,7 @@ const RegisterForm = () => {
 						{ max: 24, message: '密码长度不能大于24位！' },
 					]}
 				>
-					<Input.Password prefix={<LockOutlined />} placeholder='请输入8-24位字母、数字组合密码' />
+					<Input.Password prefix={<LockOutlined />} placeholder='请输入8-24位字母、数字组合密码' autoComplete='off' />
 				</StyledFormItem>
 
 				<StyledFormItem

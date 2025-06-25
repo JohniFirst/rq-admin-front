@@ -17,6 +17,10 @@ type RegisterFormValues = BaseLoginFormValues & {
 	email: string
 	// 确认密码
 	confirmPassword: string
+	phone: string
+	nickname: string
+	// 头像
+	avator: string
 }
 
 type ForgotPasswordFormValues = {
