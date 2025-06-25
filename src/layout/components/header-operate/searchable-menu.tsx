@@ -244,16 +244,13 @@ const SearchableMenu: FC = () => {
 				}}
 			>
 				<div className='space-y-6'>
-					<div className='relative'>
-						<Input
-							placeholder='输入关键字搜索菜单 (Ctrl + M)'
-							value={searchValue}
-							onChange={(e) => handleSearch(e.target.value)}
-							className='py-3 pl-12 pr-4 text-lg rounded-lg border-2 border-gray-200 focus:border-indigo-500 transition-all duration-300'
-							autoFocus
-						/>
-						<SearchOutlined className='absolute left-4 top-1/2 -translate-y-1/2 text-lg text-gray-400' />
-					</div>
+					<Input
+						placeholder='输入关键字搜索菜单 (Ctrl + M)'
+						value={searchValue}
+						onChange={(e) => handleSearch(e.target.value)}
+						className='py-3 pl-12 pr-4 text-lg rounded-lg border-2 border-gray-200 focus:border-indigo-500 transition-all duration-300'
+						autoFocus
+					/>
 
 					<AnimatePresence>
 						{searchValue && (

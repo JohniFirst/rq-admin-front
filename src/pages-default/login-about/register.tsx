@@ -1,10 +1,9 @@
 import { LockOutlined, MailOutlined, UserOutlined } from '@ant-design/icons'
 import { Button, Form, Input, message } from 'antd'
-import { m, motion } from 'framer-motion'
+import { motion } from 'framer-motion'
 import { NavLink, useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
 import { handleRegister } from '@/api/system-api'
-import { UserList } from '@/pages/system/user/User'
 
 const FormTitle = styled(motion.h2)`
   font-size: 2rem;

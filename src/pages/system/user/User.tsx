@@ -1,4 +1,4 @@
-import { Button, message, Switch, Table, type TableProps } from 'antd'
+import { message, Switch, Table, type TableProps } from 'antd'
 import { type FC, useEffect, useState } from 'react'
 import { getAllUserList, updateUserIsEnabled } from '@/api/system-api'
 
@@ -42,10 +42,6 @@ function User() {
 		} finally {
 			setLoading(false)
 		}
-	}
-
-	const handleRefresh = () => {
-		getTableData({})
 	}
 
 	/** 用户是否启用 */
