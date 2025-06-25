@@ -1,9 +1,9 @@
-import { createSlice, type PayloadAction, type Slice } from '@reduxjs/toolkit'
-import cloneDeep from 'lodash-es/cloneDeep'
 import { presetThemes } from '@/config/preset-themes'
 import { ForageEnums } from '@/enums/localforage.ts'
 import { LayoutModeEnum } from '@/enums/system'
 import { forage } from '@/utils/localforage.ts'
+import { type PayloadAction, type Slice, createSlice } from '@reduxjs/toolkit'
+import cloneDeep from 'lodash-es/cloneDeep'
 import type { RootState } from '../store.ts'
 
 type LocalSystemInfo = {

@@ -15,7 +15,7 @@ export interface ContextMenuProps {
 	menuClassName?: string
 }
 
-const DivWp = styled.div<{position?: { x: number; y: number }}>`
+const DivWp = styled.div<{ position?: { x: number; y: number } }>`
 	position: fixed;
 	top: ${(props) => props.position?.y || 0}px;
 	left: ${(props) => props.position?.x || 0}px;
@@ -72,11 +72,7 @@ const ContextMenu: React.FC<ContextMenuProps> = ({ menu, children, menuClassName
 		<div style={{ display: 'inline-block' }} onContextMenu={handleContextMenu}>
 			{children}
 			{visible && (
-				<DivWp
-					ref={menuRef}
-					className={menuClassName || 'custom-context-menu'}
-					position={position}
-				>
+				<DivWp ref={menuRef} className={menuClassName || 'custom-context-menu'} position={position}>
 					{menu.map((item, idx) => (
 						<ContextMenuItemStyled
 							key={idx}

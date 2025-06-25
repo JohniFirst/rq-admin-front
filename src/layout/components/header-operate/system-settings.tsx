@@ -1,14 +1,14 @@
+import CommonMenu from '@/assets/svgs/nav-type/common-menu.svg'
+import DrawerMenu from '@/assets/svgs/nav-type/drawer-menu.svg'
+import HeaderMenu from '@/assets/svgs/nav-type/top-menu.svg'
 import { SettingOutlined } from '@ant-design/icons'
 import { Drawer, Switch } from 'antd'
 import { animate, motion, useMotionValue } from 'framer-motion'
 import { useEffect, useState } from 'react'
-import CommonMenu from '@/assets/svgs/nav-type/common-menu.svg'
-import DrawerMenu from '@/assets/svgs/nav-type/drawer-menu.svg'
-import HeaderMenu from '@/assets/svgs/nav-type/top-menu.svg'
 
 import { LayoutModeEnum } from '@/enums/system'
 import { useAppDispatch, useAppSelector } from '@/store/hooks'
-import { setlayoutMode, setShowNavigationBar, setTheme } from '@/store/slice/system-info'
+import { setShowNavigationBar, setTheme, setlayoutMode } from '@/store/slice/system-info'
 import ThemeConfig from './theme-config'
 
 const layoutModeArr = [

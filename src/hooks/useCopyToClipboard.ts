@@ -1,5 +1,5 @@
-import { useState } from 'react'
 import { appConfig } from '@/config/app'
+import { useState } from 'react'
 
 interface CopyToClipboardOptions {
 	prefix?: string

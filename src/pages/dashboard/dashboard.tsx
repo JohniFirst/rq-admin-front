@@ -1,12 +1,3 @@
-import {
-	BankOutlined,
-	CaretDownOutlined,
-	CaretUpOutlined,
-	PieChartOutlined,
-	StrikethroughOutlined,
-	UserOutlined,
-} from '@ant-design/icons'
-import { useLoaderData } from 'react-router-dom'
 import ChartOfCustomerIncomeProportion from '@/components/dashboard/chart-of-customer-income-proportion.tsx'
 import ChartOfCustomerNumbers from '@/components/dashboard/chart-of-customer-numbers.tsx'
 import ChartOfDiningAndEntryTimeRelation from '@/components/dashboard/chart-of-dining-and-entry-time-relation.tsx'
@@ -17,6 +8,15 @@ import ChartOfInStorePeople from '@/components/dashboard/chart-of-in-store-peopl
 import ChartOfOrderRelation from '@/components/dashboard/chart-of-order-relation.tsx'
 import ChartOfPayMethodRelation from '@/components/dashboard/chart-of-pay-method-relation.tsx'
 import NumberJumping from '@/components/number-jumping'
+import {
+	BankOutlined,
+	CaretDownOutlined,
+	CaretUpOutlined,
+	PieChartOutlined,
+	StrikethroughOutlined,
+	UserOutlined,
+} from '@ant-design/icons'
+import { useLoaderData } from 'react-router-dom'
 
 function Dashboard() {
 	const data = useLoaderData()

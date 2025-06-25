@@ -1,5 +1,5 @@
 import { CloudUploadOutlined, InboxOutlined } from '@ant-design/icons'
-import { Button, FloatButton, Form, Input, Modal, message, type StepProps, Steps, Upload } from 'antd'
+import { Button, FloatButton, Form, Input, Modal, type StepProps, Steps, Upload, message } from 'antd'
 import type { UploadChangeParam } from 'antd/es/upload'
 import { type FC, useState } from 'react'
 

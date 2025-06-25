@@ -1,6 +1,6 @@
 import { MailOutlined, PhoneOutlined, UploadOutlined, UserOutlined } from '@ant-design/icons'
 import type { UploadProps } from 'antd'
-import { Form, Input, Modal, message, Upload } from 'antd'
+import { Form, Input, Modal, Upload, message } from 'antd'
 import type { RcFile } from 'antd/es/upload/interface'
 import type React from 'react'
 import { useState } from 'react'

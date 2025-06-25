@@ -1,6 +1,6 @@
+import VideoPlayer from '@/components/video-player'
 import { Card, Tabs } from 'antd'
 import type React from 'react'
-import VideoPlayer from '@/components/video-player'
 
 const VideoPlayerPage: React.FC = () => {
 	// 使用更长的测试视频

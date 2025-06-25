@@ -1,3 +1,4 @@
+import { presetThemes } from '@/config/preset-themes'
 import {
 	CheckOutlined,
 	DeleteOutlined,
@@ -6,11 +7,10 @@ import {
 	PlusOutlined,
 	UploadOutlined,
 } from '@ant-design/icons'
-import { Button, ColorPicker, Input, Modal, message, Switch, Tabs } from 'antd'
+import { Button, ColorPicker, Input, Modal, Switch, Tabs, message } from 'antd'
 import { saveAs } from 'file-saver'
 import type React from 'react'
 import { useRef, useState } from 'react'
-import { presetThemes } from '@/config/preset-themes'
 
 interface ThemeConfigProps {
 	currentTheme: string

@@ -1,3 +1,5 @@
+import { echartsColors } from '@/enums/echartsColors.ts'
+import { useInViewport } from '@/hooks/useInViewport.ts'
 import type { EChartsOption } from 'echarts'
 // 引入柱状图图表，图表后缀都为 Chart
 import { BarChart } from 'echarts/charts'
@@ -17,8 +19,6 @@ import { LabelLayout, UniversalTransition } from 'echarts/features'
 // 引入 Canvas 渲染器，注意引入 CanvasRenderer 或者 SVGRenderer 是必须的一步
 import { CanvasRenderer } from 'echarts/renderers'
 import { useEffect, useRef } from 'react'
-import { echartsColors } from '@/enums/echartsColors.ts'
-import { useInViewport } from '@/hooks/useInViewport.ts'
 
 // 注册必须的组件
 echarts.use([

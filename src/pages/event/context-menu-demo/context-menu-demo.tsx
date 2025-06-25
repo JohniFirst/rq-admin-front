@@ -1,6 +1,6 @@
+import ContextMenu, { type ContextMenuItem } from '@/components/context-menu/context-menu'
 import { Button } from 'antd'
 import type React from 'react'
-import ContextMenu, { type ContextMenuItem } from '@/components/context-menu/context-menu'
 import styled from 'styled-components'
 
 const InnerDiv = styled.div`
@@ -25,9 +25,7 @@ const ContextMenuDemo: React.FC = () => {
 		<div className='p-[40px]'>
 			<h2>右键菜单组件示例</h2>
 			<ContextMenu menu={menu}>
-				<InnerDiv>
-					右键点击这里试试
-				</InnerDiv>
+				<InnerDiv>右键点击这里试试</InnerDiv>
 			</ContextMenu>
 
 			<div className='mt-[32px]'>

@@ -1,3 +1,5 @@
+import { echartsColors } from '@/enums/echartsColors.ts'
+import { useInViewport } from '@/hooks/useInViewport.ts'
 import { Segmented } from 'antd'
 import type { EChartsOption } from 'echarts'
 import { PieChart } from 'echarts/charts'
@@ -6,8 +8,6 @@ import * as echarts from 'echarts/core'
 import { LabelLayout, UniversalTransition } from 'echarts/features'
 import { CanvasRenderer } from 'echarts/renderers'
 import { useEffect, useRef, useState } from 'react'
-import { echartsColors } from '@/enums/echartsColors.ts'
-import { useInViewport } from '@/hooks/useInViewport.ts'
 
 echarts.use([
 	TitleComponent,

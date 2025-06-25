@@ -1,4 +1,4 @@
-import { createSlice, type PayloadAction, type Slice } from '@reduxjs/toolkit'
+import { type PayloadAction, type Slice, createSlice } from '@reduxjs/toolkit'
 
 const initialState: MenuItem[] = []
 

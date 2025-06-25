@@ -1,7 +1,7 @@
+import useCustomNavigate from '@/hooks/useCustomNavigate'
 import { motion, useInView } from 'framer-motion'
 import { useRef } from 'react'
 import { NavLink } from 'react-router-dom'
-import useCustomNavigate from '@/hooks/useCustomNavigate'
 import home from './css/home.module.css'
 
 // 这种方式添加的是内联样式，没有代码提示，伪类、伪元素无法书写
@@ -74,7 +74,7 @@ function Home() {
 							>
 								Framer Motion
 							</a>
-							 实现，动画效果自然流畅
+							实现，动画效果自然流畅
 						</li>
 						<li>
 							css使用

@@ -1,7 +1,7 @@
-import { Button, Card, InputNumber, message, Select, Space, Switch } from 'antd'
+import SquareInputBox from '@/components/square-input-box/square-input-box'
+import { Button, Card, InputNumber, Select, Space, Switch, message } from 'antd'
 import type React from 'react'
 import { useState } from 'react'
-import SquareInputBox from '@/components/square-input-box/square-input-box'
 
 const { Option } = Select
 
