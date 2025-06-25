@@ -1,16 +1,42 @@
-import { Switch, type TableProps } from 'antd'
-import { type FC, useState } from 'react'
 import { getAllUserList, updateUserIsEnabled } from '@/api/system-api'
 import BaseTable from '@/components/base/base-table'
+import { Button, Switch, type TableProps, message } from 'antd'
+import { type FC, useEffect, useState } from 'react'
 
 /** 当前所有用户列表 */
 function User() {
 	const [dataSource, setDataSource] = useState<UserListRes[]>([])
+	const [loading, setLoading] = useState(false)
 
-	const getTableData: GetTableData = async (searchParams) => {
-		const res = await getAllUserList(searchParams)
+	const getTableData: GetTableData = async (searchParams = {}) => {
+		setLoading(true)
+		try {
+			const res = await getAllUserList(searchParams)
+			setDataSource(res)
+		} catch (e) {
+			message.error('获取用户列表失败')
+		} finally {
+			setLoading(false)
+		}
+	}
 
-		setDataSource(res)
+	const handleRefresh = () => {
+		getTableData({})
+	}
+
+	/** 用户是否启用 */
+	const IsEnabled: FC<{ value: boolean; record: UserListRes }> = ({ value, record }) => {
+		const toogleUserEnable = async (checked: boolean) => {
+			try {
+				await updateUserIsEnabled({ id: record.id, isEnabled: checked ? 1 : 0 })
+				message.success(checked ? '启用成功' : '禁用成功')
+				getTableData({})
+			} catch {
+				message.error('操作失败')
+			}
+		}
+
+		return <Switch value={value} checkedChildren='启用' unCheckedChildren='禁用' onChange={toogleUserEnable} />
 	}
 
 	const columns: TableProps<UserListRes>['columns'] = [
@@ -57,23 +83,19 @@ function User() {
 		},
 	]
 
-	/** 用户是否启用 */
-	const IsEnabled: FC<{ value: boolean; record: UserListRes }> = ({ value, record }) => {
-		const toogleUserEnable = async (checked: boolean) => {
-			await updateUserIsEnabled({ id: record.id, isEnabled: checked ? 1 : 0 })
-		}
+	// 页面初始化拉取数据
+	useEffect(() => {
+		getTableData({})
+	}, [])
 
-		return (
-			<Switch
-				value={value}
-				checkedChildren='启用'
-				unCheckedChildren='禁用'
-				onChange={(checked) => toogleUserEnable(checked)}
-			/>
-		)
-	}
-
-	return <BaseTable<UserListRes> tableProps={{ columns, dataSource }} getTableData={getTableData} />
+	return (
+		<div>
+			<Button onClick={handleRefresh} style={{ marginBottom: 16 }}>
+				刷新
+			</Button>
+			<BaseTable<UserListRes> tableProps={{ columns, dataSource, loading }} getTableData={getTableData} />
+		</div>
+	)
 }
 
 export default User

@@ -16,7 +16,6 @@ import tippy from 'tippy.js'
 import 'tippy.js/dist/tippy.css' // optional for styling
 import 'tippy.js/animations/scale.css' // optional for animations
 import 'tippy.js/themes/light.css' // optional for themes
-import { set } from 'date-fns'
 import DetailModal from './detail-modal'
 import EventModal from './event-modal'
 

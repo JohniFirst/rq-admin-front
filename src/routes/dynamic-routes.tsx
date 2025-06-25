@@ -1,4 +1,3 @@
-import type { BaseOptionType } from 'antd/es/select'
 import { Suspense, lazy } from 'react'
 import type { RouteObject } from 'react-router-dom'
 

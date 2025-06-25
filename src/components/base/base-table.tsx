@@ -1,9 +1,9 @@
+import { exportToExcel } from '@/utils/export-to-excel'
 import { DownloadOutlined, PrinterOutlined, ReloadOutlined, SettingOutlined } from '@ant-design/icons'
 import type { FormProps, TablePaginationConfig, TableProps } from 'antd'
 import { Button, Col, Form, Input, Modal, Row, Space, Table, Tooltip } from 'antd'
 import { format } from 'date-fns'
 import { useEffect, useState } from 'react'
-import { exportToExcel } from '@/utils/export-to-excel'
 
 type BaseTableProps<T> = {
 	tableProps: TableProps<T>
@@ -42,25 +42,16 @@ const BaseTable = <T extends object>({
 		getTableData({ ...searchParams, ...pagination })
 	}
 
-	const handleSubmit = async (values: { roleName: string }) => {
-		await addForm?.addFormApi(values)
-
-		refreshData()
-
-		setIsModalOpen(false)
-	}
-
-	/**
-	 * Handles exporting data to an Excel file.
-	 *
-	 * @return {void} No return value, exports data to a file instead.
-	 */
+	/** 导出数据到Excel */
 	const handleExport = () => {
+		if (!tableProps.columns || !tableProps.dataSource) {
+			return
+		}
 		// @ts-ignore
-		const keys = tableProps.columns!.map((column) => column.dataIndex)
+		const keys = tableProps.columns.map((column) => column.dataIndex)
 		const excelData: ExcelData = {
-			headers: tableProps.columns!.map((column) => column.title) as string[],
-			data: tableProps.dataSource!.map((item) => {
+			headers: tableProps.columns.map((column) => column.title) as string[],
+			data: tableProps.dataSource.map((item) => {
 				return keys.map((key: keyof T) => item[key])
 			}),
 		}
@@ -86,8 +77,7 @@ const BaseTable = <T extends object>({
 
 	/** 分页参数发生变化 */
 	const tableOperationChange = (pagination: TablePaginationConfig) => {
-		const { current, pageSize } = pagination
-
+		const { current = 1, pageSize = 10 } = pagination
 		setPagination({ current, pageSize })
 	}
 
@@ -102,7 +92,7 @@ const BaseTable = <T extends object>({
 			>
 				<Row gutter={searchProps.gutter}>
 					<Col span={6}>
-						<Form.Item label='角色名' name='roleName' rules={[{ required: true, message: '请输入角色名' }]}>
+						<Form.Item label='角色名' name='roleName'>
 							<Input />
 						</Form.Item>
 					</Col>
@@ -173,11 +163,10 @@ const BaseTable = <T extends object>({
 			<Modal
 				title='新增'
 				open={isModalOpen}
-				okButtonProps={{ autoFocus: true, htmlType: 'submit' }}
 				onCancel={() => setIsModalOpen(false)}
 				cancelText='取消'
 				okText='提交'
-				modalRender={(dom) => <Form onFinish={handleSubmit}>{dom}</Form>}
+				footer={null}
 			>
 				{addForm ? <addForm.AddForm /> : null}
 			</Modal>
