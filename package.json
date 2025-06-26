@@ -56,6 +56,7 @@
 		"react-countup": "^6.5.3",
 		"react-dom": "^18.3.1",
 		"react-infinite-scroll-component": "^6.1.0",
+		"react-quill": "^2.0.0",
 		"react-redux": "^9.2.0",
 		"react-router-dom": "^7.6.2",
 		"rrule": "^2.8.1",
