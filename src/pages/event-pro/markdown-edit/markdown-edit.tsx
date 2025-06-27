@@ -1,29 +1,16 @@
-import { Crepe } from '@milkdown/crepe'
-import { Milkdown, MilkdownProvider, useEditor } from '@milkdown/react'
+import { useState } from 'react'
+import MarkdownEditor from '@/components/markdown-editor/markdown-editor'
 
-import '@milkdown/crepe/theme/common/style.css'
-import '@milkdown/crepe/theme/frame.css'
+const DEFAULT_MARKDOWN = `# ByteMD Markdown 编辑器\n\n> 这是一个基于 ByteMD 的 Markdown 编辑器组件演示。\n\n- 支持 GFM\n- 代码高亮\n- 数学公式\n- Mermaid 流程图\n- 图片缩放\n\n![示例图片](https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=400&q=80)\n`
 
-const markdown = `# Milkdown React Crepe
+const MarkdownEditPage: React.FC = () => {
+	const [value, setValue] = useState(DEFAULT_MARKDOWN)
 
-> You're scared of a world where you're needed.
-
-This is a demo for using Crepe with **React**.`
-
-const CrepeEditor: React.FC = () => {
-	useEditor((root) => {
-		return new Crepe({ root, defaultValue: markdown })
-	})
-
-	return <Milkdown />
-}
-
-const MilkdownEditorWrapper: React.FC = () => {
 	return (
-		<MilkdownProvider>
-			<CrepeEditor />
-		</MilkdownProvider>
+		<div className='p-4'>
+			<MarkdownEditor value={value} onChange={setValue} height={`min(80vh, 800px)`} />
+		</div>
 	)
 }
 
-export default MilkdownEditorWrapper
+export default MarkdownEditPage

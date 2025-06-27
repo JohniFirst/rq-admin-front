@@ -1,14 +1,32 @@
 import { motion, useInView } from 'framer-motion'
 import { useRef } from 'react'
 import { NavLink } from 'react-router-dom'
+import styled from 'styled-components'
 import useCustomNavigate from '@/hooks/useCustomNavigate'
-import home from './css/home.module.css'
 
-// 这种方式添加的是内联样式，没有代码提示，伪类、伪元素无法书写
-const readFont = {
-	color: 'red',
-	fontSize: '18px',
-}
+const SectionTitile = styled.p`
+	font-weight: bolder;
+	font-size: 18px;
+	display: flex;
+	align-items: center;
+	margin-top: 16px;
+
+	&::before {
+		content: "1";
+		display: inline-block;
+		background-color: var(--theme-color);
+		color: transparent;
+		font-size: 16px;
+		overflow: hidden;
+		margin-right: 6px;
+		width: 6px;
+	}
+`
+
+const ReadLi = styled.li`
+	color: red;
+	font-size: 18px;
+`
 
 function AnimatedSection({ children }: { children: React.ReactNode }) {
 	const ref = useRef(null)
@@ -45,9 +63,9 @@ function Home() {
 
 			<main className='max-w-3xl mx-auto px-4 py-8'>
 				<AnimatedSection>
-					<p className={home.introTitle}>功能特点</p>
+					<SectionTitile>功能特点</SectionTitile>
 					<ol className='ml-8 list-[decimal] space-y-3'>
-						<li style={readFont}>快速定位源码，【ctrl + 鼠标左键】，直接跳转vscode源码</li>
+						<ReadLi>快速定位源码，【ctrl + 鼠标左键】，直接跳转vscode源码</ReadLi>
 						<li>灵活的布局切换，支持垂直布局和水平布局</li>
 						<li>使用原生canvas实现的图片拼接</li>
 						<li>原生的视频播放器</li>
@@ -95,7 +113,7 @@ function Home() {
 				</AnimatedSection>
 
 				<AnimatedSection>
-					<p className={home.introTitle}>hooks一览</p>
+					<SectionTitile>hooks一览</SectionTitile>
 					<ul className='ml-8 space-y-2'>
 						<li>——useCopyToClipboard 零依赖的复制到剪切板</li>
 						<li>——useCustomNavigate 避免重复导航的自定义路由</li>
@@ -107,7 +125,7 @@ function Home() {
 				</AnimatedSection>
 
 				<AnimatedSection>
-					<p className={home.introTitle}>TODO</p>
+					<SectionTitile>TODO</SectionTitile>
 					<ol className='ml-8 list-[decimal] space-y-3'>
 						<li>完善动画组件</li>
 						<li>实现pdf编辑组件，向pdf内部新增图片</li>
@@ -122,7 +140,7 @@ function Home() {
 				</AnimatedSection>
 
 				<AnimatedSection>
-					<p className={home.introTitle}>一些面试题</p>
+					<SectionTitile>一些面试题</SectionTitile>
 					<ol className='ml-8 list-[decimal] space-y-4'>
 						<li className='font-semibold'>css使用的方式有哪些？有哪些优缺点？</li>
 						<div className='ml-4 space-y-2'>
