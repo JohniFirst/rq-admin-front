@@ -3,13 +3,52 @@ import { HomeOutlined, MenuFoldOutlined, MenuUnfoldOutlined } from '@ant-design/
 import { Popover } from 'antd'
 import { useEffect, useState } from 'react'
 import { Link, Outlet, useLocation } from 'react-router-dom'
+import styled from 'styled-components'
 import { ForageEnums } from '@/enums/localforage'
 import useCustomNavigate from '@/hooks/useCustomNavigate'
 import { useAppSelector } from '@/store/hooks'
 import { forage } from '@/utils/localforage'
 import HeaderOperate from './components/header-operate'
 import NavigationBar from './components/navigation-bar/navigation-bar'
-import drawer from './css/drawerMenu.module.css'
+
+const TopLevelMenu = styled.ul`
+  text-align: center;
+  cursor: pointer;
+  background: var(--color-surface);
+  box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.04);
+  padding: 12px 0;
+  transition: background 0.3s;
+  border-radius: 1rem;
+  user-select: none;
+
+  li {
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+		font-size: 15px;
+		color: var(--color-text);
+		margin: 0 8px 12px 8px;
+		padding: 12px 16px;
+		border-radius: 12px;
+		transition: background 0.3s, color 0.3s;
+
+		&:last-child {
+			margin-bottom: 0;
+		}
+
+		&:hover:not(.activeTopMenu) {
+			background: var(--color-surface-hover);
+			color: var(--color-primary);
+		}
+  }
+`
+
+const ActiveTopMenu = styled.li`
+  color: var(--color-primary-contrast, #fff);
+  background: var(--color-primary);
+  box-shadow: 0 2px 8px 0 rgba(37, 99, 235, 0.1);
+  border-radius: 12px;
+`
 
 // import type { MenuProps } from 'antd'
 
@@ -104,30 +143,35 @@ function DrawerMenu({ showHeaderOperate = true }: DrawerMenuProps) {
 	// }
 
 	// 递归渲染多级菜单项，children 以 Popover 方式展示
-	function RecursiveMenuItem({ item, selectedKey, navigate, drawer }: any) {
+	function RecursiveMenuItem({ item, selectedKey, navigate }: any) {
 		const isActive = selectedKey.includes(item.key)
 		const hasChildren = Array.isArray(item.children) && item.children.length > 0
 		const content = hasChildren ? (
 			<ul className='min-w-36'>
 				{item.children.map((child: any) => (
-					<RecursiveMenuItem
-						key={child.key}
-						item={child}
-						selectedKey={selectedKey}
-						navigate={navigate}
-						drawer={drawer}
-					/>
+					<RecursiveMenuItem key={child.key} item={child} selectedKey={selectedKey} navigate={navigate} />
 				))}
 			</ul>
 		) : null
 
-		const li = (
+		const li = isActive ? (
+			<ActiveTopMenu
+				key={item.key}
+				className='select-none cursor-pointer px-3 py-1 rounded mb-1'
+				onClick={(e) => {
+					e.stopPropagation()
+					navigate(item.key)
+				}}
+			>
+				{item.icon} <span className='ml-2'>{item.label}</span>
+			</ActiveTopMenu>
+		) : (
 			<li
 				key={item.key}
-				className={`select-none cursor-pointer px-3 py-1 rounded mb-1 ${isActive ? drawer.activeTopMenu : ''}`}
+				className='select-none cursor-pointer px-3 py-1 rounded mb-1'
 				style={{
-					color: isActive ? 'var(--color-primary-contrast, #fff)' : 'var(--color-text)',
-					background: isActive ? 'var(--color-primary)' : 'transparent',
+					color: 'var(--color-text)',
+					background: 'transparent',
 				}}
 				onClick={(e) => {
 					e.stopPropagation()
@@ -159,77 +203,71 @@ function DrawerMenu({ showHeaderOperate = true }: DrawerMenuProps) {
 	useEffect(() => {
 		forage.setItem(ForageEnums.DRAWER_MENU_VISIBLE, String(menuVisible))
 	}, [menuVisible])
-
 	return (
-		<>
-			<div className='grid grid-cols-[auto_1fr] w-full h-screen bg-[var(--color-background)] dark:bg-[var(--color-background)]'>
-				{menuVisible && (
-					<aside className='max-h-screen flex'>
-						<ul className={drawer.topLevelMenu + ' transition-colors duration-300'}>
-							{menus.map((item) => {
-								const isActive = topActiveMenu.key === item.key || selectedKey.includes(item.key)
-								return (
-									<li
-										className={`select-none cursor-pointer ${drawer.topLevelMenu} ${isActive ? drawer.activeTopMenu : ''} transition-colors duration-200`}
-										key={item.key}
-										onClick={() => setTopActiveMenu(item)}
-										onKeyUp={() => setTopActiveMenu(item)}
-										style={{
-											color: isActive ? 'var(--color-primary-contrast, #fff)' : 'var(--color-text)',
-										}}
-									>
-										<span className='text-xl mb-1'>{item.icon}</span>
-										<p className='text-xs font-medium tracking-wide'>{item.label}</p>
-									</li>
-								)
-							})}
+		<div className='grid grid-cols-[auto_1fr] w-full h-screen bg-[var(--color-background)] dark:bg-[var(--color-background)]'>
+			{menuVisible && (
+				<aside className='max-h-screen flex'>
+					<TopLevelMenu>
+						{menus.map((item) => {
+							const isActive = topActiveMenu.key === item.key || selectedKey.includes(item.key)
+							return isActive ? (
+								<ActiveTopMenu
+									className='select-none cursor-pointer transition-colors duration-200'
+									key={item.key}
+									onClick={() => setTopActiveMenu(item)}
+									onKeyUp={() => setTopActiveMenu(item)}
+								>
+									<span className='text-xl mb-1'>{item.icon}</span>
+									<p className='text-xs font-medium tracking-wide'>{item.label}</p>
+								</ActiveTopMenu>
+							) : (
+								<li
+									className='select-none cursor-pointer transition-colors duration-200'
+									key={item.key}
+									onClick={() => setTopActiveMenu(item)}
+									onKeyUp={() => setTopActiveMenu(item)}
+									style={{
+										color: 'var(--color-text)',
+									}}
+								>
+									<span className='text-xl mb-1'>{item.icon}</span>
+									<p className='text-xs font-medium tracking-wide'>{item.label}</p>
+								</li>
+							)
+						})}
+					</TopLevelMenu>
+
+					{topActiveMenu.children ? (
+						<ul className='w-44 max-h-full overflow-y-auto rounded-xl shadow bg-[var(--color-surface)] dark:bg-[var(--color-surface)] transition-colors duration-300'>
+							{topActiveMenu.children.map((item: any) => (
+								<RecursiveMenuItem key={item.key} item={item} selectedKey={selectedKey} navigate={navigate} />
+							))}
 						</ul>
+					) : null}
+				</aside>
+			)}
 
-						{topActiveMenu.children ? (
-							<ul
-								className={[
-									'w-44 max-h-full overflow-y-auto rounded-xl shadow bg-[var(--color-surface)]',
-									'dark:bg-[var(--color-surface)]',
-									'transition-colors duration-300',
-									drawer.topLevelMenu,
-								].join(' ')}
-							>
-								{topActiveMenu.children.map((item: any) => (
-									<RecursiveMenuItem
-										key={item.key}
-										item={item}
-										selectedKey={selectedKey}
-										navigate={navigate}
-										drawer={drawer}
-									/>
-								))}
-							</ul>
-						) : null}
-					</aside>
-				)}
+			<section className='w-full flex flex-col h-screen col-auto'>
+				<header className='flex justify-between items-center p-4'>
+					<div className='flex items-center gap-2'>
+						<button type='button' onClick={() => setMenuVisible((v) => !v)} className='text-xl'>
+							{menuVisible ? <MenuFoldOutlined /> : <MenuUnfoldOutlined />}
+						</button>
+						<Link to={'/dashboard'}>
+							<HomeOutlined />
+						</Link>
+					</div>
 
-				<section className='w-full flex flex-col h-screen col-auto'>
-					<header className='flex justify-between items-center p-4'>
-						<div className='flex items-center gap-2'>
-							<button type='button' onClick={() => setMenuVisible((v) => !v)} className='text-xl'>
-								{menuVisible ? <MenuFoldOutlined /> : <MenuUnfoldOutlined />}
-							</button>
-							<Link to={'/dashboard'}>
-								<HomeOutlined />
-							</Link>
-						</div>
+					{showHeaderOperate && <HeaderOperate />}
+				</header>
 
-						{showHeaderOperate && <HeaderOperate />}
-					</header>
+				{showNavigationBar && <NavigationBar />}
 
-					{showNavigationBar && <NavigationBar />}
-
-					<main className='bg-gray-50 dark:bg-black grow p-4 overflow-y-auto w-full'>
-						<Outlet />
-					</main>
-				</section>
-			</div>
-		</>
+				<main className='bg-gray-50 dark:bg-black grow p-4 overflow-y-auto w-full'>
+					<Outlet />
+				</main>
+			</section>
+		</div>
 	)
 }
 

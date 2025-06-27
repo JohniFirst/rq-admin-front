@@ -2,10 +2,8 @@ import { SettingOutlined } from '@ant-design/icons'
 import { Drawer, Switch } from 'antd'
 import { animate, motion, useMotionValue } from 'framer-motion'
 import { useEffect, useState } from 'react'
-import CommonMenu from '@/assets/svgs/nav-type/common-menu.svg'
-import DrawerMenu from '@/assets/svgs/nav-type/drawer-menu.svg'
-import HeaderMenu from '@/assets/svgs/nav-type/top-menu.svg'
 
+import { CommonMenu, DrawerMenu, TopMenu } from '@/assets/svgs/nav-type/system-svgs'
 import { LayoutModeEnum } from '@/enums/system'
 import { useAppDispatch, useAppSelector } from '@/store/hooks'
 import { setlayoutMode, setShowNavigationBar, setTheme } from '@/store/slice/system-info'
@@ -23,7 +21,7 @@ const layoutModeArr = [
 		value: LayoutModeEnum.DRAWER_MENU,
 	},
 	{
-		imgSrc: HeaderMenu,
+		imgSrc: TopMenu,
 		title: '顶部导航菜单',
 		value: LayoutModeEnum.HEADER_MENU,
 	},
@@ -168,11 +166,8 @@ const SystemSettings: React.FC = () => {
 									onClick={() => handleLayoutChange(item.value)}
 									onKeyUp={() => handleLayoutChange(item.value)}
 								>
-									<img
-										src={item.imgSrc}
-										alt={item.title}
-										className='w-full h-auto rounded transition-transform duration-300 hover:scale-105'
-									/>
+									{item.imgSrc}
+
 									<p className='text-center text-sm mt-2 text-gray-600 dark:text-gray-400'>{item.title}</p>
 									{layoutMode === item.value && (
 										<div className='absolute -top-1 -right-1 w-4 h-4 bg-indigo-500 rounded-full flex items-center justify-center'>
