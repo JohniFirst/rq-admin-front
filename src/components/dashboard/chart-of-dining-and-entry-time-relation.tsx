@@ -1,12 +1,12 @@
 import type { EChartsOption } from 'echarts'
 import { BarChart, LineChart } from 'echarts/charts'
 import {
-	DatasetComponent,
-	GridComponent,
-	LegendComponent,
-	TitleComponent,
-	TooltipComponent,
-	TransformComponent,
+  DatasetComponent,
+  GridComponent,
+  LegendComponent,
+  TitleComponent,
+  TooltipComponent,
+  TransformComponent,
 } from 'echarts/components'
 import * as echarts from 'echarts/core'
 import { LabelLayout, UniversalTransition } from 'echarts/features'
@@ -17,17 +17,17 @@ import { echartsColors } from '@/enums/echartsColors.ts'
 import { useInViewport } from '@/hooks/useInViewport.ts'
 
 echarts.use([
-	TitleComponent,
-	TooltipComponent,
-	GridComponent,
-	DatasetComponent,
-	TransformComponent,
-	LineChart,
-	BarChart,
-	LabelLayout,
-	UniversalTransition,
-	CanvasRenderer,
-	LegendComponent,
+  TitleComponent,
+  TooltipComponent,
+  GridComponent,
+  DatasetComponent,
+  TransformComponent,
+  LineChart,
+  BarChart,
+  LabelLayout,
+  UniversalTransition,
+  CanvasRenderer,
+  LegendComponent,
 ])
 
 /**
@@ -36,78 +36,78 @@ echarts.use([
  * @return {JSX.Element} The rendered component.
  */
 function ChartOfDiningAndEntryTimeRelation() {
-	const chartRef = useRef(null)
+  const chartRef = useRef(null)
 
-	const [isInViewport] = useInViewport(chartRef)
+  const [isInViewport] = useInViewport(chartRef)
 
-	useEffect(() => {
-		const myChart = echarts.init(chartRef.current)
+  useEffect(() => {
+    const myChart = echarts.init(chartRef.current)
 
-		// 准备数据
-		const data = [
-			{ entryTime: '12:00', averageDiningTime: 1.5, customerCount: 20 },
-			{ entryTime: '13:00', averageDiningTime: 2, customerCount: 30 },
-			{ entryTime: '14:00', averageDiningTime: 1.8, customerCount: 25 },
-			{ entryTime: '15:00', averageDiningTime: 2.2, customerCount: 35 },
-			{ entryTime: '16:00', averageDiningTime: 1.7, customerCount: 28 },
-		]
+    // 准备数据
+    const data = [
+      { entryTime: '12:00', averageDiningTime: 1.5, customerCount: 20 },
+      { entryTime: '13:00', averageDiningTime: 2, customerCount: 30 },
+      { entryTime: '14:00', averageDiningTime: 1.8, customerCount: 25 },
+      { entryTime: '15:00', averageDiningTime: 2.2, customerCount: 35 },
+      { entryTime: '16:00', averageDiningTime: 1.7, customerCount: 28 },
+    ]
 
-		// 配置选项
-		const option: EChartsOption = {
-			title: {
-				text: '复杂关系图表',
-			},
-			color: echartsColors,
-			tooltip: {
-				trigger: 'axis',
-			},
-			legend: {
-				data: ['平均用餐时间', '进店人数'],
-			},
-			grid: {
-				left: '3%',
-				right: '4%',
-				bottom: '3%',
-				containLabel: true,
-			},
-			xAxis: {
-				type: 'category',
-				data: data.map((item) => item.entryTime),
-			},
-			yAxis: [
-				{
-					type: 'value',
-					name: '平均用餐时间（小时）',
-				},
-				{
-					type: 'value',
-					name: '进店人数',
-				},
-			],
-			series: [
-				{
-					name: '平均用餐时间',
-					type: 'line',
-					yAxisIndex: 0,
-					data: data.map((item) => item.averageDiningTime),
-				},
-				{
-					name: '进店人数',
-					type: 'bar',
-					yAxisIndex: 1,
-					data: data.map((item) => item.customerCount),
-				},
-			],
-		}
+    // 配置选项
+    const option: EChartsOption = {
+      title: {
+        text: '复杂关系图表',
+      },
+      color: echartsColors,
+      tooltip: {
+        trigger: 'axis',
+      },
+      legend: {
+        data: ['平均用餐时间', '进店人数'],
+      },
+      grid: {
+        left: '3%',
+        right: '4%',
+        bottom: '3%',
+        containLabel: true,
+      },
+      xAxis: {
+        type: 'category',
+        data: data.map(item => item.entryTime),
+      },
+      yAxis: [
+        {
+          type: 'value',
+          name: '平均用餐时间（小时）',
+        },
+        {
+          type: 'value',
+          name: '进店人数',
+        },
+      ],
+      series: [
+        {
+          name: '平均用餐时间',
+          type: 'line',
+          yAxisIndex: 0,
+          data: data.map(item => item.averageDiningTime),
+        },
+        {
+          name: '进店人数',
+          type: 'bar',
+          yAxisIndex: 1,
+          data: data.map(item => item.customerCount),
+        },
+      ],
+    }
 
-		myChart.setOption(option)
+    myChart.setOption(option)
 
-		return () => {
-			myChart.dispose()
-		}
-	}, [isInViewport])
+    return () => {
+      myChart.dispose()
+    }
+  }, [isInViewport])
 
-	return <div ref={chartRef} style={{ width: '100%', height: '400px' }} />
+  return <div ref={chartRef} style={{ width: '100%', height: '400px' }} />
 }
 
 export default ChartOfDiningAndEntryTimeRelation

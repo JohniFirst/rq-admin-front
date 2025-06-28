@@ -3,11 +3,11 @@ import type { EChartsOption } from 'echarts'
 import { PieChart } from 'echarts/charts'
 // 引入标题，提示框，直角坐标系，数据集，内置数据转换器组件，组件后缀都为 Component
 import {
-	DatasetComponent,
-	GridComponent,
-	TitleComponent,
-	TooltipComponent,
-	TransformComponent,
+  DatasetComponent,
+  GridComponent,
+  TitleComponent,
+  TooltipComponent,
+  TransformComponent,
 } from 'echarts/components'
 // 引入 echarts 核心模块，核心模块提供了 echarts 使用必须要的接口。
 import * as echarts from 'echarts/core'
@@ -21,15 +21,15 @@ import { useInViewport } from '@/hooks/useInViewport.ts'
 
 // 注册必须的组件
 echarts.use([
-	TitleComponent,
-	TooltipComponent,
-	GridComponent,
-	DatasetComponent,
-	TransformComponent,
-	PieChart,
-	LabelLayout,
-	UniversalTransition,
-	CanvasRenderer,
+  TitleComponent,
+  TooltipComponent,
+  GridComponent,
+  DatasetComponent,
+  TransformComponent,
+  PieChart,
+  LabelLayout,
+  UniversalTransition,
+  CanvasRenderer,
 ])
 
 /**
@@ -40,62 +40,62 @@ echarts.use([
  * @return {JSX.Element} A div element containing the pie chart.
  */
 function ChartOfGuestSourcePie() {
-	const chartRef = useRef(null)
+  const chartRef = useRef(null)
 
-	const [isInViewport] = useInViewport(chartRef)
+  const [isInViewport] = useInViewport(chartRef)
 
-	useEffect(() => {
-		const myChart = echarts.init(chartRef.current)
+  useEffect(() => {
+    const myChart = echarts.init(chartRef.current)
 
-		const data = [
-			{ name: '自然进店', value: 40 },
-			{ name: '朋友推荐', value: 30 },
-			{ name: '抖音视频', value: 20 },
-			{ name: '小红书广告', value: 10 },
-		]
+    const data = [
+      { name: '自然进店', value: 40 },
+      { name: '朋友推荐', value: 30 },
+      { name: '抖音视频', value: 20 },
+      { name: '小红书广告', value: 10 },
+    ]
 
-		const option: EChartsOption = {
-			title: {
-				text: '客人来源占比',
-			},
-			color: echartsColors,
-			tooltip: {
-				trigger: 'item',
-			},
-			legend: {
-				bottom: 'bottom',
-				align: 'right',
-			},
-			series: [
-				{
-					name: '客人来源',
-					type: 'pie',
-					radius: ['40%', '70%'],
-					padAngle: 5,
-					data,
-					label: {
-						// show: false,
-						// position: 'center'
-					},
-					emphasis: {
-						itemStyle: {
-							shadowBlur: 10,
-							shadowOffsetX: 0,
-							shadowColor: 'rgba(0, 0, 0, 0.5)',
-						},
-					},
-				},
-			],
-		}
+    const option: EChartsOption = {
+      title: {
+        text: '客人来源占比',
+      },
+      color: echartsColors,
+      tooltip: {
+        trigger: 'item',
+      },
+      legend: {
+        bottom: 'bottom',
+        align: 'right',
+      },
+      series: [
+        {
+          name: '客人来源',
+          type: 'pie',
+          radius: ['40%', '70%'],
+          padAngle: 5,
+          data,
+          label: {
+            // show: false,
+            // position: 'center'
+          },
+          emphasis: {
+            itemStyle: {
+              shadowBlur: 10,
+              shadowOffsetX: 0,
+              shadowColor: 'rgba(0, 0, 0, 0.5)',
+            },
+          },
+        },
+      ],
+    }
 
-		myChart.setOption(option)
+    myChart.setOption(option)
 
-		return () => {
-			myChart.dispose()
-		}
-	}, [isInViewport])
+    return () => {
+      myChart.dispose()
+    }
+  }, [isInViewport])
 
-	return <div ref={chartRef} style={{ width: '100%', height: '100%' }} />
+  return <div ref={chartRef} style={{ width: '100%', height: '100%' }} />
 }
 
 export default ChartOfGuestSourcePie

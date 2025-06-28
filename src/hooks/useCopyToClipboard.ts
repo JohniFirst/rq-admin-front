@@ -2,8 +2,8 @@ import { useState } from 'react'
 import { appConfig } from '@/config/app'
 
 interface CopyToClipboardOptions {
-	prefix?: string
-	suffix?: string
+  prefix?: string
+  suffix?: string
 }
 
 /**
@@ -13,25 +13,25 @@ interface CopyToClipboardOptions {
  * @return {{ copyToClipboard: (text: string) => void, isCopied: boolean }} An object containing the copyToClipboard function and the isCopied state.
  */
 export function useCopyToClipboard(
-	options: CopyToClipboardOptions = {
-		prefix: appConfig.clipboard.prefix,
-		suffix: appConfig.clipboard.suffix,
-	},
+  options: CopyToClipboardOptions = {
+    prefix: appConfig.clipboard.prefix,
+    suffix: appConfig.clipboard.suffix,
+  },
 ) {
-	const [isCopied, setIsCopied] = useState<boolean>(false)
+  const [isCopied, setIsCopied] = useState<boolean>(false)
 
-	const copyToClipboard = (text: string) => {
-		const fullText = `${options.prefix || ''}${text}${options.suffix || ''}`
-		navigator.clipboard
-			.writeText(fullText)
-			.then(() => {
-				setIsCopied(true)
-				setTimeout(() => setIsCopied(false), 3000)
-			})
-			.catch((err) => {
-				console.error('Failed to copy: ', err)
-			})
-	}
+  const copyToClipboard = (text: string) => {
+    const fullText = `${options.prefix || ''}${text}${options.suffix || ''}`
+    navigator.clipboard
+      .writeText(fullText)
+      .then(() => {
+        setIsCopied(true)
+        setTimeout(() => setIsCopied(false), 3000)
+      })
+      .catch(err => {
+        console.error('Failed to copy: ', err)
+      })
+  }
 
-	return { copyToClipboard, isCopied }
+  return { copyToClipboard, isCopied }
 }

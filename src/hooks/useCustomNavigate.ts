@@ -9,17 +9,17 @@ import { useNavigate } from 'react-router-dom'
  * 默认采用replace模式
  */
 function useCustomNavigate() {
-	const navigate = useNavigate()
+  const navigate = useNavigate()
 
-	return (path: string, replace = true) => {
-		if (path !== window.location.pathname) {
-			document.startViewTransition(() => {
-				flushSync(() => {
-					navigate(path, { replace })
-				})
-			})
-		}
-	}
+  return (path: string, replace = true) => {
+    if (path !== window.location.pathname) {
+      document.startViewTransition(() => {
+        flushSync(() => {
+          navigate(path, { replace })
+        })
+      })
+    }
+  }
 }
 
 export default useCustomNavigate

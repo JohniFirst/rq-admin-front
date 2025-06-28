@@ -10,29 +10,29 @@ import NotFound from '@/pages-default/NotFound/NotFound'
 import { generateRoutes } from './dynamic-routes'
 
 const lazyElement = (Element: React.LazyExoticComponent<() => JSX.Element>) => (
-	<Suspense fallback={<Loading />}>
-		<Element />
-	</Suspense>
+  <Suspense fallback={<Loading />}>
+    <Element />
+  </Suspense>
 )
 
 export const defaultRoutes: RouteObject[] = [
-	{ path: '/', element: <Home /> },
-	{
-		path: '/login',
-		element: <LoginAbout />,
-		children: [
-			{ path: '', element: <LoginForm /> },
-			{ path: 'new', element: <RegisterForm /> },
-			{
-				path: 'forgot-password',
-				element: lazyElement(lazy(() => import('@/pages-default/login-about/forgot-password.tsx'))),
-			},
-		],
-	},
-	{
-		path: '/',
-		element: lazyElement(lazy(() => import('@/layout/Layout.tsx'))),
-		children: generateRoutes(),
-	},
-	{ path: '/*', element: <NotFound /> },
+  { path: '/', element: <Home /> },
+  {
+    path: '/login',
+    element: <LoginAbout />,
+    children: [
+      { path: '', element: <LoginForm /> },
+      { path: 'new', element: <RegisterForm /> },
+      {
+        path: 'forgot-password',
+        element: lazyElement(lazy(() => import('@/pages-default/login-about/forgot-password.tsx'))),
+      },
+    ],
+  },
+  {
+    path: '/',
+    element: lazyElement(lazy(() => import('@/layout/Layout.tsx'))),
+    children: generateRoutes(),
+  },
+  { path: '/*', element: <NotFound /> },
 ]

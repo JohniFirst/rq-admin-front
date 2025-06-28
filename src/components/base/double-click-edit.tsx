@@ -3,9 +3,9 @@ import { Input, type InputProps, type InputRef } from 'antd'
 import React, { type RefAttributes, useEffect, useRef } from 'react'
 
 type DoubleClickEditProps = {
-	inputProps?: InputProps & RefAttributes<InputRef>
-	value: string
-	editFinished: (newValue: string) => void
+  inputProps?: InputProps & RefAttributes<InputRef>
+  value: string
+  editFinished: (newValue: string) => void
 }
 
 /**
@@ -15,43 +15,51 @@ type DoubleClickEditProps = {
  * @prop editFinished 编辑结束的回调函数，参数为编辑后的文字
  */
 const DoubleClickEdit: React.FC<DoubleClickEditProps> = ({ inputProps, value, editFinished }) => {
-	const inputRef = useRef<InputRef>(null)
-	const [isEditing, setIsEditing] = React.useState(false)
+  const inputRef = useRef<InputRef>(null)
+  const [isEditing, setIsEditing] = React.useState(false)
 
-	useEffect(() => {
-		if (!isEditing) return
+  useEffect(() => {
+    if (!isEditing) return
 
-		inputRef.current!.focus({
-			cursor: 'all',
-		})
-	}, [isEditing])
+    inputRef.current!.focus({
+      cursor: 'all',
+    })
+  }, [isEditing])
 
-	function handleDoubleEdit() {
-		setIsEditing(true)
-	}
+  function handleDoubleEdit() {
+    setIsEditing(true)
+  }
 
-	function saveEdit(e: React.FocusEvent<HTMLInputElement>) {
-		setIsEditing(false)
-		editFinished(e.target.value)
-	}
+  function saveEdit(e: React.FocusEvent<HTMLInputElement>) {
+    setIsEditing(false)
+    editFinished(e.target.value)
+  }
 
-	const enterSave = (e: React.KeyboardEvent<HTMLInputElement>) => {
-		const target = e.target as HTMLInputElement
+  const enterSave = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    const target = e.target as HTMLInputElement
 
-		setIsEditing(false)
-		editFinished(target.value)
-	}
+    setIsEditing(false)
+    editFinished(target.value)
+  }
 
-	if (isEditing) {
-		return <Input ref={inputRef} defaultValue={value} onBlur={saveEdit} onPressEnter={enterSave} {...inputProps} />
-	}
+  if (isEditing) {
+    return (
+      <Input
+        ref={inputRef}
+        defaultValue={value}
+        onBlur={saveEdit}
+        onPressEnter={enterSave}
+        {...inputProps}
+      />
+    )
+  }
 
-	return (
-		<p onDoubleClick={handleDoubleEdit}>
-			{value}
-			<EditOutlined />
-		</p>
-	)
+  return (
+    <p onDoubleClick={handleDoubleEdit}>
+      {value}
+      <EditOutlined />
+    </p>
+  )
 }
 
 export default DoubleClickEdit

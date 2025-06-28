@@ -2,17 +2,17 @@ import { createSlice, type PayloadAction, type Slice } from '@reduxjs/toolkit'
 import type { RouteObject } from 'react-router-dom'
 
 const initialState: RouterState = {
-	router: [],
+  router: [],
 }
 
 export const routerSlice: Slice<RouterState> = createSlice({
-	name: 'router',
-	initialState,
-	reducers: {
-		addRoutes(state, action: PayloadAction<RouteObject>) {
-			state.router.splice(-1, 0, action.payload)
-		},
-	},
+  name: 'router',
+  initialState,
+  reducers: {
+    addRoutes(state, action: PayloadAction<RouteObject>) {
+      state.router.splice(-1, 0, action.payload)
+    },
+  },
 })
 
 export const { addRoutes } = routerSlice.actions

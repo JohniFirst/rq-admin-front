@@ -12,34 +12,36 @@ import { type MutableRefObject, useEffect, useState } from 'react'
  * @return {[boolean, IntersectionObserverEntry | null]} A tuple containing the
  *   `isInViewport` boolean and the `entry` object.
  */
-export function useInViewport(ref: MutableRefObject<null>): [boolean, IntersectionObserverEntry | null] {
-	const [isInViewport, setIsInViewport] = useState(false)
-	const [entry, setEntry] = useState<IntersectionObserverEntry | null>(null)
+export function useInViewport(
+  ref: MutableRefObject<null>,
+): [boolean, IntersectionObserverEntry | null] {
+  const [isInViewport, setIsInViewport] = useState(false)
+  const [entry, setEntry] = useState<IntersectionObserverEntry | null>(null)
 
-	useEffect(() => {
-		const observer = new IntersectionObserver(
-			(entries) => {
-				for (const entry of entries) {
-					setIsInViewport(entry.isIntersecting)
-					setEntry(entry)
-				}
-			},
-			{
-				rootMargin: '0px',
-				threshold: 0.5,
-			},
-		)
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      entries => {
+        for (const entry of entries) {
+          setIsInViewport(entry.isIntersecting)
+          setEntry(entry)
+        }
+      },
+      {
+        rootMargin: '0px',
+        threshold: 0.5,
+      },
+    )
 
-		if (ref.current) {
-			observer.observe(ref.current)
-		}
+    if (ref.current) {
+      observer.observe(ref.current)
+    }
 
-		return () => {
-			if (ref.current) {
-				observer.unobserve(ref.current)
-			}
-		}
-	}, [])
+    return () => {
+      if (ref.current) {
+        observer.unobserve(ref.current)
+      }
+    }
+  }, [])
 
-	return [isInViewport, entry]
+  return [isInViewport, entry]
 }

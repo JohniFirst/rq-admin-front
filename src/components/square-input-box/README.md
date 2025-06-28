@@ -15,18 +15,18 @@
 ## 基础用法
 
 ```tsx
-import SquareInputBox from "@/components/square-input-box";
+import SquareInputBox from '@/components/square-input-box'
 
 function MyComponent() {
-  const [code, setCode] = useState("");
+  const [code, setCode] = useState('')
 
   return (
     <SquareInputBox
       value={code}
       onChange={setCode}
-      onComplete={(value) => console.log("输入完成:", value)}
+      onComplete={value => console.log('输入完成:', value)}
     />
-  );
+  )
 }
 ```
 
@@ -81,14 +81,7 @@ function MyComponent() {
 ### 自定义样式
 
 ```tsx
-<SquareInputBox
-  length={4}
-  size={64}
-  gap={12}
-  borderRadius={12}
-  value={code}
-  onChange={setCode}
-/>
+<SquareInputBox length={4} size={64} gap={12} borderRadius={12} value={code} onChange={setCode} />
 ```
 
 ### 状态反馈
@@ -133,29 +126,25 @@ function MyComponent() {
 ### 1. 表单集成
 
 ```tsx
-import { Form } from "antd";
-
-<Form.Item
-  name="verificationCode"
-  rules={[{ required: true, message: "请输入验证码" }]}
->
+import { Form } from 'antd'
+;<Form.Item name="verificationCode" rules={[{ required: true, message: '请输入验证码' }]}>
   <SquareInputBox length={6} type="number" onComplete={handleAutoSubmit} />
-</Form.Item>;
+</Form.Item>
 ```
 
 ### 2. 验证逻辑
 
 ```tsx
 const handleCodeChange = (value: string) => {
-  setCode(value);
+  setCode(value)
 
   // 实时验证
   if (value.length === 6) {
-    const isValid = validateCode(value);
-    setError(!isValid);
-    setSuccess(isValid);
+    const isValid = validateCode(value)
+    setError(!isValid)
+    setSuccess(isValid)
   }
-};
+}
 ```
 
 ### 3. 自动提交
@@ -163,11 +152,11 @@ const handleCodeChange = (value: string) => {
 ```tsx
 const handleComplete = (value: string) => {
   // 自动提交表单
-  form.submit();
+  form.submit()
 
   // 或者调用API
-  submitVerificationCode(value);
-};
+  submitVerificationCode(value)
+}
 ```
 
 ## 样式定制

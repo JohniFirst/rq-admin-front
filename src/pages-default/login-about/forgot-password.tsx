@@ -70,48 +70,63 @@ const LinkText = styled(NavLink)`
 `
 
 const ForgotPassword = () => {
-	const [form] = Form.useForm<ForgotPasswordFormValues>()
-	const navigate = useNavigate()
+  const [form] = Form.useForm<ForgotPasswordFormValues>()
+  const navigate = useNavigate()
 
-	const handleSubmit = async (values: ForgotPasswordFormValues) => {
-		await handleForgotPassword(values)
-		navigate('/login')
-	}
+  const handleSubmit = async (values: ForgotPasswordFormValues) => {
+    await handleForgotPassword(values)
+    navigate('/login')
+  }
 
-	return (
-		<>
-			<FormTitle initial={{ y: -20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ duration: 0.5 }}>
-				找回密码
-			</FormTitle>
+  return (
+    <>
+      <FormTitle
+        initial={{ y: -20, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ duration: 0.5 }}
+      >
+        找回密码
+      </FormTitle>
 
-			<FormDescription>请输入您的注册邮箱，我们将向您发送重置密码的链接。</FormDescription>
+      <FormDescription>请输入您的注册邮箱，我们将向您发送重置密码的链接。</FormDescription>
 
-			<Form form={form} name='forgotPasswordForm' onFinish={handleSubmit} layout='vertical' size='large'>
-				<StyledFormItem
-					name='email'
-					rules={[
-						{ required: true, message: '请输入您的邮箱！' },
-						{ type: 'email', message: '请输入有效的邮箱地址！' },
-					]}
-				>
-					<Input prefix={<MailOutlined />} placeholder='请输入邮箱' />
-				</StyledFormItem>
+      <Form
+        form={form}
+        name="forgotPasswordForm"
+        onFinish={handleSubmit}
+        layout="vertical"
+        size="large"
+      >
+        <StyledFormItem
+          name="email"
+          rules={[
+            { required: true, message: '请输入您的邮箱！' },
+            { type: 'email', message: '请输入有效的邮箱地址！' },
+          ]}
+        >
+          <Input prefix={<MailOutlined />} placeholder="请输入邮箱" />
+        </StyledFormItem>
 
-				<Form.Item>
-					<StyledButton type='primary' htmlType='submit' block className='bg-indigo-600 hover:bg-indigo-700'>
-						发送重置链接
-					</StyledButton>
-				</Form.Item>
+        <Form.Item>
+          <StyledButton
+            type="primary"
+            htmlType="submit"
+            block
+            className="bg-indigo-600 hover:bg-indigo-700"
+          >
+            发送重置链接
+          </StyledButton>
+        </Form.Item>
 
-				<div className='text-center text-gray-600'>
-					记起密码了？
-					<LinkText to='/login' className='ml-1'>
-						返回登录
-					</LinkText>
-				</div>
-			</Form>
-		</>
-	)
+        <div className="text-center text-gray-600">
+          记起密码了？
+          <LinkText to="/login" className="ml-1">
+            返回登录
+          </LinkText>
+        </div>
+      </Form>
+    </>
+  )
 }
 
 export default ForgotPassword

@@ -86,77 +86,86 @@ const RememberMeWrapper = styled.div`
 `
 
 const LoginForm = () => {
-	const [form] = Form.useForm<LoginFormValues>()
-	const navigate = useCustomNavigate()
-	const [isLogin, setIsLogin] = useState(false)
-	const dispatch = useAppDispatch()
+  const [form] = Form.useForm<LoginFormValues>()
+  const navigate = useCustomNavigate()
+  const [isLogin, setIsLogin] = useState(false)
+  const dispatch = useAppDispatch()
 
-	const handleSubmit = async (values: LoginFormValues) => {
-		await handleLogin(values)
-		sessionStorage.setItem(`${SessionStorageKeys.IS_LOGIN}`, `${IsLogin.YES}`)
-		const menu = await getMenuList()
+  const handleSubmit = async (values: LoginFormValues) => {
+    await handleLogin(values)
+    sessionStorage.setItem(`${SessionStorageKeys.IS_LOGIN}`, `${IsLogin.YES}`)
+    const menu = await getMenuList()
 
-		dispatch(updateMenu(menu))
-		setIsLogin(true)
-	}
+    dispatch(updateMenu(menu))
+    setIsLogin(true)
+  }
 
-	useEffect(() => {
-		if (isLogin) {
-			navigate('/dashboard', false)
-		}
-	}, [isLogin, navigate])
+  useEffect(() => {
+    if (isLogin) {
+      navigate('/dashboard', false)
+    }
+  }, [isLogin, navigate])
 
-	return (
-		<>
-			<FormTitle initial={{ y: -20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ duration: 0.5 }}>
-				欢迎登录
-			</FormTitle>
+  return (
+    <>
+      <FormTitle
+        initial={{ y: -20, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ duration: 0.5 }}
+      >
+        欢迎登录
+      </FormTitle>
 
-			<Form
-				form={form}
-				name='loginForm'
-				onFinish={handleSubmit}
-				initialValues={{
-					remember: true,
-					username: 'lisi',
-					password: '12345678',
-					verificationCode: '1',
-				}}
-				layout='vertical'
-				size='large'
-			>
-				<StyledFormItem name='username' rules={[{ required: true, message: '请输入您的用户名！' }]}>
-					<Input prefix={<UserOutlined />} placeholder='请输入用户名' />
-				</StyledFormItem>
+      <Form
+        form={form}
+        name="loginForm"
+        onFinish={handleSubmit}
+        initialValues={{
+          remember: true,
+          username: 'lisi',
+          password: '12345678',
+          verificationCode: '1',
+        }}
+        layout="vertical"
+        size="large"
+      >
+        <StyledFormItem name="username" rules={[{ required: true, message: '请输入您的用户名！' }]}>
+          <Input prefix={<UserOutlined />} placeholder="请输入用户名" />
+        </StyledFormItem>
 
-				<StyledFormItem name='password' rules={[{ required: true, message: '请输入您的密码！' }]}>
-					<Input.Password prefix={<LockOutlined />} placeholder='请输入8-24位字母、数字组合密码' />
-				</StyledFormItem>
+        <StyledFormItem name="password" rules={[{ required: true, message: '请输入您的密码！' }]}>
+          <Input.Password prefix={<LockOutlined />} placeholder="请输入8-24位字母、数字组合密码" />
+        </StyledFormItem>
 
-				<VerificationCodeInput />
+        <VerificationCodeInput />
 
-				<RememberMeWrapper>
-					<Form.Item name='remember' valuePropName='checked' noStyle>
-						<Checkbox>记住我</Checkbox>
-					</Form.Item>
-					<LinkText to='/login/forgot-password'>忘记密码？</LinkText>
-				</RememberMeWrapper>
+        <RememberMeWrapper>
+          <Form.Item name="remember" valuePropName="checked" noStyle>
+            <Checkbox>记住我</Checkbox>
+          </Form.Item>
+          <LinkText to="/login/forgot-password">忘记密码？</LinkText>
+        </RememberMeWrapper>
 
-				<Form.Item>
-					<StyledButton type='primary' htmlType='submit' block className='bg-indigo-600 hover:bg-indigo-700'>
-						登 录
-					</StyledButton>
-				</Form.Item>
+        <Form.Item>
+          <StyledButton
+            type="primary"
+            htmlType="submit"
+            block
+            className="bg-indigo-600 hover:bg-indigo-700"
+          >
+            登 录
+          </StyledButton>
+        </Form.Item>
 
-				<div className='text-center text-gray-600'>
-					还没账号？
-					<LinkText to='/login/new' className='ml-1'>
-						立即注册
-					</LinkText>
-				</div>
-			</Form>
-		</>
-	)
+        <div className="text-center text-gray-600">
+          还没账号？
+          <LinkText to="/login/new" className="ml-1">
+            立即注册
+          </LinkText>
+        </div>
+      </Form>
+    </>
+  )
 }
 
 export default LoginForm

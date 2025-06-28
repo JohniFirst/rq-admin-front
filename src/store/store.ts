@@ -4,11 +4,11 @@ import { routerSlice } from './slice/router-slice.ts'
 import { systemInfoSlice } from './slice/system-info.ts'
 
 const store = configureStore({
-	reducer: {
-		systemInfo: systemInfoSlice.reducer,
-		router: routerSlice.reducer,
-		menu: menuSlice.reducer,
-	},
+  reducer: {
+    systemInfo: systemInfoSlice.reducer,
+    router: routerSlice.reducer,
+    menu: menuSlice.reducer,
+  },
 })
 
 // 从 store 本身推断 `RootState` 和 `AppDispatch` 类型

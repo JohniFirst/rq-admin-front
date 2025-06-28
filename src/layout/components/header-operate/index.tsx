@@ -6,19 +6,19 @@ import ThemeSwitcher from './theme-switcher'
 import UserDropdown from './user-dropdown'
 
 function HeaderOperate() {
-	return (
-		<Space size='large'>
-			<SearchableMenu />
+  return (
+    <Space size="large">
+      <SearchableMenu />
 
-			<ThemeSwitcher />
+      <ThemeSwitcher />
 
-			<MessageNotification unreadMessages={3} />
+      <MessageNotification unreadMessages={3} />
 
-			<FullScreen />
+      <FullScreen />
 
-			<UserDropdown />
-		</Space>
-	)
+      <UserDropdown />
+    </Space>
+  )
 }
 
 export default HeaderOperate

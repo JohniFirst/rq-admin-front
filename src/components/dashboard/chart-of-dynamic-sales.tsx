@@ -3,12 +3,12 @@ import type { EChartsOption } from 'echarts'
 import { LineChart } from 'echarts/charts'
 // 引入标题，提示框，直角坐标系，数据集，内置数据转换器组件，组件后缀都为 Component
 import {
-	DatasetComponent,
-	GridComponent,
-	LegendComponent,
-	TitleComponent,
-	TooltipComponent,
-	TransformComponent,
+  DatasetComponent,
+  GridComponent,
+  LegendComponent,
+  TitleComponent,
+  TooltipComponent,
+  TransformComponent,
 } from 'echarts/components'
 // 引入 echarts 核心模块，核心模块提供了 echarts 使用必须要的接口。
 import * as echarts from 'echarts/core'
@@ -19,21 +19,21 @@ import { CanvasRenderer } from 'echarts/renderers'
 import { useEffect, useRef, useState } from 'react'
 
 echarts.use([
-	TitleComponent,
-	TooltipComponent,
-	GridComponent,
-	DatasetComponent,
-	TransformComponent,
-	LegendComponent,
-	LineChart,
-	LabelLayout,
-	UniversalTransition,
-	CanvasRenderer,
+  TitleComponent,
+  TooltipComponent,
+  GridComponent,
+  DatasetComponent,
+  TransformComponent,
+  LegendComponent,
+  LineChart,
+  LabelLayout,
+  UniversalTransition,
+  CanvasRenderer,
 ])
 
 interface SalesData {
-	time: string
-	amount: number
+  time: string
+  amount: number
 }
 
 /**
@@ -42,79 +42,79 @@ interface SalesData {
  * @return {JSX.Element} The rendered line chart component.
  */
 function ChartOfDynamicSales(): JSX.Element {
-	const chartRef = useRef(null)
-	const [salesData, setSalesData] = useState<SalesData[]>([
-		{ time: '08:00', amount: 500 },
-		{ time: '09:00', amount: 800 },
-		{ time: '10:00', amount: 600 },
-		{ time: '11:00', amount: 900 },
-		{ time: '12:00', amount: 1200 },
-	])
+  const chartRef = useRef(null)
+  const [salesData, setSalesData] = useState<SalesData[]>([
+    { time: '08:00', amount: 500 },
+    { time: '09:00', amount: 800 },
+    { time: '10:00', amount: 600 },
+    { time: '11:00', amount: 900 },
+    { time: '12:00', amount: 1200 },
+  ])
 
-	useEffect(() => {
-		// 基于准备好的 dom，初始化 echarts 实例
-		const myChart = echarts.init(chartRef.current)
+  useEffect(() => {
+    // 基于准备好的 dom，初始化 echarts 实例
+    const myChart = echarts.init(chartRef.current)
 
-		const sortData = () => {
-			setSalesData((prevData) => {
-				const sortedData = [...prevData].sort((a, b) => b.amount - a.amount)
-				return sortedData
-			})
-		}
+    const sortData = () => {
+      setSalesData(prevData => {
+        const sortedData = [...prevData].sort((a, b) => b.amount - a.amount)
+        return sortedData
+      })
+    }
 
-		// 配置选项
-		const option: EChartsOption = {
-			title: {
-				text: '销售额变化（动态排序）',
-			},
-			xAxis: {
-				type: 'category',
-				data: salesData.map((item) => item.time),
-			},
-			yAxis: {
-				type: 'value',
-			},
-			series: [
-				{
-					data: salesData.map((item) => item.amount),
-					type: 'line',
-				},
-			],
-			tooltip: {
-				trigger: 'axis',
-			},
-		}
+    // 配置选项
+    const option: EChartsOption = {
+      title: {
+        text: '销售额变化（动态排序）',
+      },
+      xAxis: {
+        type: 'category',
+        data: salesData.map(item => item.time),
+      },
+      yAxis: {
+        type: 'value',
+      },
+      series: [
+        {
+          data: salesData.map(item => item.amount),
+          type: 'line',
+        },
+      ],
+      tooltip: {
+        trigger: 'axis',
+      },
+    }
 
-		// 使用配置项显示图表
-		myChart.setOption(option)
+    // 使用配置项显示图表
+    myChart.setOption(option)
 
-		// 模拟数据动态变化（例如每隔一段时间更新销售额数据，并排序）
-		const interval = setInterval(() => {
-			const newData = {
-				time: new Date().toLocaleTimeString([], {
-					hour: '2-digit',
-					minute: '2-digit',
-				}),
-				amount: Math.random() * 1500,
-			}
-			setSalesData((prevData) => {
-				const updatedData = [...prevData, newData]
-				if (updatedData.length > 30) {
-					updatedData.shift()
-				}
-				sortData()
-				return updatedData
-			})
-		}, 5000)
+    // 模拟数据动态变化（例如每隔一段时间更新销售额数据，并排序）
+    const interval = setInterval(() => {
+      const newData = {
+        time: new Date().toLocaleTimeString([], {
+          hour: '2-digit',
+          minute: '2-digit',
+        }),
+        amount: Math.random() * 1500,
+      }
+      setSalesData(prevData => {
+        const updatedData = [...prevData, newData]
+        if (updatedData.length > 30) {
+          updatedData.shift()
+        }
+        sortData()
+        return updatedData
+      })
+    }, 5000)
 
-		// 组件卸载时销毁图表和定时器
-		return () => {
-			myChart.dispose()
-			clearInterval(interval)
-		}
-	}, [salesData])
+    // 组件卸载时销毁图表和定时器
+    return () => {
+      myChart.dispose()
+      clearInterval(interval)
+    }
+  }, [salesData])
 
-	return <div ref={chartRef} style={{ width: '100%', height: '400px' }} />
+  return <div ref={chartRef} style={{ width: '100%', height: '400px' }} />
 }
 
 export default ChartOfDynamicSales

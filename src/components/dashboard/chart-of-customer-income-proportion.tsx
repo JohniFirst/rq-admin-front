@@ -3,12 +3,12 @@ import type { EChartsOption } from 'echarts'
 import { PieChart } from 'echarts/charts'
 // 引入标题，提示框，直角坐标系，数据集，内置数据转换器组件，组件后缀都为 Component
 import {
-	DatasetComponent,
-	GridComponent,
-	LegendComponent,
-	TitleComponent,
-	TooltipComponent,
-	TransformComponent,
+  DatasetComponent,
+  GridComponent,
+  LegendComponent,
+  TitleComponent,
+  TooltipComponent,
+  TransformComponent,
 } from 'echarts/components'
 // 引入 echarts 核心模块，核心模块提供了 echarts 使用必须要的接口。
 import * as echarts from 'echarts/core'
@@ -22,16 +22,16 @@ import { useInViewport } from '@/hooks/useInViewport.ts'
 
 // 注册必须的组件
 echarts.use([
-	TitleComponent,
-	TooltipComponent,
-	GridComponent,
-	DatasetComponent,
-	TransformComponent,
-	PieChart,
-	LabelLayout,
-	UniversalTransition,
-	CanvasRenderer,
-	LegendComponent,
+  TitleComponent,
+  TooltipComponent,
+  GridComponent,
+  DatasetComponent,
+  TransformComponent,
+  PieChart,
+  LabelLayout,
+  UniversalTransition,
+  CanvasRenderer,
+  LegendComponent,
 ])
 
 /**
@@ -40,60 +40,60 @@ echarts.use([
  * @return {JSX.Element} The rendered pie chart component.
  */
 function ChartOfCustomerIncomeProportion() {
-	const chartRef = useRef(null)
+  const chartRef = useRef(null)
 
-	const [isInViewport] = useInViewport(chartRef)
+  const [isInViewport] = useInViewport(chartRef)
 
-	useEffect(() => {
-		// 基于准备好的 dom，初始化 echarts 实例
-		const myChart = echarts.init(chartRef.current)
+  useEffect(() => {
+    // 基于准备好的 dom，初始化 echarts 实例
+    const myChart = echarts.init(chartRef.current)
 
-		// 准备数据
-		const data = [
-			{ name: '低收入', value: 30 },
-			{ name: '中等收入', value: 50 },
-			{ name: '高收入', value: 20 },
-		]
+    // 准备数据
+    const data = [
+      { name: '低收入', value: 30 },
+      { name: '中等收入', value: 50 },
+      { name: '高收入', value: 20 },
+    ]
 
-		// 配置选项
-		const option: EChartsOption = {
-			title: {
-				text: '顾客收入占比',
-			},
-			color: echartsColors,
-			tooltip: {
-				trigger: 'item',
-			},
-			legend: {
-				bottom: 'bottom',
-			},
-			series: [
-				{
-					name: '收入占比',
-					type: 'pie',
-					radius: '50%',
-					data: data,
-					emphasis: {
-						itemStyle: {
-							shadowBlur: 10,
-							shadowOffsetX: 0,
-							shadowColor: 'rgba(0, 0, 0, 0.5)',
-						},
-					},
-				},
-			],
-		}
+    // 配置选项
+    const option: EChartsOption = {
+      title: {
+        text: '顾客收入占比',
+      },
+      color: echartsColors,
+      tooltip: {
+        trigger: 'item',
+      },
+      legend: {
+        bottom: 'bottom',
+      },
+      series: [
+        {
+          name: '收入占比',
+          type: 'pie',
+          radius: '50%',
+          data: data,
+          emphasis: {
+            itemStyle: {
+              shadowBlur: 10,
+              shadowOffsetX: 0,
+              shadowColor: 'rgba(0, 0, 0, 0.5)',
+            },
+          },
+        },
+      ],
+    }
 
-		// 使用配置项显示图表
-		myChart.setOption(option)
+    // 使用配置项显示图表
+    myChart.setOption(option)
 
-		// 组件卸载时销毁图表
-		return () => {
-			myChart.dispose()
-		}
-	}, [isInViewport])
+    // 组件卸载时销毁图表
+    return () => {
+      myChart.dispose()
+    }
+  }, [isInViewport])
 
-	return <div ref={chartRef} style={{ width: '100%', height: '400px' }} />
+  return <div ref={chartRef} style={{ width: '100%', height: '400px' }} />
 }
 
 export default ChartOfCustomerIncomeProportion

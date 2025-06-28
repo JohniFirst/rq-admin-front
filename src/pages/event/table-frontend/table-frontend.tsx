@@ -1,5 +1,5 @@
 function TableFrontend() {
-	return <div>TableFrontend</div>
+  return <div>TableFrontend</div>
 }
 
 export default TableFrontend

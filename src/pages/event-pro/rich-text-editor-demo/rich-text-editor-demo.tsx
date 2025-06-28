@@ -8,7 +8,7 @@ const DemoWrapper = styled.div`
   padding: 32px;
   background: #fff;
   border-radius: 12px;
-  box-shadow: 0 2px 8px 0 rgba(0,0,0,0.06);
+  box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.06);
 `
 
 const Title = styled.h2`
@@ -34,18 +34,22 @@ const OutputContent = styled.div`
 `
 
 const RichTextEditorDemo = () => {
-	const [value, setValue] = useState('')
+  const [value, setValue] = useState('')
 
-	return (
-		<DemoWrapper>
-			<Title>富文本编辑器示例</Title>
-			<RichTextEditor value={value} onChange={setValue} placeholder='请输入内容...' />
-			<Output>
-				{/* 仅做演示用途，实际项目请对 value 进行 XSS 过滤！ */}
-				{value ? <OutputContent>{value}</OutputContent> : <span style={{ color: '#aaa' }}>暂无内容</span>}
-			</Output>
-		</DemoWrapper>
-	)
+  return (
+    <DemoWrapper>
+      <Title>富文本编辑器示例</Title>
+      <RichTextEditor value={value} onChange={setValue} placeholder="请输入内容..." />
+      <Output>
+        {/* 仅做演示用途，实际项目请对 value 进行 XSS 过滤！ */}
+        {value ? (
+          <OutputContent>{value}</OutputContent>
+        ) : (
+          <span style={{ color: '#aaa' }}>暂无内容</span>
+        )}
+      </Output>
+    </DemoWrapper>
+  )
 }
 
 export default RichTextEditorDemo

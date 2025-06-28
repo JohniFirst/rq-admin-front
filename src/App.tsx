@@ -15,33 +15,33 @@ import 'dayjs/locale/zh-cn'
 dayjs.locale('zh-cn')
 
 function App() {
-	const dispatch = useAppDispatch()
-	const AppRouter = createBrowserRouter(defaultRoutes, {
-		basename: '/rq-admin-front',
-	})
+  const dispatch = useAppDispatch()
+  const AppRouter = createBrowserRouter(defaultRoutes, {
+    basename: '/rq-admin-front',
+  })
 
-	if (['test', 'development', 'mock'].includes(import.meta.env.MODE)) {
-		useJumpToVscodeSource()
-	}
+  if (['test', 'development', 'mock'].includes(import.meta.env.MODE)) {
+    useJumpToVscodeSource()
+  }
 
-	useEffect(() => {
-		initApp()
-	}, [])
+  useEffect(() => {
+    initApp()
+  }, [])
 
-	async function initApp() {
-		const payload = await fetchInitialData()
-		dispatch(initSystemInfoState(payload))
-	}
+  async function initApp() {
+    const payload = await fetchInitialData()
+    dispatch(initSystemInfoState(payload))
+  }
 
-	return (
-		<ThemeProvider>
-			<ConfigProvider locale={locale}>
-				<AnimatePresence mode='wait' initial={false}>
-					<RouterProvider router={AppRouter} />
-				</AnimatePresence>
-			</ConfigProvider>
-		</ThemeProvider>
-	)
+  return (
+    <ThemeProvider>
+      <ConfigProvider locale={locale}>
+        <AnimatePresence mode="wait" initial={false}>
+          <RouterProvider router={AppRouter} />
+        </AnimatePresence>
+      </ConfigProvider>
+    </ThemeProvider>
+  )
 }
 
 export default App

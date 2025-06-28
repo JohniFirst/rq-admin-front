@@ -5,5 +5,5 @@
  * @returns {boolean} true 已登录 false 未登录
  */
 export function isLogin() {
-	return !!sessionStorage.getItem('token')
+  return !!sessionStorage.getItem('token')
 }
