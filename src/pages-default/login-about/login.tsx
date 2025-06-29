@@ -1,11 +1,10 @@
 import { LockOutlined, UserOutlined } from '@ant-design/icons'
-import { Button, Checkbox, Form, Input } from 'antd'
+import { Button, Checkbox, Col, Form, Input, Row, Image } from 'antd'
 import { motion } from 'framer-motion'
 import { useEffect, useState } from 'react'
 import { NavLink } from 'react-router-dom'
 import styled from 'styled-components'
 import { getMenuList, handleLogin } from '@/api/system-api'
-import VerificationCodeInput from '@/components/base/verification-code-input'
 import { IsLogin, SessionStorageKeys } from '@/enums/localforage'
 import useCustomNavigate from '@/hooks/useCustomNavigate'
 import { useAppDispatch } from '@/store/hooks'
@@ -90,6 +89,7 @@ const LoginForm = () => {
   const navigate = useCustomNavigate()
   const [isLogin, setIsLogin] = useState(false)
   const dispatch = useAppDispatch()
+  const [imageCodeUrl] = useState('')
 
   const handleSubmit = async (values: LoginFormValues) => {
     await handleLogin(values)
@@ -137,7 +137,16 @@ const LoginForm = () => {
           <Input.Password prefix={<LockOutlined />} placeholder="请输入8-24位字母、数字组合密码" />
         </StyledFormItem>
 
-        <VerificationCodeInput />
+        <Form.Item name="verificationCode" rules={[{ required: true, message: '请输入验证码' }]}>
+          <Row gutter={16} align="middle">
+            <Col span={16}>
+              <Input type="number" placeholder="请输入验证码" />
+            </Col>
+            <Col span={8}>
+              <Image src={imageCodeUrl} width={100} height={40} />
+            </Col>
+          </Row>
+        </Form.Item>
 
         <RememberMeWrapper>
           <Form.Item name="remember" valuePropName="checked" noStyle>
