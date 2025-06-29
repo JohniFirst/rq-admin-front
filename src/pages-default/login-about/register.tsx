@@ -77,14 +77,14 @@ const RegisterForm = () => {
 
   const navigate = useNavigate()
 
-  const handleSubmit = async (values: RegisterFormValues) => {
-    console.log('提交的值:', values)
+  const handleSubmit = async (registerSubmitForm: RegisterFormValues) => {
+    console.log('提交的值:', registerSubmitForm)
 
-    await handleRegister(values)
+    await handleRegister(registerSubmitForm)
 
     messageApi.success('注册成功！请登录。')
 
-    navigate('/login')
+    navigate(`/login?username=${registerSubmitForm.username}`)
   }
 
   return (

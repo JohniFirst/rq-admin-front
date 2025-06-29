@@ -2,7 +2,7 @@ import { LockOutlined, UserOutlined } from '@ant-design/icons'
 import { Button, Checkbox, Col, Form, Input, Row, Image } from 'antd'
 import { motion } from 'framer-motion'
 import { useEffect, useState } from 'react'
-import { NavLink } from 'react-router-dom'
+import { NavLink, useParams } from 'react-router-dom'
 import styled from 'styled-components'
 import { getMenuList, handleLogin } from '@/api/system-api'
 import { IsLogin, SessionStorageKeys } from '@/enums/localforage'
@@ -90,6 +90,7 @@ const LoginForm = () => {
   const [isLogin, setIsLogin] = useState(false)
   const dispatch = useAppDispatch()
   const [imageCodeUrl] = useState('')
+  const { username } = useParams()
 
   const handleSubmit = async (values: LoginFormValues) => {
     await handleLogin(values)
@@ -99,6 +100,12 @@ const LoginForm = () => {
     dispatch(updateMenu(menu))
     setIsLogin(true)
   }
+
+  useEffect(() => {
+    if (username) {
+      form.setFieldValue('username', username)
+    }
+  }, [])
 
   useEffect(() => {
     if (isLogin) {
