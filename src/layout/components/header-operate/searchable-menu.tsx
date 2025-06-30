@@ -5,7 +5,24 @@ import type { FC } from 'react'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import useCustomNavigate from '@/hooks/useCustomNavigate'
 import { useAppSelector } from '@/store/hooks'
-import system from './css/system.module.css'
+import styled from 'styled-components'
+
+const FilterMenuWp = styled.div<{ indent: number }>`
+  background-color: #fff2e5;
+  margin-bottom: 1.75rem;
+  padding: 0.5rem;
+  border-radius: 8px;
+  margin-left: ${props => props.indent * 16}px;
+`
+
+const FilterMenuItem = styled.p<{ indent: number }>`
+  cursor: pointer;
+  color: var(--theme-color);
+  padding: 4px 0 4px 4px;
+  width: calc(100% - 26px);
+  border-radius: 8px;
+  margin-left: ${props => props.indent * 16}px;
+`
 
 const SearchableMenu: FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false)
@@ -151,11 +168,7 @@ const SearchableMenu: FC = () => {
   }> = ({ item, indent = 0, index }) => {
     if (item.children) {
       return (
-        <div
-          key={item.key}
-          className={system.filterMenuWp}
-          style={{ marginLeft: `${indent * 16}px` }}
-        >
+        <FilterMenuWp indent={indent} key={item.key}>
           <p>{item.title || item.label}</p>
           {item.children.map((child: MenuItem, childIndex: number) => (
             <FilterResultItem
@@ -165,15 +178,15 @@ const SearchableMenu: FC = () => {
               index={index + childIndex + 1}
             />
           ))}
-        </div>
+        </FilterMenuWp>
       )
     }
     const displayText = (item.title || item.label || '').toString()
     return (
-      <p
+      <FilterMenuItem
         key={item.key}
-        className={`${system.filterMenuItem} ${index === selectedIndex ? 'bg-indigo-500 text-white' : ''}`}
-        style={{ marginLeft: `${indent * 16}px` }}
+        indent={indent}
+        className={`${index === selectedIndex ? 'bg-indigo-500 text-white' : ''}`}
         onClick={() => filterNav(item)}
         onKeyUp={() => filterNav(item)}
         data-index={index}
@@ -190,7 +203,7 @@ const SearchableMenu: FC = () => {
             </span>
           )
         })}
-      </p>
+      </FilterMenuItem>
     )
   }
 
