@@ -1,40 +1,41 @@
 import { motion } from 'framer-motion'
-import { useEffect, useState } from 'react'
+import { useAppDispatch, useAppSelector } from '@/store/hooks'
+import { selectCurrentTheme, setTheme } from '@/store/slice/system-info'
 
 const ThemeSwitcher = () => {
-  const [isDark, setIsDark] = useState(false)
+  const currentTheme = useAppSelector(selectCurrentTheme)
+  const dispatch = useAppDispatch()
 
-  useEffect(() => {
-    const darkMode = window.matchMedia('(prefers-color-scheme: dark)')
-    setIsDark(darkMode.matches)
+  const isDark = currentTheme.isDark
 
-    const handleChange = (e: MediaQueryListEvent) => {
-      setIsDark(e.matches)
-      toggleTheme(e.matches)
-    }
+  const toggleTheme = () => {
+    // 找到下一个主题（在预设主题中循环）
+    const presetThemes = [
+      { id: 'default-light', isDark: false },
+      { id: 'purple-dark', isDark: true },
+      { id: 'green-light', isDark: false },
+      { id: 'ocean-light', isDark: false },
+    ]
 
-    darkMode.addEventListener('change', handleChange)
-    return () => darkMode.removeEventListener('change', handleChange)
-  }, [])
+    const currentIndex = presetThemes.findIndex(theme => theme.id === currentTheme.id)
+    const nextIndex = (currentIndex + 1) % presetThemes.length
+    const nextTheme = presetThemes[nextIndex]
 
-  const toggleTheme = (dark?: boolean) => {
-    const isDarkMode = dark ?? !isDark
-    setIsDark(isDarkMode)
-    document.documentElement.classList.toggle('dark', isDarkMode)
+    dispatch(setTheme(nextTheme.id))
   }
 
   return (
     <motion.button
-      onClick={() => toggleTheme()}
+      onClick={toggleTheme}
       className={`inline-flex items-center justify-start relative w-12 h-6 rounded-full p-1 transition-colors duration-500 ${
-        isDark ? 'bg-indigo-600' : 'bg-gray-200'
+        isDark ? 'bg-primary' : 'bg-surface'
       }`}
       whileTap={{ scale: 0.95 }}
       aria-label="切换主题"
     >
       <motion.div
         className={`absolute w-5 h-5 rounded-full transition-all duration-500 ${
-          isDark ? 'bg-white translate-x-6' : 'bg-white translate-x-0'
+          isDark ? 'bg-background translate-x-6' : 'bg-background translate-x-0'
         }`}
         layout
         transition={{
@@ -48,7 +49,7 @@ const ThemeSwitcher = () => {
           viewBox="0 0 24 24"
           fill="currentColor"
           className={`w-4 h-4 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 transition-colors duration-500 ${
-            isDark ? 'text-indigo-600' : 'text-yellow-500'
+            isDark ? 'text-primary' : 'text-warning'
           }`}
           role="img"
           aria-label="切换主题"

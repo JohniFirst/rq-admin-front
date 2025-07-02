@@ -198,8 +198,8 @@ function NavigationBar() {
         style={style}
         className={`
           group relative flex items-center gap-2 px-3 py-1.5 rounded-md cursor-pointer select-none
-          transition-all duration-200 ease-in-out bg-white
-          ${isActive ? 'text-primary font-medium border-b-2 border-primary' : 'text-gray-600 hover:bg-gray-50'}
+          transition-all duration-200 ease-in-out bg-background
+          ${isActive ? 'text-primary font-medium border-b-2 border-primary' : 'text-text-secondary hover:bg-surface'}
         `}
         onClick={() => navgation(item.key)}
         onContextMenu={() => (currentClickTarget = item)}
@@ -210,7 +210,7 @@ function NavigationBar() {
           className={`
             ml-1 text-xs p-1 rounded hover:rounded-full
             transition-all duration-200
-            ${isActive ? 'text-primary hover:bg-primary/10' : 'text-gray-400 hover:text-gray-600 hover:bg-gray-200'}
+            ${isActive ? 'text-primary hover:bg-primary/10' : 'text-text-disabled hover:text-text-secondary hover:bg-surface-hover'}
           `}
           onClick={e => closeCurrentNav(e, item)}
         />
@@ -219,11 +219,11 @@ function NavigationBar() {
   }
 
   return (
-    <nav className="flex items-center px-4 py-2 bg-white border-b border-gray-200">
+    <nav className="flex items-center px-4 py-2 bg-background border-b border-border">
       <button
         type="button"
         onClick={() => handleScroll('left')}
-        className="p-1 hover:bg-gray-100 rounded-md transition-colors"
+        className="p-1 hover:bg-surface rounded-md transition-colors"
       >
         <LeftOutlined />
       </button>
@@ -247,7 +247,7 @@ function NavigationBar() {
       <button
         type="button"
         onClick={() => handleScroll('right')}
-        className="p-1 hover:bg-gray-100 rounded-md transition-colors"
+        className="p-1 hover:bg-surface rounded-md transition-colors"
       >
         <RightOutlined />
       </button>

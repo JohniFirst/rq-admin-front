@@ -28,9 +28,8 @@ export const fetchInitialData = async () => {
     showNavigationBar?: boolean
     layoutMode?: LayoutModeEnum
   }
-  // 更新html的类来改变主题
+  // 获取主题设置
   const theme = localSystemInfo?.theme || 'default-light'
-  document.documentElement.className = theme
   const layoutMode = localSystemInfo?.layoutMode ?? LayoutModeEnum.COMMON_MENU
   const showNavigationBar = localSystemInfo?.showNavigationBar ?? true
 
@@ -88,7 +87,6 @@ export const systemInfoSlice = createSlice({
      */
     setTheme: (state, action: PayloadAction<string>) => {
       state.theme = action.payload
-      document.documentElement.className = state.theme
       const copyState = cloneDeep(state) as Partial<SystemInfoState>
       delete copyState.navItem
       forage.setItem(ForageEnums.SYSTEM_INFO, JSON.stringify(copyState))

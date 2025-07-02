@@ -84,12 +84,12 @@ const ThemeConfig: React.FC<ThemeConfigProps> = ({ currentTheme, onThemeChange }
         key={theme.id}
         className={`
           relative p-4 rounded-lg cursor-pointer transition-all duration-300
-          ${isActive ? 'ring-2 ring-primary bg-primary/5' : 'hover:bg-gray-50 dark:hover:bg-gray-800'}
+          ${isActive ? 'ring-2 ring-primary bg-primary/5' : 'hover:bg-surface'}
         `}
         onClick={() => handleThemeSelect(theme)}
       >
         <div className="flex items-center justify-between mb-3">
-          <span className="font-medium text-gray-900 dark:text-gray-100">{theme.name}</span>
+          <span className="font-medium text-text">{theme.name}</span>
           {isActive && <CheckOutlined className="text-primary text-lg" />}
         </div>
 
@@ -179,7 +179,7 @@ const ThemeConfig: React.FC<ThemeConfigProps> = ({ currentTheme, onThemeChange }
                 {customThemes.length > 0 ? (
                   customThemes.map(renderThemeCard)
                 ) : (
-                  <div className="col-span-2 text-center py-8 text-gray-500">
+                  <div className="col-span-2 text-center py-8 text-text-secondary">
                     暂无自定义主题，点击"新建主题"创建
                   </div>
                 )}
@@ -262,9 +262,7 @@ const ThemeEditModal: React.FC<ThemeEditModalProps> = ({
     >
       <div className="space-y-6 py-4">
         <div>
-          <p className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-            主题名称
-          </p>
+          <p className="block text-sm font-medium text-text-secondary mb-2">主题名称</p>
           <Input
             value={name}
             onChange={e => setName(e.target.value)}
@@ -273,25 +271,23 @@ const ThemeEditModal: React.FC<ThemeEditModalProps> = ({
         </div>
 
         <div>
-          <p className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-            主题颜色
-          </p>
+          <p className="block text-sm font-medium text-text-secondary mb-2">主题颜色</p>
           <div className="grid grid-cols-2 gap-4">
             {Object.entries(colors).map(([key, color]) => (
               <div key={key} className="flex items-center space-x-2">
-                <span className="text-sm text-gray-600 dark:text-gray-400 w-20">{key}</span>
+                <span className="text-sm text-text-secondary w-20">{key}</span>
                 <ColorPicker
                   value={color}
                   onChange={color => setColors({ ...colors, [key]: color.toHexString() })}
                 />
-                <span className="text-xs text-gray-400">{color}</span>
+                <span className="text-xs text-text-disabled">{color}</span>
               </div>
             ))}
           </div>
         </div>
 
         <div className="flex items-center space-x-2">
-          <span className="text-sm text-gray-600 dark:text-gray-400">深色主题</span>
+          <span className="text-sm text-text-secondary">深色主题</span>
           <Switch checked={isDark} onChange={setIsDark} />
         </div>
       </div>

@@ -130,7 +130,7 @@ const SystemSettings: React.FC = () => {
       </motion.div>
 
       <Drawer
-        title={<h3 className="text-lg font-semibold text-gray-800 dark:text-gray-200">系统设置</h3>}
+        title={<h3 className="text-lg font-semibold text-text">系统设置</h3>}
         placement="right"
         onClose={onClose}
         open={open}
@@ -145,16 +145,12 @@ const SystemSettings: React.FC = () => {
       >
         <div className="space-y-8">
           <section>
-            <h4 className="text-base font-medium text-gray-700 dark:text-gray-300 mb-4">
-              主题配置
-            </h4>
+            <h4 className="text-base font-medium text-text-secondary mb-4">主题配置</h4>
             <ThemeConfig currentTheme={currentTheme} onThemeChange={handleThemeChange} />
           </section>
 
           <section>
-            <h4 className="text-base font-medium text-gray-700 dark:text-gray-300 mb-4">
-              导航菜单布局
-            </h4>
+            <h4 className="text-base font-medium text-text-secondary mb-4">导航菜单布局</h4>
             <div className="grid grid-cols-3 gap-4">
               {layoutModeArr.map(item => (
                 <div
@@ -163,8 +159,8 @@ const SystemSettings: React.FC = () => {
 										relative p-2 rounded-lg cursor-pointer transition-all duration-300
 										${
                       layoutMode === item.value
-                        ? 'bg-indigo-50 dark:bg-indigo-900/30 ring-2 ring-indigo-500'
-                        : 'bg-gray-50 dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700'
+                        ? 'bg-primary/10 ring-2 ring-primary'
+                        : 'bg-surface hover:bg-surface-hover'
                     }
 									`}
                   onClick={() => handleLayoutChange(item.value)}
@@ -172,12 +168,10 @@ const SystemSettings: React.FC = () => {
                 >
                   {item.imgSrc}
 
-                  <p className="text-center text-sm mt-2 text-gray-600 dark:text-gray-400">
-                    {item.title}
-                  </p>
+                  <p className="text-center text-sm mt-2 text-text-secondary">{item.title}</p>
                   {layoutMode === item.value && (
-                    <div className="absolute -top-1 -right-1 w-4 h-4 bg-indigo-500 rounded-full flex items-center justify-center">
-                      <div className="w-2 h-2 bg-white rounded-full" />
+                    <div className="absolute -top-1 -right-1 w-4 h-4 bg-primary rounded-full flex items-center justify-center">
+                      <div className="w-2 h-2 bg-background rounded-full" />
                     </div>
                   )}
                 </div>
@@ -186,25 +180,23 @@ const SystemSettings: React.FC = () => {
           </section>
 
           <section>
-            <h4 className="text-base font-medium text-gray-700 dark:text-gray-300 mb-4">
-              其他设置
-            </h4>
+            <h4 className="text-base font-medium text-text-secondary mb-4">其他设置</h4>
             <div className="space-y-4">
-              <div className="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-800 rounded-lg">
-                <span className="text-gray-600 dark:text-gray-400">显示应用内导航组件</span>
+              <div className="flex items-center justify-between p-4 bg-surface rounded-lg">
+                <span className="text-text-secondary">显示应用内导航组件</span>
                 <Switch
                   checked={showNavigationBar}
                   onChange={checked => dispatch(setShowNavigationBar(checked))}
-                  className="bg-gray-300"
+                  className="bg-surface-hover"
                 />
               </div>
-              <div className="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-800 rounded-lg">
-                <span className="text-gray-600 dark:text-gray-400">开启页面动画</span>
-                <Switch defaultChecked className="bg-gray-300" />
+              <div className="flex items-center justify-between p-4 bg-surface rounded-lg">
+                <span className="text-text-secondary">开启页面动画</span>
+                <Switch defaultChecked className="bg-surface-hover" />
               </div>
-              <div className="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-800 rounded-lg">
-                <span className="text-gray-600 dark:text-gray-400">显示页面切换进度条</span>
-                <Switch defaultChecked className="bg-gray-300" />
+              <div className="flex items-center justify-between p-4 bg-surface rounded-lg">
+                <span className="text-text-secondary">显示页面切换进度条</span>
+                <Switch defaultChecked className="bg-surface-hover" />
               </div>
             </div>
           </section>

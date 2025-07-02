@@ -36,7 +36,7 @@ const UserDropdown: React.FC = () => {
     {
       key: 'userInfo',
       icon: <UserOutlined className="text-blue-500" />,
-      label: <span className="text-gray-700 dark:text-gray-200 font-medium">个人信息</span>,
+      label: <span className="text-text font-medium">个人信息</span>,
       onClick: () => {
         setShowUserInfoModal(true)
       },
@@ -44,7 +44,7 @@ const UserDropdown: React.FC = () => {
     {
       key: 'resetPassword',
       icon: <EyeInvisibleOutlined className="text-purple-500" />,
-      label: <span className="text-gray-700 dark:text-gray-200 font-medium">修改密码</span>,
+      label: <span className="text-text font-medium">修改密码</span>,
       onClick: () => {
         setShowPasswordModal(true)
       },
@@ -55,7 +55,7 @@ const UserDropdown: React.FC = () => {
     {
       key: 'logout',
       icon: <LogoutOutlined className="text-red-500" />,
-      label: <span className="text-gray-700 dark:text-gray-200 font-medium">退出登录</span>,
+      label: <span className="text-text font-medium">退出登录</span>,
       onClick: () => {
         setShowLogoutModal(true)
       },
@@ -68,24 +68,24 @@ const UserDropdown: React.FC = () => {
         menu={{
           items,
           className:
-            'mt-2 p-2 bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-100 dark:border-gray-700 min-w-[200px]',
+            'mt-2 p-2 bg-background rounded-xl shadow-lg border border-border min-w-[200px]',
         }}
         trigger={['click']}
         placement="bottomRight"
       >
-        <div className="flex items-center gap-3 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700 p-2 rounded-lg transition-all duration-300 group">
+        <div className="flex items-center gap-3 cursor-pointer hover:bg-surface p-2 rounded-lg transition-all duration-300 group">
           <Avatar
             size="default"
             src={userAvatar}
             alt={userName}
-            className="border-2 border-transparent group-hover:border-indigo-500 transition-all duration-300"
+            className="border-2 border-transparent group-hover:border-primary transition-all duration-300"
           />
           <div className="flex flex-col">
-            <span className="text-sm font-medium text-gray-700 dark:text-gray-200">{userName}</span>
-            <span className="text-xs text-gray-400 dark:text-gray-500">点击查看菜单</span>
+            <span className="text-sm font-medium text-text">{userName}</span>
+            <span className="text-xs text-text-disabled">点击查看菜单</span>
           </div>
           <svg
-            className="w-4 h-4 text-gray-400 dark:text-gray-500 transform group-hover:rotate-180 transition-transform duration-300"
+            className="w-4 h-4 text-text-disabled transform group-hover:rotate-180 transition-transform duration-300"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"

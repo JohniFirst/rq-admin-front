@@ -116,21 +116,18 @@ function CommonMenu({ showHeaderOperate = true }: CommonMenuProps) {
 
   return (
     <motion.div
-      className="grid grid-cols-[auto_1fr] w-full h-screen bg-gray-50 dark:bg-gray-900 overflow-x-hidden"
+      className="grid grid-cols-[auto_1fr] w-full h-screen bg-surface overflow-x-hidden"
       initial="hidden"
       animate="show"
       variants={containerVariants}
     >
       <motion.aside
-        className="w-64 min-w-64 max-h-screen bg-white dark:bg-gray-800 shadow-lg transition-all duration-300"
+        className="w-64 min-w-64 max-h-screen bg-background shadow-lg transition-all duration-300"
         variants={itemVariants}
       >
-        <motion.div
-          className="p-4 border-b border-gray-100 dark:border-gray-700"
-          variants={itemVariants}
-        >
+        <motion.div className="p-4 border-b border-border" variants={itemVariants}>
           <motion.h1
-            className="text-xl font-bold text-gray-800 dark:text-white hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors duration-300"
+            className="text-xl font-bold text-text hover:text-primary transition-colors duration-300"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
           >
@@ -155,13 +152,13 @@ function CommonMenu({ showHeaderOperate = true }: CommonMenuProps) {
         variants={itemVariants}
       >
         <motion.header
-          className="flex justify-between items-center px-6 py-4 bg-white dark:bg-gray-800 shadow-sm z-10"
+          className="flex justify-between items-center px-6 py-4 bg-background shadow-sm z-10"
           variants={itemVariants}
         >
           <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
             <Link
               to={'/dashboard'}
-              className="text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-all duration-300"
+              className="text-text-secondary hover:text-primary transition-all duration-300"
             >
               <HomeOutlined className="text-xl" />
             </Link>
@@ -173,7 +170,7 @@ function CommonMenu({ showHeaderOperate = true }: CommonMenuProps) {
         {showNavigationBar && <NavigationBar />}
 
         <motion.main
-          className="bg-gray-50 dark:bg-gray-900 grow p-6 overflow-y-auto overflow-x-hidden w-full"
+          className="bg-surface grow p-6 overflow-y-auto overflow-x-hidden w-full"
           variants={itemVariants}
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}

@@ -90,7 +90,7 @@ function HeaderMenu({ showHeaderOperate = true }: HeaderMenuProps) {
 
       {showNavigationBar && <NavigationBar />}
 
-      <main className="bg-gray-50 dark:bg-black grow p-4 overflow-y-auto w-full">
+      <main className="bg-surface grow p-4 overflow-y-auto w-full">
         <Outlet />
       </main>
     </section>
