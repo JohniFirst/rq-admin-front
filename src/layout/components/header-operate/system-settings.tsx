@@ -2,6 +2,7 @@ import { SettingOutlined } from '@ant-design/icons'
 import { Drawer, Switch } from 'antd'
 import { animate, motion, useMotionValue } from 'framer-motion'
 import { useEffect, useState } from 'react'
+import styled from 'styled-components'
 
 import { CommonMenu, DrawerMenu, TopMenu } from '@/assets/svgs/nav-type/system-svgs'
 import { LayoutModeEnum } from '@/enums/system'
@@ -27,6 +28,159 @@ const layoutModeArr = [
   },
 ]
 
+// Styled Components
+const FloatingButton = styled(motion.div)<{ $isDark: boolean }>`
+  position: fixed;
+  z-index: 1000;
+  cursor: grab;
+  touch-action: none;
+  border-radius: 50%;
+  padding: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  transition: all 0.2s ease;
+  background: ${props =>
+    props.$isDark
+      ? 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)'
+      : 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)'};
+
+  &:hover {
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+    transform: scale(1.1);
+  }
+
+  &:active {
+    cursor: grabbing;
+  }
+
+  .setting-icon {
+    font-size: 24px;
+    color: white;
+    transition: all 0.3s ease;
+  }
+
+  &:hover .setting-icon {
+    transform: rotate(90deg);
+  }
+`
+
+const StyledDrawer = styled(Drawer)<{ $isDark: boolean }>`
+  .ant-drawer-content {
+    background: ${props => (props.$isDark ? 'var(--color-surface)' : 'var(--color-background)')};
+    border-left: 1px solid var(--color-border);
+  }
+
+  .ant-drawer-header {
+    background: ${props => (props.$isDark ? 'var(--color-surface)' : 'var(--color-background)')};
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .ant-drawer-title {
+    color: var(--color-text);
+  }
+
+  .ant-drawer-close {
+    color: var(--color-text);
+  }
+
+  .ant-drawer-body {
+    background: ${props => (props.$isDark ? 'var(--color-surface)' : 'var(--color-background)')};
+    color: var(--color-text);
+  }
+`
+
+const Section = styled.section`
+  margin-bottom: 32px;
+`
+
+const SectionTitle = styled.h4`
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--color-text-secondary);
+  margin-bottom: 16px;
+`
+
+const LayoutGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+`
+
+const LayoutItem = styled.div<{ $isSelected: boolean; $isDark: boolean }>`
+  position: relative;
+  padding: 8px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  background: ${props =>
+    props.$isSelected
+      ? 'var(--color-primary)'
+      : props.$isDark
+        ? 'var(--color-surface)'
+        : 'var(--color-surface)'};
+  border: 2px solid ${props => (props.$isSelected ? 'var(--color-primary)' : 'transparent')};
+
+  &:hover {
+    background: ${props =>
+      props.$isSelected ? 'var(--color-primary)' : 'var(--color-surface-hover)'};
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+
+  .layout-title {
+    text-align: center;
+    font-size: 14px;
+    margin-top: 8px;
+    color: ${props => (props.$isSelected ? 'white' : 'var(--color-text-secondary)')};
+  }
+
+  .selected-indicator {
+    position: absolute;
+    top: -4px;
+    right: -4px;
+    width: 16px;
+    height: 16px;
+    background: var(--color-primary);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .selected-dot {
+    width: 8px;
+    height: 8px;
+    background: var(--color-background);
+    border-radius: 50%;
+  }
+`
+
+const SettingsList = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+`
+
+const SettingItem = styled.div<{ $isDark: boolean }>`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px;
+  border-radius: 8px;
+  background: ${props => (props.$isDark ? 'var(--color-surface)' : 'var(--color-surface)')};
+  border: 1px solid var(--color-border);
+  transition: all 0.2s ease;
+
+  &:hover {
+    background: var(--color-surface-hover);
+    border-color: var(--color-primary);
+  }
+
+  .setting-label {
+    color: var(--color-text-secondary);
+    font-size: 14px;
+  }
+`
+
 const SystemSettings: React.FC = () => {
   const [open, setOpen] = useState(false)
   const [isDragging, setIsDragging] = useState(false)
@@ -38,6 +192,8 @@ const SystemSettings: React.FC = () => {
   const currentTheme = useAppSelector(state => state.systemInfo.theme)
   const showNavigationBar = useAppSelector(state => state.systemInfo.showNavigationBar)
   const dispatch = useAppDispatch()
+
+  const isDark = typeof currentTheme === 'string' ? currentTheme === 'dark' : false
 
   useEffect(() => {
     const handleResize = () => {
@@ -94,14 +250,11 @@ const SystemSettings: React.FC = () => {
 
   return (
     <>
-      <motion.div
+      <FloatingButton
+        $isDark={isDark}
         style={{
-          position: 'fixed',
           x,
           y,
-          zIndex: 1000,
-          cursor: isDragging ? 'grabbing' : 'grab',
-          touchAction: 'none',
         }}
         drag
         dragMomentum={false}
@@ -119,22 +272,22 @@ const SystemSettings: React.FC = () => {
         }}
         onDragStart={handleDragStart}
         onDragEnd={handleDragEnd}
-        className="bg-gradient-to-r from-blue-500 to-indigo-600 rounded-full p-3 shadow-lg hover:shadow-xl transition-colors duration-200 hover:from-blue-600 hover:to-indigo-700 group"
         whileHover={{ scale: isDragging ? 1 : 1.1 }}
         whileDrag={{ scale: 1.1 }}
       >
-        <SettingOutlined
-          className="text-2xl text-white group-hover:rotate-90 transition-all duration-300"
-          onClick={showDrawer}
-        />
-      </motion.div>
+        <SettingOutlined className="setting-icon" onClick={showDrawer} />
+      </FloatingButton>
 
-      <Drawer
-        title={<h3 className="text-lg font-semibold text-text">系统设置</h3>}
+      <StyledDrawer
+        $isDark={isDark}
+        title={
+          <h3 style={{ color: 'var(--color-text)', fontSize: '18px', fontWeight: 600 }}>
+            系统设置
+          </h3>
+        }
         placement="right"
         onClose={onClose}
         open={open}
-        className="settings-drawer"
         maskClosable={true}
         width={720}
         styles={{
@@ -143,65 +296,56 @@ const SystemSettings: React.FC = () => {
           },
         }}
       >
-        <div className="space-y-8">
-          <section>
-            <h4 className="text-base font-medium text-text-secondary mb-4">主题配置</h4>
+        <div>
+          <Section>
+            <SectionTitle>主题配置</SectionTitle>
             <ThemeConfig currentTheme={currentTheme} onThemeChange={handleThemeChange} />
-          </section>
+          </Section>
 
-          <section>
-            <h4 className="text-base font-medium text-text-secondary mb-4">导航菜单布局</h4>
-            <div className="grid grid-cols-3 gap-4">
+          <Section>
+            <SectionTitle>导航菜单布局</SectionTitle>
+            <LayoutGrid>
               {layoutModeArr.map(item => (
-                <div
+                <LayoutItem
                   key={item.value}
-                  className={`
-										relative p-2 rounded-lg cursor-pointer transition-all duration-300
-										${
-                      layoutMode === item.value
-                        ? 'bg-primary/10 ring-2 ring-primary'
-                        : 'bg-surface hover:bg-surface-hover'
-                    }
-									`}
+                  $isSelected={layoutMode === item.value}
+                  $isDark={isDark}
                   onClick={() => handleLayoutChange(item.value)}
-                  onKeyUp={() => handleLayoutChange(item.value)}
                 >
                   {item.imgSrc}
-
-                  <p className="text-center text-sm mt-2 text-text-secondary">{item.title}</p>
+                  <p className="layout-title">{item.title}</p>
                   {layoutMode === item.value && (
-                    <div className="absolute -top-1 -right-1 w-4 h-4 bg-primary rounded-full flex items-center justify-center">
-                      <div className="w-2 h-2 bg-background rounded-full" />
+                    <div className="selected-indicator">
+                      <div className="selected-dot" />
                     </div>
                   )}
-                </div>
+                </LayoutItem>
               ))}
-            </div>
-          </section>
+            </LayoutGrid>
+          </Section>
 
-          <section>
-            <h4 className="text-base font-medium text-text-secondary mb-4">其他设置</h4>
-            <div className="space-y-4">
-              <div className="flex items-center justify-between p-4 bg-surface rounded-lg">
-                <span className="text-text-secondary">显示应用内导航组件</span>
+          <Section>
+            <SectionTitle>其他设置</SectionTitle>
+            <SettingsList>
+              <SettingItem $isDark={isDark}>
+                <span className="setting-label">显示应用内导航组件</span>
                 <Switch
                   checked={showNavigationBar}
                   onChange={checked => dispatch(setShowNavigationBar(checked))}
-                  className="bg-surface-hover"
                 />
-              </div>
-              <div className="flex items-center justify-between p-4 bg-surface rounded-lg">
-                <span className="text-text-secondary">开启页面动画</span>
-                <Switch defaultChecked className="bg-surface-hover" />
-              </div>
-              <div className="flex items-center justify-between p-4 bg-surface rounded-lg">
-                <span className="text-text-secondary">显示页面切换进度条</span>
-                <Switch defaultChecked className="bg-surface-hover" />
-              </div>
-            </div>
-          </section>
+              </SettingItem>
+              <SettingItem $isDark={isDark}>
+                <span className="setting-label">开启页面动画</span>
+                <Switch defaultChecked />
+              </SettingItem>
+              <SettingItem $isDark={isDark}>
+                <span className="setting-label">显示页面切换进度条</span>
+                <Switch defaultChecked />
+              </SettingItem>
+            </SettingsList>
+          </Section>
         </div>
-      </Drawer>
+      </StyledDrawer>
     </>
   )
 }
