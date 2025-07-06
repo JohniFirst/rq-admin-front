@@ -154,7 +154,7 @@ const MenuAddForm = ({ onRefresh, children, initialValues }: MenuAddFormProps) =
         </Form.Item>
 
         <Form.Item<MenuApiResponse> label="排序" name="menuOrder">
-          <InputNumber placeholder="升序排序" />
+          <InputNumber min={0} placeholder="升序排序" />
         </Form.Item>
       </Modal>
     </>
