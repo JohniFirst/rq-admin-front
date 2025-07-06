@@ -1,58 +1,50 @@
 type LoginFormValues = {
-	username: string
-	password: string
+  username: string
+  password: string
 }
 
 type RegisterFormValues = LoginFormValues & {
-	// email: string
+  // email: string
 }
 
 type DefaultPagination<T> = {
-	content: T[]
-	totalElements: number
-	totalPages: number
-	size: number
+  content: T[]
+  totalElements: number
+  totalPages: number
+  size: number
 }
 
 type GlobalResponse<T> = {
-	code: 200 | 500
-	message: string
-	data: T
+  code: 200 | 500
+  message: string
+  data: T
 }
 
 type UserListRes = {
-	id: number
-	isEnabled: 0 | 1
+  id: number
+  isEnabled: 0 | 1
 }
 
 type SelectOptions = {
-	label: string
-	value: string | number
+  label: string
+  value: string | number
 }
 
 type RoleListRes = {
-	id: number
-	roleName: string
+  id: number
+  roleName: string
 }
 
 type MenuApiWithoutRoleResponse = {
-	menuOrder: number
-	title: string
-	id: number
-	url: string
-	icon: string
-	children?: MenuApiResponse[]
+  id: number
+  menuOrder: number
+  title: string
+  url: string
+  icon: string
+  parent?: number
+  children?: MenuApiResponse[]
 }
 
 type MenuApiResponse = MenuApiWithoutRoleResponse & {
-	role: RoleListRes[]
-}
-
-type MenuAddFormFields = {
-	title: string
-	roles: string[]
-	url: string
-	icon: string
-	parent: number
-	menuOrder: number
+  roles: RoleListRes[]
 }

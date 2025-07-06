@@ -1,23 +1,25 @@
-import { Form, Modal, type TableProps } from 'antd'
+import { Button, message, Modal, Popover, Table, type TableProps } from 'antd'
 import { useEffect, useState } from 'react'
-import { addMenu, editMenu, getMenuList } from '@/api/system-api'
-import BaseDraggableTable from '@/components/base/base-draggable-table'
-import PopoverMenu from '@/components/base/popover-menu'
+import { delMenu, getMenuList } from '@/api/system-api'
+// import BaseDraggableTable from '@/components/base/base-draggable-table'
+// import PopoverMenu from '@/components/base/popover-menu'
 import LucideIcon, { type LucideIconType } from '@/components/lucide-icon'
 import MenuAddForm from './components/menu-add-form'
+import styled from 'styled-components'
+import { MoreOutlined } from '@ant-design/icons'
+
+const OperationButtonWp = styled.section`
+  display: flex;
+  gap: 24px;
+  margin-bottom: 24px;
+`
 
 const Menu = () => {
-  const [modal, contextHolder] = Modal.useModal()
   const [dataSource, setDataSource] = useState<MenuApiResponse[]>([])
+  const [modal, contextHolder] = Modal.useModal()
 
   useEffect(() => {
-    getMenuList().then(res => {
-      if (Array.isArray(res)) {
-        setDataSource(res)
-      } else if (res?.data && Array.isArray(res.data)) {
-        setDataSource(res.data)
-      }
-    })
+    refreshMenuList()
   }, [])
 
   const columns: TableProps<MenuApiResponse>['columns'] = [
@@ -59,76 +61,60 @@ const Menu = () => {
       align: 'right',
       render: (_: unknown, record: MenuApiResponse) => {
         return (
-          <PopoverMenu
-            values={record}
-            modal={modal}
-            onEdit={handleEdit}
-            onRefresh={refreshMenuList}
-          />
+          <Popover
+            placement="left"
+            trigger="click"
+            content={
+              <>
+                <MenuAddForm onRefresh={refreshMenuList} initialValues={record}>
+                  编辑
+                </MenuAddForm>
+
+                <Button
+                  type="text"
+                  danger
+                  onClick={async () => {
+                    const confirmed = await modal.confirm({
+                      title: '确认删除？',
+                      cancelText: '取消',
+                      okText: '删除',
+                    })
+
+                    if (!confirmed) return
+
+                    await delMenu(record.id)
+                    message.success('删除成功')
+                    refreshMenuList()
+                  }}
+                >
+                  删 除
+                </Button>
+              </>
+            }
+          >
+            <Button type="text" shape="circle" icon={<MoreOutlined />} />
+          </Popover>
         )
       },
     },
   ]
 
-  // 在 Menu 组件内添加编辑逻辑
-  const [editRecord, setEditRecord] = useState<MenuApiResponse | null>(null)
-  const [isEditModalOpen, setIsEditModalOpen] = useState(false)
-  const [editForm] = Form.useForm()
-
-  const handleEdit = (record: MenuApiResponse) => {
-    setEditRecord(record)
-    editForm.setFieldsValue(record)
-    setIsEditModalOpen(true)
-  }
-
-  const handleEditSubmit = async () => {
-    const values = await editForm.validateFields()
-    await editMenu({ ...(editRecord || {}), ...values })
-    setIsEditModalOpen(false)
-    setEditRecord(null)
-    await refreshMenuList()
-  }
-
   // 在 Menu 组件内添加刷新方法
   const refreshMenuList = async () => {
     const res = await getMenuList()
-    if (Array.isArray(res)) {
-      setDataSource(res)
-      return res
-    }
-    if (res?.data && Array.isArray(res.data)) {
-      setDataSource(res.data)
-      return res.data
-    }
-    return []
+
+    setDataSource(res)
   }
 
   return (
     <>
       {contextHolder}
-      <BaseDraggableTable
-        tableProps={{
-          columns,
-          dataSource,
-        }}
-        getTableData={refreshMenuList}
-        addForm={{
-          addFormApi: async (params: MenuAddFormFields) => {
-            await addMenu(params)
-          },
-          AddForm: MenuAddForm,
-        }}
-      />
-      <Modal
-        title="编辑菜单"
-        open={isEditModalOpen}
-        onCancel={() => setIsEditModalOpen(false)}
-        onOk={handleEditSubmit}
-        okText="保存"
-        cancelText="取消"
-      >
-        <MenuAddForm form={editForm} initialValues={editRecord} />
-      </Modal>
+
+      <OperationButtonWp>
+        <MenuAddForm onRefresh={refreshMenuList} />
+      </OperationButtonWp>
+
+      <Table dataSource={dataSource} columns={columns} />
     </>
   )
 }

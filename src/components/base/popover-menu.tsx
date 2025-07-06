@@ -4,7 +4,7 @@ import type { HookAPI } from 'antd/es/modal/useModal'
 import type { FC } from 'react'
 
 import { delMenu } from '@/api/system-api'
-import type { MenuApiResponse } from '@/types/system-service'
+// import type { MenuApiResponse } from '@/types/system-service'
 
 // import LucideIcon from '../lucide-icon'
 
