@@ -1,6 +1,13 @@
 import { Col, Form, type FormInstance, Input, Row } from 'antd'
 
-const AnotherComplexForm: React.FC<{ form: FormInstance }> = ({ form }) => {
+// 进阶表单字段类型
+export type AdvancedFormValues = {
+  advancedFormValue1: string
+  advancedFormValue2: string
+  advancedFormValue3?: string // 可选，只有当name字段有值时才显示
+}
+
+const AnotherComplexForm: React.FC<{ form: FormInstance<AdvancedFormValues> }> = ({ form }) => {
   const span = 6
 
   const name = Form.useWatch('name', form)
@@ -8,7 +15,7 @@ const AnotherComplexForm: React.FC<{ form: FormInstance }> = ({ form }) => {
   return (
     <Row>
       <Col span={span}>
-        <Form.Item
+        <Form.Item<AdvancedFormValues>
           name="advancedFormValue1"
           label="进阶表单值1"
           rules={[{ required: true, message: '请输入进阶表单值1' }]}
@@ -18,7 +25,7 @@ const AnotherComplexForm: React.FC<{ form: FormInstance }> = ({ form }) => {
       </Col>
 
       <Col span={span}>
-        <Form.Item
+        <Form.Item<AdvancedFormValues>
           name="advancedFormValue2"
           label="进阶表单值2"
           rules={[{ required: true, message: '请输入进阶表单值2' }]}
@@ -29,7 +36,7 @@ const AnotherComplexForm: React.FC<{ form: FormInstance }> = ({ form }) => {
 
       {name && (
         <Col span={span}>
-          <Form.Item
+          <Form.Item<AdvancedFormValues>
             name="advancedFormValue3"
             label="进阶表单值3"
             rules={[{ required: Boolean(name), message: '请输入进阶表单值3' }]}
