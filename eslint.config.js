@@ -31,6 +31,7 @@ const customTsFlatConfig = [
       //   1,
       //   { argsIgnorePattern: '^_', varsIgnorePattern: '^_' },
       // ],
+      'react/prop-types': 0,
     },
     plugins: {
       // ts 语法特有的规则，例如泛型
