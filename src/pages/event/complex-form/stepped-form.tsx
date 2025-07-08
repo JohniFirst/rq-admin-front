@@ -2,11 +2,11 @@ import React, { useState } from 'react'
 import { Button, message, Steps } from 'antd'
 import type { StepsProps } from 'antd'
 import { CheckOutlined, CoffeeOutlined, EditOutlined, ProjectOutlined } from '@ant-design/icons'
-import StepOne from './components-stepped/step-one'
 import styled from 'styled-components'
-import StepTwo from './components-stepped/step-two'
-import StepThree from './components-stepped/step-three'
-import StepFour from './components-stepped/step-four'
+import Step1 from './components-stepped/step1'
+import Step2 from './components-stepped/step2'
+import Step3 from './components-stepped/step3'
+import Step4 from './components-stepped/step4'
 
 const items: StepsProps['items'] = [
   {
@@ -60,15 +60,15 @@ const SteppedForm: React.FC = () => {
       <Steps current={current} items={items} />
 
       <SteppedWp>
-        {current === 0 && <StepOne />}
-        {current === 1 && <StepTwo />}
-        {current === 2 && <StepThree />}
-        {current === 3 && <StepFour />}
+        {current === 0 && <Step1 />}
+        {current === 1 && <Step2 />}
+        {current === 2 && <Step3 />}
+        {current === 3 && <Step4 />}
       </SteppedWp>
 
       <div style={{ marginTop: 24 }}>
         {current < items.length - 1 && (
-          <Button type="primary" onClick={() => next()}>
+          <Button type="primary" onClick={next}>
             下一步
           </Button>
         )}
@@ -78,7 +78,7 @@ const SteppedForm: React.FC = () => {
           </Button>
         )}
         {current > 0 && (
-          <Button style={{ margin: '0 8px' }} onClick={() => prev()}>
+          <Button style={{ margin: '0 8px' }} onClick={prev}>
             上一步
           </Button>
         )}
