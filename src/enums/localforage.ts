@@ -5,6 +5,8 @@ export enum ForageEnums {
   SYSTEM_INFO = 'SYSTEM_INFO',
   // 抽屉菜单显示隐藏
   DRAWER_MENU_VISIBLE = 'DRAWER_MENU_VISIBLE',
+  // 表单数据
+  SETP1_FORM_DATA = 'SETP1_FORM_DATA',
 }
 
 export enum LocalStorageKeys {

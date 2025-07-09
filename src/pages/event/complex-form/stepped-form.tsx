@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Button, message, Steps } from 'antd'
+import { Steps } from 'antd'
 import type { StepsProps } from 'antd'
 import { CheckOutlined, CoffeeOutlined, EditOutlined, ProjectOutlined } from '@ant-design/icons'
 import styled from 'styled-components'
@@ -60,29 +60,11 @@ const SteppedForm: React.FC = () => {
       <Steps current={current} items={items} />
 
       <SteppedWp>
-        {current === 0 && <Step1 />}
-        {current === 1 && <Step2 />}
-        {current === 2 && <Step3 />}
-        {current === 3 && <Step4 />}
+        {current === 0 && <Step1 onNext={next} />}
+        {current === 1 && <Step2 onNext={next} onPrev={prev} />}
+        {current === 2 && <Step3 onNext={next} onPrev={prev} />}
+        {current === 3 && <Step4 onPrev={prev} />}
       </SteppedWp>
-
-      <div style={{ marginTop: 24 }}>
-        {current < items.length - 1 && (
-          <Button type="primary" onClick={next}>
-            下一步
-          </Button>
-        )}
-        {current === items.length - 1 && (
-          <Button type="primary" onClick={() => message.success('Processing complete!')}>
-            提交
-          </Button>
-        )}
-        {current > 0 && (
-          <Button style={{ margin: '0 8px' }} onClick={prev}>
-            上一步
-          </Button>
-        )}
-      </div>
     </>
   )
 }
