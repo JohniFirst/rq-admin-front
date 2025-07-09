@@ -111,6 +111,9 @@ function Home() {
             <li>
               实现了基于fullcalendar的<NavLink to="/event-pro/calendar">日历组件</NavLink>
             </li>
+            <li>
+              实现了云端文件管理系统，实现单文件上床/多文件上传/文件列表/文件描述/文件描述更新/文件物理删除/文件下载/文件预览/还有云端的文件管理系统
+            </li>
           </ol>
         </AnimatedSection>
 
