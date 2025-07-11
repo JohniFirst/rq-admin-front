@@ -14,12 +14,6 @@ type DefaultPagination<T> = {
   size: number
 }
 
-type GlobalResponse<T> = {
-  code: 200 | 500
-  message: string
-  data: T
-}
-
 type UserListRes = {
   id: number
   isEnabled: 0 | 1
@@ -48,3 +42,25 @@ type MenuApiWithoutRoleResponse = {
 type MenuApiResponse = MenuApiWithoutRoleResponse & {
   roles: RoleListRes[]
 }
+
+type Theme = 'light' | 'dark'
+
+type LayoutMode = 'common-menu' | 'drawer-menu' | 'header-menu'
+
+type LocalSystemInfo = {
+  // 系统主题 浅色/深色
+  theme: Theme
+  // 导航菜单模式
+  layoutMode: LayoutMode
+}
+
+type SystemInfo = LocalSystemInfo & {
+  // 系统导航栏
+  navItem: NavItem[]
+}
+
+type RouterState = {
+  router: RouteObject[]
+}
+
+type MenuItem = Required<MenuProps>['items'][number]

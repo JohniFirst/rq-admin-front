@@ -123,7 +123,7 @@ const CloudAlbum = () => {
           cancelText="取消"
           okButtonProps={{ autoFocus: true, htmlType: 'submit' }}
           onCancel={() => setNewAlbumModalVisible(false)}
-          destroyOnClose
+          destroyOnHidden
           modalRender={dom => (
             <Form
               layout="vertical"
@@ -181,6 +181,7 @@ const CloudAlbum = () => {
           size="large"
         />
       </div>
+
       <UploadCloudAlbum />
 
       <motion.section

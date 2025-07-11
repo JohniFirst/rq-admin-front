@@ -88,7 +88,7 @@ const UploadCloudAlbum: FC<UploadCloudAlbumProps> = () => {
         ]}
         okButtonProps={{ autoFocus: true, htmlType: 'submit' }}
         onCancel={() => setOpen(false)}
-        destroyOnClose
+        destroyOnHidden
         modalRender={dom => (
           <Form
             layout="vertical"
@@ -108,7 +108,7 @@ const UploadCloudAlbum: FC<UploadCloudAlbumProps> = () => {
           <Upload.Dragger
             name="file"
             multiple={true}
-            action="https://660d2bd96ddfa2943b33731c.mockapi.io/api/upload"
+            action={import.meta.env.VITE_API_BASE_URL + '/file/upload'}
             onChange={onUploadChange}
           >
             <p className="ant-upload-drag-icon">

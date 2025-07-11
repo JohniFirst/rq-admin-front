@@ -11,3 +11,8 @@ export enum LayoutModeEnum {
   DRAWER_MENU = 'drawer-menu',
   HEADER_MENU = 'header-menu',
 }
+
+export enum EnabledStatusEnum {
+  ENABLED = 'ENABLED',
+  DISABLED = 'DISABLED',
+}

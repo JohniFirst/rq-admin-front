@@ -1,3 +1,4 @@
+import { FileListParams, FileListRes } from '@/pages/event-pro/file-management/file-management'
 import { http } from '@/utils/http'
 
 /** 上传文件 */
@@ -27,17 +28,12 @@ export const fileDelete = (id: string) => {
   return http.delete('/file/' + id)
 }
 
-export type FileListParams = {
-  pageNumber?: number
-  pageSize?: number
-}
-
 /**
  * 获取文件列表
  * @param params 分页参数，不传后端默认 0 10
  * @returns 文件列表
  */
-export const getFileList = (params: FileListParams) => {
+export const getFileList = (params: FileListParams): Promise<PaginationResponse<FileListRes>> => {
   return http.get('/file/list', { params })
 }
 
