@@ -1,16 +1,6 @@
 import { CloudUploadOutlined, InboxOutlined } from '@ant-design/icons'
-import {
-  Button,
-  FloatButton,
-  Form,
-  Input,
-  Modal,
-  message,
-  type StepProps,
-  Steps,
-  Upload,
-} from 'antd'
-import type { UploadChangeParam } from 'antd/es/upload'
+import { Button, FloatButton, Form, Input, Modal, type StepProps, Steps, Upload } from 'antd'
+import type { UploadFile, UploadProps } from 'antd/es/upload'
 import { type FC, useState } from 'react'
 
 const steps: StepProps[] = [
@@ -24,18 +14,6 @@ const steps: StepProps[] = [
   },
 ]
 
-const onUploadChange = (info: UploadChangeParam) => {
-  const { status } = info.file
-  if (status !== 'uploading') {
-    console.log(info.file, info.fileList)
-  }
-  if (status === 'done') {
-    message.success(`${info.file.name} file uploaded successfully.`)
-  } else if (status === 'error') {
-    message.error(`${info.file.name} file upload failed.`)
-  }
-}
-
 /**
  * 通用云相册上传组件
  * @prop uploadButtonText 上传按钮的文字
@@ -45,6 +23,17 @@ const UploadCloudAlbum: FC<UploadCloudAlbumProps> = () => {
   const [open, setOpen] = useState(false)
   // 当前步骤
   const [current, setCurrent] = useState(0)
+  // 上传的文件列表
+  const [fileList, setFileList] = useState<UploadFile[]>([])
+
+  const handleChange: UploadProps['onChange'] = info => {
+    if (info.file.status === 'done') {
+      info.fileList.forEach(file => {
+        file.url = import.meta.env.VITE_API_BASE_URL + '/file/download/' + file.response.data.id
+      })
+    }
+    setFileList(info.fileList)
+  }
 
   const toggleModal = () => {
     setOpen(!open)
@@ -107,9 +96,10 @@ const UploadCloudAlbum: FC<UploadCloudAlbumProps> = () => {
         <section className={current === 0 ? '' : 'hidden'}>
           <Upload.Dragger
             name="file"
-            multiple={true}
+            multiple
             action={import.meta.env.VITE_API_BASE_URL + '/file/upload'}
-            onChange={onUploadChange}
+            onChange={handleChange}
+            fileList={fileList}
           >
             <p className="ant-upload-drag-icon">
               <InboxOutlined />

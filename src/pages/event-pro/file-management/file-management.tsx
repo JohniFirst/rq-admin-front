@@ -1,6 +1,6 @@
-import { getFileList } from '@/api/event-pro/file'
+import { batchDeleteFile, getFileList } from '@/api/event-pro/file'
 import { EnabledStatusEnum } from '@/enums/system'
-import { Table, TableProps } from 'antd'
+import { Button, message, Modal, Table, TableProps } from 'antd'
 import { useEffect, useState } from 'react'
 
 export type FileListParams = {
@@ -35,6 +35,19 @@ const FileManagement: React.FC = () => {
     })
 
     setDataSource(res.data)
+  }
+
+  const handleDelete = (id: string) => {
+    console.log(id)
+    Modal.confirm({
+      title: '确定删除该文件吗？',
+      onOk: async () => {
+        await batchDeleteFile([id])
+
+        message.success('删除成功')
+        getDataList()
+      },
+    })
   }
 
   const columns: TableProps<FileListRes>['columns'] = [
@@ -81,6 +94,17 @@ const FileManagement: React.FC = () => {
         return isEnabled === EnabledStatusEnum.ENABLED ? '启用' : '禁用'
       },
     },
+    {
+      title: '操作',
+      dataIndex: 'action',
+      render: (_, { id }) => {
+        return (
+          <Button type="link" onClick={() => handleDelete(id)}>
+            删除
+          </Button>
+        )
+      },
+    },
   ]
 
   return (
@@ -89,7 +113,7 @@ const FileManagement: React.FC = () => {
         <li>所有文件</li>
       </ul>
 
-      <Table dataSource={dataSource} columns={columns} />
+      <Table dataSource={dataSource} columns={columns} rowKey="id" />
     </>
   )
 }
