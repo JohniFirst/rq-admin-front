@@ -14,6 +14,8 @@ import styled from 'styled-components'
 import { pluginAlign } from './plugins/plugin-align'
 import { pluginImageResize } from './plugins/plugin-image-resize'
 import { pluginInsertTime } from './plugins/plugin-insert-time'
+import zhCN from 'bytemd/locales/zh_Hans.json'
+import gfmZhCN from '@bytemd/plugin-gfm/locales/zh_Hans.json'
 
 const MdeditorWp = styled.div<{ height?: string | number }>`
   height: ${props => props.height};
@@ -29,11 +31,10 @@ interface MarkdownEditorProps {
   height?: string | number
 }
 
-// eslint-disable-next-line react/prop-types
 const MarkdownEditor: React.FC<MarkdownEditorProps> = ({ value, onChange, height = 800 }) => {
   const plugins = useMemo(
     () => [
-      gfm(),
+      gfm({ locale: gfmZhCN }),
       highlight(),
       frontmatter(),
       math(),
@@ -48,7 +49,7 @@ const MarkdownEditor: React.FC<MarkdownEditorProps> = ({ value, onChange, height
 
   return (
     <MdeditorWp height={height}>
-      <Editor value={value} plugins={plugins} onChange={onChange} />
+      <Editor value={value} locale={zhCN} plugins={plugins} onChange={onChange} />
     </MdeditorWp>
   )
 }
