@@ -33,7 +33,7 @@ function scanDirectory(dir, basePath = '') {
 	const items = []
 	const files = fs.readdirSync(dir)
 
-	files.forEach((file) => {
+	files.forEach(file => {
 		const fullPath = path.join(dir, file)
 		const stat = fs.statSync(fullPath)
 		const relativePath = path.relative(path.join(process.cwd(), 'src/pages'), fullPath)
@@ -43,7 +43,8 @@ function scanDirectory(dir, basePath = '') {
 			!file.startsWith('.') &&
 			!file.startsWith('_') &&
 			file !== 'components' &&
-			file !== 'css'
+			file !== 'css' &&
+			!file.includes('components')
 		) {
 			const url = `${basePath}/${file}`
 			const children = scanDirectory(fullPath, url)
