@@ -180,6 +180,26 @@ function BaseFormItemList({
             </Form.Item>
           </Col>
         )}
+
+        {!hiddenArr?.includes('notes') && (
+          <Col span={span * 2}>
+            <Form.Item
+              label="备注"
+              name="notes"
+              labelCol={{ span: 4 }}
+              rules={[{ required: true, message: '请输入备注' }]}
+            >
+              <Input.TextArea
+                placeholder="请输入备注"
+                rows={3}
+                showCount
+                allowClear
+                autoSize
+                disabled={disableArr?.includes('notes')}
+              />
+            </Form.Item>
+          </Col>
+        )}
       </Row>
     </>
   )

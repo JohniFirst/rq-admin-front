@@ -5,6 +5,13 @@ import ViewMode from './components/view-mode'
 import EditMode from './components/edit-mode'
 import BusinessWithoutName from './components/business-without-item'
 import BusinessDisableItem from './components/bussiness-disable-item'
+import styled from 'styled-components'
+
+const PageTitle = styled.h2`
+  margin-bottom: 16px;
+  background-color: red;
+  padding: 8px 16px;
+`
 
 const items: TabsProps['items'] = [
   {
@@ -37,9 +44,9 @@ const items: TabsProps['items'] = [
 const SeperateForm: React.FC = () => {
   return (
     <>
-      <h2 className="mb-4">
+      <PageTitle>
         基于这种管理模式，你可以对以下表单实现不同的提交逻辑，任意字段的显示/禁用，这是vue的组件库目前没有办法实现的灵活度
-      </h2>
+      </PageTitle>
       <Tabs defaultActiveKey="1" items={items} />
     </>
   )
