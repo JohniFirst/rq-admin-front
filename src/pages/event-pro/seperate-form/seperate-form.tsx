@@ -11,6 +11,7 @@ const PageTitle = styled.h2`
   margin-bottom: 16px;
   background-color: red;
   padding: 8px 16px;
+  color: #fff;
 `
 
 const items: TabsProps['items'] = [
@@ -45,7 +46,15 @@ const SeperateForm: React.FC = () => {
   return (
     <>
       <PageTitle>
-        基于这种管理模式，你可以对以下表单实现不同的提交逻辑，任意字段的显示/禁用，这是vue的组件库目前没有办法实现的灵活度
+        基于这种管理模式，你可以对以下表单实现不同的提交逻辑，任意字段的显示/禁用，在vue3的
+        <a
+          href="https://cn.vuejs.org/api/sfc-script-setup.html#definemodel"
+          target="_blank"
+          rel="noreferrer noopener"
+        >
+          defineModel
+        </a>
+        这是vue的组件库目前没有办法实现的灵活度
       </PageTitle>
       <Tabs defaultActiveKey="1" items={items} />
     </>
