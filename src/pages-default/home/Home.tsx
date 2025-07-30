@@ -9,7 +9,7 @@ const SectionTitile = styled.p`
   font-size: 18px;
   display: flex;
   align-items: center;
-  margin-top: 16px;
+  margin: 16px 0;
 
   &::before {
     content: '1';
@@ -18,7 +18,7 @@ const SectionTitile = styled.p`
     color: transparent;
     font-size: 16px;
     overflow: hidden;
-    margin-right: 6px;
+    margin-right: 12px;
     width: 6px;
   }
 `
@@ -76,7 +76,6 @@ function Home() {
             </li>
             <li>导航菜单快速查询、支持快捷键【ctrl + m】呼出</li>
             <li>轻量级的表格展示组件，支持查询、分页、excel导出</li>
-            <li>使用biome替代传统的eslint和prettier进行all-in-one的代码检查和格式化</li>
             <li>使用typescript，增强代码健壮性</li>
             <li>增加git提交钩子，提交到git仓库的代码进行质量管理，对提交信息进行规范</li>
             <li>实现了共享元素动画</li>
@@ -96,24 +95,14 @@ function Home() {
               </a>
               实现，动画效果自然流畅
             </li>
-            <li>
-              css使用
-              <a
-                className="underline text-blue-600 hover:text-blue-800"
-                target="_blank"
-                rel="noreferrer"
-                href="https://v3.tailwindcss.com/docs/container"
-              >
-                tailwindcss
-              </a>
-              ，熟悉之后使用更方便
-            </li>
+            <li>css使用styled-components，更灵活且满足需求</li>
             <li>
               实现了基于fullcalendar的<NavLink to="/event-pro/calendar">日历组件</NavLink>
             </li>
             <li>
-              实现了云端文件管理系统，实现单文件上床/多文件上传/文件列表/文件描述/文件描述更新/文件物理删除/文件下载/文件预览/还有云端的文件管理系统
+              实现了云端文件管理系统，实现单文件上传/多文件上传/文件列表/文件描述/文件描述更新/文件物理删除/文件下载/文件预览/还有云端的文件管理系统
             </li>
+            <li>实现了基于bytemd的在线markdown编辑器</li>
           </ol>
         </AnimatedSection>
 
@@ -141,6 +130,7 @@ function Home() {
             <li>实现浏览器端的文件选择</li>
             <li>添加缺失的后台接口</li>
             <li>实现鼠标拖拽的框选功能</li>
+            <li>增加md文档在线编辑的文件夹功能</li>
           </ol>
         </AnimatedSection>
 

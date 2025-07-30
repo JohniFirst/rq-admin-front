@@ -88,15 +88,15 @@ const EventModal: React.FC<EventModalProps> = ({
 
   useEffect(() => {
     if (open && selectedEvent) {
-      console.log('selectedEvent', selectedEvent)
       form.setFieldsValue({
         title: selectedEvent.title,
-        start: dayjs(selectedEvent.start),
-        end: dayjs(selectedEvent.end),
-        color: selectedEvent.color || '#1890ff', // 默认颜色
+        start: dayjs(selectedEvent.start as Date),
+        end: dayjs(selectedEvent.end as Date),
+        color: selectedEvent.backgroundColor || '#1890ff', // 默认颜色
         description: selectedEvent.description,
         reminder: selectedEvent.extendedProps?.reminder || false,
-        rrule: selectedEvent.rrule || { freq: null, interval: 1 },
+        // @ts-ignore
+        rrule: selectedEvent.rrule || ({ freq: null, interval: 1 } as EventFormData['rrule']),
       })
     }
 

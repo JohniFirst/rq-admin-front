@@ -3,9 +3,10 @@ import type React from 'react'
 import { deleteEvents } from '@/api/calendar'
 import { eventRepeatOptions } from './event-modal'
 import type { CustomEventInput } from './index'
+import { useEffect } from 'react'
 
 interface DetailModalProps {
-  event: CustomEventInput | null
+  event: CustomEventInput
   open: boolean
   onEdit: () => void
   onCancel: () => void
@@ -16,10 +17,14 @@ const DetailModal: React.FC<DetailModalProps> = ({ event, open, onEdit, onCancel
     onEdit()
   }
 
+  useEffect(() => {
+    console.log(event)
+  }, [open])
+
   const deleteEvent = async () => {
     try {
       // 没有响应体
-      await deleteEvents(event?.id)
+      await deleteEvents(event.id)
 
       message.success('删除成功')
 
