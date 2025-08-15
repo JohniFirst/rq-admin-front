@@ -104,6 +104,7 @@ function Home() {
             </li>
             <li>实现了基于bytemd的在线markdown编辑器</li>
             <li>全栈开发，前后端协调一致</li>
+            <li>【基于浏览器】实现excel数据导入【及导入数据筛选功能】</li>
           </ol>
         </AnimatedSection>
 
@@ -136,7 +137,6 @@ function Home() {
             <li>【基于前端】增加word预览功能</li>
             <li>【基于前端】增加excel预览功能</li>
             <li>【基于前端】增加ppt预览功能</li>
-            <li>【基于前端】增加excel数据导入及导入数据筛选功能</li>
           </ol>
         </AnimatedSection>
 

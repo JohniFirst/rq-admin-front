@@ -63,7 +63,7 @@ const flatConfig = [
   },
   {
     name: 'react-eslint',
-    files: ['**/*.{js,jsx,mjs,cjs,ts,tsx}'],
+    files: ['**/*.{ts,tsx}'],
     plugins: {
       react: reactPlugin,
       'react-hooks': reactHooksPlugin,
@@ -111,6 +111,7 @@ const flatConfig = [
       '*.min.js',
       '*.bundle.js',
       'pnpm-lock.yaml',
+      'mock/**',
     ],
   },
 ]
