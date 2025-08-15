@@ -3,12 +3,12 @@ import { http } from '@/utils/http'
 
 /** 注册 */
 export function handleRegister(data: RegisterFormValues): Promise<null> {
-  return http.post('/register', data)
+  return http.post('/auth/register', data)
 }
 
 /** 登录 */
-export function handleLogin(data: LoginFormValues): Promise<null> {
-  return http.post('/login', data)
+export function handleLogin(data: LoginFormValues): Promise<string> {
+  return http.post('/auth/login', data)
 }
 
 /** 忘记密码 */

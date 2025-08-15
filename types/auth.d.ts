@@ -16,7 +16,7 @@ type RegisterFormValues = BaseLoginFormValues & {
   // 电子邮箱
   email: string
   // 确认密码
-  confirmPassword: string
+  confirmPassword?: string
   phone: string
   nickname: string
   // 头像

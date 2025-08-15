@@ -5,6 +5,8 @@ import { NavLink, useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
 import { handleRegister } from '@/api/system-api'
 
+import bcrypt from 'bcryptjs'
+
 const FormTitle = styled(motion.h2)`
   font-size: 2rem;
   font-weight: 700;
@@ -80,6 +82,14 @@ const RegisterForm = () => {
   const handleSubmit = async (registerSubmitForm: RegisterFormValues) => {
     console.log('提交的值:', registerSubmitForm)
 
+    const salt = await bcrypt.genSalt(10)
+
+    const encryptedPassword = await bcrypt.hash(registerSubmitForm.password, salt)
+
+    registerSubmitForm.password = encryptedPassword
+
+    delete registerSubmitForm.confirmPassword
+
     await handleRegister(registerSubmitForm)
 
     messageApi.success('注册成功！请登录。')
@@ -101,6 +111,14 @@ const RegisterForm = () => {
         form={form}
         name="registerForm"
         onFinish={handleSubmit}
+        initialValues={{
+          username: 'wangwu',
+          nickname: '王五',
+          phone: '19324790457',
+          email: '1733098850@qq.com',
+          password: 'qishiwobuhuai198',
+          confirmPassword: 'qishiwobuhuai198',
+        }}
         layout="vertical"
         size="large"
       >

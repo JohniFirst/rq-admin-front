@@ -2,13 +2,14 @@ import { EyeInvisibleOutlined, LogoutOutlined, UserOutlined } from '@ant-design/
 import { Avatar, Dropdown, type MenuProps } from 'antd'
 import type React from 'react'
 import { useEffect, useState } from 'react'
-import { IsLogin, SessionStorageKeys } from '@/enums/localforage'
+import { ForageEnums, IsLogin, SessionStorageKeys } from '@/enums/localforage'
 import useCustomNavigate from '@/hooks/useCustomNavigate'
 import { useAppDispatch } from '@/store/hooks'
 import { resetMenu } from '@/store/slice/menu-slice'
 import ChangePasswordModal from './modals/change-password-modal'
 import LogoutConfirmModal from './modals/logout-confirm-modal'
 import UserInfoModal from './modals/user-info-modal'
+import { forage } from '@/utils/localforage'
 
 const UserDropdown: React.FC = () => {
   const [userName] = useState('默认用户名')
@@ -29,6 +30,9 @@ const UserDropdown: React.FC = () => {
   const handleLogout = () => {
     dispatch(resetMenu({}))
     sessionStorage.setItem(`${SessionStorageKeys.IS_LOGIN}`, `${IsLogin.NO}`)
+
+    forage.removeItem(ForageEnums.TOKEN)
+
     navigate('/login')
   }
 

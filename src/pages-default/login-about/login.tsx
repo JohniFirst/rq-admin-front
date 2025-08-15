@@ -5,10 +5,11 @@ import { useEffect, useState } from 'react'
 import { NavLink, useParams } from 'react-router-dom'
 import styled from 'styled-components'
 import { getMenuList, handleLogin } from '@/api/system-api'
-import { IsLogin, SessionStorageKeys } from '@/enums/localforage'
+import { ForageEnums, IsLogin, SessionStorageKeys } from '@/enums/localforage'
 import useCustomNavigate from '@/hooks/useCustomNavigate'
 import { useAppDispatch } from '@/store/hooks'
 import { updateMenu } from '@/store/slice/menu-slice'
+import { forage } from '@/utils/localforage'
 
 // import JSEncrypt from "jsencrypt";
 
@@ -93,8 +94,11 @@ const LoginForm = () => {
   const { username } = useParams()
 
   const handleSubmit = async (values: LoginFormValues) => {
-    await handleLogin(values)
+    const token = await handleLogin(values)
     sessionStorage.setItem(`${SessionStorageKeys.IS_LOGIN}`, `${IsLogin.YES}`)
+
+    forage.setItem(ForageEnums.TOKEN, token)
+
     const menu = await getMenuList()
 
     dispatch(updateMenu(menu))

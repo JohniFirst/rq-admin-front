@@ -7,6 +7,8 @@ export enum ForageEnums {
   DRAWER_MENU_VISIBLE = 'DRAWER_MENU_VISIBLE',
   // 表单数据
   SETP1_FORM_DATA = 'SETP1_FORM_DATA',
+  // token
+  TOKEN = 'TOKEN',
 }
 
 export enum LocalStorageKeys {

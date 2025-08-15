@@ -6,6 +6,8 @@ import axios, {
   type InternalAxiosRequestConfig,
 } from 'axios'
 import { generateCSRFToken } from './security'
+import { forage } from './localforage'
+import { ForageEnums } from '@/enums/localforage'
 
 // 创建 axios 实例
 export const http: AxiosInstance = axios.create({
@@ -18,14 +20,15 @@ export const http: AxiosInstance = axios.create({
 
 // 请求拦截器
 http.interceptors.request.use(
-  (config: InternalAxiosRequestConfig) => {
+  async (config: InternalAxiosRequestConfig) => {
     // 添加 CSRF Token
     const csrfToken = generateCSRFToken()
     const headers = new AxiosHeaders(config.headers)
     headers.set('X-CSRF-Token', csrfToken)
 
     // 从 localStorage 获取 token
-    const token = localStorage.getItem('token')
+    const token = await forage.getItem(ForageEnums.TOKEN)
+
     if (token) {
       headers.set('Authorization', `Bearer ${token}`)
     }
