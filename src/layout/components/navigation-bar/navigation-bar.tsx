@@ -3,10 +3,12 @@ import {
   DoubleLeftOutlined,
   DoubleRightOutlined,
   FilterOutlined,
+  FullscreenOutlined,
   LeftOutlined,
   PicCenterOutlined,
   PushpinOutlined,
   RightOutlined,
+  UndoOutlined,
 } from '@ant-design/icons'
 import type { DragEndEvent } from '@dnd-kit/core'
 import { closestCenter, DndContext, PointerSensor, useSensor } from '@dnd-kit/core'
@@ -27,6 +29,19 @@ import { useAppDispatch, useAppSelector } from '@/store/hooks'
 import { setNavItemAction } from '@/store/slice/system-info.ts'
 
 const contextMenu: MenuProps['items'] = [
+  {
+    label: '重新加载（TODO）',
+    key: ContextMenuKey.RELOAD,
+    icon: <UndoOutlined />,
+  },
+  {
+    label: '最大化显示（TODO）',
+    key: ContextMenuKey.FULL,
+    icon: <FullscreenOutlined />,
+  },
+  {
+    type: 'divider',
+  },
   {
     label: '在新窗口打开',
     key: ContextMenuKey.OPEN_NEW,
@@ -95,7 +110,11 @@ function NavigationBar() {
 
     switch (e.key) {
       case ContextMenuKey.OPEN_NEW:
-        window.open(window.location.origin + currentClickTarget.key)
+        window.open(
+          window.location.origin +
+            import.meta.env.VITE_API_BASE_ROUTER_URL +
+            currentClickTarget.key,
+        )
         break
 
       case ContextMenuKey.CLOSE_LEFT:

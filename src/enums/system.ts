@@ -4,6 +4,8 @@ export enum ContextMenuKey {
   CLOSE_OTHERS = 'close-others',
   FIXED = 'fixed',
   OPEN_NEW = 'open-new',
+  FULL = 'full',
+  RELOAD = 'reload',
 }
 
 export enum LayoutModeEnum {
