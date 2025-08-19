@@ -12,7 +12,7 @@ export default defineConfig((configEnv: UserConfig): UserConfig => {
   const { mode } = configEnv
 
   return {
-    base: '/rq-admin-front',
+    base: import.meta.env.VITE_API_BASE_ROUTER_URL,
     plugins: [
       react(),
       tailwindcss(),
