@@ -3,16 +3,17 @@ import tailwindcss from '@tailwindcss/vite'
 import react from '@vitejs/plugin-react-swc'
 // import { visualizer as bundleAnalyzer } from "rollup-plugin-visualizer";
 import bundleAnalyzer from 'rollup-plugin-bundle-analyzer'
-import { defineConfig, type UserConfig } from 'vite'
+import { defineConfig, loadEnv, type UserConfig } from 'vite'
 import viteCompression from 'vite-plugin-compression'
 import { viteMockServe } from 'vite-plugin-mock'
 
 // https://vitejs.dev/config/
 export default defineConfig((configEnv: UserConfig): UserConfig => {
   const { mode } = configEnv
+  const env = loadEnv(mode!, process.cwd())
 
   return {
-    base: import.meta.env.VITE_API_BASE_ROUTER_URL,
+    base: env.VITE_API_BASE_ROUTER_URL,
     plugins: [
       react(),
       tailwindcss(),
