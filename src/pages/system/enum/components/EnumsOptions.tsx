@@ -1,65 +1,62 @@
 import type { ProColumns } from '@ant-design/pro-components'
 import { EditableProTable } from '@ant-design/pro-components'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
+import { EnumsTypes } from './EnumsKeys'
 
-type DataSourceType = {
+type EnumItems = {
   id: React.Key
-  title?: string
-  readonly?: string
-  decs?: string
-  state?: string
+  dictKey: string
+  dictLabel: string
+  isEnable: '1' | '0'
   created_at?: number
   update_at?: number
-  children?: DataSourceType[]
 }
 
-const defaultData: DataSourceType[] = [
+const defaultData: EnumItems[] = [
   {
     id: 624748504,
-    title: '活动名称一',
-    readonly: '活动名称一',
-    decs: '这个活动真好玩',
-    state: 'open',
+    dictKey: '活动名称一',
+    dictLabel: '活动名称一',
+    isEnable: '1',
     created_at: 1590486176000,
     update_at: 1590486176000,
   },
   {
-    id: 624691229,
-    title: '活动名称二',
-    readonly: '活动名称二',
-    decs: '这个活动真好玩',
-    state: 'closed',
-    created_at: 1590481162000,
-    update_at: 1590481162000,
+    id: 624748504,
+    dictKey: '活动名称二',
+    dictLabel: '活动名称二',
+    isEnable: '0',
+    created_at: 1590486176000,
+    update_at: 1590486176000,
   },
 ]
 
-const EnumsOptions = () => {
+const EnumsOptions = ({ selectedEnum }: { selectedEnum: EnumsTypes | null }) => {
   const [editableKeys, setEditableRowKeys] = useState<React.Key[]>([])
-  const [dataSource, setDataSource] = useState<readonly DataSourceType[]>([])
+  const [dataSource, setDataSource] = useState<readonly EnumItems[]>([])
 
-  const columns: ProColumns<DataSourceType>[] = [
+  useEffect(() => {
+    console.log(selectedEnum)
+  }, [selectedEnum])
+
+  const columns: ProColumns<EnumItems>[] = [
     {
       title: 'Value',
-      key: 'state',
-      dataIndex: 'state',
-      width: 150,
+      key: 'dictKey',
+      dataIndex: 'dictKey',
     },
     {
-      title: 'Label',
-      dataIndex: 'decs',
-      width: 150,
+      title: 'dictLabel',
+      dataIndex: 'dictLabel',
     },
     {
       title: '是否启用',
-      dataIndex: 'created_at',
+      dataIndex: 'isEnable',
       valueType: 'switch',
-      width: 150,
     },
     {
       title: '操作',
       valueType: 'option',
-      width: 150,
       render: (text, record, _, action) => [
         <a
           key="editable"
@@ -82,12 +79,9 @@ const EnumsOptions = () => {
   ]
 
   return (
-    <EditableProTable<DataSourceType>
+    <EditableProTable<EnumItems>
       rowKey="id"
       maxLength={5}
-      scroll={{
-        x: 960,
-      }}
       recordCreatorProps={{
         position: 'bottom',
         record: () => ({ id: (Math.random() * 1000000).toFixed(0) }),

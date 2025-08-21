@@ -1,26 +1,18 @@
-import { EllipsisOutlined, PlusOutlined } from '@ant-design/icons'
+import { PlusOutlined } from '@ant-design/icons'
 import type { ActionType, ProColumns } from '@ant-design/pro-components'
 import { ProTable, TableDropdown } from '@ant-design/pro-components'
-import { Button, Dropdown, Space, Tag } from 'antd'
-import { useRef } from 'react'
+import { Button, Space, Tag } from 'antd'
+import { useRef, useState } from 'react'
 
-type GithubIssueItem = {
-  url: string
+export type EnumsTypes = {
   id: number
-  number: number
-  title: string
-  labels: {
-    name: string
-    color: string
-  }[]
-  state: string
-  comments: number
+  enumName: string
+  enumKey: string
   created_at: string
   updated_at: string
-  closed_at?: string
 }
 
-const columns: ProColumns<GithubIssueItem>[] = [
+const columns: ProColumns<EnumsTypes>[] = [
   {
     dataIndex: 'index',
     valueType: 'indexBorder',
@@ -119,9 +111,6 @@ const columns: ProColumns<GithubIssueItem>[] = [
       >
         编辑
       </a>,
-      <a href={record.url} target="_blank" rel="noopener noreferrer" key="view">
-        查看
-      </a>,
       <TableDropdown
         key="actionGroup"
         onSelect={() => action?.reload()}
@@ -134,17 +123,30 @@ const columns: ProColumns<GithubIssueItem>[] = [
   },
 ]
 
-const EnumsKeys = () => {
+const EnumsKeys = ({ onSelect }: { onSelect?: (record: EnumsTypes) => void }) => {
   const actionRef = useRef<ActionType>()
+  const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([])
+
+  const handleRowSelectChange = (newSelectedRowKeys: React.Key[], selectedRows: EnumsTypes[]) => {
+    setSelectedRowKeys(newSelectedRowKeys)
+    if (onSelect && selectedRows.length > 0) {
+      onSelect(selectedRows[0])
+    }
+  }
   return (
-    <ProTable<GithubIssueItem>
+    <ProTable<EnumsTypes>
       columns={columns}
       actionRef={actionRef}
       cardBordered
+      rowSelection={{
+        type: 'radio',
+        selectedRowKeys,
+        onChange: handleRowSelectChange,
+      }}
       request={async (params, sort, filter) => {
         console.log(sort, filter)
         return request<{
-          data: GithubIssueItem[]
+          data: EnumsTypes[]
         }>('https://proapi.azurewebsites.net/github/issues', {
           params,
         })
@@ -184,7 +186,7 @@ const EnumsKeys = () => {
         },
       }}
       pagination={{
-        pageSize: 5,
+        pageSize: 10,
         onChange: page => console.log(page),
       }}
       dateFormatter="string"
@@ -200,29 +202,6 @@ const EnumsKeys = () => {
         >
           新建
         </Button>,
-        <Dropdown
-          key="menu"
-          menu={{
-            items: [
-              {
-                label: '1st item',
-                key: '1',
-              },
-              {
-                label: '2nd item',
-                key: '2',
-              },
-              {
-                label: '3rd item',
-                key: '3',
-              },
-            ],
-          }}
-        >
-          <Button>
-            <EllipsisOutlined />
-          </Button>
-        </Dropdown>,
       ]}
     />
   )

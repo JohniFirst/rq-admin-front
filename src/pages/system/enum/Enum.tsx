@@ -1,6 +1,7 @@
 import styled from 'styled-components'
-import EnumsKeys from '@/pages/system/enum/components/EnumsKeys.tsx'
+import EnumsKeys, { EnumsTypes } from '@/pages/system/enum/components/EnumsKeys.tsx'
 import EnumsOptions from '@/pages/system/enum/components/EnumsOptions.tsx'
+import { useState } from 'react'
 
 const EnumWp = styled.div`
   display: grid;
@@ -14,14 +15,17 @@ const EnumWp = styled.div`
 `
 
 function Enum() {
+  // 状态管理：存储当前选中的枚举项
+  const [selectedEnum, setSelectedEnum] = useState<EnumsTypes | null>(null)
+
   return (
     <EnumWp>
       <section>
-        <EnumsKeys />
+        <EnumsKeys onSelect={setSelectedEnum} />
       </section>
 
       <section>
-        <EnumsOptions />
+        <EnumsOptions selectedEnum={selectedEnum} />
       </section>
     </EnumWp>
   )
