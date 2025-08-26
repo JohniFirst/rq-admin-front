@@ -46,11 +46,11 @@ http.interceptors.response.use(
   (response: AxiosResponse) => {
     const { code } = response.data
 
-    if (code !== 200) {
+    if (code === 200) {
+      return response.data.data
+    } else {
       message.error(response.data.message)
-      throw new Error(response.data.message)
     }
-    return response.data.data
   },
   error => {
     if (error.response) {
