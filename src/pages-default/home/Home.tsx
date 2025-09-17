@@ -4,6 +4,37 @@ import { NavLink } from 'react-router-dom'
 import styled from 'styled-components'
 import useCustomNavigate from '@/hooks/useCustomNavigate'
 
+const Header = styled.header`
+  width: 100%;
+  padding: 16px;
+  position: sticky;
+  top: 0;
+  z-index: 999;
+  background-color: var(--color-background);
+  box-shadow: var(--box-shadow);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`
+
+const MainH1 = styled.h1`
+  font-weight: bolder;
+  font-size: 32px;
+  color: var(--theme-color);
+`
+
+const MainLogin = styled.span`
+  padding: 8px 12px;
+  cursor: pointer;
+  background-color: var(--color-primary);
+  border-radius: 8px;
+  color: var(--color-text);
+
+  &:hover {
+    background-color: var(--color-primary-hover);
+  }
+`
+
 const SectionTitile = styled.p`
   font-weight: bolder;
   font-size: 18px;
@@ -23,7 +54,7 @@ const SectionTitile = styled.p`
   }
 `
 
-const ReadLi = styled.li`
+const RedLi = styled.li`
   color: red;
   font-size: 18px;
 `
@@ -49,23 +80,23 @@ function Home() {
   const navigate = useCustomNavigate()
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-white to-blue-50 dark:from-gray-900 dark:to-gray-800">
-      <header className="w-full p-5 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm sticky top-0 shadow-sm z-50 flex justify-between items-center">
-        <h1 className="text-2xl font-bold text-blue-600 dark:text-blue-400">RQ Admin</h1>
-        <span
-          className="px-4 py-2 bg-blue-500 text-white rounded-lg cursor-pointer hover:bg-blue-600 transition-colors"
+    <div>
+      <Header>
+        <MainH1>RQ Admin</MainH1>
+        <MainLogin
+          className="bg-blue-500 hover:bg-blue-600"
           onClick={() => navigate('/login', false)}
           onKeyUp={() => navigate('/login', false)}
         >
           登录
-        </span>
-      </header>
+        </MainLogin>
+      </Header>
 
       <main className="max-w-3xl mx-auto px-4 py-8">
         <AnimatedSection>
           <SectionTitile>功能特点</SectionTitile>
           <ol className="ml-8 list-[decimal] space-y-3">
-            <ReadLi>快速定位源码，【ctrl + 鼠标左键】，直接跳转vscode源码</ReadLi>
+            <RedLi>快速定位源码，【ctrl + 鼠标左键】，直接跳转vscode源码</RedLi>
             <li>灵活的布局切换，支持垂直布局和水平布局</li>
             <li>使用原生canvas实现的图片拼接</li>
             <li>原生的视频播放器</li>
@@ -86,7 +117,6 @@ function Home() {
             <li>
               动画系统利用
               <a
-                className="underline text-blue-600 hover:text-blue-800"
                 target="_blank"
                 rel="noreferrer"
                 href="https://www.framer.com/motion/introduction/"
