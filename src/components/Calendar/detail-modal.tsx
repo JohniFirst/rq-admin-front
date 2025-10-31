@@ -6,7 +6,7 @@ import type { CustomEventInput } from './index'
 import { useEffect } from 'react'
 
 interface DetailModalProps {
-  event: CustomEventInput
+  event?: CustomEventInput | null
   open: boolean
   onEdit: () => void
   onCancel: () => void
@@ -24,7 +24,9 @@ const DetailModal: React.FC<DetailModalProps> = ({ event, open, onEdit, onCancel
   const deleteEvent = async () => {
     try {
       // 没有响应体
-      await deleteEvents(event.id)
+      if (event && event.id) {
+        await deleteEvents(Number(event.id))
+      }
 
       message.success('删除成功')
 

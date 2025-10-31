@@ -57,7 +57,7 @@ const EnumsOptions = ({ selectedEnum }: { selectedEnum: EnumsTypes | null }) => 
     {
       title: '操作',
       valueType: 'option',
-      render: (text, record, _, action) => [
+      render: (_text, record, _r, action) => [
         <a
           key="editable"
           onClick={() => {
@@ -84,7 +84,12 @@ const EnumsOptions = ({ selectedEnum }: { selectedEnum: EnumsTypes | null }) => 
       maxLength={5}
       recordCreatorProps={{
         position: 'bottom',
-        record: () => ({ id: (Math.random() * 1000000).toFixed(0) }),
+        record: (): EnumItems => ({
+          id: (Math.random() * 1000000).toFixed(0),
+          dictKey: '',
+          dictLabel: '',
+          isEnable: '1',
+        }),
       }}
       loading={false}
       columns={columns}

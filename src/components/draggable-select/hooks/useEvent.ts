@@ -1,13 +1,12 @@
 import { useCallback, useRef } from 'react'
 
-export default function useEvent<T extends (...args: unknown[]) => unknown>(callback: T): T {
-  const fnRef = useRef<T>(callback)
+export default function useEvent<Args extends unknown[], R>(
+  callback: (...args: Args) => R,
+): (...args: Args) => R {
+  const fnRef = useRef<(...args: Args) => R>(callback)
   fnRef.current = callback
 
-  const memoFn = useCallback<T>(
-    ((...args: unknown[]) => fnRef.current?.(...args)) as unknown as T,
-    [],
-  )
+  const memoFn = useCallback((...args: Args) => fnRef.current(...args), [])
 
   return memoFn
 }

@@ -13,11 +13,7 @@ interface HeaderMenuProps {
 }
 
 // 定义兼容 antd MenuItem 的类型，直接用 MenuItem 类型
-interface MenuItem {
-  key: string
-  label?: React.ReactNode
-  children?: MenuItem[]
-}
+// Reuse global `MenuItem` type from project-level types (matches antd's GenericItemType)
 
 /**
  * 顶部导航菜单

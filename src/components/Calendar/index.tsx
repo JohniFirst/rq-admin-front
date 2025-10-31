@@ -46,6 +46,15 @@ export interface CustomEventInput extends EventInput {
   until?: string
 }
 
+type ParsedRRule = {
+  freq?: number | null
+  interval?: number
+  byweekday?: number[]
+  bymonthday?: number[]
+  count?: number
+  until?: string
+}
+
 const Calendar: React.FC = () => {
   const [events, setEvents] = useState<CustomEventInput[]>([])
   const [isModalVisible, setIsModalVisible] = useState(false)
@@ -87,14 +96,15 @@ const Calendar: React.FC = () => {
   const getList = async (params: CalendarListParams) => {
     try {
       const res = await getEventsList(params)
-      const parsedEvents = res.map((item: { event: string; id: string }) => {
-        const parsed = JSON.parse(item.event)
+      const parsedEvents: CustomEventInput[] = res.map((item: { event: string; id: number }) => {
+        const parsed = JSON.parse(item.event) as CustomEventInput & { rrule?: ParsedRRule }
 
-        if (!parsed.rrule?.freq) {
+        if (!parsed.rrule || !parsed.rrule.freq) {
           delete parsed.rrule
         }
 
-        parsed.id = item.id
+        // fullcalendar event id is usually string
+        parsed.id = String(item.id)
         return parsed
       })
 
@@ -107,14 +117,14 @@ const Calendar: React.FC = () => {
   }
 
   const handleDateSelect = (selectInfo: DateSelectArg) => {
-    setSelectedEvent(selectInfo)
+    setSelectedEvent(selectInfo as unknown as CustomEventInput)
 
     setIsEditMode(false)
     setIsModalVisible(true)
   }
 
   const handleEventClick = (info: EventClickArg) => {
-    setSelectedEvent(Object.assign(info.event, info.event.extendedProps) as CustomEventInput)
+    setSelectedEvent(Object.assign({}, info.event, info.event.extendedProps) as CustomEventInput)
     setIsDetailModalVisible(true)
   }
 
@@ -219,7 +229,7 @@ const Calendar: React.FC = () => {
       <EventModal
         open={isModalVisible}
         isEditMode={isEditMode}
-        selectedEvent={selectedEvent}
+        selectedEvent={selectedEvent ?? undefined}
         onCancel={() => {
           getList({ start, end })
           setIsModalVisible(false)
@@ -230,7 +240,7 @@ const Calendar: React.FC = () => {
       />
 
       <DetailModal
-        event={selectedEvent}
+        event={selectedEvent ?? undefined}
         open={isDetailModalVisible}
         onEdit={handleDetailEdit}
         onCancel={() => {

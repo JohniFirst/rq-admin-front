@@ -2,12 +2,12 @@ import { useState } from 'react'
 import useEvent from './useEvent'
 import useLayoutUpdateEffect from './useLayoutUpdateEffect'
 
-type Updater<T> = (updater: T | ((origin: T) => T)) => void
+type Updater<T> = (updater: React.SetStateAction<T>) => void
 
 export default function useMergedState<T>(
   defaultStateValue: T,
   option: {
-    value: T
+    value?: T
   },
 ): [T, Updater<T>] {
   const { value } = option
@@ -23,12 +23,12 @@ export default function useMergedState<T>(
   const mergedValue = value !== undefined ? value : innerValue
 
   useLayoutUpdateEffect(() => {
-    if (value === undefined) {
+    if (value !== undefined) {
       setInnerValue(value)
     }
   }, [value])
 
-  const triggerChange: Updater<T> = useEvent(updater => {
+  const triggerChange: Updater<T> = useEvent<[React.SetStateAction<T>], void>(updater => {
     setInnerValue(updater)
   })
 

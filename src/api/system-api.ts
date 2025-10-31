@@ -55,12 +55,12 @@ export function getMenuListWithoutRole(): Promise<MenuApiWithoutRoleResponse[]> 
 }
 
 /** 新增菜单 */
-export function addMenu(data: MenuAddFormFields): Promise<null> {
+export function addMenu(data: MenuApiResponse): Promise<null> {
   return http.post('/menu-add', data)
 }
 
 /** 编辑菜单 */
-export function editMenu(data: MenuAddFormFields) {
+export function editMenu(data: MenuApiResponse) {
   return http.put('/menu-update', data)
 }
 

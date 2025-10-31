@@ -21,7 +21,7 @@ import { format } from 'date-fns'
 import { useEffect, useState } from 'react'
 import { exportToExcel } from '@/utils/export-to-excel'
 
-type BaseTableProps<T> = {
+type BaseTableProps<T extends object = object> = {
   tableProps: TableProps<T>
   searchProps?: BaseTableSearchProps
   // 获取表格数据的工具函数
@@ -33,7 +33,7 @@ type BaseTableProps<T> = {
 }
 
 interface RowProps extends React.HTMLAttributes<HTMLTableRowElement> {
-  'data-row-key': string
+  'data-row-key': string | number
 }
 
 const BaseDraggableTable = <T extends object>({
@@ -97,9 +97,9 @@ const BaseDraggableTable = <T extends object>({
     exportToExcel(excelData, `${format(Date.now(), 'yyyy-MM-dd')}.xlsx`)
   }
 
-  const CustomRow = (props: RowProps) => {
+  const CustomRow: React.FC<RowProps> = props => {
     const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
-      id: props['data-row-key'],
+      id: props['data-row-key'] as string | number,
     })
 
     const style: React.CSSProperties = {
@@ -118,8 +118,12 @@ const BaseDraggableTable = <T extends object>({
   const onDragEnd = ({ active, over }: DragEndEvent) => {
     if (active.id !== over?.id) {
       setDataSource(prev => {
-        const activeIndex = prev.findIndex(i => i.key === active.id)
-        const overIndex = prev.findIndex(i => i.key === over?.id)
+        const activeIndex = prev.findIndex(
+          i => (i as unknown as { key: string | number }).key === active.id,
+        )
+        const overIndex = prev.findIndex(
+          i => (i as unknown as { key: string | number }).key === over?.id,
+        )
         return arrayMove(prev, activeIndex, overIndex)
       })
     }
@@ -209,7 +213,7 @@ const BaseDraggableTable = <T extends object>({
         {/* 表格 */}
         <DndContext sensors={sensors} modifiers={[restrictToVerticalAxis]} onDragEnd={onDragEnd}>
           <SortableContext
-            items={dataSource.map(i => i.key)}
+            items={dataSource.map(i => (i as unknown as { key: string | number }).key)}
             strategy={verticalListSortingStrategy}
           >
             <Table

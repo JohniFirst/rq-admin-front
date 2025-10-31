@@ -10,7 +10,11 @@ export type EnumsTypes = {
   enumKey: string
   created_at: string
   updated_at: string
+  labels?: { name: string; color?: string }[]
 }
+
+// minimal declaration for the `request` helper used by pro-table examples
+declare function request<T = unknown>(url: string, options?: unknown): Promise<T>
 
 const columns: ProColumns<EnumsTypes>[] = [
   {
@@ -68,7 +72,7 @@ const columns: ProColumns<EnumsTypes>[] = [
     },
     render: (_, record) => (
       <Space>
-        {record.labels.map(({ name, color }) => (
+        {(record.labels ?? []).map(({ name, color }) => (
           <Tag color={color} key={name}>
             {name}
           </Tag>
@@ -102,7 +106,7 @@ const columns: ProColumns<EnumsTypes>[] = [
     title: '操作',
     valueType: 'option',
     key: 'option',
-    render: (text, record, _, action) => [
+    render: (_text, record, _r, action) => [
       <a
         key="editable"
         onClick={() => {

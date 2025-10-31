@@ -19,7 +19,7 @@ export type UnmountItemsInfoType<T> = Map<
   }
 >
 
-interface ISelectableContext<T> {
+export interface ISelectableContext<T> {
   selectingValue: React.MutableRefObject<T[]>
   boxPosition: { top: number; left: number; width: number; height: number }
   isDragging: boolean

@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
-import { SelectableContext, type UnmountItemsInfoType } from './context'
+import { SelectableContext, type UnmountItemsInfoType, type ISelectableContext } from './context'
 import useContainer from './hooks/useContainer'
 import useEvent from './hooks/useEvent'
 import useLatest from './hooks/useLatest'
@@ -59,7 +59,7 @@ function Selectable<T>(
   const [startTarget, setStartTarget] = useState<HTMLElement | null>(null)
   const startInside = useRef(false)
   const moveClient = useRef({ x: 0, y: 0 })
-  const [value, setValue] = useMergedState(defaultValue || [], {
+  const [value, setValue] = useMergedState<T[]>(defaultValue || [], {
     value: propsValue,
   })
   const boxRef = useRef<HTMLDivElement | null>(null)
@@ -90,11 +90,11 @@ function Selectable<T>(
     },
   }))
 
-  const handleStart = useEvent((event: MouseEvent | TouchEvent) => {
+  const handleStart = useEvent<[MouseEvent | TouchEvent], void>(event => {
     onStart?.(event)
   })
 
-  const handleEnd = useEvent(() => {
+  const handleEnd = useEvent<[], void>(() => {
     if (onEnd) {
       if (virtual) {
         unmountItemsInfo.current.forEach((info, item) => {
@@ -276,8 +276,8 @@ function Selectable<T>(
     }
   }, [disabled, scrollContainer, dragContainer, isCanceled])
 
-  const contextValue = useMemo(
-    () => ({
+  const contextValue = useMemo(() => {
+    const v = {
       value,
       selectingValue,
       isDragging,
@@ -291,24 +291,25 @@ function Selectable<T>(
       virtual,
       boxRef,
       compareFn,
-    }),
-    [
-      value,
-      isDragging,
-      boxPosition,
-      mode,
-      scrollContainer,
-      startTarget,
-      unmountItemsInfo,
-      scrollInfo,
-      virtual,
-      boxRef,
-      compareFn,
-    ],
-  )
+    }
+
+    return v as unknown as ISelectableContext<T>
+  }, [
+    value,
+    isDragging,
+    boxPosition,
+    mode,
+    scrollContainer,
+    startTarget,
+    unmountItemsInfo,
+    scrollInfo,
+    virtual,
+    boxRef,
+    compareFn,
+  ])
 
   return (
-    <SelectableContext.Provider value={contextValue}>
+    <SelectableContext.Provider value={contextValue as unknown as ISelectableContext<unknown>}>
       {children}
       {isDragging &&
         scrollContainer &&
