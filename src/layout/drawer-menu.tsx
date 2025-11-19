@@ -11,6 +11,23 @@ import { forage } from '@/utils/localforage'
 import HeaderOperate from './components/header-operate'
 import NavigationBar from './components/navigation-bar/navigation-bar'
 
+const LayoutContainer = styled.div`
+  display: grid;
+  grid-template-columns: auto 1fr;
+  height: 100vh;
+  width: 100%;
+  max-width: 100vw;
+  background: var(--color-background);
+  overflow: hidden;
+  box-sizing: border-box;
+`
+
+const Sidebar = styled.aside`
+  max-height: 100vh;
+  display: flex;
+  gap: 0;
+`
+
 const TopLevelMenu = styled.ul`
   text-align: center;
   cursor: pointer;
@@ -52,16 +69,111 @@ const ActiveTopMenu = styled.li`
   border-radius: 12px;
 `
 
-// import type { MenuProps } from 'antd'
+const SubMenuList = styled.ul`
+  width: 11rem;
+  max-height: 100%;
+  overflow-y: auto;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  background: var(--color-surface);
+  transition: background 0.3s ease;
+`
 
-interface DrawerMenuProps {
-  showHeaderOperate?: boolean
-}
+const MainSection = styled.section`
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow: hidden;
+`
+
+const Header = styled.header`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  background: var(--color-background);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
+  min-height: 64px;
+  flex-shrink: 0;
+  gap: 1rem;
+
+  @media (max-width: 768px) {
+    padding: 0.75rem;
+    min-height: 56px;
+  }
+`
+
+const HeaderLeft = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+`
+
+const ToggleButton = styled.button`
+  font-size: 1.25rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--color-text);
+  padding: 0.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  border-radius: 4px;
+
+  &:hover {
+    background: var(--color-surface-hover);
+    color: var(--color-primary);
+  }
+`
+
+const HomeLink = styled(Link)`
+  color: var(--color-text-secondary);
+  font-size: 1.25rem;
+  transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+
+  &:hover {
+    color: var(--color-primary);
+  }
+`
+
+const MainContent = styled.main`
+  background: var(--color-surface);
+  flex: 1;
+  padding: 1rem;
+  overflow-y: auto;
+  overflow-x: hidden;
+`
+
+const TopMenuIcon = styled.span`
+  font-size: 1.25rem;
+  margin-bottom: 0.25rem;
+  display: block;
+`
+
+const TopMenuLabel = styled.p`
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.025em;
+  margin: 0;
+`
+
+const MenuItem = styled.li`
+  user-select: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  color: var(--color-text);
+`
+
+// import type { MenuProps } from 'antd'
 
 /**
  * 可折叠的子菜单
  */
-function DrawerMenu({ showHeaderOperate = true }: DrawerMenuProps) {
+function DrawerMenu() {
   const navigate = useCustomNavigate()
   // const dispatch = useAppDispatch()
   const menusRaw = useAppSelector(state => state.menu)
@@ -218,41 +330,36 @@ function DrawerMenu({ showHeaderOperate = true }: DrawerMenuProps) {
     forage.setItem(ForageEnums.DRAWER_MENU_VISIBLE, String(menuVisible))
   }, [menuVisible])
   return (
-    <div className="grid grid-cols-[auto_1fr] w-full h-screen bg-[var(--color-background)] dark:bg-[var(--color-background)]">
+    <LayoutContainer>
       {menuVisible && (
-        <aside className="max-h-screen flex">
+        <Sidebar>
           <TopLevelMenu>
             {menus.map(item => {
               const isActive = topActiveMenu.key === item.key || selectedKey.includes(item.key)
               return isActive ? (
                 <ActiveTopMenu
-                  className="select-none cursor-pointer transition-colors duration-200"
                   key={item.key}
                   onClick={() => setTopActiveMenu(item)}
                   onKeyUp={() => setTopActiveMenu(item)}
                 >
-                  <span className="text-xl mb-1">{item.icon}</span>
-                  <p className="text-xs font-medium tracking-wide">{item.label}</p>
+                  <TopMenuIcon>{item.icon}</TopMenuIcon>
+                  <TopMenuLabel>{item.label}</TopMenuLabel>
                 </ActiveTopMenu>
               ) : (
-                <li
-                  className="select-none cursor-pointer transition-colors duration-200"
+                <MenuItem
                   key={item.key}
                   onClick={() => setTopActiveMenu(item)}
                   onKeyUp={() => setTopActiveMenu(item)}
-                  style={{
-                    color: 'var(--color-text)',
-                  }}
                 >
-                  <span className="text-xl mb-1">{item.icon}</span>
-                  <p className="text-xs font-medium tracking-wide">{item.label}</p>
-                </li>
+                  <TopMenuIcon>{item.icon}</TopMenuIcon>
+                  <TopMenuLabel>{item.label}</TopMenuLabel>
+                </MenuItem>
               )
             })}
           </TopLevelMenu>
 
           {topActiveMenu.children ? (
-            <ul className="w-44 max-h-full overflow-y-auto rounded-xl shadow bg-[var(--color-surface)] dark:bg-[var(--color-surface)] transition-colors duration-300">
+            <SubMenuList>
               {topActiveMenu.children.map((item: MenuItem) => (
                 <RecursiveMenuItem
                   key={item.key}
@@ -261,32 +368,32 @@ function DrawerMenu({ showHeaderOperate = true }: DrawerMenuProps) {
                   navigate={navigate}
                 />
               ))}
-            </ul>
+            </SubMenuList>
           ) : null}
-        </aside>
+        </Sidebar>
       )}
 
-      <section className="w-full flex flex-col h-screen col-auto">
-        <header className="flex justify-between items-center p-4">
-          <div className="flex items-center gap-2">
-            <button type="button" onClick={() => setMenuVisible(v => !v)} className="text-xl">
+      <MainSection>
+        <Header>
+          <HeaderLeft>
+            <ToggleButton type="button" onClick={() => setMenuVisible(v => !v)}>
               {menuVisible ? <MenuFoldOutlined /> : <MenuUnfoldOutlined />}
-            </button>
-            <Link to={'/dashboard'}>
+            </ToggleButton>
+            <HomeLink to="/dashboard">
               <HomeOutlined />
-            </Link>
-          </div>
+            </HomeLink>
+          </HeaderLeft>
 
-          {showHeaderOperate && <HeaderOperate />}
-        </header>
+          <HeaderOperate />
+        </Header>
 
         {showNavigationBar && <NavigationBar />}
 
-        <main className="bg-surface grow p-4 overflow-y-auto w-full">
+        <MainContent>
           <Outlet />
-        </main>
-      </section>
-    </div>
+        </MainContent>
+      </MainSection>
+    </LayoutContainer>
   )
 }
 

@@ -8,17 +8,17 @@ import { handleForgotPassword } from '@/api/system-api'
 const FormTitle = styled(motion.h2)`
   font-size: 2rem;
   font-weight: 700;
-  color: #1f2937;
+  color: var(--color-text);
   margin-bottom: 2rem;
   text-align: center;
 `
 
 const FormDescription = styled.p`
-  color: #6b7280;
+  color: var(--color-text-secondary);
   text-align: center;
   margin-bottom: 2rem;
   font-size: 1rem;
-  line-height: 1.5;
+  line-height: 1.6;
 `
 
 const StyledFormItem = styled(Form.Item)`
@@ -26,47 +26,73 @@ const StyledFormItem = styled(Form.Item)`
 
   .ant-input-affix-wrapper {
     padding: 12px;
-    border-radius: 8px;
-    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    border: 2px solid var(--color-border);
     transition: all 0.3s ease;
+    background: var(--color-background);
 
-    &:hover,
-    &:focus {
-      border-color: #4f46e5;
-      box-shadow: 0 0 0 2px rgba(79, 70, 229, 0.1);
+    &:hover {
+      border-color: #667eea;
+    }
+
+    &:focus,
+    &:focus-within {
+      border-color: #667eea;
+      box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
     }
 
     input {
       font-size: 1rem;
+      background: transparent;
+      color: var(--color-text);
     }
 
     .anticon {
-      color: #9ca3af;
+      color: var(--color-text-secondary);
     }
   }
 `
 
 const StyledButton = styled(Button)`
-  height: 48px;
-  border-radius: 8px;
+  height: 52px;
+  border-radius: 12px;
   font-weight: 600;
-  font-size: 1rem;
+  font-size: 1.0625rem;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border: none;
+  color: white;
   transition: all 0.3s ease;
 
   &:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(79, 70, 229, 0.2);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+    background: linear-gradient(135deg, #5568d3 0%, #653a8b 100%);
+    color: white;
+  }
+
+  &:active {
+    transform: translateY(0);
   }
 `
 
 const LinkText = styled(NavLink)`
-  color: #4f46e5;
+  color: #667eea;
   font-weight: 500;
   transition: color 0.3s ease;
+  text-decoration: none;
+  margin-left: 0.25rem;
 
   &:hover {
-    color: #4338ca;
+    color: #764ba2;
+    text-decoration: underline;
   }
+`
+
+const BottomText = styled.div`
+  text-align: center;
+  color: var(--color-text-secondary);
+  font-size: 0.9375rem;
+  margin-top: 1.5rem;
 `
 
 const ForgotPassword = () => {
@@ -108,22 +134,15 @@ const ForgotPassword = () => {
         </StyledFormItem>
 
         <Form.Item>
-          <StyledButton
-            type="primary"
-            htmlType="submit"
-            block
-            className="bg-indigo-600 hover:bg-indigo-700"
-          >
+          <StyledButton type="primary" htmlType="submit" block>
             发送重置链接
           </StyledButton>
         </Form.Item>
 
-        <div className="text-center text-gray-600">
+        <BottomText>
           记起密码了？
-          <LinkText to="/login" className="ml-1">
-            返回登录
-          </LinkText>
-        </div>
+          <LinkText to="/login">返回登录</LinkText>
+        </BottomText>
       </Form>
     </>
   )

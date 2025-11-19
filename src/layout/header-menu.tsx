@@ -2,23 +2,73 @@ import type { MenuProps } from 'antd'
 import { Menu } from 'antd'
 import { useEffect, useState } from 'react'
 import { Outlet, useLocation } from 'react-router-dom'
+import styled from 'styled-components'
 import useCustomNavigate from '@/hooks/useCustomNavigate'
 import { useAppDispatch, useAppSelector } from '@/store/hooks'
 import { pushNavItemAction } from '@/store/slice/system-info.ts'
 import HeaderOperate from './components/header-operate'
 import NavigationBar from './components/navigation-bar/navigation-bar'
 
-interface HeaderMenuProps {
-  showHeaderOperate?: boolean
-}
+const LayoutContainer = styled.section`
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  width: 100%;
+  max-width: 100vw;
+  overflow: hidden;
+  box-sizing: border-box;
+`
 
-// 定义兼容 antd MenuItem 的类型，直接用 MenuItem 类型
-// Reuse global `MenuItem` type from project-level types (matches antd's GenericItemType)
+const Header = styled.header`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  background: var(--color-background);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
+  gap: 1rem;
+  flex-wrap: nowrap;
+  min-height: 64px;
+  flex-shrink: 0;
+
+  @media (max-width: 768px) {
+    padding: 0.75rem;
+    min-height: 56px;
+    flex-wrap: wrap;
+  }
+`
+
+const MenuWrapper = styled.div`
+  flex: 1;
+  min-width: 0;
+  overflow-x: auto;
+
+  &::-webkit-scrollbar {
+    height: 4px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: var(--color-border);
+    border-radius: 2px;
+  }
+`
+
+const MainContent = styled.main`
+  background: var(--color-surface);
+  flex: 1;
+  padding: 1rem;
+  overflow-y: auto;
+  overflow-x: hidden;
+
+  @media (min-width: 768px) {
+    padding: 1.5rem;
+  }
+`
 
 /**
  * 顶部导航菜单
  */
-function HeaderMenu({ showHeaderOperate = true }: HeaderMenuProps) {
+function HeaderMenu() {
   const navigate = useCustomNavigate()
   const dispatch = useAppDispatch()
   const menusRaw = useAppSelector(state => state.menu)
@@ -77,19 +127,21 @@ function HeaderMenu({ showHeaderOperate = true }: HeaderMenuProps) {
   }, [location.pathname, menus])
 
   return (
-    <section className="w-full flex flex-col h-screen col-auto">
-      <header className="flex justify-between items-center p-4">
-        <Menu mode="horizontal" onClick={onClick} selectedKeys={selectedKey} items={menus} />
+    <LayoutContainer>
+      <Header>
+        <MenuWrapper>
+          <Menu mode="horizontal" onClick={onClick} selectedKeys={selectedKey} items={menus} />
+        </MenuWrapper>
 
-        {showHeaderOperate && <HeaderOperate />}
-      </header>
+        <HeaderOperate />
+      </Header>
 
       {showNavigationBar && <NavigationBar />}
 
-      <main className="bg-surface grow p-4 overflow-y-auto w-full">
+      <MainContent>
         <Outlet />
-      </main>
-    </section>
+      </MainContent>
+    </LayoutContainer>
   )
 }
 

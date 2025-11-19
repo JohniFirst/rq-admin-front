@@ -23,10 +23,103 @@ import { Dropdown, type MenuProps, Modal } from 'antd'
 import { cloneDeep } from 'lodash-es'
 import React from 'react'
 import { useLocation } from 'react-router-dom'
+import styled from 'styled-components'
 import { ContextMenuKey } from '@/enums/system'
 import useCustomNavigate from '@/hooks/useCustomNavigate'
 import { useAppDispatch, useAppSelector } from '@/store/hooks'
 import { setNavItemAction } from '@/store/slice/system-info.ts'
+
+const NavigationContainer = styled.nav`
+  display: flex;
+  align-items: center;
+  padding: 0.5rem 1rem;
+  background: var(--color-background);
+  border-bottom: 1px solid var(--color-border);
+  gap: 0.5rem;
+  flex-shrink: 0;
+`
+
+const ScrollButton = styled.button`
+  padding: 0.25rem;
+  background: transparent;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  color: var(--color-text-secondary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+
+  &:hover {
+    background: var(--color-surface);
+    color: var(--color-text);
+  }
+`
+
+const TabList = styled.ul`
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  overflow-x: auto;
+  flex: 1;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+`
+
+const TabItem = styled.li<{ $isActive: boolean }>`
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  white-space: nowrap;
+  user-select: none;
+  transition: all 0.2s ease;
+  background: ${props => (props.$isActive ? 'var(--color-surface)' : 'var(--color-background)')};
+  color: ${props => (props.$isActive ? 'var(--color-primary)' : 'var(--color-text-secondary)')};
+  font-weight: ${props => (props.$isActive ? '500' : '400')};
+  border-bottom: 2px solid ${props => (props.$isActive ? 'var(--color-primary)' : 'transparent')};
+
+  &:hover {
+    background: var(--color-surface);
+    color: ${props => (props.$isActive ? 'var(--color-primary)' : 'var(--color-text)')};
+  }
+`
+
+const PinIcon = styled(PushpinOutlined)`
+  color: var(--color-primary);
+  font-size: 0.75rem;
+`
+
+const TabLabel = styled.span`
+  white-space: nowrap;
+`
+
+const CloseButton = styled(CloseOutlined)<{ $isActive: boolean }>`
+  margin-left: 0.25rem;
+  font-size: 0.75rem;
+  padding: 0.25rem;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+  color: ${props => (props.$isActive ? 'var(--color-primary)' : 'var(--color-text-disabled)')};
+
+  &:hover {
+    border-radius: 50%;
+    background: ${props =>
+      props.$isActive ? 'rgba(102, 126, 234, 0.1)' : 'var(--color-surface-hover)'};
+    color: ${props => (props.$isActive ? 'var(--color-primary)' : 'var(--color-text-secondary)')};
+  }
+`
 
 const contextMenu: MenuProps['items'] = [
   {
@@ -209,68 +302,46 @@ function NavigationBar() {
     const isActive = location.pathname === item.key
 
     return (
-      <li
+      <TabItem
         key={item.key + '1'}
         ref={setNodeRef}
         {...attributes}
         {...listeners}
         style={style}
-        className={`
-          group relative flex items-center gap-2 px-3 py-1.5 rounded-md cursor-pointer select-none
-          transition-all duration-200 ease-in-out bg-background
-          ${isActive ? 'text-primary font-medium border-b-2 border-primary' : 'text-text-secondary hover:bg-surface'}
-        `}
+        $isActive={isActive}
         onClick={() => navgation(item.key)}
         onContextMenu={() => (currentClickTarget = item)}
       >
-        {item.fixed && <PushpinOutlined className="text-primary text-xs" />}
-        <span className="whitespace-nowrap">{item.label}</span>
-        <CloseOutlined
-          className={`
-            ml-1 text-xs p-1 rounded hover:rounded-full
-            transition-all duration-200
-            ${isActive ? 'text-primary hover:bg-primary/10' : 'text-text-disabled hover:text-text-secondary hover:bg-surface-hover'}
-          `}
-          onClick={e => closeCurrentNav(e, item)}
-        />
-      </li>
+        {item.fixed && <PinIcon />}
+        <TabLabel>{item.label}</TabLabel>
+        <CloseButton $isActive={isActive} onClick={e => closeCurrentNav(e, item)} />
+      </TabItem>
     )
   }
 
   return (
-    <nav className="flex items-center px-4 py-2 bg-background border-b border-border">
-      <button
-        type="button"
-        onClick={() => handleScroll('left')}
-        className="p-1 hover:bg-surface rounded-md transition-colors"
-      >
+    <NavigationContainer>
+      <ScrollButton type="button" onClick={() => handleScroll('left')}>
         <LeftOutlined />
-      </button>
+      </ScrollButton>
       <DndContext sensors={[sensor]} collisionDetection={closestCenter} onDragEnd={onDragEnd}>
         <SortableContext items={navItem.map(i => i.key)} strategy={horizontalListSortingStrategy}>
           <Dropdown
             menu={{ items: contextMenu, onClick: handleMenuClick }}
             trigger={['contextMenu']}
           >
-            <ul
-              ref={scrollContainerRef}
-              className="flex items-center gap-2 overflow-x-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
-            >
+            <TabList ref={scrollContainerRef}>
               {navItem.map(item => (
                 <DraggableTabNode key={item.key} item={item} />
               ))}
-            </ul>
+            </TabList>
           </Dropdown>
         </SortableContext>
       </DndContext>
-      <button
-        type="button"
-        onClick={() => handleScroll('right')}
-        className="p-1 hover:bg-surface rounded-md transition-colors"
-      >
+      <ScrollButton type="button" onClick={() => handleScroll('right')}>
         <RightOutlined />
-      </button>
-    </nav>
+      </ScrollButton>
+    </NavigationContainer>
   )
 }
 

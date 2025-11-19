@@ -6,57 +6,169 @@ import useCustomNavigate from '@/hooks/useCustomNavigate'
 
 const Header = styled.header`
   width: 100%;
-  padding: 16px;
+  max-width: 100vw;
+  padding: 20px 24px;
   position: sticky;
   top: 0;
   z-index: 999;
   background-color: var(--color-background);
-  box-shadow: var(--box-shadow);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
   display: flex;
   justify-content: space-between;
   align-items: center;
+  box-sizing: border-box;
 `
 
 const MainH1 = styled.h1`
-  font-weight: bolder;
-  font-size: 32px;
+  font-weight: 700;
+  font-size: 28px;
   color: var(--theme-color);
+  margin: 0;
 `
 
-const MainLogin = styled.span`
-  padding: 8px 12px;
+const LoginButton = styled.button`
+  padding: 10px 24px;
   cursor: pointer;
-  background-color: var(--color-primary);
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border: none;
   border-radius: 8px;
-  color: var(--color-text);
+  color: white;
+  font-size: 15px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
 
   &:hover {
-    background-color: var(--color-primary-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+  }
+
+  &:active {
+    transform: translateY(0);
   }
 `
 
-const SectionTitile = styled.p`
-  font-weight: bolder;
-  font-size: 18px;
+const SectionTitile = styled.h2`
+  font-weight: 700;
+  font-size: 24px;
   display: flex;
   align-items: center;
-  margin: 16px 0;
+  margin: 0 0 20px 0;
+  color: var(--color-text);
 
   &::before {
-    content: '1';
+    content: '';
     display: inline-block;
-    background-color: var(--theme-color);
-    color: transparent;
-    font-size: 16px;
-    overflow: hidden;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     margin-right: 12px;
-    width: 6px;
+    width: 4px;
+    height: 24px;
+    border-radius: 2px;
   }
 `
 
 const RedLi = styled.li`
-  color: red;
-  font-size: 18px;
+  color: #e53e3e;
+  font-size: 16px;
+  font-weight: 500;
+`
+
+const MainContainer = styled.div`
+  width: 100%;
+  min-height: 100vh;
+  max-width: 100vw;
+  overflow-x: hidden;
+  box-sizing: border-box;
+  background-color: var(--color-background);
+`
+
+const ContentWrapper = styled.main`
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 48px 24px;
+  box-sizing: border-box;
+
+  @media (max-width: 768px) {
+    padding: 32px 16px;
+  }
+`
+
+const AnimatedSectionWrapper = styled(motion.div)`
+  margin-bottom: 60px;
+  padding: 32px;
+  background: var(--color-surface);
+  border-radius: 16px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+  transition: all 0.3s ease;
+
+  &:hover {
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  }
+
+  @media (max-width: 768px) {
+    padding: 24px;
+    margin-bottom: 40px;
+  }
+`
+
+const OrderedList = styled.ol`
+  margin-left: 24px;
+  list-style: decimal;
+  color: var(--color-text-secondary);
+  line-height: 1.8;
+
+  li {
+    margin-bottom: 12px;
+    padding-left: 8px;
+
+    &:hover {
+      color: var(--color-text);
+    }
+  }
+`
+
+const UnorderedList = styled.ul`
+  margin-left: 24px;
+  list-style: disc;
+  color: var(--color-text-secondary);
+  line-height: 1.8;
+
+  li {
+    margin-bottom: 10px;
+    padding-left: 8px;
+
+    &:hover {
+      color: var(--color-text);
+    }
+  }
+`
+
+const InterviewAnswer = styled.div`
+  margin: 16px 0 24px 16px;
+  padding: 16px;
+  background: var(--color-background);
+  border-radius: 8px;
+  border-left: 3px solid #667eea;
+
+  p {
+    margin-bottom: 10px;
+    line-height: 1.7;
+    color: var(--color-text-secondary);
+  }
+`
+
+const InterviewQuestion = styled.li`
+  font-weight: 600;
+  font-size: 17px;
+  margin-bottom: 12px;
+  color: var(--color-text);
+`
+
+const SubTitle = styled.p`
+  font-weight: 600;
+  margin-top: 12px;
+  color: var(--color-text) !important;
 `
 
 function AnimatedSection({ children }: { children: React.ReactNode }) {
@@ -64,15 +176,14 @@ function AnimatedSection({ children }: { children: React.ReactNode }) {
   const isInView = useInView(ref, { once: true, margin: '-100px' })
 
   return (
-    <motion.div
+    <AnimatedSectionWrapper
       ref={ref}
       initial={{ opacity: 0, y: 50 }}
       animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
       transition={{ duration: 0.6 }}
-      className="mb-12"
     >
       {children}
-    </motion.div>
+    </AnimatedSectionWrapper>
   )
 }
 
@@ -80,22 +191,21 @@ function Home() {
   const navigate = useCustomNavigate()
 
   return (
-    <div>
+    <MainContainer>
       <Header>
         <MainH1>RQ Admin</MainH1>
-        <MainLogin
-          className="bg-blue-500 hover:bg-blue-600"
+        <LoginButton
           onClick={() => navigate('/login', false)}
           onKeyUp={() => navigate('/login', false)}
         >
           登录
-        </MainLogin>
+        </LoginButton>
       </Header>
 
-      <main className="max-w-3xl mx-auto px-4 py-8">
+      <ContentWrapper>
         <AnimatedSection>
           <SectionTitile>功能特点</SectionTitile>
-          <ol className="ml-8 list-[decimal] space-y-3">
+          <OrderedList>
             <RedLi>快速定位源码，【ctrl + 鼠标左键】，直接跳转vscode源码</RedLi>
             <li>灵活的布局切换，支持垂直布局和水平布局</li>
             <li>使用原生canvas实现的图片拼接</li>
@@ -135,24 +245,24 @@ function Home() {
             <li>实现了基于bytemd的在线markdown编辑器</li>
             <li>全栈开发，前后端协调一致</li>
             <li>【基于浏览器】实现excel数据导入【及导入数据筛选功能】</li>
-          </ol>
+          </OrderedList>
         </AnimatedSection>
 
         <AnimatedSection>
           <SectionTitile>hooks一览</SectionTitile>
-          <ul className="ml-8 space-y-2">
+          <UnorderedList>
             <li>——useCopyToClipboard 零依赖的复制到剪切板</li>
             <li>——useCustomNavigate 避免重复导航的自定义路由</li>
             <li>——useFullScreen 零依赖的全屏hooks</li>
             <li>——useInViewport 判断元素是否进入视口</li>
             <li>——useJumpToVscodeSource 跳转vscode源码位置</li>
             <li>——useMouse 获取鼠标位置</li>
-          </ul>
+          </UnorderedList>
         </AnimatedSection>
 
         <AnimatedSection>
           <SectionTitile>TODO</SectionTitile>
-          <ol className="ml-8 list-[decimal] space-y-3">
+          <OrderedList>
             <li>完善动画组件</li>
             <li>实现pdf编辑组件，向pdf内部新增图片</li>
             <li>更灵活的图片裁剪组件，支持放大，缩小，所见即所得</li>
@@ -167,14 +277,14 @@ function Home() {
             <li>【基于前端】增加word预览功能</li>
             <li>【基于前端】增加excel预览功能</li>
             <li>【基于前端】增加ppt预览功能</li>
-          </ol>
+          </OrderedList>
         </AnimatedSection>
 
         <AnimatedSection>
           <SectionTitile>一些面试题</SectionTitile>
-          <ol className="ml-8 list-[decimal] space-y-4">
-            <li className="font-semibold">css使用的方式有哪些？有哪些优缺点？</li>
-            <div className="ml-4 space-y-2">
+          <OrderedList>
+            <InterviewQuestion>css使用的方式有哪些？有哪些优缺点？</InterviewQuestion>
+            <InterviewAnswer>
               <p>
                 1.1
                 使用内联样式。工程化项目中极端不推荐，会造成样式管理困难，伪类、伪元素无法书写，没有代码提示，需要使用驼峰命名法
@@ -189,14 +299,14 @@ function Home() {
                 1.5
                 使用tailwindcss。简单的样式可以直接使用，但是复杂样式复用困难，且需要额外安装插件
               </p>
-            </div>
+            </InterviewAnswer>
 
-            <li className="font-semibold">React与Vue有什么区别和共同点？</li>
-            <div className="ml-4 space-y-2">
-              <p className="font-medium">2.1 共同点：</p>
+            <InterviewQuestion>React与Vue有什么区别和共同点？</InterviewQuestion>
+            <InterviewAnswer>
+              <SubTitle>2.1 共同点：</SubTitle>
               <p>2.1.1 都使用的虚拟dom，配合diff算法，提高性能</p>
               <p>2.1.2 都是组件化思想，可以复用</p>
-              <p className="font-medium mt-4">2.2 不同点：</p>
+              <SubTitle>2.2 不同点：</SubTitle>
               <p>
                 2.2.1
                 React是单向数据流，Vue是双向数据流。在数据更新，组件更新方式上，vue更灵活，更高效。react很多优化需要自己写，而vue本身就帮我们做了
@@ -213,11 +323,11 @@ function Home() {
                 2.2.4
                 react使用人数更多，组件更丰富，比如动画方面，react有更多的npm库可以使用。代码格式化校验方面，react有biome，格式化效率更快，使用更便捷，不用再安装eslint和prettier
               </p>
-            </div>
-          </ol>
+            </InterviewAnswer>
+          </OrderedList>
         </AnimatedSection>
-      </main>
-    </div>
+      </ContentWrapper>
+    </MainContainer>
   )
 }
 

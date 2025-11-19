@@ -2,6 +2,7 @@ import { EyeInvisibleOutlined, LogoutOutlined, UserOutlined } from '@ant-design/
 import { Avatar, Dropdown, type MenuProps } from 'antd'
 import type React from 'react'
 import { useEffect, useState } from 'react'
+import styled from 'styled-components'
 import { ForageEnums, IsLogin, SessionStorageKeys } from '@/enums/localforage'
 import useCustomNavigate from '@/hooks/useCustomNavigate'
 import { useAppDispatch } from '@/store/hooks'
@@ -10,6 +11,81 @@ import ChangePasswordModal from './modals/change-password-modal'
 import LogoutConfirmModal from './modals/logout-confirm-modal'
 import UserInfoModal from './modals/user-info-modal'
 import { forage } from '@/utils/localforage'
+
+const UserDropdownWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+
+  &:hover {
+    background: var(--color-surface);
+  }
+`
+
+const UserAvatar = styled(Avatar)`
+  border: 2px solid transparent;
+  transition: all 0.3s ease;
+  flex-shrink: 0;
+
+  ${UserDropdownWrapper}:hover & {
+    border-color: var(--color-primary);
+  }
+`
+
+const UserInfo = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 0.125rem;
+  min-width: 0;
+
+  @media (max-width: 768px) {
+    display: none;
+  }
+`
+
+const UserName = styled.span`
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--color-text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+`
+
+const UserHint = styled.span`
+  font-size: 0.75rem;
+  color: var(--color-text-disabled);
+  white-space: nowrap;
+`
+
+const DropdownIcon = styled.svg`
+  width: 1rem;
+  height: 1rem;
+  color: var(--color-text-disabled);
+  transition: transform 0.3s ease;
+  flex-shrink: 0;
+
+  ${UserDropdownWrapper}:hover & {
+    transform: rotate(180deg);
+  }
+
+  @media (max-width: 768px) {
+    display: none;
+  }
+`
+
+const MenuItemIcon = styled.span<{ $color: string }>`
+  color: ${props => props.$color};
+`
+
+const MenuItemLabel = styled.span`
+  color: var(--color-text);
+  font-weight: 500;
+`
 
 const UserDropdown: React.FC = () => {
   const [userName] = useState('默认用户名')
@@ -39,16 +115,24 @@ const UserDropdown: React.FC = () => {
   const items: MenuProps['items'] = [
     {
       key: 'userInfo',
-      icon: <UserOutlined className="text-blue-500" />,
-      label: <span className="text-text font-medium">个人信息</span>,
+      icon: (
+        <MenuItemIcon $color="#3b82f6">
+          <UserOutlined />
+        </MenuItemIcon>
+      ),
+      label: <MenuItemLabel>个人信息</MenuItemLabel>,
       onClick: () => {
         setShowUserInfoModal(true)
       },
     },
     {
       key: 'resetPassword',
-      icon: <EyeInvisibleOutlined className="text-purple-500" />,
-      label: <span className="text-text font-medium">修改密码</span>,
+      icon: (
+        <MenuItemIcon $color="#a855f7">
+          <EyeInvisibleOutlined />
+        </MenuItemIcon>
+      ),
+      label: <MenuItemLabel>修改密码</MenuItemLabel>,
       onClick: () => {
         setShowPasswordModal(true)
       },
@@ -58,8 +142,12 @@ const UserDropdown: React.FC = () => {
     },
     {
       key: 'logout',
-      icon: <LogoutOutlined className="text-red-500" />,
-      label: <span className="text-text font-medium">退出登录</span>,
+      icon: (
+        <MenuItemIcon $color="#ef4444">
+          <LogoutOutlined />
+        </MenuItemIcon>
+      ),
+      label: <MenuItemLabel>退出登录</MenuItemLabel>,
       onClick: () => {
         setShowLogoutModal(true)
       },
@@ -71,33 +159,34 @@ const UserDropdown: React.FC = () => {
       <Dropdown
         menu={{
           items,
-          className:
-            'mt-2 p-2 bg-background rounded-xl shadow-lg border border-border min-w-[200px]',
+          style: {
+            marginTop: '0.5rem',
+            padding: '0.5rem',
+            background: 'var(--color-background)',
+            borderRadius: '12px',
+            boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
+            border: '1px solid var(--color-border)',
+            minWidth: '200px',
+          },
         }}
         trigger={['click']}
         placement="bottomRight"
       >
-        <div className="flex items-center gap-3 cursor-pointer hover:bg-surface p-2 rounded-lg transition-all duration-300 group">
-          <Avatar
-            size="default"
-            src={userAvatar}
-            alt={userName}
-            className="border-2 border-transparent group-hover:border-primary transition-all duration-300"
-          />
-          <div className="flex flex-col">
-            <span className="text-sm font-medium text-text">{userName}</span>
-            <span className="text-xs text-text-disabled">点击查看菜单</span>
-          </div>
-          <svg
-            className="w-4 h-4 text-text-disabled transform group-hover:rotate-180 transition-transform duration-300"
+        <UserDropdownWrapper>
+          <UserAvatar size="default" src={userAvatar} alt={userName} />
+          <UserInfo>
+            <UserName>{userName}</UserName>
+            <UserHint>点击查看菜单</UserHint>
+          </UserInfo>
+          <DropdownIcon
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
             xmlns="http://www.w3.org/2000/svg"
           >
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-          </svg>
-        </div>
+          </DropdownIcon>
+        </UserDropdownWrapper>
       </Dropdown>
 
       <UserInfoModal
