@@ -6,7 +6,7 @@ import {
   StrikethroughOutlined,
   UserOutlined,
 } from '@ant-design/icons'
-import React, { memo } from 'react'
+import React, { memo, useMemo } from 'react'
 import { useLoaderData } from 'react-router-dom'
 import styled from 'styled-components'
 import NumberJumping from '@/components/number-jumping'
@@ -181,92 +181,86 @@ const ChartWrapper = memo<{ children: React.ReactNode; span: number }>(({ childr
 
 ChartWrapper.displayName = 'ChartWrapper'
 
+// 预加载 echarts 配置模块，避免首次加载时的闪烁
+import '@/config/echarts'
+
 function Dashboard() {
-  const data = useLoaderData()
-  console.log('from route loader:', data)
+  useLoaderData() // 预加载数据
+
+  // 使用 useMemo 缓存统计数据，避免重复创建
+  const statistics = useMemo(
+    () => [
+      {
+        icon: <UserOutlined />,
+        iconColor: '#ff5500',
+        title: '进店人数/人次',
+        value: 5000,
+        trend: 'up' as const,
+        description: '每天为一个统计周期',
+        span: 2,
+        valueColor: '#ef4444',
+      },
+      {
+        icon: <StrikethroughOutlined />,
+        iconColor: '#ef4444',
+        title: '销售额/元',
+        value: 98748780.56,
+        trend: 'down' as const,
+        description: '呈现下降趋势',
+        span: 2,
+        valueColor: '#ef4444',
+      },
+      {
+        icon: <PieChartOutlined />,
+        iconColor: '#9dffa7',
+        title: '经营目标/完成率',
+        value: 66,
+        trend: 'down' as const,
+        description: '实际完成的比例',
+        span: 2,
+        valueColor: '#ef4444',
+        isPercentage: true,
+      },
+      {
+        icon: <BankOutlined />,
+        iconColor: '#307dff',
+        title: '当月利润/元',
+        value: 56456.98,
+        trend: 'up' as const,
+        description: '扣除经营成本之后所得',
+        span: 2,
+        valueColor: '#ef4444',
+      },
+    ],
+    [],
+  )
+
+  // 使用 useMemo 缓存图表配置
+  const chartConfigs = useMemo(
+    () => [
+      { span: 5 as const, Component: ChartOfInStorePeople },
+      { span: 3 as const, Component: ChartOfGuestSourcePie },
+      { span: 8 as const, Component: ChartOfOrderRelation },
+      { span: 8 as const, Component: ChartOfDynamicSales },
+      { span: 4 as const, Component: ChartOfPayMethodRelation },
+      { span: 4 as const, Component: ChartOfDiningAndEntryTimeRelation },
+      { span: 3 as const, Component: ChartOfDishSales },
+      { span: 2 as const, Component: ChartOfCustomerIncomeProportion },
+      { span: 3 as const, Component: ChartOfCustomerNumbers },
+    ],
+    [],
+  )
 
   return (
     <DashboardGrid>
-      <StatisticCard
-        icon={<UserOutlined />}
-        iconColor="#ff5500"
-        title="进店人数/人次"
-        value={5000}
-        trend="up"
-        description="每天为一个统计周期"
-        span={2}
-        valueColor="#ef4444"
-      />
-
-      <StatisticCard
-        icon={<StrikethroughOutlined />}
-        iconColor="#ef4444"
-        title="销售额/元"
-        value={98748780.56}
-        trend="down"
-        description="呈现下降趋势"
-        span={2}
-        valueColor="#ef4444"
-      />
-
-      <StatisticCard
-        icon={<PieChartOutlined />}
-        iconColor="#9dffa7"
-        title="经营目标/完成率"
-        value={66}
-        trend="down"
-        description="实际完成的比例"
-        span={2}
-        valueColor="#ef4444"
-        isPercentage
-      />
-
-      <StatisticCard
-        icon={<BankOutlined />}
-        iconColor="#307dff"
-        title="当月利润/元"
-        value={56456.98}
-        trend="up"
-        description="扣除经营成本之后所得"
-        span={2}
-        valueColor="#ef4444"
-      />
-
-      <ChartWrapper span={5}>
-        <ChartOfInStorePeople />
-      </ChartWrapper>
-
-      <ChartWrapper span={3}>
-        <ChartOfGuestSourcePie />
-      </ChartWrapper>
-
-      <ChartWrapper span={8}>
-        <ChartOfOrderRelation />
-      </ChartWrapper>
-
-      <ChartWrapper span={8}>
-        <ChartOfDynamicSales />
-      </ChartWrapper>
-
-      <ChartWrapper span={4}>
-        <ChartOfPayMethodRelation />
-      </ChartWrapper>
-
-      <ChartWrapper span={4}>
-        <ChartOfDiningAndEntryTimeRelation />
-      </ChartWrapper>
-
-      <ChartWrapper span={3}>
-        <ChartOfDishSales />
-      </ChartWrapper>
-
-      <ChartWrapper span={2}>
-        <ChartOfCustomerIncomeProportion />
-      </ChartWrapper>
-
-      <ChartWrapper span={3}>
-        <ChartOfCustomerNumbers />
-      </ChartWrapper>
+      {statistics.map((stat, index) => (
+        <StatisticCard key={index} {...stat} />
+      ))}
+      {chartConfigs.map((config, index) => (
+        <ChartWrapper key={`chart-${index}`} span={config.span}>
+          <config.Component />
+        </ChartWrapper>
+      ))}
     </DashboardGrid>
   )
 }

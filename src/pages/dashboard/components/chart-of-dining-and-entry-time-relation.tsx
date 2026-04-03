@@ -1,34 +1,6 @@
 import type { EChartsOption } from 'echarts'
-import { BarChart, LineChart } from 'echarts/charts'
-import {
-  DatasetComponent,
-  GridComponent,
-  LegendComponent,
-  TitleComponent,
-  TooltipComponent,
-  TransformComponent,
-} from 'echarts/components'
-import * as echarts from 'echarts/core'
-import { LabelLayout, UniversalTransition } from 'echarts/features'
-import { CanvasRenderer } from 'echarts/renderers'
 import { useEffect, useRef } from 'react'
-
-import { echartsColors } from '@/enums/echartsColors.ts'
-import { useInViewport } from '@/hooks/useInViewport.ts'
-
-echarts.use([
-  TitleComponent,
-  TooltipComponent,
-  GridComponent,
-  DatasetComponent,
-  TransformComponent,
-  LineChart,
-  BarChart,
-  LabelLayout,
-  UniversalTransition,
-  CanvasRenderer,
-  LegendComponent,
-])
+import { createChartInstance, disposeChartInstance, echartsColors } from '@/config/echarts'
 
 /**
  * Renders a component showing the relationship among average dining time, store entry time, and the number of customers entering the store within a time period.
@@ -38,10 +10,8 @@ echarts.use([
 function ChartOfDiningAndEntryTimeRelation() {
   const chartRef = useRef(null)
 
-  const [isInViewport] = useInViewport(chartRef)
-
   useEffect(() => {
-    const myChart = echarts.init(chartRef.current)
+    const myChart = createChartInstance(chartRef.current)
 
     // 准备数据
     const data = [
@@ -103,9 +73,9 @@ function ChartOfDiningAndEntryTimeRelation() {
     myChart.setOption(option)
 
     return () => {
-      myChart.dispose()
+      disposeChartInstance(myChart)
     }
-  }, [isInViewport])
+  }, [])
 
   return <div ref={chartRef} style={{ width: '100%', height: '400px' }} />
 }

@@ -1,32 +1,6 @@
 import type { EChartsOption } from 'echarts'
-import { BarChart, LineChart } from 'echarts/charts'
-import {
-  DatasetComponent,
-  GridComponent,
-  LegendComponent,
-  TitleComponent,
-  TooltipComponent,
-  TransformComponent,
-} from 'echarts/components'
-import * as echarts from 'echarts/core'
-import { LabelLayout, UniversalTransition } from 'echarts/features'
-import { CanvasRenderer } from 'echarts/renderers'
 import { useEffect, useRef } from 'react'
-import { useInViewport } from '@/hooks/useInViewport.ts'
-
-echarts.use([
-  TitleComponent,
-  TooltipComponent,
-  GridComponent,
-  DatasetComponent,
-  TransformComponent,
-  BarChart,
-  LineChart,
-  LabelLayout,
-  UniversalTransition,
-  CanvasRenderer,
-  LegendComponent,
-])
+import { createChartInstance, disposeChartInstance, echartsColors } from '@/config/echarts'
 
 /**
  * Renders a component showing the relationship between order amount and order count.
@@ -36,10 +10,8 @@ echarts.use([
 function ChartOfOrderRelation() {
   const chartRef = useRef(null)
 
-  const [isInViewport] = useInViewport(chartRef)
-
   useEffect(() => {
-    const myChart = echarts.init(chartRef.current)
+    const myChart = createChartInstance(chartRef.current)
 
     // 准备数据
     const data = [
@@ -63,7 +35,7 @@ function ChartOfOrderRelation() {
       tooltip: {
         trigger: 'axis',
       },
-      color: ['#FF4500', '#FF007F'],
+      color: [echartsColors[0], echartsColors[1]],
       legend: {
         data: ['订单金额', '订单数'],
       },
@@ -111,9 +83,9 @@ function ChartOfOrderRelation() {
     myChart.setOption(option)
 
     return () => {
-      myChart.dispose()
+      disposeChartInstance(myChart)
     }
-  }, [isInViewport])
+  }, [])
 
   return <div ref={chartRef} style={{ width: '100%', height: '500px' }} />
 }

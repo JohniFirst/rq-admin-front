@@ -1,23 +1,7 @@
 import { Segmented } from 'antd'
 import type { EChartsOption } from 'echarts'
-import { PieChart } from 'echarts/charts'
-import { LegendComponent, TitleComponent, TooltipComponent } from 'echarts/components'
-import * as echarts from 'echarts/core'
-import { LabelLayout, UniversalTransition } from 'echarts/features'
-import { CanvasRenderer } from 'echarts/renderers'
 import { useEffect, useRef, useState } from 'react'
-import { echartsColors } from '@/enums/echartsColors.ts'
-import { useInViewport } from '@/hooks/useInViewport.ts'
-
-echarts.use([
-  TitleComponent,
-  TooltipComponent,
-  LegendComponent,
-  PieChart,
-  LabelLayout,
-  UniversalTransition,
-  CanvasRenderer,
-])
+import { createChartInstance, disposeChartInstance, echartsColors } from '@/config/echarts'
 
 interface PayMethod {
   name: string
@@ -27,8 +11,6 @@ interface PayMethod {
 function ChartOfPayMethodRelation() {
   const chartRef = useRef(null)
   const [timeRange, setTimeRange] = useState('每天')
-
-  const [isInViewport] = useInViewport(chartRef)
 
   // 初始数据设置为每天的数据
   const [data, setData] = useState<PayMethod[]>([
@@ -80,7 +62,7 @@ function ChartOfPayMethodRelation() {
       ])
     }
 
-    const myChart = echarts.init(chartRef.current)
+    const myChart = createChartInstance(chartRef.current)
 
     const option: EChartsOption = {
       title: {
@@ -115,13 +97,13 @@ function ChartOfPayMethodRelation() {
     myChart.setOption(option)
 
     return () => {
-      myChart.dispose()
+      disposeChartInstance(myChart)
     }
-  }, [timeRange, isInViewport])
+  }, [timeRange])
 
   return (
     <div>
-      <Segmented<string>
+      <Segmented
         className={'mb-[12px]'}
         options={['每天', '每周', '每月', '每年']}
         onChange={value => setTimeRange(value)}

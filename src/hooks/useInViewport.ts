@@ -15,14 +15,12 @@ import { type MutableRefObject, useEffect, useState } from 'react'
 export function useInViewport(
   ref: MutableRefObject<null>,
 ): [boolean, IntersectionObserverEntry | null] {
-  const [isInViewport, setIsInViewport] = useState(false)
   const [entry, setEntry] = useState<IntersectionObserverEntry | null>(null)
 
   useEffect(() => {
     const observer = new IntersectionObserver(
       entries => {
         for (const entry of entries) {
-          setIsInViewport(entry.isIntersecting)
           setEntry(entry)
         }
       },
@@ -42,6 +40,9 @@ export function useInViewport(
       }
     }
   }, [])
+
+  // 使用 entry.isIntersecting 但不作为 useEffect 依赖，避免重新初始化
+  const isInViewport = entry?.isIntersecting ?? false
 
   return [isInViewport, entry]
 }

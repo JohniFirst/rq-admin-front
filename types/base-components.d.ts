@@ -1,3 +1,5 @@
+import '@types/react'
+
 type ExcelData = {
   headers: string[]
   data: unknown[][]
@@ -70,4 +72,11 @@ type SquareInputBoxProps = {
   error?: boolean
   /** 成功状态 */
   success?: boolean
+}
+
+// 解决 antd 组件类型与 react 18 类型不兼容的问题
+declare module 'react' {
+  interface FC<P = object> {
+    (props: P, context?: unknown): React.ReactElement<unknown> | null
+  }
 }

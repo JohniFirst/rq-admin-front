@@ -1,12 +1,6 @@
 import type { EChartsOption } from 'echarts'
-import { BarChart } from 'echarts/charts'
-import { GridComponent, LegendComponent } from 'echarts/components'
-import * as echarts from 'echarts/core'
-import { CanvasRenderer } from 'echarts/renderers'
 import { useEffect, useRef } from 'react'
-import { echartsColors } from '@/enums/echartsColors.ts'
-
-echarts.use([GridComponent, LegendComponent, BarChart, CanvasRenderer])
+import { createChartInstance, disposeChartInstance, echartsColors } from '@/config/echarts'
 
 /**
  * Renders a dynamic sorting bar chart for dish sales.
@@ -23,7 +17,7 @@ function ChartOfDishSales(): JSX.Element {
 
   useEffect(() => {
     // 基于准备好的 dom，初始化 echarts 实例
-    const myChart = echarts.init(chartRef.current)
+    const myChart = createChartInstance(chartRef.current)
 
     // 初始配置选项
     const option: EChartsOption = {
@@ -93,9 +87,7 @@ function ChartOfDishSales(): JSX.Element {
 
     // 组件卸载时销毁图表和定时器
     return () => {
-      if (myChart) {
-        myChart.dispose()
-      }
+      disposeChartInstance(myChart)
       clearInterval(interval)
     }
   }, [])
