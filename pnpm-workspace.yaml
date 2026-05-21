@@ -1,0 +1,6 @@
+allowBuilds:
+  '@swc/core': false
+  esbuild: false
+minimumReleaseAgeExclude:
+  - framer-motion@12.40.0
+  - motion-dom@12.40.0
