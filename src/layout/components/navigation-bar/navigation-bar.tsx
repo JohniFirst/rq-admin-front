@@ -32,36 +32,43 @@ import { setNavItemAction } from '@/store/slice/system-info.ts'
 const NavigationContainer = styled.nav`
   display: flex;
   align-items: center;
-  padding: 0.5rem 1rem;
+  padding: 6px 12px;
   background: var(--color-background);
   border-bottom: 1px solid var(--color-border);
-  gap: 0.5rem;
+  gap: 6px;
   flex-shrink: 0;
+  position: relative;
 `
 
 const ScrollButton = styled.button`
-  padding: 0.25rem;
+  width: 28px;
+  height: 28px;
   background: transparent;
-  border: none;
+  border: 1px solid transparent;
   border-radius: 6px;
   cursor: pointer;
   color: var(--color-text-secondary);
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: all 0.2s ease;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
   flex-shrink: 0;
 
   &:hover {
     background: var(--color-surface);
     color: var(--color-text);
+    border-color: var(--color-border);
+  }
+
+  &:active {
+    background: var(--color-surface-active);
   }
 `
 
 const TabList = styled.ul`
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 4px;
   overflow-x: auto;
   flex: 1;
   margin: 0;
@@ -75,49 +82,75 @@ const TabList = styled.ul`
   scrollbar-width: none;
 `
 
-const TabItem = styled.li<{ $isActive: boolean }>`
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.5rem 1rem;
-  border-radius: 8px;
-  cursor: pointer;
-  white-space: nowrap;
-  user-select: none;
-  transition: all 0.2s ease;
-  background: ${props => (props.$isActive ? 'var(--color-surface)' : 'var(--color-background)')};
-  color: ${props => (props.$isActive ? 'var(--color-primary)' : 'var(--color-text-secondary)')};
-  font-weight: ${props => (props.$isActive ? '500' : '400')};
-  border-bottom: 2px solid ${props => (props.$isActive ? 'var(--color-primary)' : 'transparent')};
-
-  &:hover {
-    background: var(--color-surface);
-    color: ${props => (props.$isActive ? 'var(--color-primary)' : 'var(--color-text)')};
-  }
-`
-
 const PinIcon = styled(PushpinOutlined)`
-  color: var(--color-primary);
-  font-size: 0.75rem;
+  color: var(--color-warning);
+  font-size: 12px;
+  opacity: 0.8;
 `
 
 const TabLabel = styled.span`
   white-space: nowrap;
+  font-size: 13px;
+  line-height: 1.5;
 `
 
 const CloseButton = styled(CloseOutlined)<{ $isActive: boolean }>`
-  margin-left: 0.25rem;
-  font-size: 0.75rem;
-  padding: 0.25rem;
+  width: 20px;
+  height: 20px;
+  margin-left: 4px;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   border-radius: 4px;
-  transition: all 0.2s ease;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   color: ${props => (props.$isActive ? 'var(--color-primary)' : 'var(--color-text-disabled)')};
+  opacity: 0;
+  transform: scale(0.8);
 
   &:hover {
-    border-radius: 50%;
-    background: ${props =>
-      props.$isActive ? 'rgba(102, 126, 234, 0.1)' : 'var(--color-surface-hover)'};
-    color: ${props => (props.$isActive ? 'var(--color-primary)' : 'var(--color-text-secondary)')};
+    background: rgba(239, 68, 68, 0.1);
+    color: var(--color-danger);
+    transform: scale(1);
+  }
+`
+
+const TabItemWrapper = styled.li<{ $isActive: boolean }>`
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  white-space: nowrap;
+  user-select: none;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  background: ${props => (props.$isActive ? 'var(--color-surface)' : 'transparent')};
+  color: ${props => (props.$isActive ? 'var(--color-primary)' : 'var(--color-text-secondary)')};
+  font-weight: ${props => (props.$isActive ? '500' : '400')};
+  position: relative;
+  box-shadow: ${props =>
+    props.$isActive
+      ? '0 2px 8px rgba(59, 130, 246, 0.15), inset 0 0 0 1px var(--color-primary)'
+      : 'none'};
+
+  &:hover {
+    background: var(--color-surface);
+    color: ${props => (props.$isActive ? 'var(--color-primary)' : 'var(--color-text)')};
+    transform: translateY(-1px);
+    box-shadow: ${props =>
+      props.$isActive
+        ? '0 4px 12px rgba(59, 130, 246, 0.2), inset 0 0 0 1px var(--color-primary)'
+        : '0 2px 8px rgba(0, 0, 0, 0.05)'};
+
+    ${CloseButton} {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  &:active {
+    transform: translateY(0);
   }
 `
 
@@ -302,7 +335,7 @@ function NavigationBar() {
     const isActive = location.pathname === item.key
 
     return (
-      <TabItem
+      <TabItemWrapper
         key={item.key + '1'}
         ref={setNodeRef}
         {...attributes}
@@ -315,7 +348,7 @@ function NavigationBar() {
         {item.fixed && <PinIcon />}
         <TabLabel>{item.label}</TabLabel>
         <CloseButton $isActive={isActive} onClick={e => closeCurrentNav(e, item)} />
-      </TabItem>
+      </TabItemWrapper>
     )
   }
 
