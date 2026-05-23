@@ -1,4 +1,5 @@
 import * as XLSX from 'xlsx'
+import type { ExcelData } from '@/types/global'
 
 /**
  * Handles exporting data to an Excel file.

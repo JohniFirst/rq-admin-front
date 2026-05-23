@@ -1,4 +1,5 @@
 import { http } from '@/utils/http'
+import type { CloudAlbumItem, SearchPagination } from '@/types/global'
 
 /** 获取已经上传到服务器的图片列表 */
 export function getUploadImageList(data: SearchPagination): Promise<CloudAlbumItem[]> {

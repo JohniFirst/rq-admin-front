@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
+import type { DraggableSelectMode, DraggableSelectStartRange } from '@/types/global'
 import { SelectableContext, type UnmountItemsInfoType, type ISelectableContext } from './context'
 import useContainer from './hooks/useContainer'
 import useEvent from './hooks/useEvent'
@@ -15,7 +16,7 @@ export interface SelectableProps<T> {
   disabled?: boolean
   children?: React.ReactNode
   mode?: DraggableSelectMode
-  selectStartRange?: DraggableSelectStartRange
+  selectStartRange?: DraggableSelectStartRange | 'all' | 'inside' | 'outside'
   scrollContainer?: () => HTMLElement
   dragContainer?: () => HTMLElement
   boxStyle?: React.CSSProperties

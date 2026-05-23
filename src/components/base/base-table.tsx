@@ -9,6 +9,12 @@ import { Button, Col, Form, Input, Modal, Row, Space, Table, Tooltip } from 'ant
 import { format } from 'date-fns'
 import { useEffect, useState } from 'react'
 import { exportToExcel } from '@/utils/export-to-excel'
+import type {
+  BaseTableSearchProps,
+  ExcelData,
+  GetTableData,
+  SearchPagination,
+} from '@/types/global'
 
 type BaseTableProps<T> = {
   tableProps: TableProps<T>

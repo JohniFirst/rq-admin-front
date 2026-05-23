@@ -88,7 +88,7 @@ function ChartOfDynamicSales(): JSX.Element {
 
     // 组件卸载时销毁图表和定时器
     return () => {
-      disposeChartInstance(chartInstanceRef.current)
+      disposeChartInstance(chartInstanceRef.current ?? undefined)
       clearInterval(interval)
     }
   }, [])

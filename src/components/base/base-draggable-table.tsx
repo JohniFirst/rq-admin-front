@@ -20,6 +20,12 @@ import { Button, Col, Form, Modal, Row, Space, Table, Tooltip } from 'antd'
 import { format } from 'date-fns'
 import { useEffect, useState } from 'react'
 import { exportToExcel } from '@/utils/export-to-excel'
+import type {
+  BaseTableSearchProps,
+  ExcelData,
+  GetTableData,
+  SearchPagination,
+} from '@/types/global'
 
 type BaseTableProps<T extends object = object> = {
   tableProps: TableProps<T>

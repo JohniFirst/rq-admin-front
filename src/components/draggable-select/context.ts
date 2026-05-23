@@ -1,4 +1,5 @@
 import React, { useContext } from 'react'
+import type { DraggableSelectMode } from '@/types/global'
 
 export type Rule =
   | 'collision'

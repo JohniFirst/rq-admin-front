@@ -27,15 +27,15 @@ import albumAdd from '@/assets/svgs/system/album-add.svg'
 import DoubleClickEdit from '@/components/base/double-click-edit'
 import UploadCloudAlbum from '@/components/upload-cloud-album'
 import { AlbumNameMaxLength } from '@/config/constants'
+import type { CloudAlbumItem } from '@/types/global'
 
-type CloudAlbumItem = {
-  id: number
-  name: string
+// 扩展 CloudAlbumItem 类型以包含业务特定字段
+export type ExtendedCloudAlbumItem = CloudAlbumItem & {
+  id: string | number
   src: string
-  description: string
-  album?: number
   created_at: string
   updated_at: string
+  album?: number
 }
 
 type Album = {
@@ -65,8 +65,8 @@ const CloudAlbumImageCard = ({
   item,
   onNameClick,
 }: {
-  item: CloudAlbumItem
-  onNameClick: (item: CloudAlbumItem) => void
+  item: ExtendedCloudAlbumItem
+  onNameClick: (item: ExtendedCloudAlbumItem) => void
 }) => {
   return (
     <div
@@ -115,17 +115,17 @@ const CloudAlbumImageCard = ({
 const CloudAlbum = () => {
   const [newAlbumForm] = Form.useForm()
   const [loading, setLoading] = useState(false)
-  const [data, setData] = useState<CloudAlbumItem[]>([])
+  const [data, setData] = useState<ExtendedCloudAlbumItem[]>([])
   const [albums, setAlbums] = useState<Album[]>([])
   const [newAlbumModalVisible, setNewAlbumModalVisible] = useState(false)
   const [editAlbumModalVisible, setEditAlbumModalVisible] = useState(false)
   const [managePhotosModalVisible, setManagePhotosModalVisible] = useState(false)
   const [defaultActive, setDefaultActive] = useState<CloudAlbumItemType>(CloudAlbumItemType.ALL)
   const [detailModalVisible, setDetailModalVisible] = useState(false)
-  const [selectedImage, setSelectedImage] = useState<CloudAlbumItem | null>(null)
+  const [selectedImage, setSelectedImage] = useState<ExtendedCloudAlbumItem | null>(null)
   const [selectedAlbum, setSelectedAlbum] = useState<Album | null>(null)
   const [editingAlbum, setEditingAlbum] = useState<Album | null>(null)
-  const [albumPhotos, setAlbumPhotos] = useState<CloudAlbumItem[]>([])
+  const [albumPhotos, setAlbumPhotos] = useState<ExtendedCloudAlbumItem[]>([])
 
   // Mock 相册数据
   const mockAlbums: Album[] = [
@@ -172,7 +172,7 @@ const CloudAlbum = () => {
   ]
 
   // Mock 图片数据
-  const mockImages: CloudAlbumItem[] = [
+  const mockImages: ExtendedCloudAlbumItem[] = [
     {
       id: 1,
       name: '美丽风景1',
@@ -277,12 +277,12 @@ const CloudAlbum = () => {
       setLoading(true)
       const res = await getUploadImageList({ current: 1, pageSize: 20 })
       // 如果API返回数据则使用API数据，否则使用mock数据展示瀑布流效果
-      setData(res.length > 0 ? res : mockImages)
+      setData((res.length > 0 ? res : mockImages) as ExtendedCloudAlbumItem[])
       setAlbums(mockAlbums)
       setLoading(false)
     } catch {
       // API失败时使用mock数据确保能展示效果
-      setData(mockImages)
+      setData(mockImages as ExtendedCloudAlbumItem[])
       setAlbums(mockAlbums)
       setLoading(false)
     }
@@ -296,7 +296,7 @@ const CloudAlbum = () => {
     setNewAlbumModalVisible(true)
   }
 
-  const handleImageNameClick = (item: CloudAlbumItem) => {
+  const handleImageNameClick = (item: ExtendedCloudAlbumItem) => {
     setSelectedImage(item)
     setDetailModalVisible(true)
   }
@@ -347,7 +347,7 @@ const CloudAlbum = () => {
     setManagePhotosModalVisible(true)
   }
 
-  const handleAddPhotoToAlbum = (image: CloudAlbumItem) => {
+  const handleAddPhotoToAlbum = (image: ExtendedCloudAlbumItem) => {
     if (!editingAlbum) return
     if (albumPhotos.some(p => p.id === image.id)) {
       message.warning('这张照片已在相册中')
@@ -360,7 +360,7 @@ const CloudAlbum = () => {
     message.success('添加成功')
   }
 
-  const handleRemovePhotoFromAlbum = (imageId: number) => {
+  const handleRemovePhotoFromAlbum = (imageId: string | number) => {
     if (!editingAlbum) return
     setAlbumPhotos(albumPhotos.filter(p => p.id !== imageId))
     setAlbums(

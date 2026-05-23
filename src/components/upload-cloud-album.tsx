@@ -1,9 +1,16 @@
 import { CloudUploadOutlined, InboxOutlined } from '@ant-design/icons'
-import { Button, FloatButton, Form, Input, Modal, type StepProps, Steps, Upload } from 'antd'
+import { Button, FloatButton, Form, Input, Modal, Steps, Upload } from 'antd'
+import type { StepsProps } from 'antd'
 import type { UploadFile, UploadProps } from 'antd/es/upload'
 import { type FC, useState } from 'react'
 
-const steps: StepProps[] = [
+type FormValues = {
+  name?: string
+  description?: string
+  album?: string | number
+}
+
+const steps: StepsProps['items'] = [
   {
     title: '上传照片',
     description: '照片的基本要素',
@@ -18,7 +25,7 @@ const steps: StepProps[] = [
  * 通用云相册上传组件
  * @prop uploadButtonText 上传按钮的文字
  */
-const UploadCloudAlbum: FC<UploadCloudAlbumProps> = () => {
+const UploadCloudAlbum: FC = () => {
   const [form] = Form.useForm()
   const [open, setOpen] = useState(false)
   // 当前步骤
@@ -39,7 +46,7 @@ const UploadCloudAlbum: FC<UploadCloudAlbumProps> = () => {
     setOpen(!open)
   }
 
-  const onCreate = (values: CloudAlbumItem) => {
+  const onCreate = (values: FormValues) => {
     console.log('Received values of form: ', values)
     setOpen(false)
   }
@@ -110,15 +117,11 @@ const UploadCloudAlbum: FC<UploadCloudAlbumProps> = () => {
 
           <div className="h-4" />
 
-          <Form.Item<CloudAlbumItem>
-            name="name"
-            label="标题"
-            rules={[{ required: true, message: '请输入' }]}
-          >
+          <Form.Item name="name" label="标题" rules={[{ required: true, message: '请输入' }]}>
             <Input placeholder="照片标题" />
           </Form.Item>
 
-          <Form.Item<CloudAlbumItem>
+          <Form.Item
             name="description"
             label="描述"
             rules={[{ required: true, message: '请输入' }]}
@@ -128,11 +131,7 @@ const UploadCloudAlbum: FC<UploadCloudAlbumProps> = () => {
         </section>
 
         <section className={current === 1 ? '' : 'hidden'}>
-          <Form.Item<CloudAlbumItem>
-            name="album"
-            label="相册"
-            rules={[{ required: true, message: '请输入' }]}
-          >
+          <Form.Item name="album" label="相册" rules={[{ required: true, message: '请输入' }]}>
             <Input placeholder="请选择相册" />
           </Form.Item>
         </section>
