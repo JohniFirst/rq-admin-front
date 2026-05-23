@@ -48,9 +48,9 @@ const MarkdownEditor: React.FC<MarkdownEditorProps> = ({ value, onChange, height
       math(),
       mermaid(),
       mediumZoom(),
-      pluginInsertTime(), // 自定义插件
-      pluginImageResize(), // 图片缩放插件
-      pluginAlign(), // 文本对齐插件
+      pluginInsertTime(),
+      pluginImageResize(),
+      pluginAlign(),
     ],
     [],
   )

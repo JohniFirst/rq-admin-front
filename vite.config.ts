@@ -7,6 +7,28 @@ import { defineConfig, loadEnv, type UserConfig } from 'vite'
 import viteCompression from 'vite-plugin-compression'
 import { viteMockServe } from 'vite-plugin-mock'
 
+// 代码分割函数 - 只分割大型依赖
+function splitVendorChunk(id: string): string | undefined {
+  // 大型依赖单独打包 (只打包真正大的库)
+
+  // ECharts - 最大的依赖之一
+  if (id.includes('node_modules/echarts')) return 'vendor-echarts'
+
+  // Excel 处理
+  if (id.includes('node_modules/xlsx')) return 'vendor-xlsx'
+
+  // Mermaid 图表
+  if (id.includes('node_modules/mermaid')) return 'vendor-mermaid'
+
+  // Markdown 编辑器
+  if (id.includes('node_modules/bytemd') || id.includes('node_modules/@bytemd')) {
+    return 'vendor-markdown'
+  }
+
+  // Three.js
+  if (id.includes('node_modules/three')) return 'vendor-three'
+}
+
 // https://vitejs.dev/config/
 export default defineConfig((configEnv: UserConfig): UserConfig => {
   const { mode } = configEnv
@@ -47,7 +69,6 @@ export default defineConfig((configEnv: UserConfig): UserConfig => {
       },
     },
     build: {
-      cssCodeSplit: false,
       rollupOptions: {
         output: {
           entryFileNames: 'js/[name].js',
@@ -68,6 +89,8 @@ export default defineConfig((configEnv: UserConfig): UserConfig => {
             }
             return `${extType}/[name].[ext]`
           },
+          // 只对超大型依赖进行代码分割
+          manualChunks: splitVendorChunk,
         },
       },
     },
