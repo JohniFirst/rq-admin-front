@@ -1,8 +1,9 @@
 import { SettingOutlined } from '@ant-design/icons'
 import { Dropdown, MenuProps, Switch, TimePicker, message } from 'antd'
 import { motion } from 'framer-motion'
-import { useEffect, useState, useRef } from 'react'
+import { useEffect, useState, useRef, useMemo } from 'react'
 import styled from 'styled-components'
+import { LocalStorageKeys } from '@/enums/localforage'
 import { useAppDispatch, useAppSelector } from '@/store/hooks'
 import { selectCurrentTheme, setTheme } from '@/store/slice/system-info'
 import dayjs from 'dayjs'
@@ -13,6 +14,24 @@ interface AutoThemeConfig {
   enabled: boolean
   lightTime: string // HH:mm 格式
   darkTime: string // HH:mm 格式
+}
+
+// 从本地存储读取自动配置
+const loadAutoConfig = (): AutoThemeConfig => {
+  try {
+    const saved = localStorage.getItem(LocalStorageKeys.AUTO_THEME_CONFIG)
+    if (saved) {
+      return JSON.parse(saved)
+    }
+  } catch {
+    // ignore
+  }
+  return { enabled: false, lightTime: '06:00', darkTime: '18:00' }
+}
+
+// 保存自动配置到本地存储
+const saveAutoConfig = (config: AutoThemeConfig) => {
+  localStorage.setItem(LocalStorageKeys.AUTO_THEME_CONFIG, JSON.stringify(config))
 }
 
 // Styled Components
@@ -51,7 +70,8 @@ const ThemeButton = styled(motion.button)<{ $isDark: boolean }>`
 
 const DropdownContainer = styled.div<{ $isDark: boolean }>`
   .ant-dropdown-menu {
-    min-width: 280px;
+    width: auto;
+    min-width: 180px;
     padding: 8px;
     border-radius: 12px;
     box-shadow: 0 10px 25px rgba(0, 0, 0, ${props => (props.$isDark ? '0.3' : '0.1')});
@@ -66,6 +86,7 @@ const DropdownContainer = styled.div<{ $isDark: boolean }>`
     padding: 8px 12px;
     transition: all 0.2s ease;
     color: var(--color-text);
+    min-width: 140px;
 
     &:hover {
       background-color: var(--color-surface-hover);
@@ -87,7 +108,7 @@ const MenuItem = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  width: 256px;
+  gap: 12px;
 `
 
 const MenuItemContent = styled.span`
@@ -130,13 +151,13 @@ const TimeRow = styled.div`
 const ThemeSwitcher = () => {
   const currentTheme = useAppSelector(selectCurrentTheme)
   const dispatch = useAppDispatch()
-  const [autoConfig, setAutoConfig] = useState<AutoThemeConfig>({
-    enabled: false,
-    lightTime: '06:00',
-    darkTime: '18:00',
-  })
+  const [autoConfig, setAutoConfig] = useState<AutoThemeConfig>(loadAutoConfig)
   const [systemMode, setSystemMode] = useState<'light' | 'dark'>('light')
-  const [currentMode, setCurrentMode] = useState<ThemeMode>('light')
+  const [currentMode, setCurrentMode] = useState<ThemeMode>(() => {
+    // 从本地存储读取保存的主题模式
+    const savedMode = localStorage.getItem(LocalStorageKeys.THEME_MODE) as ThemeMode | null
+    return savedMode || 'light'
+  })
   const timerRef = useRef<NodeJS.Timeout | null>(null)
 
   const isDark = currentTheme.isDark
@@ -195,8 +216,8 @@ const ThemeSwitcher = () => {
 
     // 设置一次性定时器
     timerRef.current = setTimeout(() => {
-      // 切换主题
-      const newTheme = targetTheme === 'default-light' ? 'purple-dark' : 'default-light'
+      // 切换到相反的主题
+      const newTheme = shouldBeLight ? 'purple-dark' : 'default-light'
       dispatch(setTheme(newTheme))
 
       // 递归设置下次切换
@@ -220,13 +241,30 @@ const ThemeSwitcher = () => {
     }
 
     // 初始化系统主题
-    setSystemMode(mediaQuery.matches ? 'dark' : 'light')
+    const initialMode = mediaQuery.matches ? 'dark' : 'light'
+    setSystemMode(initialMode)
+
+    // 如果当前是跟随系统模式（从 localStorage 恢复），则应用系统主题
+    if (currentMode === 'system') {
+      const systemTheme = initialMode === 'dark' ? 'purple-dark' : 'default-light'
+      dispatch(setTheme(systemTheme))
+    }
 
     // 监听系统主题变化
     mediaQuery.addEventListener('change', handleSystemThemeChange)
 
     return () => mediaQuery.removeEventListener('change', handleSystemThemeChange)
   }, [dispatch, currentMode])
+
+  // 将当前主题模式保存到本地存储
+  useEffect(() => {
+    localStorage.setItem(LocalStorageKeys.THEME_MODE, currentMode)
+  }, [currentMode])
+
+  // 保存自动配置到本地存储
+  useEffect(() => {
+    saveAutoConfig(autoConfig)
+  }, [autoConfig])
 
   // 自动主题切换逻辑
   useEffect(() => {
@@ -239,14 +277,6 @@ const ThemeSwitcher = () => {
       }
     }
   }, [autoConfig.enabled, autoConfig.lightTime, autoConfig.darkTime, currentTheme.id, dispatch])
-
-  // 获取当前主题模式
-  const getCurrentThemeMode = (): ThemeMode => {
-    if (autoConfig.enabled) return 'auto'
-    if (currentTheme.id === 'purple-dark') return 'dark'
-    if (currentTheme.id === 'default-light') return 'light'
-    return 'system'
-  }
 
   // 处理主题切换
   const handleThemeChange = (mode: ThemeMode) => {
@@ -297,12 +327,12 @@ const ThemeSwitcher = () => {
 
   // 切换自动模式开关
   const handleAutoToggle = (enabled: boolean) => {
-    setAutoConfig(prev => ({ ...prev, enabled }))
     if (enabled) {
       setCurrentMode('auto')
-      handleThemeChange('auto')
+      setAutoConfig(prev => ({ ...prev, enabled: true }))
       message.success('已启用自动主题切换')
     } else {
+      setAutoConfig(prev => ({ ...prev, enabled: false }))
       // 清除定时器
       if (timerRef.current) {
         clearTimeout(timerRef.current)
@@ -312,10 +342,18 @@ const ThemeSwitcher = () => {
     }
   }
 
-  // 获取当前主题图标
-  const getThemeIcon = () => {
-    const mode = getCurrentThemeMode()
-    switch (mode) {
+  // 获取当前主题模式
+  const getCurrentThemeMode = (): ThemeMode => {
+    if (autoConfig.enabled) return 'auto'
+    return currentMode
+  }
+
+  // 缓存当前主题模式
+  const currentThemeMode = useMemo(() => getCurrentThemeMode(), [autoConfig.enabled, currentMode])
+
+  // 缓存主题图标
+  const themeIcon = useMemo(() => {
+    switch (currentThemeMode) {
       case 'dark':
         return '🌙'
       case 'light':
@@ -327,12 +365,11 @@ const ThemeSwitcher = () => {
       default:
         return isDark ? '🌙' : '☀️'
     }
-  }
+  }, [currentThemeMode, isDark])
 
-  // 获取当前主题文本
-  const getThemeText = () => {
-    const mode = getCurrentThemeMode()
-    switch (mode) {
+  // 缓存主题文本
+  const themeText = useMemo(() => {
+    switch (currentThemeMode) {
       case 'dark':
         return '深色'
       case 'light':
@@ -344,7 +381,7 @@ const ThemeSwitcher = () => {
       default:
         return isDark ? '深色' : '浅色'
     }
-  }
+  }, [currentThemeMode, isDark])
 
   const dropdownItems: MenuProps['items'] = [
     {
@@ -355,7 +392,7 @@ const ThemeSwitcher = () => {
             <span>☀️</span>
             <span>浅色主题</span>
           </MenuItemContent>
-          {getCurrentThemeMode() === 'light' && <CheckMark>✓</CheckMark>}
+          {currentThemeMode === 'light' && <CheckMark>✓</CheckMark>}
         </MenuItem>
       ),
       onClick: () => handleThemeChange('light'),
@@ -368,7 +405,7 @@ const ThemeSwitcher = () => {
             <span>🌙</span>
             <span>深色主题</span>
           </MenuItemContent>
-          {getCurrentThemeMode() === 'dark' && <CheckMark>✓</CheckMark>}
+          {currentThemeMode === 'dark' && <CheckMark>✓</CheckMark>}
         </MenuItem>
       ),
       onClick: () => handleThemeChange('dark'),
@@ -381,7 +418,7 @@ const ThemeSwitcher = () => {
             <span>🖥️</span>
             <span>跟随系统</span>
           </MenuItemContent>
-          {getCurrentThemeMode() === 'system' && <CheckMark>✓</CheckMark>}
+          {currentThemeMode === 'system' && <CheckMark>✓</CheckMark>}
         </MenuItem>
       ),
       onClick: () => handleThemeChange('system'),
@@ -447,8 +484,8 @@ const ThemeSwitcher = () => {
           whileTap={{ scale: 0.98 }}
           aria-label="主题设置"
         >
-          <span className="icon">{getThemeIcon()}</span>
-          <span className="text">{getThemeText()}</span>
+          <span className="icon">{themeIcon}</span>
+          <span className="text">{themeText}</span>
           <SettingOutlined className="setting-icon" />
         </ThemeButton>
       </Dropdown>

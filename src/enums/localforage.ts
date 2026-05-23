@@ -13,7 +13,11 @@ export enum ForageEnums {
 
 export enum LocalStorageKeys {
   // 布局模式
-  LAYOUT_MODE = 'LAYOUT_MODE',
+  LAYOUT_MODE = 'rq-admin-layout-mode',
+  // 主题模式
+  THEME_MODE = 'rq-admin-theme-mode',
+  // 自动主题配置
+  AUTO_THEME_CONFIG = 'rq-admin-auto-theme-config',
 }
 
 export enum IsLogin {
