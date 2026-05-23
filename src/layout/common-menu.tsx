@@ -1,10 +1,8 @@
-import { HomeOutlined } from '@ant-design/icons'
-// import LucideIcon, { type LucideIconType } from '@/components/lucide-icon'
 import type { MenuProps } from 'antd'
 import { Menu } from 'antd'
 import { motion } from 'framer-motion'
 import { useEffect, useState } from 'react'
-import { Link, Outlet, useLocation } from 'react-router-dom'
+import { Outlet, useLocation } from 'react-router-dom'
 import styled from 'styled-components'
 import useCustomNavigate from '@/hooks/useCustomNavigate'
 import { useAppDispatch, useAppSelector } from '@/store/hooks'
@@ -68,7 +66,7 @@ const MainSection = styled(motion.section)`
 
 const Header = styled(motion.header)`
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end;
   align-items: center;
   padding: 1rem 1.5rem;
   background: var(--color-background);
@@ -80,23 +78,6 @@ const Header = styled(motion.header)`
   @media (max-width: 768px) {
     padding: 0.75rem 1rem;
     min-height: 56px;
-  }
-`
-
-const HomeIconWrapper = styled(motion.div)`
-  display: inline-flex;
-  align-items: center;
-`
-
-const HomeLink = styled(Link)`
-  color: var(--color-text-secondary);
-  font-size: 1.25rem;
-  transition: all 0.3s ease;
-  display: inline-flex;
-  align-items: center;
-
-  &:hover {
-    color: var(--color-primary);
   }
 `
 
@@ -239,12 +220,6 @@ function CommonMenu() {
 
       <MainSection variants={itemVariants}>
         <Header variants={itemVariants}>
-          <HomeIconWrapper whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
-            <HomeLink to="/dashboard">
-              <HomeOutlined />
-            </HomeLink>
-          </HomeIconWrapper>
-
           <HeaderOperate />
         </Header>
 

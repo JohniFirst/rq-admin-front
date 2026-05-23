@@ -1,8 +1,7 @@
-import { HomeOutlined, MenuFoldOutlined, MenuUnfoldOutlined } from '@ant-design/icons'
-// import { pushNavItemAction } from '@/store/slice/system-info.ts'
+import { MenuFoldOutlined, MenuUnfoldOutlined } from '@ant-design/icons'
 import { Popover } from 'antd'
 import { useEffect, useState } from 'react'
-import { Link, Outlet, useLocation } from 'react-router-dom'
+import { Outlet, useLocation } from 'react-router-dom'
 import styled from 'styled-components'
 import { ForageEnums } from '@/enums/localforage'
 import useCustomNavigate from '@/hooks/useCustomNavigate'
@@ -88,25 +87,18 @@ const MainSection = styled.section`
 
 const Header = styled.header`
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end;
   align-items: center;
   padding: 1rem;
   background: var(--color-background);
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
   min-height: 64px;
   flex-shrink: 0;
-  gap: 1rem;
 
   @media (max-width: 768px) {
     padding: 0.75rem;
     min-height: 56px;
   }
-`
-
-const HeaderLeft = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
 `
 
 const ToggleButton = styled.button`
@@ -124,18 +116,6 @@ const ToggleButton = styled.button`
 
   &:hover {
     background: var(--color-surface-hover);
-    color: var(--color-primary);
-  }
-`
-
-const HomeLink = styled(Link)`
-  color: var(--color-text-secondary);
-  font-size: 1.25rem;
-  transition: all 0.3s ease;
-  display: inline-flex;
-  align-items: center;
-
-  &:hover {
     color: var(--color-primary);
   }
 `
@@ -375,15 +355,9 @@ function DrawerMenu() {
 
       <MainSection>
         <Header>
-          <HeaderLeft>
-            <ToggleButton type="button" onClick={() => setMenuVisible(v => !v)}>
-              {menuVisible ? <MenuFoldOutlined /> : <MenuUnfoldOutlined />}
-            </ToggleButton>
-            <HomeLink to="/dashboard">
-              <HomeOutlined />
-            </HomeLink>
-          </HeaderLeft>
-
+          <ToggleButton type="button" onClick={() => setMenuVisible(v => !v)}>
+            {menuVisible ? <MenuFoldOutlined /> : <MenuUnfoldOutlined />}
+          </ToggleButton>
           <HeaderOperate />
         </Header>
 
