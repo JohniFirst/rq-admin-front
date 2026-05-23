@@ -3,9 +3,10 @@ import { Input, Modal } from 'antd'
 import { AnimatePresence, motion } from 'framer-motion'
 import type { FC } from 'react'
 import { useEffect, useMemo, useRef, useState } from 'react'
+import styled from 'styled-components'
 import useCustomNavigate from '@/hooks/useCustomNavigate'
 import { useAppSelector } from '@/store/hooks'
-import styled from 'styled-components'
+import { headerButtonBase } from './styles'
 
 const FilterMenuWp = styled.div<{ indent: number }>`
   background-color: #fff2e5;
@@ -22,6 +23,11 @@ const FilterMenuItem = styled.p<{ indent: number }>`
   width: calc(100% - 26px);
   border-radius: 8px;
   margin-left: ${props => props.indent * 16}px;
+`
+
+const SearchButton = styled.button`
+  ${headerButtonBase}
+  padding: 0;
 `
 
 const SearchableMenu: FC = () => {
@@ -224,14 +230,9 @@ const SearchableMenu: FC = () => {
 
   return (
     <>
-      <motion.div
-        className="cursor-pointer"
-        whileHover={{ scale: 1.1 }}
-        whileTap={{ scale: 0.95 }}
-        onClick={showModal}
-      >
-        <SearchOutlined className="text-xl text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors duration-300" />
-      </motion.div>
+      <SearchButton onClick={showModal} title="菜单搜索 (Ctrl+M)">
+        <SearchOutlined style={{ fontSize: 18, color: 'var(--color-text-secondary)' }} />
+      </SearchButton>
 
       <Modal
         title={
