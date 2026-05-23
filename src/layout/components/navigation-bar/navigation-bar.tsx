@@ -115,7 +115,7 @@ const CloseButton = styled(CloseOutlined)<{ $isActive: boolean }>`
   }
 `
 
-const TabItemWrapper = styled.li<{ $isActive: boolean }>`
+const TabItemWrapper = styled.li<{ $isActive: boolean; $isDragging?: boolean }>`
   display: flex;
   align-items: center;
   gap: 6px;
@@ -124,78 +124,56 @@ const TabItemWrapper = styled.li<{ $isActive: boolean }>`
   cursor: pointer;
   white-space: nowrap;
   user-select: none;
-  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
   background: ${props => (props.$isActive ? 'var(--color-surface)' : 'transparent')};
   color: ${props => (props.$isActive ? 'var(--color-primary)' : 'var(--color-text-secondary)')};
   font-weight: ${props => (props.$isActive ? '500' : '400')};
   position: relative;
   box-shadow: ${props =>
-    props.$isActive
+    props.$isActive && !props.$isDragging
       ? '0 2px 8px rgba(59, 130, 246, 0.15), inset 0 0 0 1px var(--color-primary)'
       : 'none'};
 
   &:hover {
     background: var(--color-surface);
     color: ${props => (props.$isActive ? 'var(--color-primary)' : 'var(--color-text)')};
-    transform: translateY(-1px);
-    box-shadow: ${props =>
-      props.$isActive
-        ? '0 4px 12px rgba(59, 130, 246, 0.2), inset 0 0 0 1px var(--color-primary)'
-        : '0 2px 8px rgba(0, 0, 0, 0.05)'};
 
     ${CloseButton} {
       opacity: 1;
       transform: scale(1);
     }
   }
-
-  &:active {
-    transform: translateY(0);
-  }
 `
 
-const contextMenu: MenuProps['items'] = [
-  {
-    label: '重新加载（TODO）',
-    key: ContextMenuKey.RELOAD,
-    icon: <UndoOutlined />,
-  },
-  {
-    label: '最大化显示（TODO）',
-    key: ContextMenuKey.FULL,
-    icon: <FullscreenOutlined />,
-  },
-  {
-    type: 'divider',
-  },
-  {
-    label: '在新窗口打开',
-    key: ContextMenuKey.OPEN_NEW,
-    icon: <PicCenterOutlined />,
-  },
-  {
-    type: 'divider',
-  },
-  {
-    label: '关闭左侧标签页',
-    key: ContextMenuKey.CLOSE_LEFT,
-    icon: <DoubleLeftOutlined />,
-  },
-  {
-    label: '关闭右侧标签页',
-    key: ContextMenuKey.CLOSE_RIGHT,
-    icon: <DoubleRightOutlined />,
-  },
-  {
-    label: '关闭其它标签页',
-    key: ContextMenuKey.CLOSE_OTHERS,
-    icon: <FilterOutlined />,
-  },
-  {
-    label: '取消/固定到导航栏',
-    key: ContextMenuKey.FIXED,
-    icon: <PushpinOutlined />,
-  },
+// 重新加载当前标签页的函数
+const reloadCurrentPage = () => {
+  const currentPath = window.location.pathname
+  window.location.href = currentPath
+}
+
+// 全屏切换函数
+const toggleFullscreen = () => {
+  if (!document.fullscreenElement) {
+    document.documentElement.requestFullscreen()
+  } else {
+    document.exitFullscreen()
+  }
+}
+
+// 根据是否活跃标签动态生成右键菜单
+const getContextMenuItems = (isActive: boolean): MenuProps['items'] => [
+  ...(isActive
+    ? [
+        { label: '重新加载', key: ContextMenuKey.RELOAD, icon: <UndoOutlined /> },
+        { label: '全屏显示', key: ContextMenuKey.FULL, icon: <FullscreenOutlined /> },
+        { type: 'divider' as const },
+      ]
+    : []),
+  { label: '在新窗口打开', key: ContextMenuKey.OPEN_NEW, icon: <PicCenterOutlined /> },
+  { type: 'divider' as const },
+  { label: '关闭左侧标签页', key: ContextMenuKey.CLOSE_LEFT, icon: <DoubleLeftOutlined /> },
+  { label: '关闭右侧标签页', key: ContextMenuKey.CLOSE_RIGHT, icon: <DoubleRightOutlined /> },
+  { label: '关闭其它标签页', key: ContextMenuKey.CLOSE_OTHERS, icon: <FilterOutlined /> },
+  { label: '取消/固定到导航栏', key: ContextMenuKey.FIXED, icon: <PushpinOutlined /> },
 ]
 
 function NavigationBar() {
@@ -204,6 +182,12 @@ function NavigationBar() {
   const navgation = useCustomNavigate()
   const navItem = useAppSelector(state => state.systemInfo.navItem)
   const scrollContainerRef = React.useRef<HTMLUListElement>(null)
+
+  // 右键菜单的活跃标签状态
+  const [contextMenuActiveKey, setContextMenuActiveKey] = React.useState<string | null>(null)
+
+  // 缓存活跃状态计算结果
+  const activeKey = React.useMemo(() => location.pathname, [location.pathname])
 
   const dispatch = useAppDispatch()
   const setNavItem = (navItem: NavItem[]) => {
@@ -235,6 +219,14 @@ function NavigationBar() {
     let newNavItem: NavItem[] = []
 
     switch (e.key) {
+      case ContextMenuKey.RELOAD:
+        reloadCurrentPage()
+        break
+
+      case ContextMenuKey.FULL:
+        toggleFullscreen()
+        break
+
       case ContextMenuKey.OPEN_NEW:
         window.open(
           window.location.origin +
@@ -321,36 +313,54 @@ function NavigationBar() {
     }
   }
 
-  const DraggableTabNode = ({ item }: { item: NavItem }) => {
-    const { transform, transition, setNodeRef, attributes, listeners } = useSortable({
-      id: item.key,
-    })
+  const DraggableTabNode = React.memo(
+    ({ item, isActive }: { item: NavItem; isActive: boolean }) => {
+      const { transform, transition, setNodeRef, attributes, listeners, isDragging } = useSortable({
+        id: item.key,
+      })
 
-    const style: React.CSSProperties = {
-      transform: CSS.Translate.toString(transform),
-      transition,
-      cursor: 'move',
-    }
+      // 限制拖拽只能水平移动，y 方向始终为 0
+      const horizontalTransform = transform
+        ? {
+            x: transform.x,
+            y: 0,
+            scaleX: transform.scaleX,
+            scaleY: transform.scaleY,
+          }
+        : undefined
 
-    const isActive = location.pathname === item.key
+      const style: React.CSSProperties = {
+        transform: horizontalTransform ? CSS.Translate.toString(horizontalTransform) : undefined,
+        transition,
+        cursor: 'move',
+        opacity: isDragging ? 0.5 : 1,
+        zIndex: isDragging ? 1000 : 'auto',
+      }
 
-    return (
-      <TabItemWrapper
-        key={item.key + '1'}
-        ref={setNodeRef}
-        {...attributes}
-        {...listeners}
-        style={style}
-        $isActive={isActive}
-        onClick={() => navgation(item.key)}
-        onContextMenu={() => (currentClickTarget = item)}
-      >
-        {item.fixed && <PinIcon />}
-        <TabLabel>{item.label}</TabLabel>
-        <CloseButton $isActive={isActive} onClick={e => closeCurrentNav(e, item)} />
-      </TabItemWrapper>
-    )
-  }
+      const handleContextMenu = () => {
+        currentClickTarget = item
+        setContextMenuActiveKey(isActive ? item.key : null)
+      }
+
+      return (
+        <TabItemWrapper
+          ref={setNodeRef}
+          {...attributes}
+          {...listeners}
+          style={style}
+          $isActive={isActive}
+          $isDragging={isDragging}
+          onClick={() => navgation(item.key)}
+          onContextMenu={handleContextMenu}
+        >
+          {item.fixed && <PinIcon />}
+          <TabLabel>{item.label}</TabLabel>
+          <CloseButton $isActive={isActive} onClick={e => closeCurrentNav(e, item)} />
+        </TabItemWrapper>
+      )
+    },
+  )
+  DraggableTabNode.displayName = 'DraggableTabNode'
 
   return (
     <NavigationContainer>
@@ -360,12 +370,15 @@ function NavigationBar() {
       <DndContext sensors={[sensor]} collisionDetection={closestCenter} onDragEnd={onDragEnd}>
         <SortableContext items={navItem.map(i => i.key)} strategy={horizontalListSortingStrategy}>
           <Dropdown
-            menu={{ items: contextMenu, onClick: handleMenuClick }}
+            menu={{
+              items: getContextMenuItems(activeKey === contextMenuActiveKey),
+              onClick: handleMenuClick,
+            }}
             trigger={['contextMenu']}
           >
             <TabList ref={scrollContainerRef}>
               {navItem.map(item => (
-                <DraggableTabNode key={item.key} item={item} />
+                <DraggableTabNode key={item.key} item={item} isActive={activeKey === item.key} />
               ))}
             </TabList>
           </Dropdown>
