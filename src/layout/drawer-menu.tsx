@@ -24,58 +24,151 @@ const LayoutContainer = styled.div`
 const Sidebar = styled.aside`
   max-height: 100vh;
   display: flex;
-  gap: 0;
+  gap: 12px;
+  padding: 16px;
 `
 
 const TopLevelMenu = styled.ul`
-  text-align: center;
-  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   background: var(--color-surface);
-  box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.04);
   padding: 12px 0;
-  transition: background 0.3s;
-  border-radius: 1rem;
+  border-radius: 20px;
   user-select: none;
+  min-width: 72px;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
+`
 
-  li {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    font-size: 15px;
-    color: var(--color-text);
-    margin: 0 8px 12px 8px;
-    padding: 12px 16px;
-    border-radius: 12px;
-    transition:
-      background 0.3s,
-      color 0.3s;
+const BaseTopLevelMenuItem = styled.li`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 14px 12px;
+  margin: 4px 8px;
+  border-radius: 16px;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  min-width: 48px;
+  justify-content: center;
 
-    &:last-child {
-      margin-bottom: 0;
-    }
+  svg {
+    font-size: 20px;
+  }
+`
 
-    &:hover:not(.activeTopMenu) {
-      background: var(--color-surface-hover);
-      color: var(--color-primary);
+const ActiveTopMenu = styled(BaseTopLevelMenuItem)`
+  background: linear-gradient(145deg, var(--color-primary) 0%, var(--color-primary-hover) 100%);
+  color: #fff;
+  box-shadow:
+    0 8px 24px rgba(59, 130, 246, 0.35),
+    0 2px 8px rgba(59, 130, 246, 0.2);
+
+  svg {
+    font-size: 20px;
+  }
+`
+
+const TopLevelMenuItem = styled(BaseTopLevelMenuItem)`
+  color: var(--color-text-secondary);
+  background: transparent;
+
+  &:hover {
+    background: var(--color-surface-hover);
+    color: var(--color-primary);
+  }
+`
+
+const TopMenuLabel = styled.span`
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  white-space: nowrap;
+`
+
+const SubMenuList = styled.ul`
+  width: 200px;
+  max-height: calc(100vh - 64px);
+  overflow-y: auto;
+  background: var(--color-background);
+  border-radius: 20px;
+  padding: 12px 0;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+  border: 1px solid var(--color-border);
+
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: var(--color-border);
+    border-radius: 3px;
+
+    &:hover {
+      background: var(--color-border-hover);
     }
   }
 `
 
-const ActiveTopMenu = styled.li`
-  color: var(--color-primary-contrast, #fff);
-  background: var(--color-primary);
-  box-shadow: 0 2px 8px 0 rgba(37, 99, 235, 0.1);
+const MenuItem = styled.li`
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 16px;
+  margin: 2px 8px;
   border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  color: var(--color-text-secondary);
+  position: relative;
+
+  svg {
+    font-size: 16px;
+    flex-shrink: 0;
+  }
+
+  &:hover {
+    background: var(--color-surface-hover);
+    color: var(--color-text);
+    padding-left: 20px;
+  }
+
+  &:active {
+    transform: scale(0.98);
+  }
 `
 
-const SubMenuList = styled.ul`
-  width: 11rem;
-  max-height: 100%;
-  overflow-y: auto;
-  border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-  background: var(--color-surface);
-  transition: background 0.3s ease;
+const ActiveMenuItem = styled(MenuItem)`
+  background: rgba(59, 130, 246, 0.08);
+  color: var(--color-primary);
+  font-weight: 500;
+
+  &::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 4px;
+    height: 40%;
+    background: var(--color-primary);
+    border-radius: 0 4px 4px 0;
+  }
+`
+
+const SubMenuListInner = styled.ul`
+  min-width: 180px;
+  background: var(--color-background);
+  border-radius: 16px;
+  padding: 8px 0;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+  border: 1px solid var(--color-border);
 `
 
 const MainSection = styled.section`
@@ -112,7 +205,7 @@ const ToggleButton = styled.button`
   align-items: center;
   justify-content: center;
   transition: all 0.3s ease;
-  border-radius: 4px;
+  border-radius: 8px;
 
   &:hover {
     background: var(--color-surface-hover);
@@ -128,45 +221,8 @@ const MainContent = styled.main`
   overflow-x: hidden;
 `
 
-const TopMenuIcon = styled.span`
-  font-size: 1.25rem;
-  margin-bottom: 0.25rem;
-  display: block;
-`
-
-const TopMenuLabel = styled.p`
-  font-size: 0.75rem;
-  font-weight: 500;
-  letter-spacing: 0.025em;
-  margin: 0;
-`
-
-const MenuItem = styled.li`
-  user-select: none;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  color: var(--color-text);
-  padding: 4px 12px;
-  border-radius: 4px;
-  margin-bottom: 4px;
-`
-
-const SubMenuListInner = styled.ul`
-  min-width: 144px;
-`
-
-const IconSpan = styled.span`
-  margin-left: 8px;
-`
-
-// import type { MenuProps } from 'antd'
-
-/**
- * 可折叠的子菜单
- */
 function DrawerMenu() {
   const navigate = useCustomNavigate()
-  // const dispatch = useAppDispatch()
   const menusRaw = useAppSelector(state => state.menu)
   const menus: MenuItem[] = Array.isArray(menusRaw) ? menusRaw : []
   const showNavigationBar = useAppSelector(state => state.systemInfo.showNavigationBar)
@@ -175,9 +231,7 @@ function DrawerMenu() {
 
   const location = useLocation()
 
-  // 根据当前路由自动设置高亮的顶级菜单
   useEffect(() => {
-    // 遍历所有菜单，找到包含当前路由的顶级菜单
     const findTopMenu = (items: MenuItem[], path: string): MenuItem | undefined => {
       for (const item of items) {
         if (item.key === path) return item
@@ -195,21 +249,6 @@ function DrawerMenu() {
     if (current) setTopActiveMenu(current)
   }, [location, menus])
 
-  // const onClick: MenuProps['onClick'] = (e) => {
-  // 	navigate(e.key)
-
-  // 	dispatch(
-  // 		pushNavItemAction({
-  // 			key: e.key,
-  // 			// @ts-ignore
-  // 			label: e.item.props.title,
-  // 			active: true,
-  // 			fixed: false,
-  // 		}),
-  // 	)
-  // }
-
-  // 找到当前选中项和需要展开的项
   const findSelectedAndOpenKeys = (items: MenuItem[], currentPath: string) => {
     let selectedKey = ''
     const openKeys: string[] = []
@@ -238,15 +277,8 @@ function DrawerMenu() {
   useEffect(() => {
     const result = findSelectedAndOpenKeys(menus, location.pathname)
     setSelectedKey([result.selectedKey])
-    // setOpenKeys(result.openKeys) // Removed unused state
   }, [location, menus])
 
-  // const onOpenChange = (keys: string[]) => {
-  // 	// 更新展开的菜单项
-  // 	setOpenKeys(keys)
-  // }
-
-  // 递归渲染多级菜单项，children 以 Popover 方式展示
   function RecursiveMenuItem({
     item,
     selectedKey,
@@ -271,26 +303,19 @@ function DrawerMenu() {
       </SubMenuListInner>
     ) : null
 
-    const li = isActive ? (
-      <ActiveTopMenu
+    const MenuItemComponent = isActive ? ActiveMenuItem : MenuItem
+
+    const li = (
+      <MenuItemComponent
         key={item.key}
         onClick={e => {
           e.stopPropagation()
           navigate(item.key)
         }}
       >
-        {item.icon} <IconSpan>{item.label}</IconSpan>
-      </ActiveTopMenu>
-    ) : (
-      <MenuItem
-        key={item.key}
-        onClick={e => {
-          e.stopPropagation()
-          navigate(item.key)
-        }}
-      >
-        {item.icon} <IconSpan>{item.label}</IconSpan>
-      </MenuItem>
+        {item.icon}
+        <span style={{ fontSize: '14px', flex: 1 }}>{item.label}</span>
+      </MenuItemComponent>
     )
 
     return hasChildren ? (
@@ -302,7 +327,6 @@ function DrawerMenu() {
     )
   }
 
-  // 初始化时从forage读取menuVisible
   useEffect(() => {
     forage.getItem<boolean>(ForageEnums.DRAWER_MENU_VISIBLE).then(v => {
       if (typeof v === 'boolean') setMenuVisible(v)
@@ -310,10 +334,10 @@ function DrawerMenu() {
     })
   }, [])
 
-  // menuVisible变化时持久化
   useEffect(() => {
     forage.setItem(ForageEnums.DRAWER_MENU_VISIBLE, String(menuVisible))
   }, [menuVisible])
+
   return (
     <LayoutContainer>
       {menuVisible && (
@@ -321,24 +345,22 @@ function DrawerMenu() {
           <TopLevelMenu>
             {menus.map(item => {
               const isActive = topActiveMenu.key === item.key || selectedKey.includes(item.key)
+              const handleClick = () => {
+                setTopActiveMenu(item)
+                if (item.key) {
+                  navigate(item.key)
+                }
+              }
               return isActive ? (
-                <ActiveTopMenu
-                  key={item.key}
-                  onClick={() => setTopActiveMenu(item)}
-                  onKeyUp={() => setTopActiveMenu(item)}
-                >
-                  <TopMenuIcon>{item.icon}</TopMenuIcon>
+                <ActiveTopMenu key={item.key} onClick={handleClick} onKeyUp={handleClick}>
+                  {item.icon}
                   <TopMenuLabel>{item.label}</TopMenuLabel>
                 </ActiveTopMenu>
               ) : (
-                <MenuItem
-                  key={item.key}
-                  onClick={() => setTopActiveMenu(item)}
-                  onKeyUp={() => setTopActiveMenu(item)}
-                >
-                  <TopMenuIcon>{item.icon}</TopMenuIcon>
+                <TopLevelMenuItem key={item.key} onClick={handleClick} onKeyUp={handleClick}>
+                  {item.icon}
                   <TopMenuLabel>{item.label}</TopMenuLabel>
-                </MenuItem>
+                </TopLevelMenuItem>
               )
             })}
           </TopLevelMenu>
