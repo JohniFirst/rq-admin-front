@@ -485,19 +485,7 @@ const SystemSettings: React.FC = () => {
         <SettingOutlined className="setting-icon" onClick={showDrawer} />
       </FloatingButton>
 
-      <StyledDrawer
-        title={
-          <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-            <SettingOutlined style={{ color: 'var(--color-primary)' }} />
-            <span style={{ fontSize: 18, fontWeight: 600 }}>系统设置</span>
-          </div>
-        }
-        placement="right"
-        onClose={onClose}
-        open={open}
-        maskClosable
-        width={640}
-      >
+      <StyledDrawer title="系统设置" placement="right" onClose={onClose} open={open} size="60%">
         <DrawerTab activeKey={activeTab} onChange={key => setActiveTab(key)} items={tabItems} />
       </StyledDrawer>
     </>
