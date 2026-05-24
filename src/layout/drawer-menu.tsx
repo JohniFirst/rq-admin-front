@@ -146,6 +146,17 @@ const MenuItem = styled.li`
   cursor: pointer;
   transition: all 0.2s ease;
   color: var(--color-text);
+  padding: 4px 12px;
+  border-radius: 4px;
+  margin-bottom: 4px;
+`
+
+const SubMenuListInner = styled.ul`
+  min-width: 144px;
+`
+
+const IconSpan = styled.span`
+  margin-left: 8px;
 `
 
 // import type { MenuProps } from 'antd'
@@ -248,7 +259,7 @@ function DrawerMenu() {
     const isActive = selectedKey.includes(item.key)
     const hasChildren = Array.isArray(item.children) && item.children.length > 0
     const content = hasChildren ? (
-      <ul className="min-w-36">
+      <SubMenuListInner>
         {item.children.map((child: MenuItem) => (
           <RecursiveMenuItem
             key={child.key}
@@ -257,35 +268,29 @@ function DrawerMenu() {
             navigate={navigate}
           />
         ))}
-      </ul>
+      </SubMenuListInner>
     ) : null
 
     const li = isActive ? (
       <ActiveTopMenu
         key={item.key}
-        className="select-none cursor-pointer px-3 py-1 rounded mb-1"
         onClick={e => {
           e.stopPropagation()
           navigate(item.key)
         }}
       >
-        {item.icon} <span className="ml-2">{item.label}</span>
+        {item.icon} <IconSpan>{item.label}</IconSpan>
       </ActiveTopMenu>
     ) : (
-      <li
+      <MenuItem
         key={item.key}
-        className="select-none cursor-pointer px-3 py-1 rounded mb-1"
-        style={{
-          color: 'var(--color-text)',
-          background: 'transparent',
-        }}
         onClick={e => {
           e.stopPropagation()
           navigate(item.key)
         }}
       >
-        {item.icon} <span className="ml-2">{item.label}</span>
-      </li>
+        {item.icon} <IconSpan>{item.label}</IconSpan>
+      </MenuItem>
     )
 
     return hasChildren ? (

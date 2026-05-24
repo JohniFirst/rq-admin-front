@@ -10,24 +10,108 @@ import { headerButtonBase } from './styles'
 
 const FilterMenuWp = styled.div<{ indent: number }>`
   background-color: #fff2e5;
-  margin-bottom: 1.75rem;
-  padding: 0.5rem;
+  margin-bottom: 28px;
+  padding: 8px;
   border-radius: 8px;
   margin-left: ${props => props.indent * 16}px;
 `
 
-const FilterMenuItem = styled.p<{ indent: number }>`
+const FilterMenuItem = styled.p<{ indent: number; $isSelected?: boolean }>`
   cursor: pointer;
   color: var(--theme-color);
   padding: 4px 0 4px 4px;
   width: calc(100% - 26px);
   border-radius: 8px;
   margin-left: ${props => props.indent * 16}px;
+  background: ${props => (props.$isSelected ? 'var(--color-primary)' : 'transparent')};
+  color: ${props => (props.$isSelected ? '#fff' : 'var(--theme-color)')};
 `
 
 const SearchButton = styled.button`
   ${headerButtonBase}
   padding: 0;
+`
+
+const SearchResultsContainer = styled.div`
+  margin-top: 8px;
+  min-height: 8px;
+`
+
+const NoMatchText = styled.p`
+  margin: 16px 0 16px 28px;
+`
+
+const ModalTitle = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 12px;
+`
+
+const ModalTitleText = styled.span`
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--color-text);
+`
+
+const ModalFooter = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  gap: 24px;
+  font-size: 14px;
+  color: var(--color-text-secondary);
+  padding-top: 16px;
+  border-top: 1px solid var(--color-border);
+`
+
+const ShortcutKey = styled.span`
+  padding: 2px 8px;
+  background: var(--color-surface);
+  border-radius: 4px;
+`
+
+const ShortcutItem = styled.p`
+  display: flex;
+  align-items: center;
+  gap: 8px;
+`
+
+const InputWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+`
+
+const SearchInput = styled(Input)`
+  padding: 12px 16px;
+  font-size: 18px;
+  border-radius: 8px;
+  border: 2px solid var(--color-border);
+  transition: all 0.3s ease;
+
+  &:focus {
+    border-color: var(--color-primary);
+  }
+`
+
+const AnimatedContent = styled(motion.div)`
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+`
+
+const SearchResultsTitle = styled.div`
+  font-size: 14px;
+  color: var(--color-text-secondary);
+  margin-bottom: 16px;
+`
+
+const EmptyState = styled.div`
+  text-align: center;
+  color: var(--color-text-secondary);
+`
+
+const MatchChar = styled.span<{ $isMatch: boolean }>`
+  font-weight: ${props => (props.$isMatch ? 'bold' : 'normal')};
 `
 
 const SearchableMenu: FC = () => {
@@ -192,7 +276,7 @@ const SearchableMenu: FC = () => {
       <FilterMenuItem
         key={item.key}
         indent={indent}
-        className={`${index === selectedIndex ? 'bg-indigo-500 text-white' : ''}`}
+        $isSelected={index === selectedIndex}
         onClick={() => filterNav(item)}
         onKeyUp={() => filterNav(item)}
         data-index={index}
@@ -200,13 +284,9 @@ const SearchableMenu: FC = () => {
         {displayText.split('').map((char: string, i: number) => {
           const isCharMatch = searchValue.toLowerCase().includes(char.toLowerCase())
           return (
-            <span
-              key={i}
-              style={{ color: isCharMatch ? 'inherit' : '' }}
-              className={isCharMatch ? 'font-bold' : ''}
-            >
+            <MatchChar key={i} $isMatch={isCharMatch}>
               {char}
-            </span>
+            </MatchChar>
           )
         })}
       </FilterMenuItem>
@@ -216,15 +296,15 @@ const SearchableMenu: FC = () => {
   const content = useMemo(() => {
     const filterResult = findMatchingItems(menuItems, searchValue)
     return (
-      <div className="mt-2 min-h-2" ref={searchResultsRef}>
+      <SearchResultsContainer ref={searchResultsRef}>
         {filterResult.length ? (
           filterResult.map((item, index) => {
             return <FilterResultItem key={item.key} item={item} index={index} />
           })
         ) : (
-          <p className="my-4 ml-7">无匹配项</p>
+          <NoMatchText>无匹配项</NoMatchText>
         )}
-      </div>
+      </SearchResultsContainer>
     )
   }, [searchValue, selectedIndex])
 
@@ -236,34 +316,34 @@ const SearchableMenu: FC = () => {
 
       <Modal
         title={
-          <div className="flex items-center gap-3">
-            <SearchOutlined className="text-xl text-indigo-600" />
-            <span className="text-lg font-semibold text-gray-800 dark:text-gray-200">菜单搜索</span>
-          </div>
+          <ModalTitle>
+            <SearchOutlined style={{ fontSize: 24, color: 'var(--color-primary)' }} />
+            <ModalTitleText>菜单搜索</ModalTitleText>
+          </ModalTitle>
         }
         open={isModalOpen}
         footer={
-          <div className="flex justify-end gap-6 text-sm text-gray-500 dark:text-gray-400 pt-4 border-t border-gray-100 dark:border-gray-700">
-            <p className="flex items-center gap-2">
-              <span className="px-2 py-1 bg-gray-100 dark:bg-gray-700 rounded">
+          <ModalFooter>
+            <ShortcutItem>
+              <ShortcutKey>
                 <DownOutlined />
-              </span>
-              <span className="px-2 py-1 bg-gray-100 dark:bg-gray-700 rounded">
+              </ShortcutKey>
+              <ShortcutKey>
                 <UpOutlined />
-              </span>
+              </ShortcutKey>
               上下导航
-            </p>
-            <p className="flex items-center gap-2">
-              <span className="px-2 py-1 bg-gray-100 dark:bg-gray-700 rounded">
+            </ShortcutItem>
+            <ShortcutItem>
+              <ShortcutKey>
                 <EnterOutlined />
-              </span>
+              </ShortcutKey>
               选择
-            </p>
-            <p className="flex items-center gap-2">
-              <span className="px-2 py-1 bg-gray-100 dark:bg-gray-700 rounded">ESC</span>
+            </ShortcutItem>
+            <ShortcutItem>
+              <ShortcutKey>ESC</ShortcutKey>
               退出
-            </p>
-          </div>
+            </ShortcutItem>
+          </ModalFooter>
         }
         onCancel={handleCancel}
         className="searchable-menu-modal"
@@ -279,35 +359,33 @@ const SearchableMenu: FC = () => {
           }
         }}
       >
-        <div className="space-y-6">
-          <Input
+        <InputWrapper>
+          <SearchInput
             placeholder="输入关键字搜索菜单 (Ctrl + M)"
             value={searchValue}
             onChange={e => handleSearch(e.target.value)}
-            className="py-3 pl-12 pr-4 text-lg rounded-lg border-2 border-gray-200 focus:border-indigo-500 transition-all duration-300"
             autoFocus
           />
 
           <AnimatePresence>
             {searchValue && (
-              <motion.div
+              <AnimatedContent
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: 20 }}
-                className="space-y-2"
               >
-                <div className="text-sm text-gray-500 dark:text-gray-400 mb-4">搜索结果</div>
+                <SearchResultsTitle>搜索结果</SearchResultsTitle>
                 {content}
-              </motion.div>
+              </AnimatedContent>
             )}
           </AnimatePresence>
 
           {!searchValue && (
-            <div className="text-center text-gray-500 dark:text-gray-400">
+            <EmptyState>
               <p>使用快捷键 Ctrl + M 快速打开搜索</p>
-            </div>
+            </EmptyState>
           )}
-        </div>
+        </InputWrapper>
       </Modal>
     </>
   )

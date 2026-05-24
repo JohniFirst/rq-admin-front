@@ -1,5 +1,4 @@
 import path from 'node:path'
-import tailwindcss from '@tailwindcss/vite'
 import react from '@vitejs/plugin-react-swc'
 // import { visualizer as bundleAnalyzer } from "rollup-plugin-visualizer";
 import bundleAnalyzer from 'rollup-plugin-bundle-analyzer'
@@ -38,7 +37,6 @@ export default defineConfig((configEnv: UserConfig): UserConfig => {
     base: env.VITE_API_BASE_ROUTER_URL,
     plugins: [
       react(),
-      tailwindcss(),
       viteMockServe({
         mockPath: path.resolve(__dirname, 'mock'),
         enable: mode === 'mock',

@@ -1,5 +1,6 @@
 import { AnimatePresence, motion } from 'framer-motion'
 import { useEffect } from 'react'
+import styled from 'styled-components'
 import { getMenuList } from '@/api/system-api'
 import FullscreenTransition from '@/components/FullscreenTransition'
 import { LayoutModeEnum } from '@/enums/system'
@@ -9,6 +10,10 @@ import CommonMenu from './common-menu'
 import SystemSettings from './components/header-operate/system-settings'
 import DrawerMenu from './drawer-menu'
 import HeaderMenu from './header-menu'
+
+const LayoutWrapper = styled(motion.div)`
+  height: 100vh;
+`
 
 const layoutVariants = {
   initial: { opacity: 0, scale: 0.96, y: 20 },
@@ -70,16 +75,15 @@ function Layout() {
       <SystemSettings />
       <FullscreenTransition>
         <AnimatePresence mode="wait">
-          <motion.div
+          <LayoutWrapper
             key={layoutMode}
             initial="initial"
             animate="animate"
             exit="exit"
             variants={layoutVariants}
-            className="h-screen"
           >
             {renderLayout()}
-          </motion.div>
+          </LayoutWrapper>
         </AnimatePresence>
       </FullscreenTransition>
     </>

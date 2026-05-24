@@ -1,9 +1,18 @@
-/** 表示加载中的组件 */
+import styled from 'styled-components'
+
+const LoadingContainer = styled.div`
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`
+
 const Loading = () => {
   return (
-    <div className="w-screen h-screen flex justify-center items-center">
+    <LoadingContainer>
       <img src="/public-svgs/loading.svg" width={'800px'} alt="loading" />
-    </div>
+    </LoadingContainer>
   )
 }
 

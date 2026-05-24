@@ -1,9 +1,20 @@
 import { motion } from 'framer-motion'
+import styled from 'styled-components'
 import { type ReactNode, useEffect, useState } from 'react'
 
 interface FullscreenTransitionProps {
   children: ReactNode
 }
+
+const OuterContainer = styled(motion.div)`
+  width: 100%;
+  height: 100%;
+`
+
+const InnerContainer = styled(motion.div)`
+  display: grid;
+  gap: 16px;
+`
 
 const FullscreenTransition = ({ children }: FullscreenTransitionProps) => {
   const [isFullscreen, setIsFullscreen] = useState(false)
@@ -18,7 +29,7 @@ const FullscreenTransition = ({ children }: FullscreenTransitionProps) => {
   }, [])
 
   return (
-    <motion.div
+    <OuterContainer
       layout
       initial={false}
       animate={{
@@ -29,11 +40,9 @@ const FullscreenTransition = ({ children }: FullscreenTransitionProps) => {
         times: [0, 0.6, 1],
         ease: 'easeInOut',
       }}
-      className="w-full h-full"
     >
-      <motion.div
+      <InnerContainer
         layout
-        className="grid gap-4"
         initial={false}
         animate={{
           scale: 1,
@@ -46,8 +55,8 @@ const FullscreenTransition = ({ children }: FullscreenTransitionProps) => {
         }}
       >
         {children}
-      </motion.div>
-    </motion.div>
+      </InnerContainer>
+    </OuterContainer>
   )
 }
 

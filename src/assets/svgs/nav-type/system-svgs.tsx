@@ -2,7 +2,9 @@
 /* eslint-disable */
 /* prettier-ignore-start */
 
-export const TopMenu = (
+import type React from 'react'
+
+export const TopMenu: React.FC = () => (
   <svg
     viewBox="0 0 916 577"
     fill="none"
@@ -123,7 +125,7 @@ export const TopMenu = (
   </svg>
 )
 
-export const CommonMenu = (
+export const CommonMenu: React.FC = () => (
   <svg
     viewBox="0 0 916 577"
     fill="none"
@@ -245,7 +247,7 @@ export const CommonMenu = (
   </svg>
 )
 
-export const DrawerMenu = (
+export const DrawerMenu: React.FC = () => (
   <svg
     viewBox="0 0 916 577"
     fill="none"

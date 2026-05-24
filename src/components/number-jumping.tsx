@@ -1,4 +1,5 @@
 import { memo, useMemo } from 'react'
+import styled from 'styled-components'
 
 interface NumberJumpingProps {
   startValue?: number
@@ -7,7 +8,10 @@ interface NumberJumpingProps {
   className?: string
 }
 
-// 智能格式化数字，长的数字用万/亿单位显示
+const StyledSpan = styled.span`
+  white-space: nowrap;
+`
+
 const formatNumber = (num: number): string => {
   if (num >= 100000000) {
     return (num / 100000000).toFixed(num % 100000000 === 0 ? 0 : 1) + '亿'
@@ -21,11 +25,7 @@ const formatNumber = (num: number): string => {
 const NumberJumping = memo<NumberJumpingProps>(({ endValue, className }) => {
   const displayValue = useMemo(() => formatNumber(endValue), [endValue])
 
-  return (
-    <span className={className} style={{ whiteSpace: 'nowrap' }}>
-      {displayValue}
-    </span>
-  )
+  return <StyledSpan className={className}>{displayValue}</StyledSpan>
 })
 
 NumberJumping.displayName = 'NumberJumping'

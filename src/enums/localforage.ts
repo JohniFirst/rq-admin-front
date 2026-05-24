@@ -18,6 +18,8 @@ export enum LocalStorageKeys {
   THEME_MODE = 'rq-admin-theme-mode',
   // 自动主题配置
   AUTO_THEME_CONFIG = 'rq-admin-auto-theme-config',
+  // 系统设置
+  SETTINGS = 'rq-admin-settings',
 }
 
 export enum IsLogin {

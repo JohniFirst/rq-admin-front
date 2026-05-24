@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
+import styled from 'styled-components'
 
 interface NumberJumpingProps {
   startValue?: number
@@ -6,6 +7,8 @@ interface NumberJumpingProps {
   duration?: number
   className?: string
 }
+
+const StyledSpan = styled.span``
 
 function NumberJumping({
   startValue = 0,
@@ -22,7 +25,6 @@ function NumberJumping({
 
     const animate = () => {
       if (elapsedTime < duration) {
-        // 调整非线性的增量计算方式，实现更明显的先快后慢
         const increment = (endValue - startValue) * Math.sqrt(elapsedTime / duration)
         setCurrentValue(prevValue => prevValue + increment)
         elapsedTime += 10
@@ -44,7 +46,7 @@ function NumberJumping({
     }
   }, [startValue, endValue, duration])
 
-  return <span className={className}>{currentValue}</span>
+  return <StyledSpan className={className}>{currentValue}</StyledSpan>
 }
 
 export default NumberJumping
