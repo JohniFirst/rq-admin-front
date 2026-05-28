@@ -76,6 +76,13 @@ export default [
               url: '/event/table-frontend',
               icon: 'test',
             },
+            {
+              menuOrder: 9,
+              title: 'OpenLayers Demo',
+              id: 28,
+              url: '/event/openlayers-demo',
+              icon: 'test',
+            },
           ],
         },
         {
